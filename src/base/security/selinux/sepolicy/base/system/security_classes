@@ -1,0 +1,109 @@
+# Copyright (c) 2021-2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+class security
+class process
+class system
+class capability
+class filesystem
+class file
+class dir
+class fd
+class lnk_file
+class chr_file
+class blk_file
+class sock_file
+class fifo_file
+class socket
+class tcp_socket
+class udp_socket
+class rawip_socket
+class node
+class netif
+class netlink_socket
+class packet_socket
+class key_socket
+class unix_stream_socket
+class unix_dgram_socket
+class sem
+class msg
+class msgq
+class shm
+class ipc
+class netlink_route_socket
+class netlink_tcpdiag_socket
+class netlink_nflog_socket
+class netlink_xfrm_socket
+class netlink_selinux_socket
+class netlink_audit_socket
+class netlink_dnrt_socket
+class association
+class netlink_kobject_uevent_socket
+class appletalk_socket
+class packet
+class key
+class dccp_socket
+class memprotect
+class peer
+class capability2
+class kernel_service
+class tun_socket
+class binder
+class netlink_iscsi_socket
+class netlink_fib_lookup_socket
+class netlink_connector_socket
+class netlink_netfilter_socket
+class netlink_generic_socket
+class netlink_scsitransport_socket
+class netlink_rdma_socket
+class netlink_crypto_socket
+class infiniband_pkey
+class infiniband_endport
+class cap_userns
+class cap2_userns
+class sctp_socket
+class icmp_socket
+class ax25_socket
+class ipx_socket
+class netrom_socket
+class atmpvc_socket
+class x25_socket
+class rose_socket
+class decnet_socket
+class atmsvc_socket
+class rds_socket
+class irda_socket
+class pppox_socket
+class llc_socket
+class can_socket
+class tipc_socket
+class bluetooth_socket
+class iucv_socket
+class rxrpc_socket
+class isdn_socket
+class phonet_socket
+class ieee802154_socket
+class caif_socket
+class alg_socket
+class nfc_socket
+class vsock_socket
+class kcm_socket
+class qipcrtr_socket
+class smc_socket
+class process2
+class bpf
+class xdp_socket
+class parameter_service
+class samgr_class
+class hdf_devmgr_class
+class lockdown

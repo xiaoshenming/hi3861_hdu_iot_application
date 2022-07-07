@@ -1,0 +1,33 @@
+# Copyright (c) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+fs_use_xattr ext2 u:object_r:labeledfs:s0;
+fs_use_xattr ext3 u:object_r:labeledfs:s0;
+fs_use_xattr ext4 u:object_r:labeledfs:s0;
+fs_use_xattr xfs u:object_r:labeledfs:s0;
+fs_use_xattr btrfs u:object_r:labeledfs:s0;
+fs_use_xattr f2fs u:object_r:labeledfs:s0;
+fs_use_xattr squashfs u:object_r:labeledfs:s0;
+fs_use_xattr overlay u:object_r:labeledfs:s0;
+fs_use_xattr erofs u:object_r:labeledfs:s0;
+fs_use_xattr incremental-fs u:object_r:labeledfs:s0;
+fs_use_xattr hmfs u:object_r:labeledfs:s0;
+
+fs_use_task pipefs u:object_r:pipefs:s0;
+fs_use_task sockfs u:object_r:sockfs:s0;
+
+fs_use_trans devpts u:object_r:devpts:s0;
+fs_use_trans tmpfs u:object_r:tmpfs:s0;
+fs_use_trans devtmpfs u:object_r:device:s0;
+fs_use_trans shm u:object_r:shm:s0;
+fs_use_trans mqueue u:object_r:mqueue:s0;

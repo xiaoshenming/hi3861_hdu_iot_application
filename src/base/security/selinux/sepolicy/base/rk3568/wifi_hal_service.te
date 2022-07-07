@@ -1,0 +1,72 @@
+# Copyright (c) 2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+allow wifi_hal_service data_file:dir { search };
+allow wifi_hal_service data_misc:dir { add_name getattr remove_name search write };
+allow wifi_hal_service data_misc:file { create read write open };
+allow wifi_hal_service data_misc:sock_file { create unlink };
+allow wifi_hal_service dev_file:chr_file { open read };
+allow wifi_hal_service dev_file:dir { search };
+allow wifi_hal_service dev_null_file:chr_file { getattr ioctl open read write };
+allow wifi_hal_service dev_parameters_file:dir { search };
+allow wifi_hal_service dev_parameters_file:file { map open read };
+allow wifi_hal_service dev_unix_file:dir { search };
+allow wifi_hal_service dev_unix_socket_file:dir { search };
+allow wifi_hal_service dev_unix_socket_file:sock_file { write };
+allow wifi_hal_service etc_file:lnk_file { read };
+allow wifi_hal_service init:fd { use };
+allow wifi_hal_service init:netlink_kobject_uevent_socket { read write };
+allow wifi_hal_service init:unix_dgram_socket { sendto };
+allow wifi_hal_service init:unix_stream_socket { read write };
+allow wifi_hal_service kernel:fd { use };
+allow wifi_hal_service kernel:system { module_request };
+allow wifi_hal_service lib_file:lnk_file { read };
+allow wifi_hal_service node:udp_socket { node_bind };
+allow wifi_hal_service port:udp_socket { name_bind };
+allow wifi_hal_service proc_file:dir { search };
+allow wifi_hal_service proc_file:lnk_file { read };
+allow wifi_hal_service rootfs:dir { search };
+allow wifi_hal_service rootfs:lnk_file { read };
+allow wifi_hal_service selinuxfs:filesystem { getattr };
+allow wifi_hal_service sh_exec:file { execute execute_no_trans map read open };
+allow wifi_hal_service sys_file:dir { getattr search };
+allow wifi_hal_service sys_file:lnk_file { read };
+allow wifi_hal_service system_bin_file:dir { search };
+allow wifi_hal_service system_bin_file:file { execute execute_no_trans getattr map read open };
+allow wifi_hal_service system_bin_file:lnk_file { read };
+allow wifi_hal_service system_etc_file:dir { search };
+allow wifi_hal_service system_etc_file:file { getattr open read };
+allow wifi_hal_service system_file:dir { search };
+allow wifi_hal_service system_lib_file:dir { search };
+allow wifi_hal_service system_lib_file:file { execute getattr map open read };
+allow wifi_hal_service tty_device:chr_file { open read write };
+allow wifi_hal_service vendor_etc_file:dir { search };
+allow wifi_hal_service vendor_etc_file:file { open read };
+allow wifi_hal_service vendor_file:dir { search };
+allow wifi_hal_service vendor_file:file { execute getattr map open read };
+allow wifi_hal_service wifi_hal_service:capability { dac_override dac_read_search net_admin net_raw sys_module };
+allow wifi_hal_service wifi_hal_service:dir { search };
+allow wifi_hal_service wifi_hal_service_exec:file { entrypoint execute map read };
+allow wifi_hal_service wifi_hal_service:fifo_file { read };
+allow wifi_hal_service wifi_hal_service:lnk_file { read };
+allow wifi_hal_service wifi_hal_service:netlink_generic_socket { bind create getattr read setopt write };
+allow wifi_hal_service wifi_hal_service:netlink_route_socket { bind create nlmsg_write read write };
+allow wifi_hal_service wifi_hal_service:packet_socket { bind create ioctl setopt };
+allow wifi_hal_service wifi_hal_service:process { fork };
+allow wifi_hal_service wifi_hal_service:udp_socket { bind connect create ioctl read write };
+allow wifi_hal_service wifi_hal_service:unix_dgram_socket { connect create ioctl write };
+allow wifi_hal_service wifi_hal_service:unix_stream_socket { accept bind create listen read setopt write };
+allowxperm wifi_hal_service dev_null_file:chr_file ioctl { 0x5413 };
+allowxperm wifi_hal_service wifi_hal_service:packet_socket ioctl { 0x8933 };
+allowxperm wifi_hal_service wifi_hal_service:udp_socket ioctl { 0x8913 };
+allowxperm wifi_hal_service wifi_hal_service:unix_dgram_socket ioctl { 0x8933 };

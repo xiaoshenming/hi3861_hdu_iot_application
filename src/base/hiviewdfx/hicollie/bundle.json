@@ -1,0 +1,52 @@
+{
+    "name": "@ohos/hicollie_native",
+    "description": "HiCollie provides the software watchdog capability.",
+    "version": "3.1",
+    "license": "Apache License 2.0",
+    "publishAs": "code-segment",
+    "segment": {
+        "destPath": "base/hiviewdfx/hicollie"
+    },
+    "dirs": {},
+    "scripts": {},
+    "component": {
+        "name": "hicollie_native",
+        "subsystem": "hiviewdfx",
+        "adapted_system_type": [
+            "standard"
+        ],
+        "hisysevent_config": [
+          "//base/hiviewdfx/hicollie/hisysevent.yaml"
+        ],
+        "rom": "",
+        "ram": "",
+        "deps": {
+            "components": [
+                "hilog_native",
+                "hisysevent_native",
+                "utils_base"
+            ],
+            "third_party": []
+        },
+        "build": {
+            "sub_component": [
+                "//base/hiviewdfx/hicollie/interfaces/native/innerkits:libhicollie"
+            ],
+            "inner_kits": [
+                {
+                    "name": "//base/hiviewdfx/hicollie/interfaces/native/innerkits:libhicollie",
+                    "header": {
+                        "header_base": "//base/hiviewdfx/hicollie/interfaces/native/innerkits/include",
+                        "header_files": [
+                            "xcollie/xcollie.h",
+                            "xcollie/xcollie_checker.h",
+                            "xcollie/xcollie_define.h",
+                            "xcollie/watchdog.h"
+                        ]
+                    }
+                }
+            ],
+            "test": [ "//base/hiviewdfx/hicollie/frameworks/native/test/unittest/common:unittest" ]
+        }
+    }
+}

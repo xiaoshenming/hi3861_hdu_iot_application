@@ -1,0 +1,115 @@
+# Copyright (c) 2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+allow normal_hap accessibility:binder { call transfer };
+allow normal_hap accountmgr:binder { call };
+allow normal_hap appspawn_exec:file { getattr map open read };
+allow normal_hap appspawn:fd { use };
+allow normal_hap appspawn:fifo_file { write };
+allow normal_hap appspawn:unix_dgram_socket { connect write };
+allow normal_hap camera_service:binder { call transfer };
+allow normal_hap config_file:dir { mounton };
+allow normal_hap data_app_el1_file:dir { add_name create mounton open read search setattr write };
+allow normal_hap data_app_el1_file:file { execute getattr map open read };
+allow normal_hap data_app_el2_file:dir { search };
+allow normal_hap data_app_file:dir { search };
+allow normal_hap data_file:dir { add_name getattr mounton search write };
+allow normal_hap data_file:file { create getattr ioctl lock map open read write };
+allow normal_hap data_log:file { read write };
+allow normal_hap data_service_el2_file:dir { getattr read open search };
+allow normal_hap data_service_file:dir { search };
+allow normal_hap debugfs:dir { search };
+allow normal_hap dev_ashmem_file:chr_file { getattr ioctl map open read write };
+allow normal_hap dev_at_file:chr_file { ioctl open read write };
+allow normal_hap dev_binder_file:chr_file { ioctl map open read write };
+allow normal_hap dev_dri_file:chr_file { getattr ioctl open read write };
+allow normal_hap dev_dri_file:dir { search };
+allow normal_hap dev_file:chr_file { getattr ioctl map open read write };
+allow normal_hap dev_file:dir { mounton search };
+allow normal_hap dev_null_file:chr_file { ioctl open read write };
+allow normal_hap dev_parameters_file:dir { search };
+allow normal_hap dev_parameters_file:file { map open read };
+allow normal_hap dev_random_file:chr_file { open read };
+allow normal_hap dev_unix_file:dir { search };
+allow normal_hap dev_unix_socket_file:dir { search };
+allow normal_hap dev_unix_socket_file:sock_file { write };
+allow normal_hap display_gralloc_host:binder { call };
+allow normal_hap display_gralloc_host:fd { use };
+allow normal_hap distributeddata:binder { call transfer };
+allow normal_hap faultloggerd:fd { use };
+allow normal_hap faultloggerd:unix_stream_socket { connectto };
+allow normal_hap foundation:binder { call transfer };
+allow normal_hap foundation:fd { use };
+allow normal_hap hdcd:unix_stream_socket { connectto };
+allow normal_hap hdf_devmgr:binder { call };
+allow normal_hap hiview:binder { call };
+allow normal_hap hmdfs:dir { getattr mounton open read search };
+allow normal_hap init:unix_dgram_socket { sendto };
+allow normal_hap inputmethod_service:binder { call transfer };
+allow normal_hap labeledfs:filesystem { unmount };
+allow normal_hap medialibrary_service:binder { call };
+allow normal_hap media_service:binder { call transfer };
+allow normal_hap multimodalinput:binder { call };
+allow normal_hap multimodalinput:fd { use };
+allow normal_hap multimodalinput:unix_stream_socket { read read write write };
+allow normal_hap normal_hap_data_file:dir { add_name create getattr mounton open read remove_name search write };
+allow normal_hap normal_hap_data_file:file { append create getattr ioctl lock map open read rename setattr unlink write write open };
+allow normal_hap normal_hap:binder { call transfer };
+allow normal_hap normal_hap:capability { setgid setuid sys_admin };
+allow normal_hap normal_hap:dir { getattr open read search };
+allow normal_hap normal_hap:fifo_file { read write };
+allow normal_hap normal_hap:file { getattr open read write };
+allow normal_hap normal_hap:lnk_file { read };
+allow normal_hap normal_hap:lockdown { confidentiality };
+allow normal_hap normal_hap:process { execmem fork getcap getsched ptrace setcap setsched sigkill };
+allow normal_hap normal_hap:unix_dgram_socket { connect create getopt setopt write };
+allow normal_hap normal_hap:unix_stream_socket { accept bind connect create getopt listen read setopt write };
+allow normal_hap param_watcher:binder { call transfer };
+allow normal_hap system_basic_hap:binder { call transfer };
+allow normal_hap system_basic_hap:fd { use };
+allow normal_hap proc_file:dir { mounton search };
+allow normal_hap proc_file:file { open read };
+allow normal_hap proc_file:lnk_file { read };
+allow normal_hap render_service:binder { call transfer };
+allow normal_hap render_service:fd { use };
+allow normal_hap render_service:unix_stream_socket { read read write write };
+allow normal_hap resource_schedule_service:binder { call };
+allow normal_hap rootfs:dir { mounton search };
+allow normal_hap samgr:binder { call };
+allow normal_hap sys_file:dir { mounton open read search };
+allow normal_hap sys_file:file { open read };
+allow normal_hap sys_file:lnk_file { read };
+allow normal_hap system_bin_file:dir { search };
+allow normal_hap system_bin_file:file { execute execute_no_trans map read open };
+allow normal_hap system_etc_file:dir { search };
+allow normal_hap system_etc_file:file { getattr map open read };
+allow normal_hap system_file:dir { mounton search };
+allow normal_hap system_fonts_file:dir { search };
+allow normal_hap system_fonts_file:file { getattr map open read };
+allow normal_hap system_lib_file:dir { search };
+allow normal_hap system_lib_file:file { execute getattr map open read };
+allow normal_hap system_usr_file:dir { search };
+allow normal_hap telephony_sa:binder { call };
+allow normal_hap tmpfs:dir { add_name create getattr mounton search write };
+allow normal_hap tmpfs:lnk_file { create read };
+allow normal_hap tracefs:dir { search };
+allow normal_hap tracefs:file { open write };
+allow normal_hap upms:binder { call };
+allowxperm normal_hap data_file:file ioctl { 0xf50c };
+allowxperm normal_hap dev_ashmem_file:chr_file ioctl { 0x7701 0x7703 0x7704 0x7706 };
+allowxperm normal_hap dev_at_file:chr_file ioctl { 0x4101 };
+allowxperm normal_hap dev_binder_file:chr_file ioctl { 0x6201 0x6205 0x6208 0x6209 0x621e 0x621f };
+allowxperm normal_hap dev_dri_file:chr_file ioctl { 0x641f };
+allowxperm normal_hap dev_file:chr_file ioctl { 0x8000 0x8001 0x8002 0x8003 0x8005 0x8006 0x8007 0x800e 0x800f 0x8011 0x8016 0x8018 0x801d 0x801e 0x8026 0xab02 0xab05 0xab06 0xab09 0xab0c 0xab0d };
+allowxperm normal_hap dev_null_file:chr_file ioctl { 0x5413 };
+allowxperm normal_hap normal_hap_data_file:file ioctl { 0x5413 0xf50c };

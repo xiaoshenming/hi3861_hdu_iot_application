@@ -1,0 +1,40 @@
+# Copyright (c) 2021-2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+sid kernel              u:r:kernel:s0
+sid security            u:object_r:security:s0
+sid unlabeled           u:object_r:unlabeled:s0
+sid fs                  u:object_r:labeledfs:s0
+sid file                u:object_r:unlabeled:s0
+sid file_labels         u:object_r:unlabeled:s0
+sid init                u:object_r:unlabeled:s0
+sid any_socket          u:object_r:unlabeled:s0
+sid port                u:object_r:port:s0
+sid netif               u:object_r:netif:s0
+sid netmsg              u:object_r:netmsg:s0
+sid node                u:object_r:node:s0
+sid igmp_packet         u:object_r:unlabeled:s0
+sid icmp_socket         u:object_r:unlabeled:s0
+sid tcp_socket          u:object_r:unlabeled:s0
+sid sysctl_modprobe     u:object_r:unlabeled:s0
+sid sysctl              u:object_r:sysctl:s0
+sid sysctl_fs           u:object_r:unlabeled:s0
+sid sysctl_kernel       u:object_r:unlabeled:s0
+sid sysctl_net          u:object_r:unlabeled:s0
+sid sysctl_net_unix     u:object_r:unlabeled:s0
+sid sysctl_vm           u:object_r:unlabeled:s0
+sid sysctl_dev          u:object_r:unlabeled:s0
+sid kmod                u:object_r:unlabeled:s0
+sid policy              u:object_r:unlabeled:s0
+sid scmp_packet         u:object_r:unlabeled:s0
+sid devnull             u:object_r:dev_null_file:s0

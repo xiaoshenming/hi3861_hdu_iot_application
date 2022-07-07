@@ -1,0 +1,62 @@
+[
+    {
+        "name": "OH_HiAppEvent_Write"
+    },
+    {
+        "name": "OH_HiAppEvent_Configure"
+    },
+    {
+        "name": "OH_HiAppEvent_AddBoolParam"
+    },
+    {
+        "name": "OH_HiAppEvent_AddBoolArrayParam"
+    },
+    {
+        "name": "OH_HiAppEvent_AddInt8Param"
+    },
+    {
+        "name": "OH_HiAppEvent_AddInt8ArrayParam"
+    },
+    {
+        "name": "OH_HiAppEvent_AddInt16Param"
+    },
+    {
+        "name": "OH_HiAppEvent_AddInt16ArrayParam"
+    },
+    {
+        "name": "OH_HiAppEvent_AddInt32Param"
+    },
+    {
+        "name": "OH_HiAppEvent_AddInt32ArrayParam"
+    },
+    {
+        "name": "OH_HiAppEvent_AddInt64Param"
+    },
+    {
+        "name": "OH_HiAppEvent_AddInt64ArrayParam"
+    },
+    {
+        "name": "OH_HiAppEvent_AddFloatParam"
+    },
+    {
+        "name": "OH_HiAppEvent_AddFloatArrayParam"
+    },
+    {
+        "name": "OH_HiAppEvent_AddDoubleParam"
+    },
+    {
+        "name": "OH_HiAppEvent_AddDoubleArrayParam"
+    },
+    {
+        "name": "OH_HiAppEvent_AddStringParam"
+    },
+    {
+        "name": "OH_HiAppEvent_AddStringArrayParam"
+    },
+    {
+        "name": "OH_HiAppEvent_CreateParamList"
+    },
+    {
+        "name": "OH_HiAppEvent_DestroyParamList"
+    }
+]

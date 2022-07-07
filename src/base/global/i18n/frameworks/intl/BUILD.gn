@@ -1,0 +1,151 @@
+# Copyright (c) 2021-2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+group("build_module") {
+  deps = [
+    ":intl_util",
+    ":preferred_language",
+  ]
+}
+
+config("preferred_language_config") {
+  include_dirs = [ "//base/global/i18n/interfaces/native/inner_apis/preferred_language/include" ]
+}
+ohos_shared_library("preferred_language") {
+  public_configs = [ ":preferred_language_config" ]
+  include_dirs = [ "include" ]
+  sources = [ "src/preferred_language.cpp" ]
+  cflags_cc = [
+    "-Wall",
+    "-fPIC",
+  ]
+  deps = [ "//base/global/i18n/frameworks/intl:intl_util" ]
+  external_deps = [
+    "hiviewdfx_hilog_native:libhilog",
+    "startup_l2:syspara",
+  ]
+  subsystem_name = "global"
+  part_name = "i18n"
+}
+
+config("intl_util_config") {
+  include_dirs = [
+    "//third_party/icu/icu4c/source",
+    "//third_party/icu/icu4c/source/common",
+    "//third_party/icu/icu4c/source/i18n",
+    "//third_party/icu/icu4c/source/common/unicode",
+    "//base/global/i18n/frameworks/intl/include",
+    "//base/global/i18n/interfaces/native/inner_apis/i18n/include",
+  ]
+}
+ohos_shared_library("intl_util") {
+  public_configs = [ ":intl_util_config" ]
+  include_dirs = [
+    "//utils/native/base/include",
+    "//third_party/libxml2/include",
+    "//third_party/libphonenumber/cpp/src",
+    "//third_party/libphonenumber",
+    "//third_party/protobuf/src",
+  ]
+  sources = [
+    "src/character.cpp",
+    "src/collator.cpp",
+    "src/date_time_format.cpp",
+    "src/i18n_break_iterator.cpp",
+    "src/i18n_calendar.cpp",
+    "src/i18n_timezone.cpp",
+    "src/index_util.cpp",
+    "src/locale_config.cpp",
+    "src/locale_info.cpp",
+    "src/measure_data.cpp",
+    "src/number_format.cpp",
+    "src/phone_number_format.cpp",
+    "src/plural_rules.cpp",
+    "src/relative_time_format.cpp",
+    "src/str_util.cpp",
+  ]
+  cflags_cc = [
+    "-Wall",
+    "-fPIC",
+  ]
+  deps = [
+    ":config_locales_xml",
+    ":config_regions_xml",
+    ":forbidden_languages_xml",
+    ":forbidden_regions_xml",
+    ":language_config.para",
+    ":white_languages_xml",
+    "//third_party/icu/icu4c:ohos_icudat",
+    "//third_party/icu/icu4c:shared_icui18n",
+    "//third_party/icu/icu4c:shared_icuuc",
+    "//third_party/libphonenumber/cpp:phonenumber_standard",
+    "//third_party/libxml2:xml2",
+  ]
+  external_deps = [
+    "access_token:libaccesstoken_sdk",
+    "hiviewdfx_hilog_native:libhilog",
+    "ipc:ipc_core",
+    "startup_l2:syspara",
+    "utils_base:utils",
+  ]
+  if (defined(global_parts_info) &&
+      defined(global_parts_info.telephony_core_service)) {
+    external_deps += [ "core_service:tel_core_service_api" ]
+    cflags_cc += [ "-DTEL_CORE_SERVICE_EXISTS" ]
+  }
+  subsystem_name = "global"
+  part_name = "i18n"
+}
+
+ohos_prebuilt_etc("language_config.para") {
+  source = "//base/global/i18n/frameworks/intl/etc/language_config.para"
+  part_name = "i18n"
+  module_install_dir = "etc/param"
+}
+
+ohos_prebuilt_etc("config_locales_xml") {
+  source = "//base/global/i18n/frameworks/intl/etc/supported_locales.xml"
+  module_install_dir = "usr/ohos_locale_config/"
+  part_name = "i18n"
+  subsystem_name = "global"
+}
+
+ohos_prebuilt_etc("config_regions_xml") {
+  source = "//base/global/i18n/frameworks/intl/etc/supported_regions.xml"
+  module_install_dir = "usr/ohos_locale_config/"
+  part_name = "i18n"
+  subsystem_name = "global"
+}
+
+ohos_prebuilt_etc("white_languages_xml") {
+  source = "//base/global/i18n/frameworks/intl/etc/white_languages.xml"
+  module_install_dir = "usr/ohos_locale_config/"
+  part_name = "i18n"
+  subsystem_name = "global"
+}
+
+ohos_prebuilt_etc("forbidden_languages_xml") {
+  source = "//base/global/i18n/frameworks/intl/etc/forbidden_languages.xml"
+  module_install_dir = "usr/ohos_locale_config/"
+  part_name = "i18n"
+  subsystem_name = "global"
+}
+
+ohos_prebuilt_etc("forbidden_regions_xml") {
+  source = "//base/global/i18n/frameworks/intl/etc/forbidden_regions.xml"
+  module_install_dir = "usr/ohos_locale_config/"
+  part_name = "i18n"
+  subsystem_name = "global"
+}

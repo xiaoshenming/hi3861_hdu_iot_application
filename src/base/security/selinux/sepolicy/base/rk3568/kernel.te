@@ -1,0 +1,32 @@
+# Copyright (c) 2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+allow kernel data_file:dir { search };
+allow kernel data_log:dir { add_name create search setattr write };
+allow kernel data_log:file { append create read write open setattr };
+allow kernel dev_file:chr_file { open write };
+allow kernel dev_file:dir { search };
+allow kernel device:chr_file { create getattr setattr unlink };
+allow kernel device:dir { add_name remove_name rmdir search write };
+allow kernel init:process { dyntransition };
+allow kernel kernel:capability { chown dac_override dac_read_search mknod };
+allow kernel kernel:dir { search };
+allow kernel kernel:file { open read write };
+allow kernel kernel:process { fork setcurrent };
+allow kernel proc_file:dir { search };
+allow kernel proc_file:lnk_file { read };
+allow kernel rootfs:dir { search };
+allow kernel sys_file:dir { open read search };
+allow kernel tmpfs:chr_file { write };
+allow kernel unlabeled:dir { open read remove_name search write };
+allow kernel unlabeled:file { open read unlink };

@@ -1,0 +1,42 @@
+# Copyright (c) 2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+allow hilogd cgroup:dir { search };
+allow hilogd data_file:dir { search };
+allow hilogd data_init_agent:dir { add_name search write };
+allow hilogd data_init_agent:file { create ioctl open read append };
+allow hilogd data_log:dir { getattr open read search };
+allow hilogd dev_file:dir { search };
+allow hilogd dev_kmsg_file:chr_file { read };
+allow hilogd dev_null_file:chr_file { ioctl read write };
+allow hilogd dev_parameters_file:dir { search };
+allow hilogd dev_parameters_file:file { map open read };
+allow hilogd dev_unix_file:dir { search };
+allow hilogd dev_unix_socket_file:dir { search };
+allow hilogd dev_unix_socket_file:sock_file { setattr };
+allow hilogd etc_file:lnk_file { read };
+allow hilogd hilogd_exec:file { entrypoint execute map read };
+allow hilogd hilogd:process { fork };
+allow hilogd init:fd { use };
+allow hilogd init:netlink_kobject_uevent_socket { read write };
+allow hilogd init:unix_dgram_socket { getattr getopt read write };
+allow hilogd init:unix_stream_socket { getattr getopt listen read write };
+allow hilogd kernel:fd { use };
+allow hilogd rootfs:dir { search };
+allow hilogd system_etc_file:dir { search };
+allow hilogd system_etc_file:file { open read };
+allow hilogd system_file:dir { search };
+allow hilogd system_lib_file:dir { search };
+allow hilogd system_lib_file:file { execute getattr map open read };
+allowxperm hilogd data_init_agent:file ioctl { 0x5413 };
+allowxperm hilogd dev_null_file:chr_file ioctl { 0x5413 };

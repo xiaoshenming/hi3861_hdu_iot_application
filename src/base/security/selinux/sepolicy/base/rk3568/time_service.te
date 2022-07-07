@@ -1,0 +1,61 @@
+# Copyright (c) 2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+allow time_service data_file:dir { search };
+allow time_service data_misc:dir { getattr search };
+allow time_service data_misc:file { open read };
+allow time_service debugfs:dir { search };
+allow time_service dev_at_file:chr_file { ioctl open read write };
+allow time_service dev_binder_file:chr_file { ioctl map open read write };
+allow time_service dev_file:dir { search };
+allow time_service dev_null_file:chr_file { read write };
+allow time_service dev_parameters_file:dir { search };
+allow time_service dev_parameters_file:file { map open read };
+allow time_service dev_random_file:chr_file { open read };
+allow time_service dev_unix_file:dir { search };
+allow time_service dev_unix_socket_file:dir { search };
+allow time_service dev_unix_socket_file:sock_file { write };
+allow time_service etc_file:lnk_file { read };
+allow time_service foundation:binder { call transfer };
+allow time_service init:fd { use };
+allow time_service init:netlink_kobject_uevent_socket { read write };
+allow time_service init:unix_dgram_socket { sendto };
+allow time_service init:unix_stream_socket { read write };
+allow time_service kernel:fd { use };
+allow time_service proc_file:dir { search };
+allow time_service proc_file:lnk_file { read };
+allow time_service rootfs:dir { search };
+allow time_service samain_exec:file { entrypoint execute map read };
+allow time_service samgr:binder { call transfer };
+allow time_service sys_file:dir { open read search };
+allow time_service sys_file:file { open read };
+allow time_service sys_file:lnk_file { read };
+allow time_service system_etc_file:dir { getattr open read search };
+allow time_service system_etc_file:file { open read };
+allow time_service system_file:dir { search };
+allow time_service system_lib_file:dir { search };
+allow time_service system_lib_file:file { execute getattr map open read };
+allow time_service system_profile_file:dir { search };
+allow time_service system_profile_file:file { getattr open read };
+allow time_service system_usr_file:dir { search };
+allow time_service system_usr_file:file { getattr map open read };
+allow time_service time_service:capability2 { wake_alarm };
+allow time_service time_service:dir { search };
+allow time_service time_service:lnk_file { read };
+allow time_service time_service:process { fork getsched };
+allow time_service time_service:unix_dgram_socket { connect create write };
+allow time_service vendor_file:dir { search };
+allow time_service vendor_file:file { execute getattr map open read };
+allow time_service vendor_file:lnk_file { read };
+allowxperm time_service dev_at_file:chr_file ioctl { 0x4101 };
+allowxperm time_service dev_binder_file:chr_file ioctl { 0x6201 0x6205 0x6208 0x6209 0x621e 0x621f };

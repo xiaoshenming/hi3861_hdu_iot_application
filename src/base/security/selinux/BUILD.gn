@@ -1,0 +1,433 @@
+# Copyright (c) 2021-2022 北京万里红科技有限公司
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+
+SELINUX_ROOT_DIR = "//base/security/selinux"
+THIRD_PARTY_SELINUX_DIR = "//third_party/selinux"
+LIBSELINUX_ROOT_DIR = "$THIRD_PARTY_SELINUX_DIR/libselinux"
+
+config("selinux_core_config") {
+  include_dirs = [
+    "$SELINUX_ROOT_DIR/interfaces/policycoreutils/include",
+    "$LIBSELINUX_ROOT_DIR/include",
+  ]
+}
+
+ohos_shared_library("libload_policy") {
+  output_name = "libload_policy"
+  sources = [ "$SELINUX_ROOT_DIR/interfaces/policycoreutils/src/load_policy.c" ]
+  include_dirs = [
+    "$LIBSELINUX_ROOT_DIR/include",
+    "$SELINUX_ROOT_DIR/interfaces/policycoreutils/include",
+  ]
+  deps = [ "$THIRD_PARTY_SELINUX_DIR:libselinux" ]
+  cflags = [
+    "-D_GNU_SOURCE",
+    "-Wall",
+    "-Werror",
+  ]
+  install_enable = true
+  install_images = [
+    "system",
+    "ramdisk",
+    "updater",
+  ]
+  license_file = "$SELINUX_ROOT_DIR/LICENSE"
+  part_name = "selinux"
+  subsystem_name = "security"
+}
+
+ohos_shared_library("librestorecon") {
+  output_name = "librestorecon"
+  sources = [ "$SELINUX_ROOT_DIR/interfaces/policycoreutils/src/restorecon.c" ]
+  include_dirs = [
+    "$LIBSELINUX_ROOT_DIR/include",
+    "$SELINUX_ROOT_DIR/interfaces/policycoreutils/include",
+  ]
+  public_configs = [ ":selinux_core_config" ]
+  deps = [ "$THIRD_PARTY_SELINUX_DIR:libselinux" ]
+  cflags = [
+    "-D_GNU_SOURCE",
+    "-Wall",
+    "-Werror",
+  ]
+  install_enable = true
+  install_images = [
+    "system",
+    "ramdisk",
+    "updater",
+  ]
+  license_file = "$SELINUX_ROOT_DIR/LICENSE"
+  part_name = "selinux"
+  subsystem_name = "security"
+}
+
+ohos_shared_library("libhap_restorecon") {
+  output_name = "libhap_restorecon"
+  sources =
+      [ "$SELINUX_ROOT_DIR/interfaces/policycoreutils/src/hap_restorecon.cpp" ]
+  include_dirs = [
+    "$SELINUX_ROOT_DIR/interfaces/policycoreutils/include",
+    "$LIBSELINUX_ROOT_DIR/include",
+    "$LIBSELINUX_ROOT_DIR/src",
+    "//third_party/FreeBSD",
+    "//utils/native/base/include",
+  ]
+  public_configs = [ ":selinux_core_config" ]
+  deps = [
+    ":libselinux_error_static",
+    "$THIRD_PARTY_SELINUX_DIR:libselinux",
+    "//utils/native/base:utils",
+  ]
+  external_deps = [ "hiviewdfx_hilog_native:libhilog" ]
+  cflags_cc = [ "-DHILOG_ENABLE" ]
+  cflags = [
+    "-D_GNU_SOURCE",
+    "-Wall",
+    "-Werror",
+  ]
+  install_enable = true
+  license_file = "$SELINUX_ROOT_DIR/LICENSE"
+  part_name = "selinux"
+  subsystem_name = "security"
+}
+
+ohos_static_library("libselinux_error_static") {
+  output_name = "libselinux_error_static"
+  sources =
+      [ "$SELINUX_ROOT_DIR/interfaces/policycoreutils/src/selinux_error.cpp" ]
+  include_dirs = [ "$SELINUX_ROOT_DIR/interfaces/policycoreutils/include" ]
+  cflags = [
+    "-D_GNU_SOURCE",
+    "-w",
+  ]
+  part_name = "selinux"
+  subsystem_name = "security"
+}
+
+ohos_static_library("libselinux_klog_static") {
+  output_name = "libselinux_klog_static"
+  sources =
+      [ "$SELINUX_ROOT_DIR/interfaces/policycoreutils/src/selinux_klog.c" ]
+  include_dirs = [ "$SELINUX_ROOT_DIR/interfaces/policycoreutils/include" ]
+  deps = [ "//third_party/bounds_checking_function:libsec_static" ]
+  cflags = [
+    "-D_GNU_SOURCE",
+    "-Wall",
+    "-Werror",
+  ]
+  part_name = "selinux"
+  subsystem_name = "security"
+}
+
+ohos_shared_library("libparaperm_checker") {
+  output_name = "libparaperm_checker"
+  sources = [
+    "$SELINUX_ROOT_DIR/interfaces/policycoreutils/src/contexts_trie.cpp",
+    "$SELINUX_ROOT_DIR/interfaces/policycoreutils/src/paraperm_checker.cpp",
+  ]
+  include_dirs = [
+    "$SELINUX_ROOT_DIR/interfaces/policycoreutils/include",
+    "$LIBSELINUX_ROOT_DIR/src",
+    "//third_party/bounds_checking_function/include",
+  ]
+  public_configs = [ ":selinux_core_config" ]
+  deps = [
+    ":libselinux_klog_static",
+    "$THIRD_PARTY_SELINUX_DIR:libselinux",
+    "//third_party/bounds_checking_function:libsec_static",
+  ]
+  cflags = [
+    "-D_GNU_SOURCE",
+    "-Wall",
+    "-Werror",
+  ]
+  install_images = [
+    "system",
+    "updater",
+  ]
+  part_name = "selinux"
+  subsystem_name = "security"
+}
+
+ohos_shared_library("libservice_checker") {
+  output_name = "libservice_checker"
+  sources =
+      [ "$SELINUX_ROOT_DIR/interfaces/policycoreutils/src/service_checker.cpp" ]
+  include_dirs = [
+    "$SELINUX_ROOT_DIR/interfaces/policycoreutils/include",
+    "$LIBSELINUX_ROOT_DIR/include",
+    "$LIBSELINUX_ROOT_DIR/src",
+    "//third_party/bounds_checking_function/include",
+  ]
+  public_configs = [ ":selinux_core_config" ]
+  deps = [
+    ":libselinux_error_static",
+    ":libselinux_klog_static",
+    "$THIRD_PARTY_SELINUX_DIR:libselinux",
+    "//third_party/bounds_checking_function:libsec_static",
+  ]
+  cflags = [
+    "-D_GNU_SOURCE",
+    "-Wall",
+    "-Werror",
+  ]
+  part_name = "selinux"
+  subsystem_name = "security"
+}
+
+ohos_executable("load_policy") {
+  install_enable = true
+  sources = [ "$SELINUX_ROOT_DIR/interfaces/tools/load_policy/load_policy.c" ]
+  include_dirs = [ "$SELINUX_ROOT_DIR/interfaces/policycoreutils/include" ]
+  deps = [
+    ":libload_policy",
+    "$THIRD_PARTY_SELINUX_DIR:libselinux",
+  ]
+  cflags = [
+    "-D_GNU_SOURCE",
+    "-Wall",
+    "-Werror",
+  ]
+  license_file = "$SELINUX_ROOT_DIR/LICENSE"
+  part_name = "selinux"
+  subsystem_name = "security"
+}
+
+ohos_executable("restorecon") {
+  install_enable = true
+  sources = [ "$SELINUX_ROOT_DIR/interfaces/tools/restorecon/restorecon.c" ]
+  include_dirs = [
+    "$SELINUX_ROOT_DIR/interfaces/policycoreutils/include",
+    "//third_party/bounds_checking_function/include",
+  ]
+  deps = [
+    ":librestorecon",
+    "//third_party/bounds_checking_function:libsec_static",
+  ]
+  cflags = [
+    "-D_GNU_SOURCE",
+    "-Wall",
+    "-Werror",
+  ]
+  license_file = "$SELINUX_ROOT_DIR/LICENSE"
+  part_name = "selinux"
+  subsystem_name = "security"
+}
+
+ohos_executable("hap_restorecon") {
+  install_enable = true
+  sources = [ "$SELINUX_ROOT_DIR/interfaces/tools/hap_restorecon/test.cpp" ]
+  include_dirs = [ "$SELINUX_ROOT_DIR/interfaces/policycoreutils/include" ]
+  deps = [
+    ":libhap_restorecon",
+    ":libselinux_error_static",
+  ]
+  cflags = [
+    "-D_GNU_SOURCE",
+    "-Wall",
+    "-Werror",
+  ]
+  license_file = "$SELINUX_ROOT_DIR/LICENSE"
+  part_name = "selinux"
+  subsystem_name = "security"
+}
+
+ohos_executable("param_check") {
+  install_enable = true
+  sources = [ "$SELINUX_ROOT_DIR/interfaces/tools/param_check/test.cpp" ]
+  include_dirs = [
+    "$SELINUX_ROOT_DIR/interfaces/policycoreutils/include",
+    "$LIBSELINUX_ROOT_DIR/include",
+  ]
+  deps = [
+    ":libparaperm_checker",
+    ":libselinux_error_static",
+    "$THIRD_PARTY_SELINUX_DIR:libselinux",
+  ]
+  cflags = [
+    "-D_GNU_SOURCE",
+    "-DTIME_DISPLAY",
+    "-Wall",
+    "-Werror",
+  ]
+  license_file = "$SELINUX_ROOT_DIR/LICENSE"
+  part_name = "selinux"
+  subsystem_name = "security"
+}
+
+ohos_executable("service_check") {
+  install_enable = true
+  sources = [ "$SELINUX_ROOT_DIR/interfaces/tools/service_check/test.cpp" ]
+  include_dirs = [ "$SELINUX_ROOT_DIR/interfaces/policycoreutils/include" ]
+  deps = [
+    ":libselinux_error_static",
+    ":libservice_checker",
+  ]
+  cflags = [
+    "-D_GNU_SOURCE",
+    "-Wall",
+    "-Werror",
+  ]
+  license_file = "$SELINUX_ROOT_DIR/LICENSE"
+  part_name = "selinux"
+  subsystem_name = "security"
+}
+
+action("build_policy") {
+  script = "$SELINUX_ROOT_DIR/scripts/build_policy.py"
+  args = [
+    "--dst-file",
+    rebase_path(target_out_dir + "/policy.31"),
+    "--tool-path",
+    rebase_path(root_build_dir + "/clang_x64/security/selinux/"),
+  ]
+  deps = [
+    "$THIRD_PARTY_SELINUX_DIR:checkpolicy($host_toolchain)",
+    "$THIRD_PARTY_SELINUX_DIR:secilc($host_toolchain)",
+  ]
+  outputs = [ target_out_dir + "/policy.31" ]
+}
+
+action("build_contexts") {
+  script = "$SELINUX_ROOT_DIR/scripts/build_contexts.py"
+  args = [
+    "--dst-file",
+    rebase_path(target_out_dir + "/file_contexts.bin"),
+    "--tool-path",
+    rebase_path(root_build_dir + "/clang_x64/security/selinux/"),
+    "--policy-file",
+    rebase_path(target_out_dir + "/policy.31"),
+  ]
+  deps = [
+    ":build_policy",
+    "$THIRD_PARTY_SELINUX_DIR:sefcontext_compile($host_toolchain)",
+  ]
+  outputs = [ target_out_dir + "/file_contexts.bin" ]
+  outputs += [
+    target_out_dir + "/file_contexts",
+    target_out_dir + "/sehap_contexts",
+    target_out_dir + "/service_contexts",
+    target_out_dir + "/hdf_service_contexts",
+    target_out_dir + "/parameter_contexts",
+  ]
+}
+
+action("enforce_selinux") {
+  script = "scripts/enforce_selinux.sh"
+  outputs = [ "$target_out_dir/" ]
+}
+
+ohos_prebuilt_etc("build_sepolicy") {
+  deps = [ ":build_policy" ]
+  source = target_out_dir + "/policy.31"
+  license_file = "$SELINUX_ROOT_DIR/LICENSE"
+  part_name = "selinux"
+  relative_install_dir = "selinux/targeted/policy/"
+}
+
+ohos_prebuilt_etc("file_contexts_bin") {
+  deps = [ ":build_contexts" ]
+  source = target_out_dir + "/file_contexts.bin"
+  license_file = "$SELINUX_ROOT_DIR/LICENSE"
+  part_name = "selinux"
+  relative_install_dir = "selinux/targeted/contexts/"
+}
+
+ohos_prebuilt_etc("config") {
+  source = "$SELINUX_ROOT_DIR/config/config"
+  license_file = "$SELINUX_ROOT_DIR/LICENSE"
+  part_name = "selinux"
+  if (enforce_selinux) {
+    deps = [ ":enforce_selinux" ]
+  }
+  relative_install_dir = "selinux/"
+}
+
+ohos_prebuilt_etc("sehap_contexts") {
+  deps = [ ":build_contexts" ]
+  source = target_out_dir + "/sehap_contexts"
+  license_file = "$SELINUX_ROOT_DIR/LICENSE"
+  part_name = "selinux"
+  relative_install_dir = "selinux/targeted/contexts/"
+}
+
+ohos_prebuilt_etc("parameter_contexts") {
+  deps = [ ":build_contexts" ]
+  source = target_out_dir + "/parameter_contexts"
+  license_file = "$SELINUX_ROOT_DIR/LICENSE"
+  part_name = "selinux"
+  relative_install_dir = "selinux/targeted/contexts/"
+}
+
+ohos_prebuilt_etc("service_contexts") {
+  deps = [ ":build_contexts" ]
+  source = target_out_dir + "/service_contexts"
+  license_file = "$SELINUX_ROOT_DIR/LICENSE"
+  part_name = "selinux"
+  relative_install_dir = "selinux/targeted/contexts/"
+}
+
+ohos_prebuilt_etc("hdf_service_contexts") {
+  deps = [ ":build_contexts" ]
+  source = target_out_dir + "/hdf_service_contexts"
+  license_file = "$SELINUX_ROOT_DIR/LICENSE"
+  part_name = "selinux"
+  relative_install_dir = "selinux/targeted/contexts/"
+}
+
+ohos_prebuilt_etc("file_contexts") {
+  deps = [ ":build_contexts" ]
+  source = target_out_dir + "/file_contexts"
+  license_file = "$SELINUX_ROOT_DIR/LICENSE"
+  part_name = "selinux"
+
+  # 此处不应该改变 file_contexts 的约定路径！
+  # 因为 OpenHarmony 的 e2fsdroid 无法支持五级系统目录，所以在此作出规避，
+  # 但是很显然这是不应当的。
+  #relative_install_dir = "selinux/targeted/contexts/files/"
+  relative_install_dir = "selinux/targeted/contexts/"
+}
+
+group("selinux_group") {
+  if (build_selinux) {
+    deps = [
+      "//base/security/selinux:build_sepolicy",
+      "//base/security/selinux:config",
+      "//base/security/selinux:file_contexts",
+      "//base/security/selinux:file_contexts_bin",
+      "//base/security/selinux:hap_restorecon",
+      "//base/security/selinux:hdf_service_contexts",
+      "//base/security/selinux:load_policy",
+      "//base/security/selinux:param_check",
+      "//base/security/selinux:parameter_contexts",
+      "//base/security/selinux:restorecon",
+      "//base/security/selinux:sehap_contexts",
+      "//base/security/selinux:service_check",
+      "//base/security/selinux:service_contexts",
+      "//third_party/selinux:checkpolicy($host_toolchain)",
+      "//third_party/selinux:chkcon",
+      "//third_party/selinux:getenforce",
+      "//third_party/selinux:getfilecon",
+      "//third_party/selinux:getpidcon",
+      "//third_party/selinux:secilc($host_toolchain)",
+      "//third_party/selinux:sefcontext_compile($host_toolchain)",
+      "//third_party/selinux:selinux_check_access",
+      "//third_party/selinux:selinuxexeccon",
+      "//third_party/selinux:setenforce",
+      "//third_party/selinux:setfilecon",
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+# Copyright (c) 2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+allow netmanager data_data_file:dir { add_name search write };
+allow netmanager data_data_file:file { append create ioctl open read write };
+allow netmanager data_file:dir { open read search };
+allow netmanager data_system:dir { search };
+allow netmanager data_system:file { getattr open read };
+allow netmanager debugfs:dir { search };
+allow netmanager dev_at_file:chr_file { ioctl open read write };
+allow netmanager dev_binder_file:chr_file { ioctl map open read write };
+allow netmanager dev_file:dir { search };
+allow netmanager dev_null_file:chr_file { read write };
+allow netmanager dev_parameters_file:dir { search };
+allow netmanager dev_parameters_file:file { map open read };
+allow netmanager dev_random_file:chr_file { open read };
+allow netmanager dev_unix_file:dir { search };
+allow netmanager dev_unix_socket_file:dir { search };
+allow netmanager dev_unix_socket_file:sock_file { write };
+allow netmanager etc_file:lnk_file { read };
+allow netmanager foundation:binder { call };
+allow netmanager init:fd { use };
+allow netmanager init:netlink_kobject_uevent_socket { read write };
+allow netmanager init:unix_dgram_socket { sendto };
+allow netmanager init:unix_stream_socket { read write };
+allow netmanager kernel:fd { use };
+allow netmanager lib_file:lnk_file { read };
+allow netmanager netmanager:dir { search };
+allow netmanager netmanager:lnk_file { read };
+allow netmanager netmanager:netlink_route_socket { bind create getattr nlmsg_read read setopt write };
+allow netmanager netmanager:process { fork getsched };
+allow netmanager netmanager:udp_socket { create ioctl };
+allow netmanager netmanager:unix_dgram_socket { connect create write };
+allow netmanager proc_file:dir { search };
+allow netmanager proc_file:lnk_file { read };
+allow netmanager rootfs:dir { search };
+allow netmanager samain_exec:file { entrypoint execute map read };
+allow netmanager samgr:binder { call transfer };
+allow netmanager sys_file:dir { open read search };
+allow netmanager sys_file:file { open read };
+allow netmanager sys_file:lnk_file { read };
+allow netmanager system_etc_file:dir { search };
+allow netmanager system_etc_file:file { open read };
+allow netmanager system_file:dir { search };
+allow netmanager system_lib_file:dir { search };
+allow netmanager system_lib_file:file { execute getattr map open read };
+allow netmanager system_profile_file:dir { search };
+allow netmanager system_profile_file:file { getattr open read };
+allow netmanager vendor_file:dir { search };
+allow netmanager wifi_manager_service:binder { call };
+allowxperm netmanager data_data_file:file ioctl { 0x5413 };
+allowxperm netmanager dev_at_file:chr_file ioctl { 0x4101 };
+allowxperm netmanager dev_binder_file:chr_file ioctl { 0x6201 0x6205 0x6208 0x6209 0x621e 0x621f };
+allowxperm netmanager netmanager:udp_socket ioctl { 0x8927 };

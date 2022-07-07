@@ -1,0 +1,41 @@
+# Copyright (c) 2021-2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+sid kernel
+sid security
+sid unlabeled
+sid fs
+sid file
+sid file_labels
+sid init
+sid any_socket
+sid port
+sid netif
+sid netmsg
+sid node
+sid igmp_packet
+sid icmp_socket
+sid tcp_socket
+sid sysctl_modprobe
+sid sysctl
+sid sysctl_fs
+sid sysctl_kernel
+sid sysctl_net
+sid sysctl_net_unix
+sid sysctl_vm
+sid sysctl_dev
+sid kmod
+sid policy
+sid scmp_packet
+sid devnull
+

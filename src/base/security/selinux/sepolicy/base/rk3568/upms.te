@@ -1,0 +1,48 @@
+# Copyright (c) 2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+allow upms debugfs:dir { search };
+allow upms dev_at_file:chr_file { ioctl open read write };
+allow upms dev_binder_file:chr_file { ioctl map open read write };
+allow upms dev_file:dir { search };
+allow upms dev_null_file:chr_file { read write };
+allow upms dev_parameters_file:dir { search };
+allow upms dev_parameters_file:file { map open read };
+allow upms dev_random_file:chr_file { open read };
+allow upms dev_unix_file:dir { search };
+allow upms dev_unix_socket_file:dir { search };
+allow upms dev_unix_socket_file:sock_file { write };
+allow upms etc_file:lnk_file { read };
+allow upms init:fd { use };
+allow upms init:netlink_kobject_uevent_socket { read write };
+allow upms init:unix_dgram_socket { sendto };
+allow upms init:unix_stream_socket { read write };
+allow upms kernel:fd { use };
+allow upms proc_file:dir { search };
+allow upms proc_file:lnk_file { read };
+allow upms rootfs:dir { search };
+allow upms samain_exec:file { entrypoint execute map read };
+allow upms samgr:binder { call transfer };
+allow upms system_etc_file:dir { search };
+allow upms system_etc_file:file { open read };
+allow upms system_file:dir { search };
+allow upms system_lib_file:dir { search };
+allow upms system_lib_file:file { execute getattr map open read };
+allow upms system_profile_file:dir { search };
+allow upms system_profile_file:file { getattr open read };
+allow upms upms:dir { search };
+allow upms upms:lnk_file { read };
+allow upms upms:process { fork getsched };
+allow upms upms:unix_dgram_socket { connect create write };
+allowxperm upms dev_at_file:chr_file ioctl { 0x4101 };
+allowxperm upms dev_binder_file:chr_file ioctl { 0x6201 0x6205 0x6208 0x6209 0x621e 0x621f };

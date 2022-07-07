@@ -1,0 +1,32 @@
+# Copyright (c) 2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+allow watchdog_service dev_file:dir { search };
+allow watchdog_service dev_kmsg_file:chr_file { open write };
+allow watchdog_service dev_null_file:chr_file { read write };
+allow watchdog_service dev_parameters_file:dir { search };
+allow watchdog_service dev_parameters_file:file { map open read };
+allow watchdog_service dev_watchdog_file:chr_file { getattr ioctl open read write };
+allow watchdog_service etc_file:lnk_file { read };
+allow watchdog_service init:fd { use };
+allow watchdog_service init:netlink_kobject_uevent_socket { read write };
+allow watchdog_service init:unix_stream_socket { read write };
+allow watchdog_service kernel:fd { use };
+allow watchdog_service rootfs:dir { search };
+allow watchdog_service system_etc_file:dir { search };
+allow watchdog_service system_etc_file:file { open read };
+allow watchdog_service system_file:dir { search };
+allow watchdog_service system_lib_file:dir { search };
+allow watchdog_service system_lib_file:file { execute getattr map open read };
+allow watchdog_service watchdog_service_exec:file { entrypoint execute map read };
+allowxperm watchdog_service dev_watchdog_file:chr_file ioctl { 0x5705 0x5706 0x5707 };

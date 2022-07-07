@@ -1,0 +1,41 @@
+{
+  "name": "@ohos/hiappevent_js",
+  "description": "Event logging provided for js application",
+  "version": "3.1",
+  "license": "Apache License 2.0",
+  "publishAs": "code-segment",
+  "segment": {
+    "destPath": "base/hiviewdfx/hiappevent"
+  },
+  "dirs": {},
+  "scripts": {},
+  "component": {
+    "name": "hiappevent_js",
+    "subsystem": "hiviewdfx",
+    "syscap": [
+      "SystemCapability.HiviewDFX.HiAppEvent"
+    ],
+    "adapted_system_type": [
+      "standard"
+    ],
+    "rom": "",
+    "ram": "",
+    "deps": {
+      "components": [
+        "hiappevent_native",
+        "hiviewdfx_hilog_native",
+        "napi"
+      ],
+      "third_party": [
+        "node"
+      ]
+    },
+    "build": {
+      "sub_component": [
+        "//base/hiviewdfx/hiappevent/interfaces/js/innerkits/napi:hiappevent"
+      ],
+      "inner_kits": [],
+      "test": []
+    }
+  }
+}

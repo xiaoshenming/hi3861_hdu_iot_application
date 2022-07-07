@@ -1,0 +1,87 @@
+# Copyright (c) 2021-2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+# Type of all devices.
+# i.e. /dev/camera_dev
+attribute dev_type;
+
+# Type of all processes, including the hap process and native process.
+# i.e. hdbd, media
+attribute domain;
+
+# Type of all virtual file system files.
+# i.e. /sys/block,
+#      /sys/bus,
+#      /proc/mtd,
+#      /dev/camera_dev
+attribute fs_type;
+
+# Type of all proc files.
+# i.e. /proc/mtd
+attribute proc_type;
+
+# Type of all common files.
+# i.e. /data/user,
+#      /system/bin
+attribute file_type;
+
+# Type of all system files.
+# i.e. /system/*
+attribute system_file_type;
+
+# Type of all vendor files.
+# i.e. /vendor/*
+attribute vendor_file_type;
+
+# Type of all domain access points, which is used in domain trasition.
+# i.e. vold_exec,
+#      appspawn_exec
+attribute exec_type;
+
+# Types of all files in the /data directory.
+# i.e. /data/user
+attribute data_file_type;
+
+# All types in the sysfs file system.
+# i.e. /sys/firmware
+attribute sysfs_type;
+
+# All types of parameters.
+# i.e. ohos_param
+attribute parameter_type;
+
+# All types of services.
+# i.e. bms_service
+attribute samgr_type;
+
+# All types of hdf_services.
+# i.e. camera_service
+attribute hdf_devmgr_type;
+
+# Type of all processes in the hap format.
+# i.e. com.ohos.setting
+attribute hapdomain;
+
+# Type of all native processes.
+# i.e. appspawn,
+#      media
+attribute nativedomain;
+
+# Type of hdf processes.
+# i.e. hdv_devmgr,
+attribute hdfdomain;
+
+# Type of all native processes.
+# i.e. at,
+attribute sadomain;

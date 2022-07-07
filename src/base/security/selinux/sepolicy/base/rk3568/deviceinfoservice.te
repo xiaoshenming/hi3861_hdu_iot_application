@@ -1,0 +1,52 @@
+# Copyright (c) 2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+allow deviceinfoservice data_file:dir { search };
+allow deviceinfoservice data_init_agent:dir { search };
+allow deviceinfoservice data_init_agent:file { ioctl open read append };
+allow deviceinfoservice debugfs:dir { search };
+allow deviceinfoservice dev_at_file:chr_file { ioctl open read write };
+allow deviceinfoservice dev_binder_file:chr_file { ioctl map open read write };
+allow deviceinfoservice dev_file:dir { search };
+allow deviceinfoservice deviceinfoservice:dir { search };
+allow deviceinfoservice deviceinfoservice:lnk_file { read };
+allow deviceinfoservice deviceinfoservice:process { fork getsched };
+allow deviceinfoservice deviceinfoservice:unix_dgram_socket { connect create write };
+allow deviceinfoservice dev_null_file:chr_file { read write };
+allow deviceinfoservice dev_parameters_file:dir { search };
+allow deviceinfoservice dev_parameters_file:file { map open read };
+allow deviceinfoservice dev_random_file:chr_file { open read };
+allow deviceinfoservice dev_unix_file:dir { search };
+allow deviceinfoservice dev_unix_socket_file:dir { search };
+allow deviceinfoservice dev_unix_socket_file:sock_file { write };
+allow deviceinfoservice etc_file:lnk_file { read };
+allow deviceinfoservice init:fd { use };
+allow deviceinfoservice init:netlink_kobject_uevent_socket { read write };
+allow deviceinfoservice init:unix_dgram_socket { sendto };
+allow deviceinfoservice init:unix_stream_socket { read write };
+allow deviceinfoservice kernel:fd { use };
+allow deviceinfoservice proc_file:dir { search };
+allow deviceinfoservice proc_file:lnk_file { read };
+allow deviceinfoservice rootfs:dir { search };
+allow deviceinfoservice samain_exec:file { entrypoint execute map read };
+allow deviceinfoservice samgr:binder { call transfer };
+allow deviceinfoservice system_etc_file:dir { search };
+allow deviceinfoservice system_etc_file:file { open read };
+allow deviceinfoservice system_file:dir { search };
+allow deviceinfoservice system_lib_file:dir { search };
+allow deviceinfoservice system_lib_file:file { execute getattr map open read };
+allow deviceinfoservice system_profile_file:dir { search };
+allow deviceinfoservice system_profile_file:file { getattr open read };
+allowxperm deviceinfoservice data_init_agent:file ioctl { 0x5413 };
+allowxperm deviceinfoservice dev_at_file:chr_file ioctl { 0x4101 };
+allowxperm deviceinfoservice dev_binder_file:chr_file ioctl { 0x6201 0x6205 0x6208 0x6209 0x621e 0x621f };

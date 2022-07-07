@@ -1,0 +1,73 @@
+# Copyright (c) 2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+allow multimodalinput data_file:dir { add_name search write };
+allow multimodalinput data_file:file { create ioctl open read write };
+allow multimodalinput data_init_agent:dir { search };
+allow multimodalinput data_init_agent:file { ioctl open read append };
+allow multimodalinput debugfs:dir { search };
+allow multimodalinput dev_at_file:chr_file { ioctl open read write };
+allow multimodalinput dev_binder_file:chr_file { ioctl map open read write };
+allow multimodalinput dev_file:dir { search };
+allow multimodalinput dev_input_file:chr_file { getattr ioctl open read write };
+allow multimodalinput dev_input_file:dir { search };
+allow multimodalinput dev_kmsg_file:chr_file { open write };
+allow multimodalinput dev_null_file:chr_file { ioctl read write write };
+allow multimodalinput dev_parameters_file:dir { search };
+allow multimodalinput dev_parameters_file:file { map open read };
+allow multimodalinput dev_random_file:chr_file { open read };
+allow multimodalinput dev_unix_file:dir { search };
+allow multimodalinput dev_unix_socket_file:dir { search };
+allow multimodalinput dev_unix_socket_file:sock_file { write };
+allow multimodalinput etc_file:lnk_file { read };
+allow multimodalinput init:fd { use };
+allow multimodalinput init:netlink_kobject_uevent_socket { read write };
+allow multimodalinput init:unix_dgram_socket { sendto };
+allow multimodalinput init:unix_stream_socket { read write };
+allow multimodalinput kernel:fd { use };
+allow multimodalinput multimodalinput:dir { search };
+allow multimodalinput multimodalinput:lnk_file { read };
+allow multimodalinput multimodalinput:lockdown { confidentiality };
+allow multimodalinput multimodalinput:netlink_kobject_uevent_socket { bind create getattr setopt };
+allow multimodalinput multimodalinput:process { fork getsched };
+allow multimodalinput multimodalinput:unix_dgram_socket { connect create write };
+allow multimodalinput multimodalinput:unix_stream_socket { create read setopt write };
+allow multimodalinput param_watcher:binder { call transfer };
+allow multimodalinput proc_file:dir { search };
+allow multimodalinput proc_file:lnk_file { read };
+allow multimodalinput rootfs:dir { search };
+allow multimodalinput samain_exec:file { entrypoint execute map read };
+allow multimodalinput samgr:binder { call transfer };
+allow multimodalinput sys_file:dir { open read search };
+allow multimodalinput sys_file:file { getattr open read };
+allow multimodalinput sys_file:lnk_file { read };
+allow multimodalinput system_etc_file:dir { getattr open read search };
+allow multimodalinput system_etc_file:file { open read };
+allow multimodalinput system_file:dir { search };
+allow multimodalinput system_lib_file:dir { search };
+allow multimodalinput system_lib_file:file { execute getattr map open read };
+allow multimodalinput system_profile_file:dir { search };
+allow multimodalinput system_profile_file:file { getattr open read };
+allow multimodalinput system_usr_file:dir { search };
+allow multimodalinput system_usr_file:file { getattr map open read };
+allow multimodalinput tracefs:dir { search };
+allow multimodalinput tracefs:file { open write };
+allow multimodalinput vendor_file:dir { search };
+allow multimodalinput vendor_file:file { execute getattr map open read };
+allow multimodalinput vendor_file:lnk_file { read };
+allowxperm multimodalinput data_file:file ioctl { 0x5413 };
+allowxperm multimodalinput data_init_agent:file ioctl { 0x5413 };
+allowxperm multimodalinput dev_at_file:chr_file ioctl { 0x4101 };
+allowxperm multimodalinput dev_binder_file:chr_file ioctl { 0x6201 0x6205 0x6208 0x6209 0x621e 0x621f };
+allowxperm multimodalinput dev_input_file:chr_file ioctl { 0x4501 0x4502 0x4506 0x4507 0x4508 0x4509 0x4518 0x4519 0x451b 0x4520 0x4521 0x4522 0x4523 0x4524 0x4525 0x4531 0x4532 0x4535 0x4540 0x4541 0x4558 0x4570 0x4571 0x4574 0x4575 0x4576 0x4578 0x4579 0x457a 0x45a0 };
+allowxperm multimodalinput dev_null_file:chr_file ioctl { 0x5413 };

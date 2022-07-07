@@ -1,0 +1,57 @@
+# Copyright (c) 2021-2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+type init_tmpfs, file_type;
+type trigger_device, dev_type;
+type trigger_trigger, dev_type;
+
+#allow init su:process transition;
+
+#allow init { proc_panic }:file getattr;
+
+#domain_auto_transition_pattern(init, shell_exec, shell);
+
+#allow init tmpfs:chr_file { create setattr unlink rw_file_perms };
+#allow init tmpfs:blk_file { create setattr unlink rw_file_perms };
+#allow init tmpfs:file { relabelfrom };
+
+#allow init device: { file lnk_file chr_file blk_file sock_file } relabelto;
+#allow init dev_type: { file lnk_file chr_file blk_file } relabelto;
+
+#allow init dev_type:dir relabelto;
+
+#allow init trigger_device:file rw_file_perms;
+#allow init trigger_trigger:file { relabelto rw_file_perms };
+#allow init param_device:file rw_file_perms;
+
+#allow init devpts:dir relabelfrom;
+#allow init devpts:chr_file { getattr relabelfrom };
+
+# Create sockets for the services.
+#allow init domain:unix_stream_socket { create bind setopt };
+#allow init domain:unix_dgram_socket { create bind setopt };
+
+#allow init tmpfs:sock_file { create setattr getattr relabelfrom };
+
+#allow init system_file:file execute_no_trans;
+
+#allow init device:sock_file { create setattr };
+
+#allow init sys_file:file setattr;
+
+#allow init shell_exec:file { execute_no_trans };
+#allow init logserver_exec:file { execute_no_trans };
+
+# avc: denied { read } for pid = 1 comm="init" path="pipe:[]"  dev="devpts" ino=12016 scontext=u:object_r:device:s0 tcontext=u:object_r:devpts:s0 tclass=filesystem permissive=1
+#allow init kernel:fifo_file { read write };
+

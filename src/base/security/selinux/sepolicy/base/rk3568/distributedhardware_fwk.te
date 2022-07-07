@@ -1,0 +1,49 @@
+# Copyright (c) 2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+allow distributedhardware_fwk debugfs:dir { search };
+allow distributedhardware_fwk dev_at_file:chr_file { ioctl open read write };
+allow distributedhardware_fwk dev_binder_file:chr_file { ioctl map open read write };
+allow distributedhardware_fwk dev_file:dir { search };
+allow distributedhardware_fwk dev_null_file:chr_file { read write };
+allow distributedhardware_fwk dev_parameters_file:dir { search };
+allow distributedhardware_fwk dev_parameters_file:file { map open read };
+allow distributedhardware_fwk dev_random_file:chr_file { open read };
+allow distributedhardware_fwk dev_unix_file:dir { search };
+allow distributedhardware_fwk dev_unix_socket_file:dir { search };
+allow distributedhardware_fwk dev_unix_socket_file:sock_file { write };
+allow distributedhardware_fwk distributedhardware_fwk:dir { search };
+allow distributedhardware_fwk distributedhardware_fwk:lnk_file { read };
+allow distributedhardware_fwk distributedhardware_fwk:process { fork getsched };
+allow distributedhardware_fwk distributedhardware_fwk:unix_dgram_socket { connect create write };
+allow distributedhardware_fwk etc_file:lnk_file { read };
+allow distributedhardware_fwk foundation:binder { call transfer };
+allow distributedhardware_fwk init:fd { use };
+allow distributedhardware_fwk init:netlink_kobject_uevent_socket { read write };
+allow distributedhardware_fwk init:unix_dgram_socket { sendto };
+allow distributedhardware_fwk init:unix_stream_socket { read write };
+allow distributedhardware_fwk kernel:fd { use };
+allow distributedhardware_fwk proc_file:dir { search };
+allow distributedhardware_fwk proc_file:lnk_file { read };
+allow distributedhardware_fwk rootfs:dir { search };
+allow distributedhardware_fwk samain_exec:file { entrypoint execute map read };
+allow distributedhardware_fwk samgr:binder { call transfer };
+allow distributedhardware_fwk system_etc_file:dir { search };
+allow distributedhardware_fwk system_etc_file:file { open read };
+allow distributedhardware_fwk system_file:dir { search };
+allow distributedhardware_fwk system_lib_file:dir { search };
+allow distributedhardware_fwk system_lib_file:file { execute getattr map open read };
+allow distributedhardware_fwk system_profile_file:dir { search };
+allow distributedhardware_fwk system_profile_file:file { getattr open read };
+allowxperm distributedhardware_fwk dev_at_file:chr_file ioctl { 0x4101 };
+allowxperm distributedhardware_fwk dev_binder_file:chr_file ioctl { 0x6201 0x6205 0x6208 0x6209 0x621e 0x621f };

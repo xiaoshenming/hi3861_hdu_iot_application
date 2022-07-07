@@ -1,0 +1,195 @@
+# Copyright (c) 2021-2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# please put shorter config ahead;
+# root
+/       u:object_r:rootfs:s0
+
+/lost\+found       u:object_r:rootfs:s0
+/bin       u:object_r:rootfs:s0
+/chip_prod       u:object_r:rootfs:s0
+/init       u:object_r:rootfs:s0
+/chipset       u:object_r:rootfs:s0
+/mnt      u:object_r:rootfs:s0
+/proc      u:object_r:rootfs:s0
+/storage      u:object_r:rootfs:s0
+/sys_prod      u:object_r:rootfs:s0
+/tmp      u:object_r:rootfs:s0
+/sys           u:object_r:sys_file:s0
+
+/dev(/.*)?       u:object_r:dev_file:s0
+/dev/__parameters__(/.*)?         u:object_r:dev_parameters_file:s0
+/dev/block(/.*)?                u:object_r:dev_block_file:s0
+/dev/bus(/.*)?                u:object_r:dev_bus_file:s0
+/dev/bus/usb(/.*)?                u:object_r:dev_bus_usb_file:s0
+/dev/char(/.*)?                u:object_r:dev_char_file:s0
+/dev/dma_heap(/.*)?                u:object_r:dev_dma_heap_file:s0
+/dev/dri(/.*)?                u:object_r:dev_dri_file:s0
+/dev/fscklogs(/.*)?                u:object_r:dev_fscklogs_file:s0
+/dev/graphics(/.*)?                u:object_r:dev_graphics_file:s0
+/dev/input(/.*)?                u:object_r:dev_input_file:s0
+/dev/pts(/.*)?                u:object_r:dev_pts_file:s0
+/dev/snd(/.*)?                u:object_r:dev_snd_file:s0
+/dev/socket(/.*)?                u:object_r:dev_socket_file:s0
+/dev/unix(/.*)?                u:object_r:dev_unix_file:s0
+/dev/unix/socket(/.*)?                u:object_r:dev_unix_socket_file:s0
+/dev/v4l(/.*)?                u:object_r:dev_v_file:s0
+/dev/v4l-subdev[0-3]          u:object_r:dev_v_file:s0  
+/dev/tty[0-9]*                u:object_r:tty_device:s0
+
+/dev/access_token_id          u:object_r:dev_at_file:s0
+/dev/ashmem          u:object_r:dev_ashmem_file:s0
+/dev/binder          u:object_r:dev_binder_file:s0
+/dev/console          u:object_r:dev_console_file:s0
+/dev/cpu_dma_latency          u:object_r:dev_cpu_dma_latency_file:s0
+/dev/dev_mgr          u:object_r:dev_mgr_file:s0
+/dev/devsvc_mgr          u:object_r:dev_svc_mgr_file:s0
+/dev/fuse          u:object_r:dev_fuse_file:s0
+/dev/hdf_input_event1          u:object_r:dev_hdf_file:s0
+/dev/hdf_input_host          u:object_r:dev_hdf_file:s0
+/dev/hdf_usb_pnp_notify_service          u:object_r:dev_hdf_file:s0
+/dev/hwbinder          u:object_r:dev_hwbinder_file:s0
+/dev/iio:device0          u:object_r:dev_iio_file:s0
+/dev/kmsg          u:object_r:dev_kmsg_file:s0
+/dev/loop-control          u:object_r:dev_loop_control_file:s0
+/dev/media0          u:object_r:dev_media_file:s0
+/dev/mmcblk0rpmb          u:object_r:dev_rpmb_file:s0
+/dev/null                 u:object_r:dev_null_file:s0
+/dev/random          u:object_r:dev_random_file:s0
+/dev/urandom          u:object_r:dev_random_file:s0
+/dev/rtc          u:object_r:dev_rtc_file:s0
+/dev/rtc[0-9]*          u:object_r:dev_rtc_file:s0
+/dev/socket          u:object_r:dev_socket_file:s0
+/dev/tee[0-9]*          u:object_r:dev_tee_file:s0
+/dev/teepriv[0-9]*          u:object_r:dev_tee_file:s0
+/dev/ubi_ctrl          u:object_r:dev_ubi_file:s0
+/dev/uhid          u:object_r:dev_uhid_file:s0
+/dev/vcs          u:object_r:dev_vcs_file:s0
+/dev/vcs[0-9]*          u:object_r:dev_vcs_file:s0
+/dev/vcsa          u:object_r:dev_vcs_file:s0
+/dev/vcsa[0-9]*          u:object_r:dev_vcs_file:s0
+/dev/vcsu          u:object_r:dev_vcs_file:s0
+/dev/vcsu[0-9]*          u:object_r:dev_vcs_file:s0
+/dev/vhci          u:object_r:dev_vhci_file:s0
+/dev/video[0-9]*          u:object_r:dev_video_file:s0
+/dev/vndbinder          u:object_r:dev_vndbinder_file:s0
+/dev/watchdog*          u:object_r:dev_watchdog_file:s0
+/dev/watchdog[0-9]*          u:object_r:dev_watchdog_file:s0
+/dev/zero          u:object_r:dev_zero_file:s0
+
+/etc(/.*)?       u:object_r:etc_file:s0
+/lib(/.*)?       u:object_r:lib_file:s0
+
+/config(/.*)?       u:object_r:config_file:s0
+
+/system(/.*)?       u:object_r:system_file:s0
+/system/hap(/.*)?       u:object_r:system_hap_file:s0
+/system/bin(/.*)?       u:object_r:system_bin_file:s0
+/system/etc(/.*)?       u:object_r:system_etc_file:s0
+/system/fonts(/.*)?       u:object_r:system_fonts_file:s0
+/system/lib(/.*)?       u:object_r:system_lib_file:s0
+/system/profile(/.*)?       u:object_r:system_profile_file:s0
+/system/usr(/.*)?       u:object_r:system_usr_file:s0
+
+/data(/.*)?                   u:object_r:data_file:s0
+/data/hap(/.*)?               u:object_r:data_hap_file:s0
+/data/app(/.*)?               u:object_r:data_app_file:s0
+/data/app/el1(/.*)?           u:object_r:data_app_el1_file:s0
+/data/app/el2(/.*)?           u:object_r:data_app_el2_file:s0
+/data/app/el3(/.*)?           u:object_r:data_app_el3_file:s0
+/data/app/el4(/.*)?           u:object_r:data_app_el4_file:s0
+/data/service(/.*)?           u:object_r:data_service_file:s0
+/data/service/el0(/.*)?       u:object_r:data_service_el0_file:s0
+/data/service/el1(/.*)?       u:object_r:data_service_el1_file:s0
+/data/service/el2(/.*)?       u:object_r:data_service_el2_file:s0
+/data/chipset(/.*)?           u:object_r:data_chipset_file:s0
+/data/chipset/el1(/.*)?       u:object_r:data_chipset_el1_file:s0
+/data/chipset/el2(/.*)?       u:object_r:data_chipset_el2_file:s0
+/data/storage(/.*)?           u:object_r:data_storage:s0
+/data/accounts(/.*)?          u:object_r:data_accounts:s0
+/data/ams_white_list          u:object_r:data_ams_whitelist:s0
+/data/app-asec(/.*)?          u:object_r:data_appasec:s0
+/data/app-ephemeral(/.*)?     u:object_r:data_appephemeral:s0
+/data/app-lib(/.*)?           u:object_r:data_applib:s0
+/data/app-private(/.*)?       u:object_r:data_appprivate:s0
+/data/app-staging(/.*)?                 u:object_r:data_appstaging:s0
+/data/backup(/.*)?                 u:object_r:data_backup:s0
+/data/bluetooth(/.*)?                 u:object_r:data_bluetooth:s0
+/data/bootchart(/.*)?                 u:object_r:data_bootchart:s0
+/data/cache(/.*)?                 u:object_r:data_cache:s0
+/data/data(/.*)?                 u:object_r:data_data_file:s0
+/data/dhcp(/.*)?                 u:object_r:data_dhcp:s0
+/data/drm(/.*)?                 u:object_r:data_drm:s0
+/data/ethernet(/.*)?                 u:object_r:data_ethernet:s0
+/data/file.log                 u:object_r:data_filelog:s0
+/data/init_agent(/.*)?                 u:object_r:data_init_agent:s0
+/data/libinput(/.*)?                 u:object_r:data_libinput:s0
+/data/local(/.*)?                 u:object_r:data_local:s0
+/data/log(/.*)?                 u:object_r:data_log:s0
+/data/media(/.*)?                 u:object_r:data_media:s0
+/data/mediadrm(/.*)?                 u:object_r:data_mediadrm:s0
+/data/misc(/.*)?                 u:object_r:data_misc:s0
+/data/misc_ce(/.*)?                 u:object_r:data_misc_ce:s0
+/data/misc_de(/.*)?                 u:object_r:data_misc_de:s0
+/data/nfc(/.*)?                 u:object_r:data_nfc:s0
+/data/ota(/.*)?                 u:object_r:data_ota:s0
+/data/ota_package(/.*)?                 u:object_r:data_ota_package:s0
+/data/parameters(/.*)?                 u:object_r:data_parameters:s0
+/data/preloads(/.*)?                 u:object_r:data_preloads:s0
+/data/resource-cache(/.*)?                 u:object_r:data_resourcecache:s0
+/data/sadata(/.*)?                 u:object_r:data_sadata:s0
+/data/sadata_de(/.*)?                 u:object_r:data_sadata_de:s0
+/data/ss(/.*)?                 u:object_r:data_ss:s0
+/data/system(/.*)?                 u:object_r:data_system:s0
+/data/system_ce(/.*)?                 u:object_r:data_system_ce:s0
+/data/system_de(/.*)?                 u:object_r:data_system_de:s0
+/data/udev(/.*)?                 u:object_r:data_udev:s0
+/data/update_service_log.txt     u:object_r:data_update_service_log:s0
+/data/user(/.*)?                 u:object_r:data_user:s0
+/data/user_de(/.*)?                 u:object_r:data_user_de:s0
+/data/vendor(/.*)?                 u:object_r:data_vendor:s0
+/data/vendor_ce(/.*)?                 u:object_r:data_vendor_ce:s0
+/data/vendor_de(/.*)?                 u:object_r:data_vendor_de:s0
+
+
+/updater(/.*)?       u:object_r:updater_file:s0
+
+/vendor(/.*)?       u:object_r:vendor_file:s0
+/vendor/etc(/.*)?       u:object_r:vendor_etc_file:s0
+
+
+/system/bin/watchdog_service        u:object_r:watchdog_service_exec:s0
+
+/system/bin/uinput_inject        u:object_r:uinput_inject_exec:s0
+
+/system/bin/lmks        u:object_r:lmks_exec:s0
+
+/vendor/bin/hdf_devmgr        u:object_r:hdf_devmgr_exec:s0
+
+/system/bin/wifi_hal_service        u:object_r:wifi_hal_service_exec:s0
+
+/system/bin/hilogd        u:object_r:hilogd_exec:s0
+
+/system/bin/faultloggerd        u:object_r:faultloggerd_exec:s0
+
+/system/bin/hiview        u:object_r:hiview_exec:s0
+
+/system/bin/ispserver        u:object_r:ispserver_exec:s0
+
+/system/bin/storage_daemon        u:object_r:storage_daemon_exec:s0
+
+/system/bin/thermal_protector        u:object_r:thermal_protector_exec:s0
+
+/system/bin/sh        u:object_r:sh_exec:s0
+
+/system/bin/hdcd        u:object_r:hdcd_exec:s0

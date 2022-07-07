@@ -1,0 +1,89 @@
+# Copyright (c) 2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+allow ueventd dev_ashmem_file:chr_file { relabelto };
+allow ueventd dev_at_file:chr_file { relabelto };
+allow ueventd dev_binder_file:chr_file { relabelto };
+allow ueventd dev_block_file:blk_file { create getattr setattr };
+allow ueventd dev_block_file:dir { add_name getattr open read search write };
+allow ueventd dev_block_file:lnk_file { create getattr };
+allow ueventd dev_bus_usb_file:chr_file { getattr relabelto };
+allow ueventd dev_bus_usb_file:dir { getattr open read relabelto search };
+allow ueventd dev_console_file:chr_file { relabelto };
+allow ueventd dev_cpu_dma_latency_file:chr_file { relabelto };
+allow ueventd dev_dma_heap_file:chr_file { create getattr relabelto setattr };
+allow ueventd dev_dma_heap_file:dir { add_name getattr open read relabelto search write };
+allow ueventd dev_dri_file:chr_file { create getattr relabelto setattr };
+allow ueventd dev_dri_file:dir { add_name getattr open read relabelto search write };
+allow ueventd dev_file:chr_file { create getattr relabelfrom setattr };
+allow ueventd dev_file:dir { add_name create getattr relabelfrom search write };
+allow ueventd dev_file:file { create read write open };
+allow ueventd dev_fuse_file:chr_file { relabelto };
+allow ueventd dev_graphics_file:chr_file { getattr relabelto };
+allow ueventd dev_graphics_file:dir { getattr open read relabelto search };
+allow ueventd dev_hdf_file:chr_file { relabelto };
+allow ueventd dev_hwbinder_file:chr_file { relabelto };
+allow ueventd dev_iio_file:chr_file { relabelto };
+allow ueventd dev_input_file:chr_file { create getattr relabelto setattr };
+allow ueventd dev_input_file:dir { add_name getattr open read relabelto search write };
+allow ueventd dev_kmsg_file:chr_file { getattr open setattr write };
+allow ueventd dev_loop_control_file:chr_file { relabelto };
+allow ueventd dev_media_file:chr_file { relabelto };
+allow ueventd dev_mgr_file:chr_file { relabelto };
+allow ueventd dev_null_file:chr_file { getattr read write setattr };
+allow ueventd dev_parameters_file:dir { search };
+allow ueventd dev_parameters_file:file { map open read };
+allow ueventd devpts:filesystem { getattr };
+allow ueventd dev_random_file:chr_file { getattr setattr };
+allow ueventd dev_rpmb_file:chr_file { relabelto };
+allow ueventd dev_rtc_file:chr_file { relabelto };
+allow ueventd dev_svc_mgr_file:chr_file { relabelto };
+allow ueventd dev_tee_file:chr_file { relabelto };
+allow ueventd dev_ubi_file:chr_file { relabelto };
+allow ueventd dev_uhid_file:chr_file { relabelto };
+allow ueventd dev_vcs_file:chr_file { relabelto };
+allow ueventd dev_v_file:chr_file { relabelto };
+allow ueventd dev_vhci_file:chr_file { relabelto };
+allow ueventd dev_video_file:chr_file { relabelto };
+allow ueventd dev_vndbinder_file:chr_file { relabelto };
+allow ueventd dev_watchdog_file:chr_file { relabelto };
+allow ueventd dev_zero_file:chr_file { relabelto };
+allow ueventd etc_file:lnk_file { read };
+allow ueventd init:fd { use };
+allow ueventd init:netlink_kobject_uevent_socket { getopt read read write };
+allow ueventd init:unix_stream_socket { read write };
+allow ueventd kernel:fd { use };
+allow ueventd labeledfs:filesystem { getattr };
+allow ueventd proc_cmdline_file:file { open read };
+allow ueventd proc_file:dir { search };
+allow ueventd proc_file:lnk_file { read };
+allow ueventd rootfs:dir { search };
+allow ueventd selinuxfs:filesystem { getattr };
+allow ueventd sys_file:dir { getattr open read search };
+allow ueventd sys_file:file { open };
+allow ueventd sys_file:filesystem { getattr };
+allow ueventd sys_file:file { write };
+allow ueventd sys_file:lnk_file { read };
+allow ueventd sysfs_block_file:dir { open read };
+allow ueventd system_etc_file:dir { search };
+allow ueventd system_etc_file:file { getattr map open read };
+allow ueventd system_file:dir { search };
+allow ueventd system_lib_file:dir { search };
+allow ueventd system_lib_file:file { execute getattr map open read };
+allow ueventd tmpfs:filesystem { getattr };
+allow ueventd tty_device:chr_file { relabelto };
+allow ueventd ueventd:capability { chown fowner fsetid mknod setgid };
+allow ueventd ueventd:dir { search };
+allow ueventd ueventd_exec:file { entrypoint execute map read };
+allow ueventd ueventd:file { open read };
+allow ueventd ueventd:lnk_file { read };

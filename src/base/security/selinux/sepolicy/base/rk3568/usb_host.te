@@ -1,0 +1,54 @@
+# Copyright (c) 2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+allow usb_host debugfs:dir { search };
+allow usb_host dev_at_file:chr_file { ioctl open read write };
+allow usb_host dev_binder_file:chr_file { ioctl map open read write };
+allow usb_host dev_file:dir { search };
+allow usb_host dev_hdf_file:chr_file { getattr ioctl open read write };
+allow usb_host dev_mgr_file:chr_file { getattr ioctl open read write };
+allow usb_host dev_null_file:chr_file { read write };
+allow usb_host dev_parameters_file:dir { search };
+allow usb_host dev_parameters_file:file { map open read };
+allow usb_host dev_unix_file:dir { search };
+allow usb_host dev_unix_socket_file:dir { search };
+allow usb_host dev_unix_socket_file:sock_file { write };
+allow usb_host etc_file:lnk_file { read };
+allow usb_host hdf_devmgr:binder { call transfer };
+allow usb_host init:fd { use };
+allow usb_host init:netlink_kobject_uevent_socket { read write };
+allow usb_host init:unix_dgram_socket { sendto };
+allow usb_host init:unix_stream_socket { read write };
+allow usb_host kernel:fd { use };
+allow usb_host proc_file:dir { search };
+allow usb_host proc_file:lnk_file { read };
+allow usb_host rootfs:dir { search };
+allow usb_host samgr:binder { call };
+allow usb_host system_etc_file:dir { search };
+allow usb_host system_etc_file:file { open read };
+allow usb_host system_file:dir { search };
+allow usb_host system_lib_file:dir { search };
+allow usb_host system_lib_file:file { execute getattr map open read };
+allow usb_host usb_host:dir { search };
+allow usb_host usb_host:lnk_file { read };
+allow usb_host usb_host:process { fork };
+allow usb_host usb_host:unix_dgram_socket { connect create write };
+allow usb_host usb_service:binder { call };
+allow usb_host vendor_etc_file:dir { search };
+allow usb_host vendor_etc_file:file { getattr open read };
+allow usb_host vendor_file:dir { search };
+allow usb_host vendor_file:file { entrypoint execute getattr map open read };
+allowxperm usb_host dev_at_file:chr_file ioctl { 0x4101 };
+allowxperm usb_host dev_binder_file:chr_file ioctl { 0x6201 0x6205 0x6209 0x621e 0x621f };
+allowxperm usb_host dev_hdf_file:chr_file ioctl { 0x6201 0x6202 0x6203 };
+allowxperm usb_host dev_mgr_file:chr_file ioctl { 0x6201 };
