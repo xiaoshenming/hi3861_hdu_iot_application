@@ -1,0 +1,7 @@
+[
+  "SystemCapability.HiviewDFX.HiEventLite",
+  "SystemCapability.HiviewDFX.HiLogLite",
+  "SystemCapability.Security.DeviceAuth",
+  "SystemCapability.Security.Huks",
+  "SystemCapability.Updater.Raw"
+]

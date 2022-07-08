@@ -1,0 +1,47 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("permission_lite") {
+  subsystem_name = "security"
+  module_list =
+      [ "//base/security/permission/services/permission_lite:permission_lite" ]
+  origin_name = "permission_lite"
+  variant = "phone"
+}
+
+ohos_inner_kits("permission_lite_inner_kits") {
+  sdk_libs = [
+    {
+      type = "so"
+      name = "//base/security/permission/services/permission_lite/pms_client:pms_client"
+      header = {
+        header_files = [ "pms_interface_inner.h" ]
+        header_base = "//base/security/interfaces/innerkits/permission_lite"
+      }
+    },
+    {
+      type = "so"
+      name = "//base/security/permission/services/permission_lite/ipc_auth:ipc_auth_target"
+      header = {
+        header_files = [ "ipc_auth_interface.h" ]
+        header_base = "//base/security/interfaces/innerkits/permission_lite"
+      }
+    },
+  ]
+  part_name = "permission_lite"
+  origin_name = "permission_lite"
+  variant = "phone"
+}
+
+ohos_part_test("permission_lite_test") {
+  testonly = true
+  test_packages = [
+    "//base/security/permission/services/permission_lite/unittest:unittest",
+  ]
+  deps = [ ":permission_lite" ]
+  part_name = "permission_lite"
+  subsystem_name = "security"
+}

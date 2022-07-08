@@ -1,0 +1,12 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("common") {
+  subsystem_name = "common"
+  module_list = [ "//build/common:common_packages" ]
+  origin_name = "common"
+  variant = "phone"
+}

@@ -1,0 +1,4 @@
+../../../foundation/communication/dsoftbus/sdk/transmission/trans_channel/proxy/src/client_trans_proxy_manager.c: In function 'GetFullRecvPath':
+../../../foundation/communication/dsoftbus/sdk/transmission/trans_channel/proxy/src/client_trans_proxy_manager.c:931:98: warning: signed and unsigned type in conditional expression [-Wsign-compare]
+     int32_t destFullPathLength = (isNeedAddSep) ? (rootDirLength + sizeof('/') + filePathLength) :
+                                                                                                  ^

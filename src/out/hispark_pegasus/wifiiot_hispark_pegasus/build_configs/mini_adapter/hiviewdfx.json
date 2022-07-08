@@ -1,0 +1,22 @@
+{
+  "parts": [
+    "hitrace_native",
+    "hisysevent_native",
+    "hiview",
+    "hilog_featured_lite",
+    "hilog_lite",
+    "blackbox",
+    "hiview_lite",
+    "hiappevent_native",
+    "hiappevent_js",
+    "hicollie_native",
+    "hievent_lite",
+    "hidumper_lite",
+    "hidumper_mini",
+    "hilog",
+    "hilog_service",
+    "hilog_native",
+    "hiviewdfx_hilog_native",
+    "faultloggerd"
+  ]
+}

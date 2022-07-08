@@ -1,0 +1,5 @@
+const.SystemCapability.Security.DeviceAuth=true
+const.SystemCapability.Security.Huks=true
+const.SystemCapability.HiviewDFX.HiLogLite=true
+const.SystemCapability.HiviewDFX.HiEventLite=true
+const.SystemCapability.Updater.Raw=true

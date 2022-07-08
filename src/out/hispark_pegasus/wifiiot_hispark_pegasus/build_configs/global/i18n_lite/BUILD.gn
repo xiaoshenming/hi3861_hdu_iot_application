@@ -1,0 +1,44 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("i18n_lite") {
+  subsystem_name = "global"
+  module_list = [ "//base/global/i18n_lite/frameworks/i18n:global_i18n" ]
+  origin_name = "i18n_lite"
+  variant = "phone"
+}
+
+ohos_inner_kits("i18n_lite_inner_kits") {
+  sdk_libs = [
+    {
+      type = "so"
+      name = "//base/global/i18n_lite/frameworks/i18n:global_i18n"
+      header = {
+        header_files = [
+          "date_time_format.h",
+          "locale_info.h",
+          "number_format.h",
+          "plural_format.h",
+          "types.h",
+          "week_info.h",
+        ]
+        header_base =
+            "//base/global/i18n_lite/interfaces/kits/i18n/zone/include"
+      }
+    },
+  ]
+  part_name = "i18n_lite"
+  origin_name = "i18n_lite"
+  variant = "phone"
+}
+
+ohos_part_test("i18n_lite_test") {
+  testonly = true
+  test_packages = [ "//base/global/i18n_lite/frameworks/i18n/test:I18nTest" ]
+  deps = [ ":i18n_lite" ]
+  part_name = "i18n_lite"
+  subsystem_name = "global"
+}

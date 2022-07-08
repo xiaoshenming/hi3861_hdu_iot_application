@@ -1,0 +1,31 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("ota_lite") {
+  subsystem_name = "updater"
+  module_list = [ "//base/update/ota_lite/frameworks:ota_lite" ]
+  origin_name = "ota_lite"
+  variant = "phone"
+}
+
+ohos_inner_kits("ota_lite_inner_kits") {
+  sdk_libs = [
+    {
+      type = "so"
+      name = "//base/update/ota_lite/frameworks:update_api"
+      header = {
+        header_files = [
+          "hota_partition.h",
+          "hota_updater.h",
+        ]
+        header_base = "//base/update/ota_lite/interfaces/kits"
+      }
+    },
+  ]
+  part_name = "ota_lite"
+  origin_name = "ota_lite"
+  variant = "phone"
+}

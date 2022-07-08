@@ -1,0 +1,12 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("timer_task") {
+  subsystem_name = "utils"
+  module_list = [ "//utils/native/lite/timer_task:ace_kit_timer" ]
+  origin_name = "timer_task"
+  variant = "phone"
+}

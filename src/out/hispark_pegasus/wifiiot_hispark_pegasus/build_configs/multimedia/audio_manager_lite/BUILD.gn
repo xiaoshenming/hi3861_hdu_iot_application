@@ -1,0 +1,13 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("audio_manager_lite") {
+  subsystem_name = "multimedia"
+  module_list =
+      [ "//foundation/multimedia/audio_lite/frameworks:audio_capturer_lite" ]
+  origin_name = "audio_manager_lite"
+  variant = "phone"
+}

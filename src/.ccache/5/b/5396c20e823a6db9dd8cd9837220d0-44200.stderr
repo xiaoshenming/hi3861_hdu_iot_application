@@ -1,0 +1,4 @@
+../../../foundation/communication/dsoftbus/core/bus_center/lnn/lane_hub/time_sync/src/lnn_time_sync_manager_virtual.c: In function 'LnnStopTimeSync':
+../../../foundation/communication/dsoftbus/core/bus_center/lnn/lane_hub/time_sync/src/lnn_time_sync_manager_virtual.c:31:37: warning: unused parameter 'pkgName' [-Wunused-parameter]
+ int32_t LnnStopTimeSync(const char *pkgName, const char *targetNetworkId)
+                                     ^~~~~~~

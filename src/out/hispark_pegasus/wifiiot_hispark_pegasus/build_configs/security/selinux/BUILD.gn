@@ -1,0 +1,76 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("selinux") {
+  subsystem_name = "security"
+  module_list = [ "//base/security/selinux:selinux_group" ]
+  origin_name = "selinux"
+  variant = "phone"
+}
+
+ohos_inner_kits("selinux_inner_kits") {
+  sdk_libs = [
+    {
+      type = "so"
+      name = "//base/security/selinux:libload_policy"
+      header = {
+        header_files = [ "policycoreutils.h" ]
+        header_base =
+            "//base/security/selinux/interfaces/policycoreutils/include"
+      }
+    },
+    {
+      type = "so"
+      name = "//base/security/selinux:librestorecon"
+      header = {
+        header_files = [ "policycoreutils.h" ]
+        header_base =
+            "//base/security/selinux/interfaces/policycoreutils/include"
+      }
+    },
+    {
+      type = "so"
+      name = "//base/security/selinux:libhap_restorecon"
+      header = {
+        header_files = [ "hap_restorecon.h" ]
+        header_base =
+            "//base/security/selinux/interfaces/policycoreutils/include"
+      }
+    },
+    {
+      type = "so"
+      name = "//base/security/selinux:libparaperm_checker"
+      header = {
+        header_files = [ "selinux_parameter.h" ]
+        header_base =
+            "//base/security/selinux/interfaces/policycoreutils/include"
+      }
+    },
+    {
+      type = "so"
+      name = "//base/security/selinux:libservice_checker"
+      header = {
+        header_files = [
+          "service_checker.h",
+          "hdf_service_checker.h",
+        ]
+        header_base =
+            "//base/security/selinux/interfaces/policycoreutils/include"
+      }
+    },
+  ]
+  part_name = "selinux"
+  origin_name = "selinux"
+  variant = "phone"
+}
+
+ohos_part_test("selinux_test") {
+  testonly = true
+  test_packages = [ "//base/security/selinux/test:unittest" ]
+  deps = [ ":selinux" ]
+  part_name = "selinux"
+  subsystem_name = "security"
+}

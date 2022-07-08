@@ -1,0 +1,11 @@
+{
+  "parts": [
+    "file",
+    "js_builtin",
+    "kal_timer",
+    "kv_store",
+    "os_dump",
+    "timer_task",
+    "utils_base"
+  ]
+}

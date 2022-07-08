@@ -1,0 +1,3 @@
+../../../vendor/hisilicon/hispark_pegasus/hals/utils/sys_param/hal_sys_param.c:33:19: warning: 'EMPTY_STR' defined but not used [-Wunused-const-variable=]
+ static const char EMPTY_STR[] = {""};
+                   ^~~~~~~~~

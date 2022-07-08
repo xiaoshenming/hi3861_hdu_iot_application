@@ -1,0 +1,43 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("hiview") {
+  subsystem_name = "hiviewdfx"
+  module_list = [
+    "//base/hiviewdfx/hiview:hiview_package",
+    "//base/hiviewdfx/hiview/plugins/faultlogger/interfaces/js/napi:faultlogger_napi",
+  ]
+  origin_name = "hiview"
+  variant = "phone"
+}
+
+ohos_inner_kits("hiview_inner_kits") {
+  sdk_libs = [
+    {
+      type = "so"
+      name = "//base/hiviewdfx/hiview/plugins/faultlogger:libfaultlogger"
+      header = {
+        header_files = [
+          "faultlog_info.h",
+          "faultlog_query_result.h",
+          "faultlogger_client.h",
+        ]
+        header_base = "//base/hiviewdfx/hiview/plugins/faultlogger/interfaces/cpp/innerkits/include"
+      }
+    },
+  ]
+  part_name = "hiview"
+  origin_name = "hiview"
+  variant = "phone"
+}
+
+ohos_part_test("hiview_test") {
+  testonly = true
+  test_packages = [ "//base/hiviewdfx/hiview:hiview_test_package" ]
+  deps = [ ":hiview" ]
+  part_name = "hiview"
+  subsystem_name = "hiviewdfx"
+}

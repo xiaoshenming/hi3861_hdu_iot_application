@@ -1,0 +1,50 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("appexecfwk_lite") {
+  subsystem_name = "appexecfwk"
+  module_list = [
+    "//foundation/appexecfwk/appexecfwk_lite/services/bundlemgr_lite:appexecfwk_services_lite",
+    "//foundation/appexecfwk/appexecfwk_lite/frameworks/bundle_lite:appexecfwk_kits_lite",
+  ]
+  origin_name = "appexecfwk_lite"
+  variant = "phone"
+}
+
+ohos_inner_kits("appexecfwk_lite_inner_kits") {
+  sdk_libs = [
+    {
+      type = "so"
+      name = "//foundation/appexecfwk/appexecfwk_lite/services/bundlemgr_lite:appexecfwk_services_lite"
+      header = {
+        header_files = [
+          "bundle_daemon_interface.h",
+          "bundle_inner_interface.h",
+          "bundle_service_interface.h",
+        ]
+        header_base = "foundation/appexecfwk/appexecfwk_lite/interfaces/innerkits/bundlemgr_lite"
+      }
+    },
+    {
+      type = "so"
+      name = "//foundation/appexecfwk/appexecfwk_lite/frameworks/bundle_lite:appexecfwk_kits_lite"
+      header = {
+        header_files = [
+          "ability_info.h",
+          "appexecfwk_errors.h",
+          "bundle_info.h",
+          "element_name.h",
+          "module_info.h",
+        ]
+        header_base =
+            "foundation/appexecfwk/appexecfwk_lite/interfaces/kits/bundle_lite"
+      }
+    },
+  ]
+  part_name = "appexecfwk_lite"
+  origin_name = "appexecfwk_lite"
+  variant = "phone"
+}

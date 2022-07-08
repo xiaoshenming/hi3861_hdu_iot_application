@@ -1,0 +1,12 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("iot_controller") {
+  subsystem_name = "iot_hardware"
+  module_list = [ "//base/iot_hardware/peripheral:iothardware" ]
+  origin_name = "iot_controller"
+  variant = "phone"
+}

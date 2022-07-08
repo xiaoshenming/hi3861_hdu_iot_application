@@ -1,0 +1,8 @@
+{
+  "platform_toolchain": {
+    "phone": ""
+  },
+  "toolchain_platform": {
+    "": "phone"
+  }
+}

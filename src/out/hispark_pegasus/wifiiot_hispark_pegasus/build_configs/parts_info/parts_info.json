@@ -1,0 +1,1007 @@
+{
+  "aafwk_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "aafwk_lite",
+      "part_name": "aafwk_lite",
+      "subsystem_name": "aafwk",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "appexecfwk_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "appexecfwk_lite",
+      "part_name": "appexecfwk_lite",
+      "subsystem_name": "appexecfwk",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "appspawn_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "appspawn_lite",
+      "part_name": "appspawn_lite",
+      "subsystem_name": "startup",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "appverify": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "appverify",
+      "part_name": "appverify",
+      "subsystem_name": "security",
+      "system_capabilities": [
+        "SystemCapability.Security.AppVerify"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "audio_manager_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "audio_manager_lite",
+      "part_name": "audio_manager_lite",
+      "subsystem_name": "multimedia",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "battery_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "battery_lite",
+      "part_name": "battery_lite",
+      "subsystem_name": "powermgr",
+      "system_capabilities": [
+        "SystemCapability.PowerManager.BatteryManager.Lite"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "blackbox": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "blackbox",
+      "part_name": "blackbox",
+      "subsystem_name": "hiviewdfx",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "bluetooth": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "bluetooth",
+      "part_name": "bluetooth",
+      "subsystem_name": "communication",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "bootstrap_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "bootstrap_lite",
+      "part_name": "bootstrap_lite",
+      "subsystem_name": "startup",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "bundle_framework": [
+    {
+      "build_out_dir": ".",
+      "feature_list": [
+        "bundle_framework_graphics",
+        "bundle_framework_free_install"
+      ],
+      "origin_part_name": "bundle_framework",
+      "part_name": "bundle_framework",
+      "subsystem_name": "appexecfwk",
+      "system_capabilities": [
+        "SystemCapability.BundleManager.BundleFramework",
+        "SystemCapability.BundleManager.Zlib"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "bundle_tool": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "bundle_tool",
+      "part_name": "bundle_tool",
+      "subsystem_name": "appexecfwk",
+      "system_capabilities": [
+        "SystemCapability.BundleManager.BundleTool"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "camera_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "camera_lite",
+      "part_name": "camera_lite",
+      "subsystem_name": "multimedia",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "camera_sample_ai": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "camera_sample_ai",
+      "part_name": "camera_sample_ai",
+      "subsystem_name": "applications",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "camera_sample_app": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "camera_sample_app",
+      "part_name": "camera_sample_app",
+      "subsystem_name": "applications",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "camera_sample_communication": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "camera_sample_communication",
+      "part_name": "camera_sample_communication",
+      "subsystem_name": "applications",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "camera_screensaver_app": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "camera_screensaver_app",
+      "part_name": "camera_screensaver_app",
+      "subsystem_name": "applications",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "common": [
+    {
+      "build_out_dir": ".",
+      "feature_list": [
+        "common_feature_verify"
+      ],
+      "origin_part_name": "common",
+      "part_name": "common",
+      "subsystem_name": "common",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "device_hispark_pegasus": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "device_hispark_pegasus",
+      "part_name": "device_hispark_pegasus",
+      "subsystem_name": "device_hispark_pegasus",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "deviceauth_standard": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "deviceauth_standard",
+      "part_name": "deviceauth_standard",
+      "subsystem_name": "security",
+      "system_capabilities": [
+        "SystemCapability.Security.DeviceAuth"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "distributed_bundle_framework": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "distributed_bundle_framework",
+      "part_name": "distributed_bundle_framework",
+      "subsystem_name": "appexecfwk",
+      "system_capabilities": [
+        "SystemCapability.BundleManager.DistributedBundleFramework"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "dsoftbus": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "dsoftbus",
+      "part_name": "dsoftbus",
+      "subsystem_name": "communication",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "dvkit_sample": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "dvkit_sample",
+      "part_name": "dvkit_sample",
+      "subsystem_name": "vendor",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "eventhandler": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "eventhandler",
+      "part_name": "eventhandler",
+      "subsystem_name": "appexecfwk",
+      "system_capabilities": [
+        "SystemCapability.Notification.Emitter"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "faultloggerd": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "faultloggerd",
+      "part_name": "faultloggerd",
+      "subsystem_name": "hiviewdfx",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "file": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "file",
+      "part_name": "file",
+      "subsystem_name": "utils",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hardware": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hardware",
+      "part_name": "hardware",
+      "subsystem_name": "vendor",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hi3516dv300_adapter": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hi3516dv300_adapter",
+      "part_name": "hi3516dv300_adapter",
+      "subsystem_name": "vendor",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hi3516dv300_sdk": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hi3516dv300_sdk",
+      "part_name": "hi3516dv300_sdk",
+      "subsystem_name": "vendor",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hi3516dv300_uboot": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hi3516dv300_uboot",
+      "part_name": "hi3516dv300_uboot",
+      "subsystem_name": "vendor",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hi3518ev300_adapter": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hi3518ev300_adapter",
+      "part_name": "hi3518ev300_adapter",
+      "subsystem_name": "vendor",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hi3518ev300_sdk": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hi3518ev300_sdk",
+      "part_name": "hi3518ev300_sdk",
+      "subsystem_name": "vendor",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hi3518ev300_uboot": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hi3518ev300_uboot",
+      "part_name": "hi3518ev300_uboot",
+      "subsystem_name": "vendor",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hi3861_adapter": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hi3861_adapter",
+      "part_name": "hi3861_adapter",
+      "subsystem_name": "vendor",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hi3861_sdk": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hi3861_sdk",
+      "part_name": "hi3861_sdk",
+      "subsystem_name": "vendor",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hiappevent_js": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hiappevent_js",
+      "part_name": "hiappevent_js",
+      "subsystem_name": "hiviewdfx",
+      "system_capabilities": [
+        "SystemCapability.HiviewDFX.HiAppEvent"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hiappevent_native": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hiappevent_native",
+      "part_name": "hiappevent_native",
+      "subsystem_name": "hiviewdfx",
+      "system_capabilities": [
+        "SystemCapability.HiviewDFX.HiAppEvent"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hicollie_native": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hicollie_native",
+      "part_name": "hicollie_native",
+      "subsystem_name": "hiviewdfx",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hidumper_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hidumper_lite",
+      "part_name": "hidumper_lite",
+      "subsystem_name": "hiviewdfx",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hidumper_mini": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hidumper_mini",
+      "part_name": "hidumper_mini",
+      "subsystem_name": "hiviewdfx",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hievent_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hievent_lite",
+      "part_name": "hievent_lite",
+      "subsystem_name": "hiviewdfx",
+      "system_capabilities": [
+        "SystemCapability.HiviewDFX.HiEventLite"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hilog": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hilog",
+      "part_name": "hilog",
+      "subsystem_name": "hiviewdfx",
+      "system_capabilities": [
+        "SystemCapability.HiviewDFX.HiLog"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hilog_featured_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hilog_featured_lite",
+      "part_name": "hilog_featured_lite",
+      "subsystem_name": "hiviewdfx",
+      "system_capabilities": [
+        "SystemCapability.HiviewDFX.HiLogLite"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hilog_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hilog_lite",
+      "part_name": "hilog_lite",
+      "subsystem_name": "hiviewdfx",
+      "system_capabilities": [
+        "SystemCapability.HiviewDFX.HiLogLite"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hilog_native": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hilog_native",
+      "part_name": "hilog_native",
+      "subsystem_name": "hiviewdfx",
+      "system_capabilities": [
+        "SystemCapability.HiviewDFX.HiLog"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hilog_service": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hilog_service",
+      "part_name": "hilog_service",
+      "subsystem_name": "hiviewdfx",
+      "system_capabilities": [
+        "SystemCapability.HiviewDFX.HiLog"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "histreamer": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "histreamer",
+      "part_name": "histreamer",
+      "subsystem_name": "multimedia",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hisysevent_native": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hisysevent_native",
+      "part_name": "hisysevent_native",
+      "subsystem_name": "hiviewdfx",
+      "system_capabilities": [
+        "SystemCapability.HiviewDFX.HiSysEvent"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hitrace_native": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hitrace_native",
+      "part_name": "hitrace_native",
+      "subsystem_name": "hiviewdfx",
+      "system_capabilities": [
+        "SystemCapability.HiviewDFX.HiTrace"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hiview": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hiview",
+      "part_name": "hiview",
+      "subsystem_name": "hiviewdfx",
+      "system_capabilities": [
+        "SystemCapability.HiviewDFX.Hiview",
+        "SystemCapability.HiviewDFX.Hiview.FaultLogger"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hiview_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hiview_lite",
+      "part_name": "hiview_lite",
+      "subsystem_name": "hiviewdfx",
+      "system_capabilities": [
+        "SystemCapability.HiviewDFX.HiviewLite"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "hiviewdfx_hilog_native": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "hiviewdfx_hilog_native",
+      "part_name": "hiviewdfx_hilog_native",
+      "subsystem_name": "hiviewdfx",
+      "system_capabilities": [
+        "SystemCapability.HiviewDFX.HiLog"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "huks": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "huks",
+      "part_name": "huks",
+      "subsystem_name": "security",
+      "system_capabilities": [
+        "SystemCapability.Security.Huks"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "i18n": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "i18n",
+      "part_name": "i18n",
+      "subsystem_name": "global",
+      "system_capabilities": [
+        "SystemCapability.Global.I18n"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "i18n_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "i18n_lite",
+      "part_name": "i18n_lite",
+      "subsystem_name": "global",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "init": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "init",
+      "part_name": "init",
+      "subsystem_name": "startup",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "init_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "init_lite",
+      "part_name": "init_lite",
+      "subsystem_name": "startup",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "iot_controller": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "iot_controller",
+      "part_name": "iot_controller",
+      "subsystem_name": "iot_hardware",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "iot_link": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "iot_link",
+      "part_name": "iot_link",
+      "subsystem_name": "iot",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "ipc_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "ipc_lite",
+      "part_name": "ipc_lite",
+      "subsystem_name": "communication",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "js_builtin": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "js_builtin",
+      "part_name": "js_builtin",
+      "subsystem_name": "utils",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "kal_timer": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "kal_timer",
+      "part_name": "kal_timer",
+      "subsystem_name": "utils",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "kit_framework": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "kit_framework",
+      "part_name": "kit_framework",
+      "subsystem_name": "applications",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "kv_store": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "kv_store",
+      "part_name": "kv_store",
+      "subsystem_name": "utils",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "media_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "media_lite",
+      "part_name": "media_lite",
+      "subsystem_name": "multimedia",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "media_service": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "media_service",
+      "part_name": "media_service",
+      "subsystem_name": "multimedia",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "middleware": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "middleware",
+      "part_name": "middleware",
+      "subsystem_name": "vendor",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "oem_iotlink": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "oem_iotlink",
+      "part_name": "oem_iotlink",
+      "subsystem_name": "vendor",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "os_dump": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "os_dump",
+      "part_name": "os_dump",
+      "subsystem_name": "utils",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "ota_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "ota_lite",
+      "part_name": "ota_lite",
+      "subsystem_name": "updater",
+      "system_capabilities": [
+        "SystemCapability.Updater.Raw"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "permission_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "permission_lite",
+      "part_name": "permission_lite",
+      "subsystem_name": "security",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "permission_standard": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "permission_standard",
+      "part_name": "permission_standard",
+      "subsystem_name": "security",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "powermgr_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "powermgr_lite",
+      "part_name": "powermgr_lite",
+      "subsystem_name": "powermgr",
+      "system_capabilities": [
+        "SystemCapability.PowerManager.PowerManager.Lite"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "product_wifiiot_hispark_pegasus": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "product_wifiiot_hispark_pegasus",
+      "part_name": "product_wifiiot_hispark_pegasus",
+      "subsystem_name": "product_wifiiot_hispark_pegasus",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "resmgr_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "resmgr_lite",
+      "part_name": "resmgr_lite",
+      "subsystem_name": "global",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "rpc": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "rpc",
+      "part_name": "rpc",
+      "subsystem_name": "communication",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "samgr_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "samgr_lite",
+      "part_name": "samgr_lite",
+      "subsystem_name": "distributedschedule",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "selinux": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "selinux",
+      "part_name": "selinux",
+      "subsystem_name": "security",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "sensor_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "sensor_lite",
+      "part_name": "sensor_lite",
+      "subsystem_name": "sensors",
+      "system_capabilities": [
+        "SystemCapability.Sensors.Sensor_lite"
+      ],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "startup_l2": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "startup_l2",
+      "part_name": "startup_l2",
+      "subsystem_name": "startup",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "syspara_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "syspara_lite",
+      "part_name": "syspara_lite",
+      "subsystem_name": "startup",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "timer_task": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "timer_task",
+      "part_name": "timer_task",
+      "subsystem_name": "utils",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "utils_base": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "utils_base",
+      "part_name": "utils_base",
+      "subsystem_name": "utils",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "wifi_aware": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "wifi_aware",
+      "part_name": "wifi_aware",
+      "subsystem_name": "communication",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "wifi_iot_sample_app": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "wifi_iot_sample_app",
+      "part_name": "wifi_iot_sample_app",
+      "subsystem_name": "applications",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "wifi_lite": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "wifi_lite",
+      "part_name": "wifi_lite",
+      "subsystem_name": "communication",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ],
+  "wpa_supplicant": [
+    {
+      "build_out_dir": ".",
+      "origin_part_name": "wpa_supplicant",
+      "part_name": "wpa_supplicant",
+      "subsystem_name": "communication",
+      "system_capabilities": [],
+      "toolchain_label": "",
+      "variant_name": "phone"
+    }
+  ]
+}

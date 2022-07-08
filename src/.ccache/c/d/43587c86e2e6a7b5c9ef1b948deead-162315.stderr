@@ -1,0 +1,281 @@
+In file included from ../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/log.h:19:0,
+                 from ../../../foundation/communication/dsoftbus/adapter/common/include/softbus_adapter_log.h:25,
+                 from ../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:30:
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketCreate':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:63:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "socket %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:63:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "socket %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketSetOpt':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:75:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "setsockopt : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:75:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "setsockopt : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketGetOpt':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:86:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "getsockopt : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:86:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "getsockopt : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketGetError':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:99:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "getsockopt fd=%{public}d, ret=%{public}d", socketFd, ret);
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:99:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "getsockopt fd=%{public}d, ret=%{public}d", socketFd, ret);
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:99:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "getsockopt fd=%{public}d, ret=%{public}d", socketFd, ret);
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:103:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "getsockopt fd=%{public}d, err=%{public}d", socketFd, err);
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:103:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "getsockopt fd=%{public}d, err=%{public}d", socketFd, err);
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:103:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "getsockopt fd=%{public}d, err=%{public}d", socketFd, err);
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketGetLocalName':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:156:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "getsockname : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:156:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "getsockname : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketGetPeerName':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:175:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "getpeername : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:175:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "getpeername : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketBind':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:194:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "bind : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:194:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "bind : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketListen':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:205:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "listen : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:205:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "listen : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketAccept':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:225:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "accept : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:225:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "accept : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketConnect':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:247:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "connect :%{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:247:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "connect :%{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketSelect':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:324:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "select : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:324:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "select : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketIoctl':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:335:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "ioctl : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:335:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "ioctl : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketFcntl':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:344:19: warning: implicit declaration of function 'fcntl'; did you mean 'fcvt'? [-Wimplicit-function-declaration]
+     int32_t ret = fcntl(socketFd, cmd, flag);
+                   ^~~~~
+                   fcvt
+In file included from ../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/log.h:19:0,
+                 from ../../../foundation/communication/dsoftbus/adapter/common/include/softbus_adapter_log.h:25,
+                 from ../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:30:
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:346:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "fcntl : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:346:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "fcntl : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketSend':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:357:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "send : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:357:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "send : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketSendTo':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:378:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "sendto : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:378:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "sendto : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketRecv':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:389:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "recv : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:389:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "recv : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketRecvFrom':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:410:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "recvfrom : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:410:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "recvfrom : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketShutDown':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:421:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "shutdown :%{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:421:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "shutdown :%{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c: In function 'SoftBusSocketClose':
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:432:39: warning: unknown conversion type character '{' in format [-Wformat=]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "close : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~
+../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_a/softbus_adapter_socket.c:432:39: warning: too many arguments for format [-Wformat-extra-args]
+         HILOG_ERROR(SOFTBUS_HILOG_ID, "close : %{public}s", strerror(errno));
+                                       ^
+../../../base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite/hiview_log.h:374:95: note: in definition of macro 'HILOG_ERROR'
+ #define HILOG_ERROR(mod, fmt, ...) HiLogPrintf(mod, HILOG_LV_ERROR, FUN_ARG_NUM(__VA_ARGS__), fmt, ##__VA_ARGS__)
+                                                                                               ^~~

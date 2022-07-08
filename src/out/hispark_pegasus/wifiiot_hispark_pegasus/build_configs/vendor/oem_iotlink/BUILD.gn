@@ -1,0 +1,15 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("oem_iotlink") {
+  subsystem_name = "vendor"
+  module_list = [
+    "//vendor/huawei/wifi-iot/hals/utils/sys_param:hal_sysparam",
+    "//vendor/huawei/wifi-iot/hals/utils/token:hal_token_static",
+  ]
+  origin_name = "oem_iotlink"
+  variant = "phone"
+}

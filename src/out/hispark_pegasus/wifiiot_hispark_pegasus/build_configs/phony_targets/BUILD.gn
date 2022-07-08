@@ -1,0 +1,3 @@
+group("part_phony_targets") {
+  deps = []
+}

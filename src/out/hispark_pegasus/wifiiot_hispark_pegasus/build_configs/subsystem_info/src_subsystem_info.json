@@ -1,0 +1,23 @@
+{
+  "aafwk": "out/preloader/wifiiot_hispark_pegasus/mini_system/aafwk",
+  "appexecfwk": "foundation/appexecfwk",
+  "applications": "out/preloader/wifiiot_hispark_pegasus/mini_system/applications",
+  "common": "build/common",
+  "communication": "out/preloader/wifiiot_hispark_pegasus/mini_system/communication",
+  "device_hispark_pegasus": "/mnt/local/ohos_3861/device/board/hisilicon/hispark_pegasus",
+  "distributedschedule": "foundation/distributedschedule",
+  "global": "base/global",
+  "hiviewdfx": "base/hiviewdfx",
+  "iot": "out/preloader/wifiiot_hispark_pegasus/mini_system/iot",
+  "iot_hardware": "out/preloader/wifiiot_hispark_pegasus/mini_system/iot_hardware",
+  "multimedia": "out/preloader/wifiiot_hispark_pegasus/mini_system/multimedia",
+  "powermgr": "base/powermgr",
+  "product_wifiiot_hispark_pegasus": "vendor/hisilicon/hispark_pegasus",
+  "security": "base/security",
+  "sensors": "base/sensors",
+  "startup": "base/startup",
+  "updater": "base/update",
+  "utils": "out/preloader/wifiiot_hispark_pegasus/mini_system/utils",
+  "vendor": "out/preloader/wifiiot_hispark_pegasus/mini_system/vendor",
+  "xts": "out/preloader/wifiiot_hispark_pegasus/mini_system/xts"
+}

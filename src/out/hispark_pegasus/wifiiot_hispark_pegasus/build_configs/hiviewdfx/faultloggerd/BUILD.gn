@@ -1,0 +1,68 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("faultloggerd") {
+  subsystem_name = "hiviewdfx"
+  module_list = [
+    "//base/hiviewdfx/faultloggerd/interfaces/innerkits/signal_handler:dfx_signalhandler",
+    "//base/hiviewdfx/faultloggerd/interfaces/innerkits/dump_catcher:lib_dfx_dump_catcher",
+    "//base/hiviewdfx/faultloggerd/interfaces/innerkits/faultloggerd_client:libfaultloggerd",
+    "//base/hiviewdfx/faultloggerd/tools/process_dump:processdump",
+    "//base/hiviewdfx/faultloggerd/services:faultloggerd",
+  ]
+  origin_name = "faultloggerd"
+  variant = "phone"
+}
+
+ohos_inner_kits("faultloggerd_inner_kits") {
+  sdk_libs = [
+    {
+      type = "so"
+      name = "//base/hiviewdfx/faultloggerd/interfaces/innerkits/dump_catcher:lib_dfx_dump_catcher"
+      header = {
+        header_files = [ "dfx_dump_catcher.h" ]
+        header_base = "//base/hiviewdfx/faultloggerd/interfaces/innerkits/dump_catcher/include"
+      }
+    },
+    {
+      type = "so"
+      name = "//base/hiviewdfx/faultloggerd/interfaces/innerkits/faultloggerd_client:libfaultloggerd"
+      header = {
+        header_files = [ "faultloggerd_client.h" ]
+        header_base = "//base/hiviewdfx/faultloggerd/interfaces/innerkits/faultloggerd_client/include"
+      }
+    },
+    {
+      type = "so"
+      name = "//base/hiviewdfx/faultloggerd/interfaces/innerkits/signal_handler:dfx_signalhandler"
+      header = {
+        header_files = [ "dfx_signal_handler.h" ]
+        header_base = "//base/hiviewdfx/faultloggerd/interfaces/innerkits/signal_handler/include"
+      }
+    },
+  ]
+  part_name = "faultloggerd"
+  origin_name = "faultloggerd"
+  variant = "phone"
+}
+
+ohos_part_test("faultloggerd_test") {
+  testonly = true
+  test_packages = [
+    "//base/hiviewdfx/faultloggerd/example:dumpcatcherdemo",
+    "//base/hiviewdfx/faultloggerd/interfaces/innerkits/dump_catcher/test:harmonystrace",
+    "//base/hiviewdfx/faultloggerd/test:faultloggerd_moduletest",
+    "//base/hiviewdfx/faultloggerd/test:faultloggerd_systemtest",
+    "//base/hiviewdfx/faultloggerd/test:faultloggerd_performancetest",
+    "//base/hiviewdfx/faultloggerd/tools/crasher_c:crasher_c",
+    "//base/hiviewdfx/faultloggerd/tools/crasher_cpp:crasher_cpp",
+    "//base/hiviewdfx/faultloggerd/tools/process_dump/test:processdump_unittest",
+    "//base/hiviewdfx/faultloggerd/services/test:service_unittest",
+  ]
+  deps = [ ":faultloggerd" ]
+  part_name = "faultloggerd"
+  subsystem_name = "hiviewdfx"
+}

@@ -1,0 +1,12 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("dvkit_sample") {
+  subsystem_name = "vendor"
+  module_list = [ "//vendor/hisi/camera/dvkit_product/sample/ohos3518ev300:dvkit_hilink_media_sdk" ]
+  origin_name = "dvkit_sample"
+  variant = "phone"
+}

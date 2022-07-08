@@ -1,0 +1,15 @@
+../../../device/soc/hisilicon/hi3861v100/hi3861_adapter/hals/communication/wifi_lite/wifiservice/source/wifi_hotspot.c: In function 'GetPeerSTAWifiIp':
+../../../device/soc/hisilicon/hi3861v100/hi3861_adapter/hals/communication/wifi_lite/wifiservice/source/wifi_hotspot.c:236:52: warning: passing argument 2 of 'netifapi_dhcps_get_client_ip' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+     ret = netifapi_dhcps_get_client_ip(netif_node, macAddress, macLen, &clientIP);
+                                                    ^~~~~~~~~~
+In file included from ../../../device/soc/hisilicon/hi3861v100/hi3861_adapter/hals/communication/wifi_lite/wifiservice/source/wifi_hotspot.c:19:0:
+../../../device/soc/hisilicon/hi3861v100/sdk_liteos/third_party/lwip_sack/include/lwip/netifapi.h:1155:7: note: expected 'u8_t * {aka unsigned char *}' but argument is of type 'const unsigned char *'
+ err_t netifapi_dhcps_get_client_ip(struct netif *netif, u8_t *mac, u8_t maclen, ip_addr_t *ip);
+       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../../../device/soc/hisilicon/hi3861v100/hi3861_adapter/hals/communication/wifi_lite/wifiservice/source/wifi_hotspot.c:236:72: warning: passing argument 4 of 'netifapi_dhcps_get_client_ip' from incompatible pointer type [-Wincompatible-pointer-types]
+     ret = netifapi_dhcps_get_client_ip(netif_node, macAddress, macLen, &clientIP);
+                                                                        ^
+In file included from ../../../device/soc/hisilicon/hi3861v100/hi3861_adapter/hals/communication/wifi_lite/wifiservice/source/wifi_hotspot.c:19:0:
+../../../device/soc/hisilicon/hi3861v100/sdk_liteos/third_party/lwip_sack/include/lwip/netifapi.h:1155:7: note: expected 'ip_addr_t * {aka struct ip_addr *}' but argument is of type 'ip4_addr_t * {aka struct ip4_addr *}'
+ err_t netifapi_dhcps_get_client_ip(struct netif *netif, u8_t *mac, u8_t maclen, ip_addr_t *ip);
+       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~

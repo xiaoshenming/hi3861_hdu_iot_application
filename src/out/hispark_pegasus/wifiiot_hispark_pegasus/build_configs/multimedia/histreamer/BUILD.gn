@@ -1,0 +1,12 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("histreamer") {
+  subsystem_name = "multimedia"
+  module_list = [ "//foundation/multimedia/histreamer:histreamer" ]
+  origin_name = "histreamer"
+  variant = "phone"
+}

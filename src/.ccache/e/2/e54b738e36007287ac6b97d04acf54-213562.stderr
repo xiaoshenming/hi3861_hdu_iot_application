@@ -1,0 +1,4 @@
+../../../foundation/communication/dsoftbus/core/transmission/trans_channel/tcp_direct/src/trans_tcp_direct_listener.c: In function 'CreateSessionConnNode':
+../../../foundation/communication/dsoftbus/core/transmission/trans_channel/tcp_direct/src/trans_tcp_direct_listener.c:104:65: warning: unused parameter 'events' [-Wunused-parameter]
+ static int32_t CreateSessionConnNode(ListenerModule module, int events, int fd, int32_t chanId, const char *ip)
+                                                                 ^~~~~~

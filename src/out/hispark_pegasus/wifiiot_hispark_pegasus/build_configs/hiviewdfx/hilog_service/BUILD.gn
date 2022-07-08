@@ -1,0 +1,23 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("hilog_service") {
+  subsystem_name = "hiviewdfx"
+  module_list = [
+    "//base/hiviewdfx/hilog/services/hilogtool:hilog",
+    "//base/hiviewdfx/hilog/services/hilogd:hilogd",
+  ]
+  origin_name = "hilog_service"
+  variant = "phone"
+}
+
+ohos_part_test("hilog_service_test") {
+  testonly = true
+  test_packages = [ "//base/hiviewdfx/hilog/test:HiLogNDKTest" ]
+  deps = [ ":hilog_service" ]
+  part_name = "hilog_service"
+  subsystem_name = "hiviewdfx"
+}

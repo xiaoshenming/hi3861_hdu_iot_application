@@ -1,0 +1,5 @@
+../../../foundation/communication/dsoftbus/core/connection/common/src/softbus_tcp_socket.c: In function 'ConnToggleNonBlockMode':
+../../../foundation/communication/dsoftbus/core/connection/common/src/softbus_tcp_socket.c:230:21: warning: implicit declaration of function 'fcntl'; did you mean 'fcvt'? [-Wimplicit-function-declaration]
+     int32_t flags = fcntl(fd, F_GETFL, 0);
+                     ^~~~~
+                     fcvt

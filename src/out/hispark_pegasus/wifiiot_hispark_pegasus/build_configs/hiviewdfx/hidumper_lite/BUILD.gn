@@ -1,0 +1,12 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("hidumper_lite") {
+  subsystem_name = "hiviewdfx"
+  module_list = [ "//base/hiviewdfx/hidumper_lite:hidumper" ]
+  origin_name = "hidumper_lite"
+  variant = "phone"
+}

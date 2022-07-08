@@ -1,0 +1,12 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("powermgr_lite") {
+  subsystem_name = "powermgr"
+  module_list = [ "//base/powermgr/powermgr_lite:powermgr_lite" ]
+  origin_name = "powermgr_lite"
+  variant = "phone"
+}

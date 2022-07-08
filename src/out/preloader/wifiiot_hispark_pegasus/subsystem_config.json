@@ -1,0 +1,210 @@
+{
+  "ace": {
+    "path": "foundation/ace",
+    "name": "ace"
+  },
+  "ai": {
+    "path": "foundation/ai",
+    "name": "ai"
+  },
+  "account": {
+    "path": "base/account",
+    "name": "account"
+  },
+  "distributeddatamgr": {
+    "path": "foundation/distributeddatamgr",
+    "name": "distributeddatamgr"
+  },
+  "security": {
+    "path": "base/security",
+    "name": "security"
+  },
+  "useriam": {
+    "path": "base/user_iam",
+    "name": "useriam"
+  },
+  "startup": {
+    "path": "base/startup",
+    "name": "startup"
+  },
+  "hiviewdfx": {
+    "path": "base/hiviewdfx",
+    "name": "hiviewdfx"
+  },
+  "utils": {
+    "name": "utils",
+    "path": "out/preloader/wifiiot_hispark_pegasus/mini_system/utils"
+  },
+  "appexecfwk": {
+    "path": "foundation/appexecfwk",
+    "name": "appexecfwk"
+  },
+  "aafwk": {
+    "name": "aafwk",
+    "path": "out/preloader/wifiiot_hispark_pegasus/mini_system/aafwk"
+  },
+  "notification": {
+    "path": "base/notification",
+    "name": "notification"
+  },
+  "communication": {
+    "name": "communication",
+    "path": "out/preloader/wifiiot_hispark_pegasus/mini_system/communication"
+  },
+  "location": {
+    "path": "base/location",
+    "name": "location"
+  },
+  "distributedschedule": {
+    "path": "foundation/distributedschedule",
+    "name": "distributedschedule"
+  },
+  "hdf": {
+    "path": "drivers",
+    "name": "hdf"
+  },
+  "updater": {
+    "path": "base/update",
+    "name": "updater"
+  },
+  "developtools": {
+    "path": "developtools",
+    "name": "developtools"
+  },
+  "sensors": {
+    "path": "base/sensors",
+    "name": "sensors"
+  },
+  "graphic": {
+    "path": "foundation/graphic",
+    "name": "graphic"
+  },
+  "window": {
+    "path": "foundation/windowmanager",
+    "name": "window"
+  },
+  "miscservices": {
+    "path": "base/miscservices",
+    "name": "miscservices"
+  },
+  "multimedia": {
+    "name": "multimedia",
+    "path": "out/preloader/wifiiot_hispark_pegasus/mini_system/multimedia"
+  },
+  "multimodalinput": {
+    "path": "foundation/multimodalinput",
+    "name": "multimodalinput"
+  },
+  "telephony": {
+    "path": "base/telephony",
+    "name": "telephony"
+  },
+  "global": {
+    "path": "base/global",
+    "name": "global"
+  },
+  "powermgr": {
+    "path": "base/powermgr",
+    "name": "powermgr"
+  },
+  "usb": {
+    "path": "base/usb",
+    "name": "usb"
+  },
+  "applications": {
+    "name": "applications",
+    "path": "out/preloader/wifiiot_hispark_pegasus/mini_system/applications"
+  },
+  "settingsdata": {
+    "path": "applications/standard/settings",
+    "name": "settingsdata"
+  },
+  "contactsdata": {
+    "path": "applications/standard/contactsdata",
+    "name": "contactsdata"
+  },
+  "wpa_supplicant-2.9": {
+    "path": "third_party/wpa_supplicant/wpa_supplicant-2.9_standard",
+    "name": "wpa_supplicant-2.9"
+  },
+  "xts": {
+    "name": "xts",
+    "path": "out/preloader/wifiiot_hispark_pegasus/mini_system/xts"
+  },
+  "wukong": {
+    "path": "test/wukong",
+    "name": "wukong"
+  },
+  "arkXtest": {
+    "path": "test/arkXtest",
+    "name": "arkXtest"
+  },
+  "distributedhardware": {
+    "path": "foundation/distributedhardware",
+    "name": "distributedhardware"
+  },
+  "ark": {
+    "path": "ark",
+    "name": "ark"
+  },
+  "compileruntime": {
+    "path": "base/compileruntime",
+    "name": "compileruntime"
+  },
+  "iot": {
+    "name": "iot",
+    "path": "out/preloader/wifiiot_hispark_pegasus/mini_system/iot"
+  },
+  "iot_hardware": {
+    "name": "iot_hardware",
+    "path": "out/preloader/wifiiot_hispark_pegasus/mini_system/iot_hardware"
+  },
+  "kernel": {
+    "path": "kernel",
+    "name": "kernel"
+  },
+  "msdp": {
+    "path": "base/msdp",
+    "name": "msdp"
+  },
+  "deviceprofile": {
+    "path": "foundation/deviceprofile",
+    "name": "deviceprofile"
+  },
+  "filemanagement": {
+    "path": "foundation/filemanagement",
+    "name": "filemanagement"
+  },
+  "resourceschedule": {
+    "path": "foundation/resourceschedule",
+    "name": "resourceschedule"
+  },
+  "barrierfree": {
+    "path": "base/accessibility",
+    "name": "accessibility"
+  },
+  "securec": {
+    "path": "third_party/bounds_checking_function",
+    "name": "securec"
+  },
+  "customization": {
+    "path": "base/customization",
+    "name": "customization"
+  },
+  "web": {
+    "path": "base/web",
+    "name": "web"
+  },
+  "vendor": {
+    "name": "vendor",
+    "path": "out/preloader/wifiiot_hispark_pegasus/mini_system/vendor"
+  },
+  "product_wifiiot_hispark_pegasus": {
+    "name": "product_wifiiot_hispark_pegasus",
+    "path": "vendor/hisilicon/hispark_pegasus"
+  },
+  "device_hispark_pegasus": {
+    "name": "device_hispark_pegasus",
+    "path": "/mnt/local/ohos_3861/device/board/hisilicon/hispark_pegasus"
+  }
+}

@@ -1,0 +1,23 @@
+In file included from ../../../device/soc/hisilicon/hi3861v100/hi3861_adapter/hals/update/hal_hota_board.c:16:0:
+../../../base/update/ota_lite/hals/hal_hota_board.h:111:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
+ const ComponentTableInfo *HotaHalGetPartitionInfo();
+ ^~~~~
+../../../device/soc/hisilicon/hi3861v100/hi3861_adapter/hals/update/hal_hota_board.c:148:27: warning: function declaration isn't a prototype [-Wstrict-prototypes]
+ const ComponentTableInfo *HotaHalGetPartitionInfo()
+                           ^~~~~~~~~~~~~~~~~~~~~~~
+../../../device/soc/hisilicon/hi3861v100/hi3861_adapter/hals/update/hal_hota_board.c: In function 'HotaHalGetOtaPkgPath':
+../../../device/soc/hisilicon/hi3861v100/hi3861_adapter/hals/update/hal_hota_board.c:172:15: warning: implicit declaration of function 'strcpy_s' [-Wimplicit-function-declaration]
+     int ret = strcpy_s(path, len ,"/sdcard");
+               ^~~~~~~~
+../../../device/soc/hisilicon/hi3861v100/hi3861_adapter/hals/update/hal_hota_board.c: In function 'HotaHalGetMetaData':
+../../../device/soc/hisilicon/hi3861v100/hi3861_adapter/hals/update/hal_hota_board.c:184:40: warning: unused parameter 'metaData' [-Wunused-parameter]
+ int HotaHalGetMetaData(UpdateMetaData *metaData)
+                                        ^~~~~~~~
+../../../device/soc/hisilicon/hi3861v100/hi3861_adapter/hals/update/hal_hota_board.c: In function 'HotaHalSetMetaData':
+../../../device/soc/hisilicon/hi3861v100/hi3861_adapter/hals/update/hal_hota_board.c:189:40: warning: unused parameter 'metaData' [-Wunused-parameter]
+ int HotaHalSetMetaData(UpdateMetaData *metaData)
+                                        ^~~~~~~~
+../../../device/soc/hisilicon/hi3861v100/hi3861_adapter/hals/update/hal_hota_board.c: In function 'HotaHalCheckVersionValid':
+../../../device/soc/hisilicon/hi3861v100/hi3861_adapter/hals/update/hal_hota_board.c:206:13: warning: implicit declaration of function 'strncmp' [-Wimplicit-function-declaration]
+     return (strncmp(currentVersion, pkgVersion, pkgVersionLength) == 0) ? 1 : 0;
+             ^~~~~~~

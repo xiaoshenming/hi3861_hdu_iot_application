@@ -1,0 +1,72 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("bundle_framework") {
+  subsystem_name = "appexecfwk"
+  module_list = [
+    "//foundation/appexecfwk/standard/common:common_target",
+    "//foundation/appexecfwk/standard/interfaces/innerkits/appexecfwk_base:appexecfwk_base",
+    "//foundation/appexecfwk/standard/interfaces/innerkits/appexecfwk_core:appexecfwk_core",
+    "//foundation/appexecfwk/standard/sa_profile:appexecfwk_sa_profile",
+    "//foundation/appexecfwk/standard/sa_profile:foundation.rc",
+    "//foundation/appexecfwk/standard/services/bundlemgr:bms_target",
+    "//foundation/appexecfwk/standard/kits/appkit/napi:napi_packages",
+    "//foundation/appexecfwk/standard/kits/appkit/native/bundle:bundle_ndk",
+    "//foundation/appexecfwk/standard/test/resource/bmssystemtestability/abilitySrc:bms_system_test_app",
+    "//foundation/appexecfwk/standard/tools/zip:tools_zip",
+  ]
+  origin_name = "bundle_framework"
+  variant = "phone"
+}
+
+ohos_inner_kits("bundle_framework_inner_kits") {
+  sdk_libs = [
+    {
+      type = "so"
+      name = "//foundation/appexecfwk/standard/interfaces/innerkits/appexecfwk_base:appexecfwk_base"
+      header = {
+        header_files = [
+          "ability_info.h",
+          "appexecfwk_errors.h",
+          "application_info.h",
+          "bundle_info.h",
+        ]
+        header_base = "//foundation/appexecfwk/standard/interfaces/innerkits/appexecfwk_base/include"
+      }
+    },
+    {
+      type = "so"
+      name = "//foundation/appexecfwk/standard/interfaces/innerkits/appexecfwk_core:appexecfwk_core"
+      header = {
+        header_files = [
+          "bundlemgr/bundle_installer_interface.h",
+          "bundlemgr/bundle_mgr_interface.h",
+          "bundlemgr/bundle_status_callback_interface.h",
+          "bundlemgr/clean_cache_callback_interface.h",
+          "bundlemgr/status_receiver_interface.h",
+        ]
+        header_base = "//foundation/appexecfwk/standard/interfaces/innerkits/appexecfwk_core/include"
+      }
+    },
+  ]
+  part_name = "bundle_framework"
+  origin_name = "bundle_framework"
+  variant = "phone"
+}
+
+ohos_part_test("bundle_framework_test") {
+  testonly = true
+  test_packages = [
+    "//foundation/appexecfwk/standard/services/bundlemgr/test:unittest",
+    "//foundation/appexecfwk/standard/services/test/moduletest/common/bms:moduletest",
+    "//foundation/appexecfwk/standard/test/benchmarktest:benchmarktest",
+    "//foundation/appexecfwk/standard/test/systemtest/common/bms:systemtest_bms",
+    "//foundation/appexecfwk/standard/tools/zip/test:unittest",
+  ]
+  deps = [ ":bundle_framework" ]
+  part_name = "bundle_framework"
+  subsystem_name = "appexecfwk"
+}

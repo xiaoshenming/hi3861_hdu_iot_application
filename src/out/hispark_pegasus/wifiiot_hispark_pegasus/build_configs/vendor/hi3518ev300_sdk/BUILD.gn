@@ -1,0 +1,12 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("hi3518ev300_sdk") {
+  subsystem_name = "vendor"
+  module_list = []
+  origin_name = "hi3518ev300_sdk"
+  variant = "phone"
+}

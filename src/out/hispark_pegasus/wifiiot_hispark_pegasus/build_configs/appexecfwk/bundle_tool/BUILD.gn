@@ -1,0 +1,24 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("bundle_tool") {
+  subsystem_name = "appexecfwk"
+  module_list = [ "//foundation/appexecfwk/standard/tools/bm:tools_bm" ]
+  origin_name = "bundle_tool"
+  variant = "phone"
+}
+
+ohos_part_test("bundle_tool_test") {
+  testonly = true
+  test_packages = [
+    "//foundation/appexecfwk/standard/tools/test:moduletest",
+    "//foundation/appexecfwk/standard/tools/test:systemtest",
+    "//foundation/appexecfwk/standard/tools/test:unittest",
+  ]
+  deps = [ ":bundle_tool" ]
+  part_name = "bundle_tool"
+  subsystem_name = "appexecfwk"
+}

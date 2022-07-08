@@ -1,0 +1,12 @@
+../../../foundation/communication/dsoftbus/sdk/bus_center/manager/src/client_bus_center_manager.c: In function 'ConvertPublishInfoToVoid':
+../../../foundation/communication/dsoftbus/sdk/bus_center/manager/src/client_bus_center_manager.c:290:28: warning: pointer of type 'void *' used in subtraction [-Wpointer-arith]
+     *infoLen = (void *)buf - *info;
+                            ^
+../../../foundation/communication/dsoftbus/sdk/bus_center/manager/src/client_bus_center_manager.c: In function 'ConvertSubscribeInfoToVoid':
+../../../foundation/communication/dsoftbus/sdk/bus_center/manager/src/client_bus_center_manager.c:332:28: warning: pointer of type 'void *' used in subtraction [-Wpointer-arith]
+     *infoLen = (void *)buf - *info;
+                            ^
+../../../foundation/communication/dsoftbus/sdk/bus_center/manager/src/client_bus_center_manager.c: In function 'RegNodeDeviceStateCbInner':
+../../../foundation/communication/dsoftbus/sdk/bus_center/manager/src/client_bus_center_manager.c:498:47: warning: unused parameter 'pkgName' [-Wunused-parameter]
+ int32_t RegNodeDeviceStateCbInner(const char *pkgName, INodeStateCb *callback)
+                                               ^~~~~~~

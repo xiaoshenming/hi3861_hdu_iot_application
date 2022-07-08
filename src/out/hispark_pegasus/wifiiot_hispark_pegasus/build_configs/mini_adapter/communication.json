@@ -1,0 +1,11 @@
+{
+  "parts": [
+    "bluetooth",
+    "dsoftbus",
+    "ipc_lite",
+    "rpc",
+    "wifi_aware",
+    "wifi_lite",
+    "wpa_supplicant"
+  ]
+}

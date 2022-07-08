@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "bootstrap_lite",
+    "startup_l2",
+    "syspara_lite",
+    "init",
+    "init_lite",
+    "appspawn_lite"
+  ]
+}

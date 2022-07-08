@@ -1,0 +1,21 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("appspawn_lite") {
+  subsystem_name = "startup"
+  module_list = [ "//base/startup/appspawn_lite/services:appspawn_lite" ]
+  origin_name = "appspawn_lite"
+  variant = "phone"
+}
+
+ohos_part_test("appspawn_lite_test") {
+  testonly = true
+  test_packages =
+      [ "//base/startup/appspawn_lite/services/test/unittest/common:unittest" ]
+  deps = [ ":appspawn_lite" ]
+  part_name = "appspawn_lite"
+  subsystem_name = "startup"
+}

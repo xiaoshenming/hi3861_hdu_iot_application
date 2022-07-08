@@ -1,0 +1,4 @@
+../../../foundation/communication/dsoftbus/core/authentication/src/auth_manager.c: In function 'CustomFunc':
+../../../foundation/communication/dsoftbus/core/authentication/src/auth_manager.c:106:19: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+     uint16_t id = (uint16_t)para;
+                   ^

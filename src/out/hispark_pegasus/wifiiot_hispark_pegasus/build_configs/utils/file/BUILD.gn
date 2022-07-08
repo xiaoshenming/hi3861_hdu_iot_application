@@ -1,0 +1,12 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("file") {
+  subsystem_name = "utils"
+  module_list = [ "//utils/native/lite/file" ]
+  origin_name = "file"
+  variant = "phone"
+}

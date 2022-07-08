@@ -1,0 +1,304 @@
+{
+  "aafwk_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/aafwk/aafwk_lite:aafwk_lite"
+  },
+  "appexecfwk_lite": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/appexecfwk/appexecfwk_lite:appexecfwk_lite_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/appexecfwk/appexecfwk_lite:appexecfwk_lite"
+  },
+  "appspawn_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/startup/appspawn_lite:appspawn_lite",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/startup/appspawn_lite:appspawn_lite_test"
+  },
+  "appverify": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/appverify:appverify_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/appverify:appverify",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/appverify:appverify_test"
+  },
+  "audio_manager_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/multimedia/audio_manager_lite:audio_manager_lite"
+  },
+  "battery_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/powermgr/battery_lite:battery_lite"
+  },
+  "blackbox": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/blackbox:blackbox"
+  },
+  "bluetooth": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/communication/bluetooth:bluetooth"
+  },
+  "bootstrap_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/startup/bootstrap_lite:bootstrap_lite"
+  },
+  "bundle_framework": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/appexecfwk/bundle_framework:bundle_framework_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/appexecfwk/bundle_framework:bundle_framework",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/appexecfwk/bundle_framework:bundle_framework_test"
+  },
+  "bundle_tool": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/appexecfwk/bundle_tool:bundle_tool",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/appexecfwk/bundle_tool:bundle_tool_test"
+  },
+  "camera_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/multimedia/camera_lite:camera_lite"
+  },
+  "camera_sample_ai": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/applications/camera_sample_ai:camera_sample_ai"
+  },
+  "camera_sample_app": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/applications/camera_sample_app:camera_sample_app"
+  },
+  "camera_sample_communication": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/applications/camera_sample_communication:camera_sample_communication"
+  },
+  "camera_screensaver_app": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/applications/camera_screensaver_app:camera_screensaver_app"
+  },
+  "common": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/common/common:common"
+  },
+  "device_hispark_pegasus": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/device_hispark_pegasus/device_hispark_pegasus:device_hispark_pegasus"
+  },
+  "deviceauth_standard": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/deviceauth_standard:deviceauth_standard_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/deviceauth_standard:deviceauth_standard",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/deviceauth_standard:deviceauth_standard_test"
+  },
+  "distributed_bundle_framework": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/appexecfwk/distributed_bundle_framework:distributed_bundle_framework"
+  },
+  "dsoftbus": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/communication/dsoftbus:dsoftbus"
+  },
+  "dvkit_sample": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/vendor/dvkit_sample:dvkit_sample"
+  },
+  "eventhandler": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/appexecfwk/eventhandler:eventhandler_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/appexecfwk/eventhandler:eventhandler",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/appexecfwk/eventhandler:eventhandler_test"
+  },
+  "faultloggerd": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/faultloggerd:faultloggerd_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/faultloggerd:faultloggerd",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/faultloggerd:faultloggerd_test"
+  },
+  "file": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/utils/file:file"
+  },
+  "hardware": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/vendor/hardware:hardware"
+  },
+  "hi3516dv300_adapter": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/vendor/hi3516dv300_adapter:hi3516dv300_adapter"
+  },
+  "hi3516dv300_sdk": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/vendor/hi3516dv300_sdk:hi3516dv300_sdk"
+  },
+  "hi3516dv300_uboot": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/vendor/hi3516dv300_uboot:hi3516dv300_uboot"
+  },
+  "hi3518ev300_adapter": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/vendor/hi3518ev300_adapter:hi3518ev300_adapter"
+  },
+  "hi3518ev300_sdk": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/vendor/hi3518ev300_sdk:hi3518ev300_sdk"
+  },
+  "hi3518ev300_uboot": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/vendor/hi3518ev300_uboot:hi3518ev300_uboot"
+  },
+  "hi3861_adapter": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/vendor/hi3861_adapter:hi3861_adapter"
+  },
+  "hi3861_sdk": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/vendor/hi3861_sdk:hi3861_sdk"
+  },
+  "hiappevent_js": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hiappevent_js:hiappevent_js"
+  },
+  "hiappevent_native": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hiappevent_native:hiappevent_native",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hiappevent_native:hiappevent_native_test"
+  },
+  "hicollie_native": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hicollie_native:hicollie_native_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hicollie_native:hicollie_native",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hicollie_native:hicollie_native_test"
+  },
+  "hidumper_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hidumper_lite:hidumper_lite"
+  },
+  "hidumper_mini": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hidumper_mini:hidumper_mini"
+  },
+  "hievent_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hievent_lite:hievent_lite"
+  },
+  "hilog": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hilog:hilog"
+  },
+  "hilog_featured_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hilog_featured_lite:hilog_featured_lite"
+  },
+  "hilog_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hilog_lite:hilog_lite"
+  },
+  "hilog_native": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hilog_native:hilog_native_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hilog_native:hilog_native"
+  },
+  "hilog_service": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hilog_service:hilog_service",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hilog_service:hilog_service_test"
+  },
+  "histreamer": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/multimedia/histreamer:histreamer"
+  },
+  "hisysevent_native": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hisysevent_native:hisysevent_native_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hisysevent_native:hisysevent_native",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hisysevent_native:hisysevent_native_test"
+  },
+  "hitrace_native": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hitrace_native:hitrace_native_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hitrace_native:hitrace_native",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hitrace_native:hitrace_native_test"
+  },
+  "hiview": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hiview:hiview_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hiview:hiview",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hiview:hiview_test"
+  },
+  "hiview_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hiview_lite:hiview_lite"
+  },
+  "hiviewdfx_hilog_native": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/hiviewdfx/hiviewdfx_hilog_native:hiviewdfx_hilog_native"
+  },
+  "huks": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/huks:huks_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/huks:huks",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/huks:huks_test"
+  },
+  "i18n": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/global/i18n:i18n_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/global/i18n:i18n",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/global/i18n:i18n_test"
+  },
+  "i18n_lite": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/global/i18n_lite:i18n_lite_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/global/i18n_lite:i18n_lite",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/global/i18n_lite:i18n_lite_test"
+  },
+  "init": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/startup/init:init_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/startup/init:init",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/startup/init:init_test"
+  },
+  "init_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/startup/init_lite:init_lite",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/startup/init_lite:init_lite_test"
+  },
+  "iot_controller": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/iot_hardware/iot_controller:iot_controller"
+  },
+  "iot_link": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/iot/iot_link:iot_link"
+  },
+  "ipc_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/communication/ipc_lite:ipc_lite"
+  },
+  "js_builtin": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/utils/js_builtin:js_builtin"
+  },
+  "kal_timer": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/utils/kal_timer:kal_timer"
+  },
+  "kit_framework": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/applications/kit_framework:kit_framework"
+  },
+  "kv_store": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/utils/kv_store:kv_store"
+  },
+  "media_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/multimedia/media_lite:media_lite"
+  },
+  "media_service": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/multimedia/media_service:media_service",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/multimedia/media_service:media_service_test"
+  },
+  "middleware": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/vendor/middleware:middleware"
+  },
+  "oem_iotlink": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/vendor/oem_iotlink:oem_iotlink"
+  },
+  "os_dump": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/utils/os_dump:os_dump"
+  },
+  "ota_lite": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/updater/ota_lite:ota_lite_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/updater/ota_lite:ota_lite"
+  },
+  "permission_lite": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/permission_lite:permission_lite_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/permission_lite:permission_lite",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/permission_lite:permission_lite_test"
+  },
+  "permission_standard": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/permission_standard:permission_standard_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/permission_standard:permission_standard"
+  },
+  "powermgr_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/powermgr/powermgr_lite:powermgr_lite"
+  },
+  "product_wifiiot_hispark_pegasus": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/product_wifiiot_hispark_pegasus/product_wifiiot_hispark_pegasus:product_wifiiot_hispark_pegasus"
+  },
+  "resmgr_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/global/resmgr_lite:resmgr_lite",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/global/resmgr_lite:resmgr_lite_test"
+  },
+  "rpc": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/communication/rpc:rpc"
+  },
+  "samgr_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/distributedschedule/samgr_lite:samgr_lite"
+  },
+  "selinux": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/selinux:selinux_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/selinux:selinux",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/selinux:selinux_test"
+  },
+  "sensor_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/sensors/sensor_lite:sensor_lite",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/sensors/sensor_lite:sensor_lite_test"
+  },
+  "startup_l2": {
+    "inner_kits": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/startup/startup_l2:startup_l2_inner_kits",
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/startup/startup_l2:startup_l2"
+  },
+  "syspara_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/startup/syspara_lite:syspara_lite",
+    "test": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/startup/syspara_lite:syspara_lite_test"
+  },
+  "timer_task": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/utils/timer_task:timer_task"
+  },
+  "utils_base": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/utils/utils_base:utils_base"
+  },
+  "wifi_aware": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/communication/wifi_aware:wifi_aware"
+  },
+  "wifi_iot_sample_app": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/applications/wifi_iot_sample_app:wifi_iot_sample_app"
+  },
+  "wifi_lite": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/communication/wifi_lite:wifi_lite"
+  },
+  "wpa_supplicant": {
+    "part": "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/communication/wpa_supplicant:wpa_supplicant"
+  }
+}

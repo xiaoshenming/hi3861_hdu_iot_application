@@ -1,0 +1,45 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("hicollie_native") {
+  subsystem_name = "hiviewdfx"
+  module_list =
+      [ "//base/hiviewdfx/hicollie/interfaces/native/innerkits:libhicollie" ]
+  origin_name = "hicollie_native"
+  variant = "phone"
+}
+
+ohos_inner_kits("hicollie_native_inner_kits") {
+  sdk_libs = [
+    {
+      type = "so"
+      name = "//base/hiviewdfx/hicollie/interfaces/native/innerkits:libhicollie"
+      header = {
+        header_files = [
+          "xcollie/xcollie.h",
+          "xcollie/xcollie_checker.h",
+          "xcollie/xcollie_define.h",
+          "xcollie/watchdog.h",
+        ]
+        header_base =
+            "//base/hiviewdfx/hicollie/interfaces/native/innerkits/include"
+      }
+    },
+  ]
+  part_name = "hicollie_native"
+  origin_name = "hicollie_native"
+  variant = "phone"
+}
+
+ohos_part_test("hicollie_native_test") {
+  testonly = true
+  test_packages = [
+    "//base/hiviewdfx/hicollie/frameworks/native/test/unittest/common:unittest",
+  ]
+  deps = [ ":hicollie_native" ]
+  part_name = "hicollie_native"
+  subsystem_name = "hiviewdfx"
+}

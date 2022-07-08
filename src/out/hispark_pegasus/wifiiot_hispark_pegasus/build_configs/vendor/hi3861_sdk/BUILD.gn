@@ -1,0 +1,12 @@
+# import("//build/ohos.gni")
+# import("//build/ohos_var.gni")
+import("//build/ohos/ohos_kits.gni")
+import("//build/ohos/ohos_part.gni")
+import("//build/ohos/ohos_test.gni")
+
+ohos_part("hi3861_sdk") {
+  subsystem_name = "vendor"
+  module_list = [ "//device/soc/hisilicon/hi3861v100/sdk_liteos:wifiiot_sdk" ]
+  origin_name = "hi3861_sdk"
+  variant = "phone"
+}

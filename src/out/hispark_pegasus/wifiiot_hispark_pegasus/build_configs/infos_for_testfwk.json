@@ -1,0 +1,264 @@
+{
+  "phone": {
+    "part_infos": {
+      "blackbox": {
+        "build_out_dir": ".",
+        "origin_part_name": "blackbox",
+        "part_name": "blackbox",
+        "subsystem_name": "hiviewdfx",
+        "system_capabilities": [],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "bootstrap_lite": {
+        "build_out_dir": ".",
+        "origin_part_name": "bootstrap_lite",
+        "part_name": "bootstrap_lite",
+        "subsystem_name": "startup",
+        "system_capabilities": [],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "device_hispark_pegasus": {
+        "build_out_dir": ".",
+        "origin_part_name": "device_hispark_pegasus",
+        "part_name": "device_hispark_pegasus",
+        "subsystem_name": "device_hispark_pegasus",
+        "system_capabilities": [],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "deviceauth_standard": {
+        "build_out_dir": ".",
+        "origin_part_name": "deviceauth_standard",
+        "part_name": "deviceauth_standard",
+        "subsystem_name": "security",
+        "system_capabilities": [
+          "SystemCapability.Security.DeviceAuth"
+        ],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "dsoftbus": {
+        "build_out_dir": ".",
+        "origin_part_name": "dsoftbus",
+        "part_name": "dsoftbus",
+        "subsystem_name": "communication",
+        "system_capabilities": [],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "file": {
+        "build_out_dir": ".",
+        "origin_part_name": "file",
+        "part_name": "file",
+        "subsystem_name": "utils",
+        "system_capabilities": [],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "hi3861_sdk": {
+        "build_out_dir": ".",
+        "origin_part_name": "hi3861_sdk",
+        "part_name": "hi3861_sdk",
+        "subsystem_name": "vendor",
+        "system_capabilities": [],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "hidumper_mini": {
+        "build_out_dir": ".",
+        "origin_part_name": "hidumper_mini",
+        "part_name": "hidumper_mini",
+        "subsystem_name": "hiviewdfx",
+        "system_capabilities": [],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "hievent_lite": {
+        "build_out_dir": ".",
+        "origin_part_name": "hievent_lite",
+        "part_name": "hievent_lite",
+        "subsystem_name": "hiviewdfx",
+        "system_capabilities": [
+          "SystemCapability.HiviewDFX.HiEventLite"
+        ],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "hilog_lite": {
+        "build_out_dir": ".",
+        "origin_part_name": "hilog_lite",
+        "part_name": "hilog_lite",
+        "subsystem_name": "hiviewdfx",
+        "system_capabilities": [
+          "SystemCapability.HiviewDFX.HiLogLite"
+        ],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "huks": {
+        "build_out_dir": ".",
+        "origin_part_name": "huks",
+        "part_name": "huks",
+        "subsystem_name": "security",
+        "system_capabilities": [
+          "SystemCapability.Security.Huks"
+        ],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "iot_controller": {
+        "build_out_dir": ".",
+        "origin_part_name": "iot_controller",
+        "part_name": "iot_controller",
+        "subsystem_name": "iot_hardware",
+        "system_capabilities": [],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "iot_link": {
+        "build_out_dir": ".",
+        "origin_part_name": "iot_link",
+        "part_name": "iot_link",
+        "subsystem_name": "iot",
+        "system_capabilities": [],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "kv_store": {
+        "build_out_dir": ".",
+        "origin_part_name": "kv_store",
+        "part_name": "kv_store",
+        "subsystem_name": "utils",
+        "system_capabilities": [],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "os_dump": {
+        "build_out_dir": ".",
+        "origin_part_name": "os_dump",
+        "part_name": "os_dump",
+        "subsystem_name": "utils",
+        "system_capabilities": [],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "ota_lite": {
+        "build_out_dir": ".",
+        "origin_part_name": "ota_lite",
+        "part_name": "ota_lite",
+        "subsystem_name": "updater",
+        "system_capabilities": [
+          "SystemCapability.Updater.Raw"
+        ],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "product_wifiiot_hispark_pegasus": {
+        "build_out_dir": ".",
+        "origin_part_name": "product_wifiiot_hispark_pegasus",
+        "part_name": "product_wifiiot_hispark_pegasus",
+        "subsystem_name": "product_wifiiot_hispark_pegasus",
+        "system_capabilities": [],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "samgr_lite": {
+        "build_out_dir": ".",
+        "origin_part_name": "samgr_lite",
+        "part_name": "samgr_lite",
+        "subsystem_name": "distributedschedule",
+        "system_capabilities": [],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "syspara_lite": {
+        "build_out_dir": ".",
+        "origin_part_name": "syspara_lite",
+        "part_name": "syspara_lite",
+        "subsystem_name": "startup",
+        "system_capabilities": [],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "wifi_aware": {
+        "build_out_dir": ".",
+        "origin_part_name": "wifi_aware",
+        "part_name": "wifi_aware",
+        "subsystem_name": "communication",
+        "system_capabilities": [],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "wifi_iot_sample_app": {
+        "build_out_dir": ".",
+        "origin_part_name": "wifi_iot_sample_app",
+        "part_name": "wifi_iot_sample_app",
+        "subsystem_name": "applications",
+        "system_capabilities": [],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      },
+      "wifi_lite": {
+        "build_out_dir": ".",
+        "origin_part_name": "wifi_lite",
+        "part_name": "wifi_lite",
+        "subsystem_name": "communication",
+        "system_capabilities": [],
+        "toolchain_label": "",
+        "variant_name": "phone"
+      }
+    },
+    "subsystem_infos": {
+      "applications": [
+        "wifi_iot_sample_app"
+      ],
+      "communication": [
+        "dsoftbus",
+        "wifi_aware",
+        "wifi_lite"
+      ],
+      "device_hispark_pegasus": [
+        "device_hispark_pegasus"
+      ],
+      "distributedschedule": [
+        "samgr_lite"
+      ],
+      "hiviewdfx": [
+        "blackbox",
+        "hidumper_mini",
+        "hievent_lite",
+        "hilog_lite"
+      ],
+      "iot": [
+        "iot_link"
+      ],
+      "iot_hardware": [
+        "iot_controller"
+      ],
+      "product_wifiiot_hispark_pegasus": [
+        "product_wifiiot_hispark_pegasus"
+      ],
+      "security": [
+        "deviceauth_standard",
+        "huks"
+      ],
+      "startup": [
+        "bootstrap_lite",
+        "syspara_lite"
+      ],
+      "updater": [
+        "ota_lite"
+      ],
+      "utils": [
+        "file",
+        "kv_store",
+        "os_dump"
+      ],
+      "vendor": [
+        "hi3861_sdk"
+      ]
+    }
+  }
+}

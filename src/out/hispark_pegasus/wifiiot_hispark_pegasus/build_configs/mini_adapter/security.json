@@ -1,0 +1,10 @@
+{
+  "parts": [
+    "permission_standard",
+    "appverify",
+    "deviceauth_standard",
+    "huks",
+    "permission_lite",
+    "selinux"
+  ]
+}

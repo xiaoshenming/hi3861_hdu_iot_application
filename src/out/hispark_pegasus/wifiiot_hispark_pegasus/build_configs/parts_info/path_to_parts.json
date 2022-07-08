@@ -1,0 +1,194 @@
+{
+  "base/global/i18n": [
+    "i18n"
+  ],
+  "base/global/i18n_lite": [
+    "i18n_lite"
+  ],
+  "base/global/resmgr_lite": [
+    "resmgr_lite"
+  ],
+  "base/hiviewdfx/blackbox": [
+    "blackbox"
+  ],
+  "base/hiviewdfx/faultloggerd": [
+    "faultloggerd"
+  ],
+  "base/hiviewdfx/hiappevent/interfaces/js": [
+    "hiappevent_js"
+  ],
+  "base/hiviewdfx/hiappevent/interfaces/native": [
+    "hiappevent_native"
+  ],
+  "base/hiviewdfx/hicollie": [
+    "hicollie_native"
+  ],
+  "base/hiviewdfx/hidumper_lite": [
+    "hidumper_lite"
+  ],
+  "base/hiviewdfx/hidumper_lite/mini": [
+    "hidumper_mini"
+  ],
+  "base/hiviewdfx/hievent_lite": [
+    "hievent_lite"
+  ],
+  "base/hiviewdfx/hilog": [
+    "hilog"
+  ],
+  "base/hiviewdfx/hilog/interfaces": [
+    "hilog_native"
+  ],
+  "base/hiviewdfx/hilog/interfaces/native": [
+    "hiviewdfx_hilog_native"
+  ],
+  "base/hiviewdfx/hilog/services": [
+    "hilog_service"
+  ],
+  "base/hiviewdfx/hilog_lite/frameworks/featured": [
+    "hilog_featured_lite"
+  ],
+  "base/hiviewdfx/hilog_lite/frameworks/mini": [
+    "hilog_lite"
+  ],
+  "base/hiviewdfx/hisysevent": [
+    "hisysevent_native"
+  ],
+  "base/hiviewdfx/hitrace": [
+    "hitrace_native"
+  ],
+  "base/hiviewdfx/hiview": [
+    "hiview"
+  ],
+  "base/hiviewdfx/hiview_lite": [
+    "hiview_lite"
+  ],
+  "base/powermgr/battery_lite": [
+    "battery_lite"
+  ],
+  "base/powermgr/powermgr_lite": [
+    "powermgr_lite"
+  ],
+  "base/security/appverify": [
+    "appverify"
+  ],
+  "base/security/deviceauth": [
+    "deviceauth_standard"
+  ],
+  "base/security/huks": [
+    "huks"
+  ],
+  "base/security/permission": [
+    "permission_standard",
+    "permission_lite"
+  ],
+  "base/security/selinux": [
+    "selinux"
+  ],
+  "base/sensors/sensor_lite": [
+    "sensor_lite"
+  ],
+  "base/startup/appspawn_lite": [
+    "appspawn_lite"
+  ],
+  "base/startup/bootstrap_lite": [
+    "bootstrap_lite"
+  ],
+  "base/startup/init_lite": [
+    "init"
+  ],
+  "base/startup/init_lite/services/init/lite": [
+    "init_lite"
+  ],
+  "base/startup/syspara_lite": [
+    "startup_l2"
+  ],
+  "base/startup/syspara_lite/frameworks": [
+    "syspara_lite"
+  ],
+  "base/update/ota_lite": [
+    "ota_lite"
+  ],
+  "build/common": [
+    "common"
+  ],
+  "device/board/hisilicon/hispark_pegasus": [
+    "device_hispark_pegasus"
+  ],
+  "foundation/appexecfwk/appexecfwk_lite": [
+    "appexecfwk_lite"
+  ],
+  "foundation/appexecfwk/standard": [
+    "bundle_framework"
+  ],
+  "foundation/appexecfwk/standard/libs/libeventhandler": [
+    "eventhandler"
+  ],
+  "foundation/appexecfwk/standard/services/dbms": [
+    "distributed_bundle_framework"
+  ],
+  "foundation/appexecfwk/standard/tools/bm": [
+    "bundle_tool"
+  ],
+  "foundation/distributedschedule/samgr_lite": [
+    "samgr_lite"
+  ],
+  "out/preloader/wifiiot_hispark_pegasus/mini_system/aafwk": [
+    "aafwk_lite"
+  ],
+  "out/preloader/wifiiot_hispark_pegasus/mini_system/applications": [
+    "camera_sample_ai",
+    "camera_sample_app",
+    "camera_sample_communication",
+    "camera_screensaver_app",
+    "kit_framework",
+    "wifi_iot_sample_app"
+  ],
+  "out/preloader/wifiiot_hispark_pegasus/mini_system/communication": [
+    "bluetooth",
+    "dsoftbus",
+    "ipc_lite",
+    "rpc",
+    "wifi_aware",
+    "wifi_lite",
+    "wpa_supplicant"
+  ],
+  "out/preloader/wifiiot_hispark_pegasus/mini_system/iot": [
+    "iot_link"
+  ],
+  "out/preloader/wifiiot_hispark_pegasus/mini_system/iot_hardware": [
+    "iot_controller"
+  ],
+  "out/preloader/wifiiot_hispark_pegasus/mini_system/multimedia": [
+    "audio_manager_lite",
+    "camera_lite",
+    "histreamer",
+    "media_lite",
+    "media_service"
+  ],
+  "out/preloader/wifiiot_hispark_pegasus/mini_system/utils": [
+    "file",
+    "js_builtin",
+    "kal_timer",
+    "kv_store",
+    "os_dump",
+    "timer_task",
+    "utils_base"
+  ],
+  "out/preloader/wifiiot_hispark_pegasus/mini_system/vendor": [
+    "dvkit_sample",
+    "hardware",
+    "hi3516dv300_adapter",
+    "hi3516dv300_sdk",
+    "hi3516dv300_uboot",
+    "hi3518ev300_adapter",
+    "hi3518ev300_sdk",
+    "hi3518ev300_uboot",
+    "hi3861_adapter",
+    "hi3861_sdk",
+    "middleware",
+    "oem_iotlink"
+  ],
+  "vendor/hisilicon/hispark_pegasus": [
+    "product_wifiiot_hispark_pegasus"
+  ]
+}

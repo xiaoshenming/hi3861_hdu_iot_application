@@ -1,0 +1,13 @@
+In file included from ../../../utils/native/lite/os_dump/dump_syspara.c:16:0:
+../../../utils/native/lite/os_dump/dump_syspara.h:24:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
+ int QuerySysparaCmd();
+ ^~~
+../../../utils/native/lite/os_dump/dump_syspara.c:27:20: warning: function declaration isn't a prototype [-Wstrict-prototypes]
+ static const char* GetSdkApiLevel()
+                    ^~~~~~~~~~~~~~
+../../../utils/native/lite/os_dump/dump_syspara.c:35:20: warning: function declaration isn't a prototype [-Wstrict-prototypes]
+ static const char* GetFirstApiLevel()
+                    ^~~~~~~~~~~~~~~~
+../../../utils/native/lite/os_dump/dump_syspara.c:69:5: warning: function declaration isn't a prototype [-Wstrict-prototypes]
+ int QuerySysparaCmd()
+     ^~~~~~~~~~~~~~~

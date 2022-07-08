@@ -1,0 +1,5 @@
+inner_kits_list = [
+  "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/deviceauth_standard:deviceauth_standard_inner_kits",
+  "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/huks:huks_inner_kits",
+  "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/updater/ota_lite:ota_lite_inner_kits",
+]
