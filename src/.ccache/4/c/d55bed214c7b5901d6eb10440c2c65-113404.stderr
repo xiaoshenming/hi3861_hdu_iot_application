@@ -1,9 +1,0 @@
-../../../base/security/deviceauth/deps_adapter/key_management_adapter/impl/src/mini/huks_adapter.c: In function 'InitHks':
-../../../base/security/deviceauth/deps_adapter/key_management_adapter/impl/src/mini/huks_adapter.c:87:18: warning: implicit declaration of function 'GetStoragePath' [-Wimplicit-function-declaration]
-     HcFileRemove(GetStoragePath());
-                  ^~~~~~~~~~~~~~
-../../../base/security/deviceauth/deps_adapter/key_management_adapter/impl/src/mini/huks_adapter.c:87:18: warning: passing argument 1 of 'HcFileRemove' makes pointer from integer without a cast [-Wint-conversion]
-In file included from ../../../base/security/deviceauth/deps_adapter/key_management_adapter/impl/src/mini/huks_adapter.c:18:0:
-../../../base/security/deviceauth/deps_adapter/os_adapter/interfaces/liteos/hc_file.h:44:6: note: expected 'const char *' but argument is of type 'int'
- void HcFileRemove(const char *path);
-      ^~~~~~~~~~~~

@@ -1,5 +1,0 @@
-../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_m/lnn_ip_utils_adapter.c: In function 'GetNetworkIpByIfName':
-../../../foundation/communication/dsoftbus/adapter/common/kernel/liteos_m/lnn_ip_utils_adapter.c:41:5: warning: implicit declaration of function 'netifapi_netif_get_addr'; did you mean 'netif_get_addr'? [-Wimplicit-function-declaration]
-     netifapi_netif_get_addr(netif, ipAddr, netMask, gw);
-     ^~~~~~~~~~~~~~~~~~~~~~~
-     netif_get_addr

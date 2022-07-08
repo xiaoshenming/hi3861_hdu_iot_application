@@ -1,4 +1,0 @@
-../../../base/startup/syspara_lite/frameworks/parameter/src/parameter_common.c: In function 'BuildDisplayVersion':
-../../../base/startup/syspara_lite/frameworks/parameter/src/parameter_common.c:204:13: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
-     if (len < strlen("version=")) {
-             ^

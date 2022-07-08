@@ -1,4 +1,0 @@
-In file included from ../../../base/update/ota_lite/frameworks/source/verify/hota_verify.c:21:0:
-../../../base/update/ota_lite/hals/hal_hota_board.h:111:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
- const ComponentTableInfo *HotaHalGetPartitionInfo();
- ^~~~~

@@ -1,7 +1,0 @@
-../../../foundation/communication/dsoftbus/core/transmission/trans_channel/auth/src/trans_auth_manager.c:59:16: warning: function declaration isn't a prototype [-Wstrict-prototypes]
- static int32_t GenerateAuthChannelId()
-                ^~~~~~~~~~~~~~~~~~~~~
-../../../foundation/communication/dsoftbus/core/transmission/trans_channel/auth/src/trans_auth_manager.c: In function 'NotifyOnDataReceived':
-../../../foundation/communication/dsoftbus/core/transmission/trans_channel/auth/src/trans_auth_manager.c:160:74: warning: unused parameter 'option' [-Wunused-parameter]
- static int32_t NotifyOnDataReceived(int64_t authId, const ConnectOption *option, const AuthTransDataInfo *info)
-                                                                          ^~~~~~

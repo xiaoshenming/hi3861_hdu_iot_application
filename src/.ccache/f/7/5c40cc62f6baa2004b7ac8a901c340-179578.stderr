@@ -1,4 +1,0 @@
-../../../foundation/communication/dsoftbus/components/nstackx_mini/nstackx_ctrl/core/coap_discover/coap_app.c: In function 'CoapSocketSend':
-../../../foundation/communication/dsoftbus/components/nstackx_mini/nstackx_ctrl/core/coap_discover/coap_app.c:158:13: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
-     if (ret != length) {
-             ^~

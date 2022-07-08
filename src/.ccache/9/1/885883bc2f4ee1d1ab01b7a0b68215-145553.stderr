@@ -1,5 +1,0 @@
-../../../foundation/communication/dsoftbus/components/nstackx_mini/nstackx_util/platform/liteos/sys_util.c: In function 'SetSocketNonBlock':
-../../../foundation/communication/dsoftbus/components/nstackx_mini/nstackx_util/platform/liteos/sys_util.c:112:12: warning: implicit declaration of function 'fcntl'; did you mean 'fcvt'? [-Wimplicit-function-declaration]
-     flag = fcntl(fd, F_GETFL, 0);
-            ^~~~~
-            fcvt

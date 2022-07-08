@@ -1,4 +1,0 @@
-../../../foundation/communication/dsoftbus/components/nstackx_mini/nstackx_ctrl/core/coap_discover/coap_discover.c: In function 'GetBuildCoapParam':
-../../../foundation/communication/dsoftbus/components/nstackx_mini/nstackx_ctrl/core/coap_discover/coap_discover.c:115:21: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
-     param->remoteIp = remoteIp;
-                     ^

@@ -1,8 +1,0 @@
-../../../foundation/communication/dsoftbus/adapter/common/bus_center/network/lnn_lwip_monitor.c: In function 'LnnInitLwipMonitorImpl':
-../../../foundation/communication/dsoftbus/adapter/common/bus_center/network/lnn_lwip_monitor.c:50:44: warning: passing argument 2 of 'netif_add_ext_callback' from incompatible pointer type [-Wincompatible-pointer-types]
-     netif_add_ext_callback(&NetifCallback, NetifStatusCallback);
-                                            ^~~~~~~~~~~~~~~~~~~
-In file included from ../../../foundation/communication/dsoftbus/adapter/common/bus_center/network/lnn_lwip_monitor.c:19:0:
-../../../device/soc/hisilicon/hi3861v100/sdk_liteos/third_party/lwip_sack/include/lwip/netif.h:1106:6: note: expected 'netif_ext_callback_fn {aka void (*)(struct netif *, short unsigned int,  const union <anonymous> *)}' but argument is of type 'int32_t (*)(struct netif *, netif_nsc_reason_t,  const netif_ext_callback_args_t *) {aka int (*)(struct netif *, short unsigned int,  const union <anonymous> *)}'
- void netif_add_ext_callback(netif_ext_callback_t *callback, netif_ext_callback_fn fn);
-      ^~~~~~~~~~~~~~~~~~~~~~
