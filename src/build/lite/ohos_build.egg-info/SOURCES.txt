@@ -1,0 +1,12 @@
+LICENSE
+MANIFEST.in
+README.md
+setup.py
+hb/__init__.py
+hb/__main__.py
+ohos_build.egg-info/PKG-INFO
+ohos_build.egg-info/SOURCES.txt
+ohos_build.egg-info/dependency_links.txt
+ohos_build.egg-info/entry_points.txt
+ohos_build.egg-info/requires.txt
+ohos_build.egg-info/top_level.txt
