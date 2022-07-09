@@ -1,9 +1,0 @@
-{
-  "parts": [
-    "audio_manager_lite",
-    "camera_lite",
-    "histreamer",
-    "media_lite",
-    "media_service"
-  ]
-}

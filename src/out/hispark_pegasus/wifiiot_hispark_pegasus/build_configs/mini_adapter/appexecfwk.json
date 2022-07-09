@@ -1,9 +1,0 @@
-{
-  "parts": [
-    "appexecfwk_lite",
-    "bundle_framework",
-    "distributed_bundle_framework",
-    "bundle_tool",
-    "eventhandler"
-  ]
-}

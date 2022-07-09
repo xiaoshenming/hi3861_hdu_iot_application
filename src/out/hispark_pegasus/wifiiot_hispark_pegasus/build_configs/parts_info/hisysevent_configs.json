@@ -1,9 +1,0 @@
-{
-  "hicollie_native": [
-    "//base/hiviewdfx/hicollie/hisysevent.yaml"
-  ],
-  "hiview": [
-    "//base/hiviewdfx/hiview/hisysevent.yaml",
-    "//base/hiviewdfx/hiview/kernel_vendor.yaml"
-  ]
-}

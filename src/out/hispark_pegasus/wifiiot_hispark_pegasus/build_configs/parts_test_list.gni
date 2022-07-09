@@ -1,5 +1,0 @@
-parts_test_list = [
-  "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/deviceauth_standard:deviceauth_standard_test",
-  "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/security/huks:huks_test",
-  "//out/hispark_pegasus/wifiiot_hispark_pegasus/build_configs/startup/syspara_lite:syspara_lite_test",
-]

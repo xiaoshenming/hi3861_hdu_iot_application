@@ -1,7 +1,0 @@
-disable_huks_binary=false
-disable_authenticate=false
-huks_use_lite_storage=true
-huks_use_hardware_root_key=true
-enable_ohos_startup_syspara_lite_use_thirdparty_mbedtls=false
-enable_ohos_utils_native_lite_kv_store_use_posix_kv_api=false
-enable_ohos_test_xts_acts_use_thirdparty_lwip=false
