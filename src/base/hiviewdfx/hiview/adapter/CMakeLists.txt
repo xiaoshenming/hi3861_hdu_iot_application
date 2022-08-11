@@ -1,2 +1,0 @@
-add_subdirectory(utility)
-add_subdirectory(system_service)

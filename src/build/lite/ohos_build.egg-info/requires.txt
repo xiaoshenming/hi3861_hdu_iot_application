@@ -1,4 +1,0 @@
-PyYAML
-kconfiglib>=14.1.0
-prompt_toolkit==1.0.14
-requests
