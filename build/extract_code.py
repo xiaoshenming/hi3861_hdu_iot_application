@@ -90,13 +90,17 @@ def main():
     
     # rm .git .gitee files from target folder
     print("--- 4. delete redundant files")
-
     cmd_del = ['find -name {} | xargs rm -rf'.format(dd) for dd in dirs_to_del_recur]
     cmd = "cd {} && ".format(location_tar) + " && ".join(cmd_del)
     exec_cmd(cmd)
 
     cmd_del = ['rm -rf {}'.format(dd) for dd in dirs_to_del_sep]
     cmd = "cd {} && ".format(location_tar) + " && ".join(cmd_del)
+    exec_cmd(cmd)
+
+    # keep device\hisilicon\hispark_pegasus\sdk_liteos\3rd_sdk\demolink\libs, otherwise build would fail
+    print("--- 5. keep empty folder")
+    cmd = "cd {} && touch device/hisilicon/hispark_pegasus/sdk_liteos/3rd_sdk/demolink/libs/.gitkeep".format(location_tar)
     exec_cmd(cmd)
     
     return 0
