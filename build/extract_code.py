@@ -1,13 +1,18 @@
 #!/usr/bin/python3
 
 # Function: extract hi3861 related code from OpenHarmony full-code repository LTS v3.0.5
+# OpenHarmony LTS v3.0.5 code source URL: https://gitee.com/link?target=https%3A%2F%2Frepo.huaweicloud.com%2Fopenharmony%2Fos%2F3.0.5%2Fcode-v3.0.5-LTS.tar.gz
+# 
+# 2022-09-14
+# supplement feature components: histreaming, lwip, coap, mqtt from v3.2 Beta3:
+# git clone -b OpenHarmony-3.2-Beta3 https://gitee.com/openharmony/device_soc_hisilicon.git 
 
 import sys, os, subprocess
 
-dir_from = "/mnt/local/ohos_3861/project_iot_3861/code_from/"
-location_openharmony_full = os.path.join(dir_from, "code-v3.0.5-LTS/OpenHarmony")
-location_demo = os.path.join(dir_from, "demo")
-location_notice = os.path.join(dir_from, "NOTICE")
+location_from = "/mnt/local/ohos_3861/project_iot_3861/code_from/"
+location_src = os.path.join(location_from, "code-v3.0.5-LTS/OpenHarmony")
+location_demo = os.path.join(location_from, "demo")
+location_notice = os.path.join(location_from, "NOTICE")
 location_tar = "/mnt/local/ohos_3861/project_iot_3861/code_tar"
 
 dirs_to_del_recur = (".git", ".gitee", ".gitattributes", ".gitignore")
@@ -60,6 +65,19 @@ nessesary_branches = (
         "productdefine/common/",
         )
 
+location_src_supplement = os.path.join(location_from, "code-v3.2-Beta2/hi3861v100/sdk_liteos")
+location_tar_supplement = os.path.join(location_tar, "device/hisilicon/hispark_pegasus/sdk_liteos")
+branches_supplement = (
+        "components/histreaming",
+        "third_party/lwip_sack",
+        "third_party/libcoap",
+        "third_party/paho.mqtt.c",
+        "build/libs/libhistreaminglink.a",
+        "build/libs/liblwip.a",
+        "build/libs/libcoap.a",
+        "build/libs/libmqtt.a",
+        )
+
 def main():
     def exec_cmd(cmd):
         print(cmd)
@@ -75,7 +93,7 @@ def main():
     print("--- 1. pick necessary branches from OpenHarmony full code repository to target folder:")
     cmd_rsync = ['rsync -aR {:s} {:s}'.format(branch, location_tar) \
                     for branch in nessesary_branches]
-    cmd = 'cd {:s} && '.format(location_openharmony_full) + ' && '.join(cmd_rsync)
+    cmd = 'cd {:s} && '.format(location_src) + ' && '.join(cmd_rsync)
     exec_cmd(cmd)
 
     # merge demo to target
@@ -87,9 +105,16 @@ def main():
     print("--- 3. copy notice to target folder:")
     cmd = "rsync -a {:s} {:s}".format(location_notice, location_tar)
     exec_cmd(cmd)
+
+    # copy supplement to target
+    print("--- 4. copy supplements to target folder:")
+    cmd_rsync = ['rsync -aR {:s} {:s}'.format(branch, location_tar_supplement) \
+                    for branch in branches_supplement]
+    cmd = 'cd {:s} && '.format(location_src_supplement) + ' && '.join(cmd_rsync)
+    exec_cmd(cmd)
     
     # rm .git .gitee files from target folder
-    print("--- 4. delete redundant files")
+    print("--- 5. delete redundant files")
     cmd_del = ['find -name {} | xargs rm -rf'.format(dd) for dd in dirs_to_del_recur]
     cmd = "cd {} && ".format(location_tar) + " && ".join(cmd_del)
     exec_cmd(cmd)

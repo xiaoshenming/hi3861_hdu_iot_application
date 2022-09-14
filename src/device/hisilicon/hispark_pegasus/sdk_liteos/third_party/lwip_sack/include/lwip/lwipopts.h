@@ -448,7 +448,7 @@ extern "C" {
 #endif
 
 #ifndef DEFAULT_LWIP_NUM_SOCKETS
-#define DEFAULT_LWIP_NUM_SOCKETS        9
+#define DEFAULT_LWIP_NUM_SOCKETS        15
 #endif /* DEFAULT_LWIP_NUM_SOCKETS */
 
 #ifndef MEMP_NUM_PBUF
@@ -472,7 +472,7 @@ extern "C" {
 #endif
 
 #ifndef MEMP_NUM_NETBUF
-#define MEMP_NUM_NETBUF         2
+#define MEMP_NUM_NETBUF         10
 #endif
 
 #ifndef MEMP_NUM_ARP_QUEUE
@@ -484,11 +484,11 @@ extern "C" {
 #endif
 
 #ifndef MEMP_NUM_TCP_PCB
-#define MEMP_NUM_TCP_PCB        4
+#define MEMP_NUM_TCP_PCB        LWIP_CONFIG_NUM_SOCKETS
 #endif
 
 #ifndef MEMP_NUM_TCP_PCB_LISTEN
-#define MEMP_NUM_TCP_PCB_LISTEN 2
+#define MEMP_NUM_TCP_PCB_LISTEN 5
 #endif
 
 #ifndef MEMP_NUM_TCP_SEG
