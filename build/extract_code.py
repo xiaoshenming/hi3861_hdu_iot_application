@@ -125,8 +125,13 @@ def main():
     exec_cmd(cmd)
 
     # keep device\hisilicon\hispark_pegasus\sdk_liteos\3rd_sdk\demolink\libs, otherwise build would fail
-    print("--- 5. keep empty folder")
+    print("--- 6. keep empty folder")
     cmd = "cd {} && touch device/hisilicon/hispark_pegasus/sdk_liteos/3rd_sdk/demolink/libs/.gitkeep".format(location_tar)
+    exec_cmd(cmd)
+
+    # replace vendor/hisilicon/hispark_pegasus/config.json to cancel XTS test
+    print("--- 7. replace config.json")
+    cmd = "cd {} && cp -f config.json {}/vendor/hisilicon/hispark_pegasus".format(location_from, location_tar)
     exec_cmd(cmd)
     
     return 0
