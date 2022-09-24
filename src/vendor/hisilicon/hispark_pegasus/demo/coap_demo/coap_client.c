@@ -14,19 +14,19 @@
  */
 
 #include "coap.h"
-#include "net.h"
+#include "coap_session_internal.h"
+#include "iot_config.h"
 #include "los_task.h"
 #include "lwip/tcpip.h"
 #include "lwip/udp.h"
-#include "coap_session_internal.h"
-#include "iot_config.h"
+#include "net.h"
 
 #define TEST_IPV4 1
 #define DHCP_COAP_TOKEN_LEN (4)
 static coap_context_t* g_cliCtx = NULL;
 /* The response handler */
-static void MessageHandler(struct coap_context_t *ctx, coap_session_t *session, coap_pdu_t *sent,
-    coap_pdu_t *received, coap_tid_t id)
+static void MessageHandler(struct coap_context_t* ctx, coap_session_t* session, coap_pdu_t* sent,
+    coap_pdu_t* received, coap_tid_t id)
 {
     unsigned char* data;
     size_t dataLen;
@@ -74,7 +74,7 @@ void CoapClientStop(void)
     return;
 }
 /* to create a new token value depanding on time */
-s32_t CoapNewToken(u16_t msg_id, u8_t *token, u8_t token_len)
+s32_t CoapNewToken(u16_t msg_id, u8_t* token, u8_t token_len)
 {
     u32_t now_ms;
     if ((token == NULL) || (token_len < DHCP_COAP_TOKEN_LEN)) {
@@ -93,9 +93,9 @@ int CoapClientSendMsg(char* dst)
     coap_address_t dst_addr, listen_addr;
     static coap_uri_t uri;
     coap_pdu_t* request;
-    coap_session_t *session = NULL;
-    char serverUri[128] = {0};
-    u8_t temp_token[DHCP_COAP_TOKEN_LEN] = {0};
+    coap_session_t* session = NULL;
+    char serverUri[128] = { 0 };
+    u8_t temp_token[DHCP_COAP_TOKEN_LEN] = { 0 };
     unsigned char getMethod = COAP_REQUEST_GET;
     /* The destination endpoint */
     coap_address_init(&dst_addr);
@@ -119,9 +119,9 @@ int CoapClientSendMsg(char* dst)
         session->sock.pcb = g_cliCtx->endpoint;
         SESSIONS_ADD(g_cliCtx->endpoint->sessions, session);
     }
- /* Prepare the request */
+    /* Prepare the request */
     strcpy_s(serverUri, STRING_LEN, "/hello");
-    coap_split_uri((unsigned char *)serverUri, strlen(serverUri), &uri);
+    coap_split_uri((unsigned char*)serverUri, strlen(serverUri), &uri);
     request = coap_new_pdu(session);
     if (request == NULL) {
         printf("[%s][%d] get pdu failed\n", __FUNCTION__, __LINE__);
@@ -135,9 +135,9 @@ int CoapClientSendMsg(char* dst)
     }
     request->code = getMethod;
     coap_add_option(request, COAP_OPTION_URI_PATH, uri.path.length, uri.path.s);
-    char requestData[64] = {0};
-    (void)snprintf_s(requestData, sizeof(requestData), sizeof(requestData)-1, "%s", "Hello coap");
-    coap_add_data(request, 4 + strlen((const char *)(requestData + 4)), (unsigned char *)requestData);
+    char requestData[64] = { 0 };
+    (void)snprintf_s(requestData, sizeof(requestData), sizeof(requestData) - 1, "%s", "Hello coap");
+    coap_add_data(request, 4 + strlen((const char*)(requestData + 4)), (unsigned char*)requestData);
     coap_send_lwip(session, request);
     return 0;
 }
