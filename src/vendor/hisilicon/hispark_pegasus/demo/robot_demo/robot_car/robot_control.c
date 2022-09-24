@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <memory.h>
-
 /*
  * Copyright (C) 2022 HiHope Open Source Organization .
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,29 +14,32 @@
  * limitations under the License.
  */
 
-#include "ohos_init.h"
+#include "robot_control.h"
 #include "cmsis_os2.h"
-#include "iot_gpio.h"
+#include "hi_adc.h"
 #include "hi_io.h"
 #include "hi_time.h"
-#include "hi_adc.h"
 #include "iot_errno.h"
+#include "iot_gpio.h"
+#include "ohos_init.h"
 #include "robot_hcsr04.h"
 #include "robot_l9110s.h"
 #include "robot_sg90.h"
 #include "trace_model.h"
-#include "robot_control.h"
+#include <memory.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#define     GPIO5 5
-#define     FUNC_GPIO 0
-#define     IOT_IO_PULL_UP 1
-#define     VLT_MIN                     (100)
-#define     OLED_FALG_ON                ((unsigned char)0x01)
-#define     OLED_FALG_OFF               ((unsigned char)0x00)
-unsigned short  g_gpio5_adc_buf[ADC_TEST_LENGTH] = {0 };
-unsigned int    g_gpio5_tick = 0;
-unsigned int    g_car_control_demo_task_id = 0;
-unsigned char   g_car_status = CAR_STOP_STATUS;
+#define GPIO5 5
+#define FUNC_GPIO 0
+#define IOT_IO_PULL_UP 1
+#define VLT_MIN (100)
+#define OLED_FALG_ON ((unsigned char)0x01)
+#define OLED_FALG_OFF ((unsigned char)0x00)
+unsigned short g_gpio5_adc_buf[ADC_TEST_LENGTH] = { 0 };
+unsigned int g_gpio5_tick = 0;
+unsigned int g_car_control_demo_task_id = 0;
+unsigned char g_car_status = CAR_STOP_STATUS;
 
 void switch_init(void)
 {
@@ -64,25 +63,25 @@ void gpio5_isr_func_mode(void)
 
     current_gpio5_tick = hi_get_tick();
     tick_interval = current_gpio5_tick - g_gpio5_tick;
-    
+
     if (tick_interval < KEY_INTERRUPT_PROTECT_TIME) {
         return NULL;
     }
     g_gpio5_tick = current_gpio5_tick;
 
     if (g_car_status == CAR_STOP_STATUS) {
-        g_car_status = CAR_TRACE_STATUS;                 // 寻迹
+        g_car_status = CAR_TRACE_STATUS; // 寻迹
         printf("trace\n");
     } else if (g_car_status == CAR_TRACE_STATUS) {
-        g_car_status = CAR_OBSTACLE_AVOIDANCE_STATUS;    // 超声波
+        g_car_status = CAR_OBSTACLE_AVOIDANCE_STATUS; // 超声波
         printf("ultrasonic\n");
     } else if (g_car_status == CAR_OBSTACLE_AVOIDANCE_STATUS) {
-        g_car_status = CAR_STOP_STATUS;                  // 停止
+        g_car_status = CAR_STOP_STATUS; // 停止
         printf("stop\n");
     }
 }
 
-unsigned char get_gpio5_voltage(void *param)
+unsigned char get_gpio5_voltage(void* param)
 {
     int i;
     unsigned short data;
@@ -101,10 +100,10 @@ unsigned char get_gpio5_voltage(void *param)
     memset_s(g_gpio5_adc_buf, sizeof(g_gpio5_adc_buf), 0x0, sizeof(g_gpio5_adc_buf));
     for (i = 0; i < ADC_TEST_LENGTH; i++) {
         ret = hi_adc_read(HI_ADC_CHANNEL_2, &data, HI_ADC_EQU_MODEL_4, HI_ADC_CUR_BAIS_DEFAULT, 0xF0);
-		// ADC_Channal_2  自动识别模式  CNcomment:4次平均算法模式 CNend
+        // ADC_Channal_2  自动识别模式  CNcomment:4次平均算法模式 CNend
         if (ret != IOT_SUCCESS) {
             printf("ADC Read Fail\n");
-            return  NULL;
+            return NULL;
         }
         g_gpio5_adc_buf[i] = data;
     }
@@ -112,7 +111,7 @@ unsigned char get_gpio5_voltage(void *param)
     for (i = 0; i < ADC_TEST_LENGTH; i++) {
         vlt = g_gpio5_adc_buf[i];
         voltage = (float)vlt * a * b / c;
-		/* vlt * 1.8* 4 / 4096.0为将码字转换为电压 */
+        /* vlt * 1.8* 4 / 4096.0为将码字转换为电压 */
         vlt_max = (voltage > vlt_max) ? voltage : vlt_max;
         vlt_min = (voltage < vlt_min) ? voltage : vlt_min;
     }
@@ -125,7 +124,7 @@ unsigned char get_gpio5_voltage(void *param)
 // 按键中断
 void interrupt_monitor(void)
 {
-    unsigned int  ret = 0;
+    unsigned int ret = 0;
     /* gpio5 switch2 mode */
     g_gpio5_tick = hi_get_tick();
     ret = IoTGpioRegisterIsrFunc(GPIO5, IOT_INT_TYPE_EDGE, IOT_GPIO_EDGE_FALL_LEVEL_LOW, get_gpio5_voltage, NULL);
@@ -192,7 +191,7 @@ static void car_where_to_go(float distance)
         car_stop();
     } else {
         car_forward();
-        }
+    }
 }
 
 /* car mode control func */
@@ -215,7 +214,7 @@ static void car_mode_control_func(void)
     }
 }
 
-void *RobotCarTestTask(void* param)
+void* RobotCarTestTask(void* param)
 {
     printf("switch\r\n");
     switch_init();
@@ -224,17 +223,17 @@ void *RobotCarTestTask(void* param)
 
     while (1) {
         switch (g_car_status) {
-            case CAR_STOP_STATUS:
-                car_stop();
-                break;
-            case CAR_OBSTACLE_AVOIDANCE_STATUS:
-                car_mode_control_func();
-                break;
-            case CAR_TRACE_STATUS:
-                trace_module();
-                break;
-            default:
-                break;
+        case CAR_STOP_STATUS:
+            car_stop();
+            break;
+        case CAR_OBSTACLE_AVOIDANCE_STATUS:
+            car_mode_control_func();
+            break;
+        case CAR_TRACE_STATUS:
+            trace_module();
+            break;
+        default:
+            break;
         }
         IoTWatchDogDisable();
         osDelay(time);
