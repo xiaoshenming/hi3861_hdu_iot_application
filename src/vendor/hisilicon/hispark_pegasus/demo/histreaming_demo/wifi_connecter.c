@@ -13,11 +13,11 @@
  * limitations under the License.
  */
 
-#include "wifi_device.h"
 #include "cmsis_os2.h"
+#include "wifi_device.h"
 
-#include "lwip/netifapi.h"
 #include "lwip/api_shell.h"
+#include "lwip/netifapi.h"
 
 static void PrintLinkedInfo(const WifiLinkedInfo* info)
 {
@@ -27,11 +27,11 @@ static void PrintLinkedInfo(const WifiLinkedInfo* info)
         return;
     }
 
-    static char macAddress[32] = {0};
+    static char macAddress[32] = { 0 };
     unsigned char* mac = info->bssid;
-    if (snprintf_s(macAddress, sizeof(macAddress) + 1, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X",
-        mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]) < 0) { /* mac地址从0,1,2,3,4,5位 */
-            return;
+    if (snprintf_s(macAddress, sizeof(macAddress) + 1, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X", mac[0],
+                   mac[1], mac[2], mac[3], mac[4], mac[5]) < 0) { /* mac地址从0,1,2,3,4,5位 */
+        return;
     }
 }
 
@@ -58,14 +58,12 @@ static void OnWifiScanStateChanged(int state, int size)
     printf("%s %d, state = %X, size = %d\r\n", __FUNCTION__, __LINE__, state, size);
 }
 
-static WifiEvent g_defaultWifiEventListener = {
-    .OnWifiConnectionChanged = OnWifiConnectionChanged,
-    .OnWifiScanStateChanged = OnWifiScanStateChanged
-};
+static WifiEvent g_defaultWifiEventListener = { .OnWifiConnectionChanged = OnWifiConnectionChanged,
+                                                .OnWifiScanStateChanged = OnWifiScanStateChanged };
 
 static struct netif* g_iface = NULL;
 
-int ConnectToHotspotconst (const WifiDeviceConfig* apConfig)
+int ConnectToHotspotconst(const WifiDeviceConfig* apConfig)
 {
     WifiErrorCode errCode;
     int netId = -1;
@@ -84,7 +82,7 @@ int ConnectToHotspotconst (const WifiDeviceConfig* apConfig)
     printf("ConnectTo(%d): %d\r\n", netId, errCode);
 
     while (!g_connected) { // wait until connect to AP
-        osDelay(10); /* OS Sleep 10 ms */
+        osDelay(10);       /* OS Sleep 10 ms */
     }
     printf("g_connected: %d\r\n", g_connected);
 
@@ -119,4 +117,3 @@ void DisconnectWithHotspot(int netId)
     errCode = DisableWifi();
     printf("DisableWifi: %d\r\n", errCode);
 }
-

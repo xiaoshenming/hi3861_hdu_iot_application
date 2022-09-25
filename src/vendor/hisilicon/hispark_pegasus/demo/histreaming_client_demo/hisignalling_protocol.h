@@ -15,35 +15,35 @@
 
 #ifndef HISIGNALLING_PROTOCOL_H
 #define HISIGNALLING_PROTOCOL_H
-#include <hi_types_base.h>
 #include <stdarg.h>
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <stdio.h>
+#include <hi_types_base.h>
 /**
-* @brief : hisignalling Macro definition
-*/
-#define HISIGNALLING_MSG_HEADER_LEN         (1)
-#define HISGNALLING_MSG_FRAME_HEADER_LEN    (2)
-#define HISIGNALLING_MSG_HEADER_TAIL_LEN    (3)
-#define HISGNALLING_MSG_CRC32_LEN           (4)
-#define HISIGNALLING_MSG_PAYLOAD_INDEX      (5)
-#define HISIGNALLING_MSG      ((hi_u8)0x3)
-#define HISGNALLING_FREE_TASK_TIME          (20)
-#define HISIGNALLING_MSG_TASK_PRIO          (28)
-#define HISIGNALLING_UART_MSG_LEN           (32)
-#define HISIGNALLING_MSG_BUFF_LEN           (512)
-#define HISIGNALLING_MSG_TASK_STACK_SIZE    (4096)
+ * @brief : hisignalling Macro definition
+ */
+#define HISIGNALLING_MSG_HEADER_LEN      (1)
+#define HISGNALLING_MSG_FRAME_HEADER_LEN (2)
+#define HISIGNALLING_MSG_HEADER_TAIL_LEN (3)
+#define HISGNALLING_MSG_CRC32_LEN        (4)
+#define HISIGNALLING_MSG_PAYLOAD_INDEX   (5)
+#define HISIGNALLING_MSG                 ((hi_u8)0x3)
+#define HISGNALLING_FREE_TASK_TIME       (20)
+#define HISIGNALLING_MSG_TASK_PRIO       (28)
+#define HISIGNALLING_UART_MSG_LEN        (32)
+#define HISIGNALLING_MSG_BUFF_LEN        (512)
+#define HISIGNALLING_MSG_TASK_STACK_SIZE (4096)
 
 /* hisgnalling protocol frame header and tail */
-#define HISIGNALLING_MSG_FRAME_HEADER_1     ((hi_u8)0xAA)
-#define HISIGNALLING_MSG_FRAME_HEADER_2     ((hi_u8)0x55)
-#define HISIGNALLING_MSG_FRAME_TAIL         ((hi_u8)0xFF)
+#define HISIGNALLING_MSG_FRAME_HEADER_1 ((hi_u8)0xAA)
+#define HISIGNALLING_MSG_FRAME_HEADER_2 ((hi_u8)0x55)
+#define HISIGNALLING_MSG_FRAME_TAIL     ((hi_u8)0xFF)
 /**
-* @brief Adapter plate selection
-* 使用时选择打开宏，使用外设扩展板打开#define BOARD_SELECT_IS_EXPANSION_BOARD这个宏
-* 使用Robot板自己定义#define BOARD_SELECT_IS_ROBOT_BOARD这个宏，注释掉#define BOARD_SELECT_IS_EXPANSION_BOARD
-**/
+ * @brief Adapter plate selection
+ * 使用时选择打开宏，使用外设扩展板打开#define BOARD_SELECT_IS_EXPANSION_BOARD这个宏
+ * 使用Robot板自己定义#define BOARD_SELECT_IS_ROBOT_BOARD这个宏，注释掉#define BOARD_SELECT_IS_EXPANSION_BOARD
+ **/
 
 #define BOARD_SELECT_IS_EXPANSION_BOARD
 #ifdef BOARD_SELECT_IS_EXPANSION_BOARD
@@ -71,7 +71,7 @@ typedef enum {
  *
  * @return: the mapped level name
  * */
-const char *HisignallingLevelNum (HisignallingLogType hisignallingLevel);
+const char* HisignallingLevelNum(HisignallingLogType hisignallingLevel);
 /**
  * @brief: this is a weak function ,and you could rewrite one
  *
@@ -86,53 +86,45 @@ const char *HisignallingLevelNum (HisignallingLogType hisignallingLevel);
  *             call HISIGNALING_LOG groups
  *
  * */
-#define HISIGNALLING_PRINT(fmt, ...) \
-    do \
-    { \
-        printf(fmt, ##__VA_ARGS__); \
+#define HISIGNALLING_PRINT(fmt, ...)                                                                                   \
+    do {                                                                                                               \
+        printf(fmt, ##__VA_ARGS__);                                                                                    \
     } while (0)
 
-#define HISIGNALLING_LOG(level, fmt, ...) \
-    do \
-    { \
-        HISIGNALLING_PRINT("<%s>, <%s>, <%d> "fmt" \r\n", \
-        HisignallingLevelNum((level)), __FUNCTION__, __LINE__, ##__VA_ARGS__); \
+#define HISIGNALLING_LOG(level, fmt, ...)                                                                              \
+    do {                                                                                                               \
+        HISIGNALLING_PRINT("<%s>, <%s>, <%d> " fmt " \r\n", HisignallingLevelNum((level)), __FUNCTION__, __LINE__,     \
+                           ##__VA_ARGS__);                                                                             \
     } while (0)
 
-#define HISIGNALLING_LOG_TRACE(fmt, ...) \
-    do \
-    { \
-        HISIGNALLING_LOG (HISIGNALLING_LEVEL_TRACE, fmt, ##__VA_ARGS__); \
+#define HISIGNALLING_LOG_TRACE(fmt, ...)                                                                               \
+    do {                                                                                                               \
+        HISIGNALLING_LOG(HISIGNALLING_LEVEL_TRACE, fmt, ##__VA_ARGS__);                                                \
     } while (0)
 
-#define HISIGNALLING_LOG_DEBUG(fmt, ...)   \
-    do \
-    { \
-        HISIGNALLING_LOG (HISIGNALLING_LEVEL_DEBUG, fmt, ##__VA_ARGS__); \
+#define HISIGNALLING_LOG_DEBUG(fmt, ...)                                                                               \
+    do {                                                                                                               \
+        HISIGNALLING_LOG(HISIGNALLING_LEVEL_DEBUG, fmt, ##__VA_ARGS__);                                                \
     } while (0)
 
-#define HISIGNALLING_LOG_INFO(fmt, ...) \
-    do \
-    { \
-        HISIGNALLING_LOG (HISIGNALLING_LEVEL_INFO, fmt, ##__VA_ARGS__); \
+#define HISIGNALLING_LOG_INFO(fmt, ...)                                                                                \
+    do {                                                                                                               \
+        HISIGNALLING_LOG(HISIGNALLING_LEVEL_INFO, fmt, ##__VA_ARGS__);                                                 \
     } while (0)
 
-#define HISIGNALLING_LOG_WARN(fmt, ...) \
-    do \
-    { \
-        HISIGNALLING_LOG (HISIGNALLING_LEVEL_WARN, fmt, ##__VA_ARGS__); \
+#define HISIGNALLING_LOG_WARN(fmt, ...)                                                                                \
+    do {                                                                                                               \
+        HISIGNALLING_LOG(HISIGNALLING_LEVEL_WARN, fmt, ##__VA_ARGS__);                                                 \
     } while (0)
 
-#define HISIGNALLING_LOG_ERROR(fmt, ...) \
-    do \
-    { \
-        HISIGNALLING_LOG (HISIGNALLING_LEVEL_ERROR, fmt, ##__VA_ARGS__); \
+#define HISIGNALLING_LOG_ERROR(fmt, ...)                                                                               \
+    do {                                                                                                               \
+        HISIGNALLING_LOG(HISIGNALLING_LEVEL_ERROR, fmt, ##__VA_ARGS__);                                                \
     } while (0)
 
-#define HISIGNALLING_LOG_FATAL(fmt, ...) \
-    do \
-    { \
-        HISIGNALLING_LOG (HISIGNALLING_LEVEL_FATAL, fmt, ##__VA_ARGS__); \
+#define HISIGNALLING_LOG_FATAL(fmt, ...)                                                                               \
+    do {                                                                                                               \
+        HISIGNALLING_LOG(HISIGNALLING_LEVEL_FATAL, fmt, ##__VA_ARGS__);                                                \
     } while (0)
 /**
  * @brief: use this hisignalling Transmission protocol frame format
@@ -154,7 +146,7 @@ typedef struct {
     hi_u32 hisigallingMsgLen;
     hi_u8 endOfFrame;
     hi_u32 hisignallingCrc32Check;
-}HisignallingProtocalType;
+} HisignallingProtocalType;
 /**
  * @brief: use this hisignalling return type
  *
@@ -168,7 +160,7 @@ typedef enum {
     HISIGNALLING_RET_VAL_CORRECT = 0,
     HISIGNALLING_RET_VAL_ERROR,
     HISGNALLING_RET_VAL_MAX
-}HisignallingErrorType;
+} HisignallingErrorType;
 /**
  * @brief: use this hisignalling sample:Access peripheral enumeration type
  *
@@ -187,22 +179,22 @@ typedef enum {
     STEERING_ENGINE_AND_MOTOR_STOP,
     TRASH_CAN_LID_OPEN,
     TRASH_CAN_LID_COLSE
-}HisignallingDataType;
+} HisignallingDataType;
 /**
-* @brief:hisignalling protocal Function declaration
-**/
+ * @brief:hisignalling protocal Function declaration
+ **/
 hi_u32 hisignallingMsgTask(hi_void);
 /**
-* @brief:hisignalling uart message receive API
-* @param buf: uart receive buffer
-* @param len: uart receive buffer len
-*/
-HisignallingErrorType hisignallingMsgReceive(hi_u8 *buf, hi_u32 len);
+ * @brief:hisignalling uart message receive API
+ * @param buf: uart receive buffer
+ * @param len: uart receive buffer len
+ */
+HisignallingErrorType hisignallingMsgReceive(hi_u8* buf, hi_u32 len);
 /**
-* @brief:hisignalling uart send API
-* @param buf: uart message send buffer
-* @param len: uart message send buffer len
-*/
-hi_u32 hisignallingMsgSend(hi_void *buf, hi_u32 dataLen);
+ * @brief:hisignalling uart send API
+ * @param buf: uart message send buffer
+ * @param len: uart message send buffer len
+ */
+hi_u32 hisignallingMsgSend(hi_void* buf, hi_u32 dataLen);
 int SetUartReceiveFlag(void);
 #endif /* HISIGNALING_PROTOCOL_H */

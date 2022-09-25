@@ -14,25 +14,25 @@
  */
 
 // < this demo make the wifi to connect to the specified AP
-#include <unistd.h>
-#include <hi_wifi_api.h>
 #include <lwip/ip_addr.h>
 #include <lwip/netifapi.h>
-#include <hi_types_base.h>
-#include <hi_task.h>
+#include <unistd.h>
 #include <hi_mem.h>
+#include <hi_task.h>
+#include <hi_types_base.h>
+#include <hi_wifi_api.h>
+#include "cmsis_os2.h"
 #include "iot_config.h"
 #include "iot_log.h"
-#include "wifi_device.h"
-#include "cmsis_os2.h"
-#include "wifi_device_config.h"
 #include "lwip/api_shell.h"
+#include "wifi_device.h"
+#include "wifi_device_config.h"
 
-#define APP_INIT_VAP_NUM    2
-#define APP_INIT_USR_NUM    2
+#define APP_INIT_VAP_NUM 2
+#define APP_INIT_USR_NUM 2
 
-static struct netif *gLwipNetif = NULL;
-static hi_bool  gScanDone = HI_FALSE;
+static struct netif* gLwipNetif = NULL;
+static hi_bool gScanDone = HI_FALSE;
 unsigned char wifiStatus = 0;
 
 unsigned char wifiFirstConnecting = 0;
@@ -70,7 +70,7 @@ void wifiReconnected(int netId)
     }
 }
 /* clear netif's ip, gateway and netmask */
-static void StaResetAddr(struct netif *lwipNetif)
+static void StaResetAddr(struct netif* lwipNetif)
 {
     ip4_addr_t st_gw;
     ip4_addr_t st_ipaddr;
@@ -88,7 +88,7 @@ static void StaResetAddr(struct netif *lwipNetif)
     netifapi_netif_set_addr(lwipNetif, &st_ipaddr, &st_netmask, &st_gw);
 }
 
-static void WpaEventCB(const hi_wifi_event *hisiEvent)
+static void WpaEventCB(const hi_wifi_event* hisiEvent)
 {
     if (hisiEvent == NULL)
         return;
@@ -127,7 +127,7 @@ static int StaStartConnect(void)
 {
     int ret;
     errno_t rc;
-    hi_wifi_assoc_request assoc_req = {0};
+    hi_wifi_assoc_request assoc_req = { 0 };
 
     /* copy SSID to assoc_req */
     rc = memcpy_s(assoc_req.ssid, HI_WIFI_MAX_SSID_LEN + 1, CONFIG_AP_SSID, strlen(CONFIG_AP_SSID));
@@ -162,11 +162,11 @@ static void PrintLinkedInfo(WifiLinkedInfo* info)
         return;
     }
 
-    static char macAddress[32] = {0};
+    static char macAddress[32] = { 0 };
     unsigned char* mac = info->bssid;
-    if (snprintf_s(macAddress, sizeof(macAddress) + 1, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X",
-        mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]) < 0) { /* mac地址从0,1,2,3,4,5位 */
-            return;
+    if (snprintf_s(macAddress, sizeof(macAddress) + 1, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X", mac[0],
+                   mac[1], mac[2], mac[3], mac[4], mac[5]) < 0) { /* mac地址从0,1,2,3,4,5位 */
+        return;
     }
 }
 
@@ -191,14 +191,12 @@ static void OnWifiScanStateChanged(int state, int size)
     printf("%s %d, state = %X, size = %d\r\n", __FUNCTION__, __LINE__, state, size);
 }
 
-static WifiEvent g_defaultWifiEventListener = {
-    .OnWifiConnectionChanged = OnWifiConnectionChanged,
-    .OnWifiScanStateChanged = OnWifiScanStateChanged
-};
+static WifiEvent g_defaultWifiEventListener = { .OnWifiConnectionChanged = OnWifiConnectionChanged,
+                                                .OnWifiScanStateChanged = OnWifiScanStateChanged };
 
 static int WifiStartSta(void)
 {
-    WifiDeviceConfig apConfig = {0};
+    WifiDeviceConfig apConfig = { 0 };
     strcpy_s(apConfig.ssid, sizeof(CONFIG_AP_SSID), CONFIG_AP_SSID);
     strcpy_s(apConfig.preSharedKey, sizeof(CONFIG_AP_PWD), CONFIG_AP_PWD);
     apConfig.securityType = WIFI_SEC_TYPE_PSK;
@@ -220,7 +218,7 @@ static int WifiStartSta(void)
     printf("ConnectTo(%d): %d\r\n", netId, errCode);
 
     while (!g_connected) { // wait until connect to AP
-        osDelay(10); /* 10: os sleep 10ms */
+        osDelay(10);       /* 10: os sleep 10ms */
     }
     printf("g_connected: %d\r\n", g_connected);
 

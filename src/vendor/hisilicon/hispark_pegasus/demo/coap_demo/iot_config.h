@@ -16,16 +16,15 @@
 #ifndef IOT_CONFIG_H
 #define IOT_CONFIG_H
 
-
-#define DEVICE_PWD_DEFAULT  ((char*)"12345678")
+#define DEVICE_PWD_DEFAULT ((char*)"12345678")
 // /<CONFIG THE LOG
 /* if you need the iot log for the development , please enable it, else please comment it */
 #define CONFIG_LINKLOG_ENABLE 1
 
 // /<CONFIG THE WIFI
 /* Please modify the ssid and pwd for the own */
-#define CONFIG_AP_SSID  "H" // WIFI SSID
-#define CONFIG_AP_PWD "12345678" // WIFI PWD
+#define CONFIG_AP_SSID    "H"        // WIFI SSID
+#define CONFIG_AP_PWD     "12345678" // WIFI PWD
 #define PARAM_SERVER_ADDR "xxxxxxxx"
 
 // /<Configure the iot platform

@@ -21,4 +21,3 @@ int HiWifiStartSoftap(void);
 void HiWifiStopSoftap(void);
 
 #endif /* __WIFI_STA_H__ */
-

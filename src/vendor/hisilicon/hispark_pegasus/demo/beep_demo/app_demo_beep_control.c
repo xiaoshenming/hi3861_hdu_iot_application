@@ -16,24 +16,24 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include "ohos_init.h"
 #include "cmsis_os2.h"
 #include "iot_gpio.h"
 #include "iot_gpio_ex.h"
-#include "iot_watchdog.h"
 #include "iot_pwm.h"
+#include "iot_watchdog.h"
+#include "ohos_init.h"
 
 #define LED_INTERVAL_TIME_US 300000
-#define LED_TASK_STACK_SIZE 512
-#define LED_TASK_PRIO 25
+#define LED_TASK_STACK_SIZE  512
+#define LED_TASK_PRIO        25
 
 static int g_beepState = 1;
 static int g_iState = 0;
-#define IOT_PWM_PORT_PWM0   0
-#define IOT_PWM_BEEP        9
-#define IOT_GPIO_KEY        8
+#define IOT_PWM_PORT_PWM0 0
+#define IOT_PWM_BEEP      9
+#define IOT_GPIO_KEY      8
 
-static void *PWMBeepTask(const char *arg)
+static void* PWMBeepTask(const char* arg)
 {
     while (1) {
         if (g_beepState) {
@@ -48,9 +48,9 @@ static void *PWMBeepTask(const char *arg)
     }
 }
 
-static void OnButtonPressed(const char *arg)
+static void OnButtonPressed(const char* arg)
 {
-    (void) arg;
+    (void)arg;
     g_beepState = !g_beepState;
     printf("PRESS_KEY!\n");
     g_iState++;

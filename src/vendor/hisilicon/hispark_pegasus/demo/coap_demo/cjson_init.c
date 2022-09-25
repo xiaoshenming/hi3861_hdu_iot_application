@@ -13,16 +13,16 @@
  * limitations under the License.
  */
 
-#include <stdint.h>
 #include <cJSON.h>
+#include <stdint.h>
 #include <hi_mem.h>
 
-static void *CJsonMalloc(size_t sz)
+static void* CJsonMalloc(size_t sz)
 {
     return hi_malloc(0, sz);
 }
 
-static void CJsonFree(hi_void *p)
+static void CJsonFree(hi_void* p)
 {
     hi_free(0, p);
 }

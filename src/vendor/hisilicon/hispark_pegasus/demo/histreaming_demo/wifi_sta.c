@@ -14,19 +14,19 @@
  */
 
 #include <unistd.h>
+#include "app_demo_get_mac_addr.h"
 #include "hi_wifi_api.h"
 #include "lwip/ip_addr.h"
 #include "lwip/netifapi.h"
-#include "app_demo_get_mac_addr.h"
 #include "wifi_sta.h"
 
-#define APP_INIT_VAP_NUM    2
-#define APP_INIT_USR_NUM    2
+#define APP_INIT_VAP_NUM 2
+#define APP_INIT_USR_NUM 2
 
-static struct netif *g_lwip_netif = NULL;
+static struct netif* g_lwip_netif = NULL;
 
 /* clear netif's ip, gateway and netmask */
-void hi_sta_reset_addr(const struct netif *pst_lwip_netif)
+void hi_sta_reset_addr(const struct netif* pst_lwip_netif)
 {
     ip4_addr_t st_gw;
     ip4_addr_t st_ipaddr;
@@ -44,7 +44,7 @@ void hi_sta_reset_addr(const struct netif *pst_lwip_netif)
     netifapi_netif_set_addr(pst_lwip_netif, &st_ipaddr, &st_netmask, &st_gw);
 }
 
-void wifi_wpa_event_cb(const hi_wifi_event *hisi_event)
+void wifi_wpa_event_cb(const hi_wifi_event* hisi_event)
 {
     if (hisi_event == NULL)
         return;
@@ -74,8 +74,8 @@ int hi_wifi_start_connect(void)
 {
     int ret = 0;
     errno_t rc = 0;
-    unsigned char *ssid = NULL;
-    hi_wifi_assoc_request assoc_req = {0};
+    unsigned char* ssid = NULL;
+    hi_wifi_assoc_request assoc_req = { 0 };
 
     /* get Hi3861 mac addr */
     hi3816_get_mac_addr();
@@ -105,11 +105,11 @@ int hi_wifi_start_connect(void)
 int hi_wifi_start_sta(void)
 {
     int ret;
-    char ifname[WIFI_IFNAME_MAX_SIZE + 1] = {0};
+    char ifname[WIFI_IFNAME_MAX_SIZE + 1] = { 0 };
     int len = sizeof(ifname);
     const unsigned char wifi_vap_res_num = APP_INIT_VAP_NUM;
     const unsigned char wifi_user_res_num = APP_INIT_USR_NUM;
-    unsigned int  num = WIFI_SCAN_AP_LIMIT;
+    unsigned int num = WIFI_SCAN_AP_LIMIT;
 
     ret = hi_wifi_init(wifi_vap_res_num, wifi_user_res_num);
     if (ret != HISI_OK) {
@@ -142,9 +142,9 @@ int hi_wifi_start_sta(void)
         return -1;
     }
 
-    sleep(5);   /* sleep 5s, waiting for scan result. */
+    sleep(5); /* sleep 5s, waiting for scan result. */
 
-    hi_wifi_ap_info *pst_results = malloc(sizeof(hi_wifi_ap_info) * WIFI_SCAN_AP_LIMIT);
+    hi_wifi_ap_info* pst_results = malloc(sizeof(hi_wifi_ap_info) * WIFI_SCAN_AP_LIMIT);
     if (pst_results == NULL) {
         return -1;
     }

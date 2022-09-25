@@ -47,16 +47,16 @@ typedef enum {
  * GPIO pin ID. CNcomment:IO硬件管脚编号。CNend
  */
 typedef enum {
-    IOT_IO_NAME_GPIO_0, /* <GPIO0 */
-    IOT_IO_NAME_GPIO_1, /* <GPIO1 */
-    IOT_IO_NAME_GPIO_2, /* <GPIO2 */
-    IOT_IO_NAME_GPIO_3, /* <GPIO3 */
-    IOT_IO_NAME_GPIO_4, /* <GPIO4 */
-    IOT_IO_NAME_GPIO_5, /* <GPIO5 */
-    IOT_IO_NAME_GPIO_6, /* <GPIO6 */
-    IOT_IO_NAME_GPIO_7, /* <GPIO7 */
-    IOT_IO_NAME_GPIO_8, /* <GPIO8 */
-    IOT_IO_NAME_GPIO_9, /* <GPIO9 */
+    IOT_IO_NAME_GPIO_0,  /* <GPIO0 */
+    IOT_IO_NAME_GPIO_1,  /* <GPIO1 */
+    IOT_IO_NAME_GPIO_2,  /* <GPIO2 */
+    IOT_IO_NAME_GPIO_3,  /* <GPIO3 */
+    IOT_IO_NAME_GPIO_4,  /* <GPIO4 */
+    IOT_IO_NAME_GPIO_5,  /* <GPIO5 */
+    IOT_IO_NAME_GPIO_6,  /* <GPIO6 */
+    IOT_IO_NAME_GPIO_7,  /* <GPIO7 */
+    IOT_IO_NAME_GPIO_8,  /* <GPIO8 */
+    IOT_IO_NAME_GPIO_9,  /* <GPIO9 */
     IOT_IO_NAME_GPIO_10, /* <GPIO10 */
     IOT_IO_NAME_GPIO_11, /* <GPIO11 */
     IOT_IO_NAME_GPIO_12, /* <GPIO12 */
@@ -86,10 +86,10 @@ typedef enum {
 } IotIoFuncGpio0;
 
 /**
-* @ingroup iot_io
-*
-* GPIO_1 pin function.CNcomment:GPIO_1管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * GPIO_1 pin function.CNcomment:GPIO_1管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_GPIO_1_GPIO,
     IOT_IO_FUNC_GPIO_1_UART1_RXD = 2,
@@ -101,10 +101,10 @@ typedef enum {
 } IotIoFuncGpio1;
 
 /**
-* @ingroup iot_io
-*
-* GPIO_2 pin function.CNcomment:GPIO_2管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * GPIO_2 pin function.CNcomment:GPIO_2管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_GPIO_2_GPIO,
     IOT_IO_FUNC_GPIO_2_UART1_RTS_N = 2,
@@ -115,10 +115,10 @@ typedef enum {
 } IotIoFuncGpio2;
 
 /**
-* @ingroup iot_io
-*
-* GPIO_3 pin function.CNcomment:GPIO_3管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * GPIO_3 pin function.CNcomment:GPIO_3管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_GPIO_3_GPIO,
     IOT_IO_FUNC_GPIO_3_UART0_TXD,
@@ -131,10 +131,10 @@ typedef enum {
 } IotIoFuncGpio3;
 
 /**
-* @ingroup iot_io
-*
-* GPIO_4 pin function.CNcomment:GPIO_4管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * GPIO_4 pin function.CNcomment:GPIO_4管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_GPIO_4_GPIO,
     IOT_IO_FUNC_GPIO_4_UART0_RXD = 2,
@@ -144,10 +144,10 @@ typedef enum {
 } IotIoFuncGpio4;
 
 /**
-* @ingroup iot_io
-*
-* GPIO_5 pin function.CNcomment:GPIO_5管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * GPIO_5 pin function.CNcomment:GPIO_5管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_GPIO_5_GPIO,
     IOT_IO_FUNC_GPIO_5_UART1_RXD = 2,
@@ -158,10 +158,10 @@ typedef enum {
 } IotIoFuncGpio5;
 
 /**
-* @ingroup iot_io
-*
-* GPIO_6 pin function.CNcomment:GPIO_6管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * GPIO_6 pin function.CNcomment:GPIO_6管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_GPIO_6_GPIO,
     IOT_IO_FUNC_GPIO_6_UART1_TXD = 2,
@@ -172,10 +172,10 @@ typedef enum {
 } IotIoFuncGpio6;
 
 /**
-* @ingroup iot_io
-*
-* GPIO_7 pin function.CNcomment:GPIO_7管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * GPIO_7 pin function.CNcomment:GPIO_7管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_GPIO_7_GPIO,
     IOT_IO_FUNC_GPIO_7_UART1_CTS_N = 2,
@@ -186,10 +186,10 @@ typedef enum {
 } IotIoFuncGpio7;
 
 /**
-* @ingroup iot_io
-*
-* GPIO_8 pin function.CNcomment:GPIO_8管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * GPIO_8 pin function.CNcomment:GPIO_8管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_GPIO_8_GPIO,
     IOT_IO_FUNC_GPIO_8_UART1_RTS_N = 2,
@@ -200,10 +200,10 @@ typedef enum {
 } IotIoFuncGpio8;
 
 /**
-* @ingroup iot_io
-*
-* GPIO_9 pin function.CNcomment:GPIO_9管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * GPIO_9 pin function.CNcomment:GPIO_9管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_GPIO_9_GPIO,
     IOT_IO_FUNC_GPIO_9_I2C0_SCL,
@@ -215,10 +215,10 @@ typedef enum {
 } IotIoFuncGpio9;
 
 /**
-* @ingroup iot_io
-*
-* GPIO_10 pin function.CNcomment:GPIO_10管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * GPIO_10 pin function.CNcomment:GPIO_10管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_GPIO_10_GPIO,
     IOT_IO_FUNC_GPIO_10_I2C0_SDA,
@@ -230,10 +230,10 @@ typedef enum {
 } IotIoFuncGpio10;
 
 /**
-* @ingroup iot_io
-*
-* GPIO_11 pin function.CNcomment:GPIO_11管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * GPIO_11 pin function.CNcomment:GPIO_11管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_GPIO_11_GPIO,
     IOT_IO_FUNC_GPIO_11_UART2_TXD = 2,
@@ -245,10 +245,10 @@ typedef enum {
 } IotIoFuncGpio11;
 
 /**
-* @ingroup iot_io
-*
-* GPIO_12 pin function.CNcomment:GPIO_12管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * GPIO_12 pin function.CNcomment:GPIO_12管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_GPIO_12_GPIO,
     IOT_IO_FUNC_GPIO_12_UART2_RXD = 2,
@@ -260,10 +260,10 @@ typedef enum {
 } IotIoFuncGpio12;
 
 /**
-* @ingroup iot_io
-*
-* GPIO_13 pin function.CNcomment:GPIO_13管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * GPIO_13 pin function.CNcomment:GPIO_13管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_GPIO_13_SSI_DATA,
     IOT_IO_FUNC_GPIO_13_UART0_TXD,
@@ -276,10 +276,10 @@ typedef enum {
 } IotIoFuncGpio13;
 
 /**
-* @ingroup iot_io
-*
-* GPIO_14 pin function.CNcomment:GPIO_14管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * GPIO_14 pin function.CNcomment:GPIO_14管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_GPIO_14_SSI_CLK,
     IOT_IO_FUNC_GPIO_14_UART0_RXD,
@@ -291,10 +291,10 @@ typedef enum {
 } IotIoFuncGpio14;
 
 /**
-* @ingroup iot_io
-*
-* SFC_CSN pin function.CNcomment:SFC_CSN管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * SFC_CSN pin function.CNcomment:SFC_CSN管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_SFC_CSN_SFC_CSN,
     IOT_IO_FUNC_SFC_CSN_SDIO_D2,
@@ -303,10 +303,10 @@ typedef enum {
 } IotIoFuncSfcCsn;
 
 /**
-* @ingroup iot_io
-*
-* SFC_DO pin function.CNcomment:SFC_DO管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * SFC_DO pin function.CNcomment:SFC_DO管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_SFC_IO_1_SFC_DO,
     IOT_IO_FUNC_SFC_IO_1_SDIO_D3,
@@ -315,10 +315,10 @@ typedef enum {
 } IotIoFuncSfcIo1;
 
 /**
-* @ingroup iot_io
-*
-* SFC_WPN pin function.CNcomment:SFC_WPN管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * SFC_WPN pin function.CNcomment:SFC_WPN管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_SFC_IO_2_SFC_WPN,
     IOT_IO_FUNC_SFC_IO_2_SDIO_CMD,
@@ -328,10 +328,10 @@ typedef enum {
 } IotIoFuncSfcIo2;
 
 /**
-* @ingroup iot_io
-*
-* SFC_DI pin function.CNcomment:SFC_DI管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * SFC_DI pin function.CNcomment:SFC_DI管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_SFC_IO_0_SFC_DI,
     IOT_IO_FUNC_SFC_IO_0_SDIO_CLK,
@@ -341,10 +341,10 @@ typedef enum {
 } IotIoFuncSfcIo0;
 
 /**
-* @ingroup iot_io
-*
-* SFC_CLK pin function.CNcomment:SFC_CLK管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * SFC_CLK pin function.CNcomment:SFC_CLK管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_SFC_CLK_SFC_CLK,
     IOT_IO_FUNC_SFC_CLK_SDIO_D0,
@@ -353,10 +353,10 @@ typedef enum {
 } IotIoFuncSfcClk;
 
 /**
-* @ingroup iot_io
-*
-* SFC_HOLDN pin function.CNcomment:SFC_HOLDN管脚功能。CNend
-*/
+ * @ingroup iot_io
+ *
+ * SFC_HOLDN pin function.CNcomment:SFC_HOLDN管脚功能。CNend
+ */
 typedef enum {
     IOT_IO_FUNC_SFC_IO_3_SFC_HOLDN,
     IOT_IO_FUNC_SFC_IO_3_SDIO_D1,
@@ -365,30 +365,28 @@ typedef enum {
 } IotIoFuncSfcIo3;
 
 /**
-* @ingroup iot_io
-*
-* I/O drive capability.CNcomment:IO驱动能力。CNend
-* Note: The HI_IO_NAME_GPIO_0~HI_IO_NAME_GPIO_11 and HI_IO_NAME_GPIO_13~HI_IO_NAME_GPIO_14 driver capabilities are
-* optional.The value range is HI_IO_DRIVER_STRENGTH_0~HI_IO_DRIVER_STRENGTH_3, and the other I/O ranges are
-* HI_IO_DRIVER_STRENGTH_0~HI_IO_DRIVER_STRENGTH_7.CNcomment:注意:HI_IO_NAME_GPIO_0~HI_IO_NAME_GPIO_11、
-* HI_IO_NAME_GPIO_13~HI_IO_NAME_GPIO_14驱动能力可选范围是HI_IO_DRIVER_STRENGTH_0~HI_IO_DRIVER_STRENGTH_3，
-* 其余IO范围是HI_IO_DRIVER_STRENGTH_0~HI_IO_DRIVER_STRENGTH_7。CNend
-*/
+ * @ingroup iot_io
+ *
+ * I/O drive capability.CNcomment:IO驱动能力。CNend
+ * Note: The HI_IO_NAME_GPIO_0~HI_IO_NAME_GPIO_11 and HI_IO_NAME_GPIO_13~HI_IO_NAME_GPIO_14 driver capabilities are
+ * optional.The value range is HI_IO_DRIVER_STRENGTH_0~HI_IO_DRIVER_STRENGTH_3, and the other I/O ranges are
+ * HI_IO_DRIVER_STRENGTH_0~HI_IO_DRIVER_STRENGTH_7.CNcomment:注意:HI_IO_NAME_GPIO_0~HI_IO_NAME_GPIO_11、
+ * HI_IO_NAME_GPIO_13~HI_IO_NAME_GPIO_14驱动能力可选范围是HI_IO_DRIVER_STRENGTH_0~HI_IO_DRIVER_STRENGTH_3，
+ * 其余IO范围是HI_IO_DRIVER_STRENGTH_0~HI_IO_DRIVER_STRENGTH_7。CNend
+ */
 typedef enum {
-    IOT_IO_DRIVER_STRENGTH_0 = 0,   /* <Drive strength level 0 (highest).CNcomment:驱动能力0级，驱动能力最高CNend */
-    IOT_IO_DRIVER_STRENGTH_1,   /* <Drive strength level 1.CNcomment:驱动能力1级CNend */
-    IOT_IO_DRIVER_STRENGTH_2,   /* <Drive strength level 2.CNcomment:驱动能力2级CNend */
-    IOT_IO_DRIVER_STRENGTH_3,   /* <Drive strength level 3.CNcomment:驱动能力3级CNend */
-    IOT_IO_DRIVER_STRENGTH_4,   /* <Drive strength level 4.CNcomment:驱动能力4级CNend */
-    IOT_IO_DRIVER_STRENGTH_5,   /* <Drive strength level 5.CNcomment:驱动能力5级CNend */
-    IOT_IO_DRIVER_STRENGTH_6,   /* <Drive strength level 6.CNcomment:驱动能力6级CNend */
-    IOT_IO_DRIVER_STRENGTH_7,   /* <Drive strength level 7 (lowest).CNcomment:驱动能力7级，驱动能力最低CNend */
+    IOT_IO_DRIVER_STRENGTH_0 = 0, /* <Drive strength level 0 (highest).CNcomment:驱动能力0级，驱动能力最高CNend */
+    IOT_IO_DRIVER_STRENGTH_1, /* <Drive strength level 1.CNcomment:驱动能力1级CNend */
+    IOT_IO_DRIVER_STRENGTH_2, /* <Drive strength level 2.CNcomment:驱动能力2级CNend */
+    IOT_IO_DRIVER_STRENGTH_3, /* <Drive strength level 3.CNcomment:驱动能力3级CNend */
+    IOT_IO_DRIVER_STRENGTH_4, /* <Drive strength level 4.CNcomment:驱动能力4级CNend */
+    IOT_IO_DRIVER_STRENGTH_5, /* <Drive strength level 5.CNcomment:驱动能力5级CNend */
+    IOT_IO_DRIVER_STRENGTH_6, /* <Drive strength level 6.CNcomment:驱动能力6级CNend */
+    IOT_IO_DRIVER_STRENGTH_7, /* <Drive strength level 7 (lowest).CNcomment:驱动能力7级，驱动能力最低CNend */
     IOT_IO_DRIVER_STRENGTH_MAX,
 } IotIoDriverStrength;
 
-
 unsigned int IoSetPull(unsigned int id, IotIoPull val);
-
 
 unsigned int IoSetFunc(unsigned int id, unsigned char val);
 

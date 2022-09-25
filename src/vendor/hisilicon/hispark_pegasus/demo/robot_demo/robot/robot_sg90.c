@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
+#include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <memory.h>
 
-#include "ohos_init.h"
 #include "cmsis_os2.h"
-#include "iot_gpio.h"
 #include "hi_io.h"
 #include "hi_time.h"
+#include "iot_gpio.h"
+#include "ohos_init.h"
 
-#define GPIO2 2
-#define COUNT 10
-#define TASK_STAK_SIZE    (1024*10)
+#define GPIO2          2
+#define COUNT          10
+#define TASK_STAK_SIZE (1024 * 10)
 
 void set_angle(unsigned int duty)
 {
@@ -122,7 +122,6 @@ void RobotTask(void* parame)
     regress_middle();
     printf("The steering gear is centered");
 }
-
 
 static void RobotDemo(void)
 {

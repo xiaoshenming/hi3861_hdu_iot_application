@@ -16,13 +16,12 @@
 #ifndef IOT_MAIN_H
 #define IOT_MAIN_H
 
-typedef void  (*FnMsgCallBack)(int qos, const char *topic, const char *payload);
+typedef void (*FnMsgCallBack)(int qos, const char* topic, const char* payload);
 
 /*
  * This is the iot main function. Please call this function first
-*/
+ */
 int IoTMain(void);
-
 
 /**
  * Use this function to set the message call back function, when some messages comes,
@@ -40,6 +39,6 @@ int IoTSetMsgCallback(FnMsgCallBack msgCallback);
  * @instruction: if success means we write the message to the queue susccess,
  * not means communicate with the server success
  */
-int IotSendMsg(int qos, const char *topic, const char *payload);
+int IotSendMsg(int qos, const char* topic, const char* payload);
 
 #endif /* IOT_MAIN_H_ */

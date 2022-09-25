@@ -13,23 +13,23 @@
  * limitations under the License.
  */
 
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
-#include "ohos_init.h"
 #include "cmsis_os2.h"
-#include "iot_i2c.h"
-#include "iot_gpio.h"
 #include "iot_errno.h"
+#include "iot_gpio.h"
+#include "iot_i2c.h"
+#include "ohos_init.h"
 
 #include "oled_ssd1306.h"
 
 #define AHT20_BAUDRATE (400 * 1000)
-#define AHT20_I2C_IDX 0
+#define AHT20_I2C_IDX  0
 
-static void OledmentTask(const char *arg)
+static void OledmentTask(const char* arg)
 {
     (void)arg;
     OledInit();

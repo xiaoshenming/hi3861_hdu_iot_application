@@ -15,40 +15,40 @@
 
 #include <stddef.h>
 #include <stdio.h>
-#include "ohos_types.h"
 #include "iot_errno.h"
 #include "iot_gpio.h"
-#include "iot_i2c.h"
 #include "iot_gpio_ex.h"
+#include "iot_i2c.h"
+#include "ohos_types.h"
 #include "oled_fonts.h"
 #include "oled_ssd1306.h"
 
 #define OLED_I2C_IDX 0
 
-#define OLED_WIDTH    (128)
-#define OLED_I2C_ADDR 0x78 // 默认地址为 0x78
-#define OLED_I2C_CMD 0x00 // 0000 0000       写命令
-#define OLED_I2C_DATA 0x40 // 0100 0000(0x40) 写数据
+#define OLED_WIDTH        (128)
+#define OLED_I2C_ADDR     0x78         // 默认地址为 0x78
+#define OLED_I2C_CMD      0x00         // 0000 0000       写命令
+#define OLED_I2C_DATA     0x40         // 0100 0000(0x40) 写数据
 #define OLED_I2C_BAUDRATE (400 * 1000) // 400k
 
 #define DELAY_100_MS (100 * 1000)
 
 typedef struct {
     /** Pointer to the buffer storing data to send */
-    unsigned char *sendBuf;
+    unsigned char* sendBuf;
     /** Length of data to send */
-    unsigned int  sendLen;
+    unsigned int sendLen;
     /** Pointer to the buffer for storing data to receive */
-    unsigned char *receiveBuf;
+    unsigned char* receiveBuf;
     /** Length of data received */
-    unsigned int  receiveLen;
+    unsigned int receiveLen;
 } IotI2cData;
 
 static uint32_t I2cWiteByte(uint8_t regAddr, uint8_t byte)
 {
     unsigned int id = OLED_I2C_IDX;
-    uint8_t buffer[] = {regAddr, byte};
-    IotI2cData i2cData = {0};
+    uint8_t buffer[] = { regAddr, byte };
+    IotI2cData i2cData = { 0 };
 
     i2cData.sendBuf = buffer;
     i2cData.sendLen = sizeof(buffer) / sizeof(buffer[0]);
@@ -115,9 +115,9 @@ uint32_t OledInit(void)
         0xAF, // --turn on oled panel
     };
 
-    IoTGpioInit(13); /* 初始化gpio13 */
+    IoTGpioInit(13);  /* 初始化gpio13 */
     IoSetFunc(13, 6); /* gpio13使用6功能 */
-    IoTGpioInit(14); /* 初始化gpio14 */
+    IoTGpioInit(14);  /* 初始化gpio14 */
     IoSetFunc(14, 6); /* gpio14使用6功能 */
 
     IoTI2cInit(0, OLED_I2C_BAUDRATE);
@@ -171,12 +171,12 @@ void OledShowChar(uint8_t x, uint8_t y, uint8_t ch, Font font)
 
     if (font == FONT8_X16) {
         OledSetPosition(b, d);
-        for (uint8_t i = 0; i < 8; i++) { /* 循环8次实现横屏填充 */
+        for (uint8_t i = 0; i < 8; i++) {   /* 循环8次实现横屏填充 */
             WriteData(g_f8X16[c * 16 + i]); /* 循环16次实现横屏填充 */
         }
 
         OledSetPosition(b, d + 1);
-        for (uint8_t i = 0; i < 8; i++) { /* 循环8次实现横屏填充 */
+        for (uint8_t i = 0; i < 8; i++) {       /* 循环8次实现横屏填充 */
             WriteData(g_f8X16[c * 16 + i + 8]); /* 循环16次实现横屏填充8列 */
         }
     } else {
@@ -199,7 +199,7 @@ void OledShowString(uint8_t x, uint8_t y, const char* str, Font font)
 
     while (str[j]) {
         OledShowChar(b, d, str[j], font);
-        b += 8; /* 循环8次实现横屏填充 */
+        b += 8;        /* 循环8次实现横屏填充 */
         if (b > 120) { /* 循环120次实现横屏填充 */
             b = 0;
             d += 2; /* 循环2次实现横屏填充 */

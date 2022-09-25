@@ -16,37 +16,32 @@
 #ifndef APP_DEMO_HISTREAMING_H
 #define APP_DEMO_HISTREAMING_H
 
-#define UART_BUFF_SIZE           32
-#define HIGH_NUM    2
-#define HIGH_ASCII   '9'
-#define HIGH_NUM2   48
-#define HIGH_NUM3   7
-#define HIGH_NUM4   4
+#define UART_BUFF_SIZE 32
+#define HIGH_NUM       2
+#define HIGH_ASCII     '9'
+#define HIGH_NUM2      48
+#define HIGH_NUM3      7
+#define HIGH_NUM4      4
 
-typedef enum {
-    UART_RECEIVE_FLAG = 0,
-    UART_RECVIVE_LEN,
-    UART_SEND_FLAG = 2,
-    UART_SEND_LEN
-}UartDefType;
+typedef enum { UART_RECEIVE_FLAG = 0, UART_RECVIVE_LEN, UART_SEND_FLAG = 2, UART_SEND_LEN } UartDefType;
 
 typedef enum {
     UART_RECV_TRUE = 0,
     UART_RECV_FALSE,
-}UartRecvDef;
+} UartRecvDef;
 
 typedef struct {
     unsigned int uartChannel;
     unsigned char g_receiveUartBuff[UART_BUFF_SIZE];
     int g_uartReceiveFlag;
     int g_uartLen;
-}UartDefConfig;
+} UartDefConfig;
 
-void *HistreamingOpen(void);
-void HistreamingClose(const char *link);
+void* HistreamingOpen(void);
+void HistreamingClose(const char* link);
 int SetUartRecvFlag(UartRecvDef def);
 int GetUartConfig(UartDefType type);
 void ResetUartReceiveMsg(void);
-unsigned char *GetUartReceiveMsg(void);
+unsigned char* GetUartReceiveMsg(void);
 
 #endif

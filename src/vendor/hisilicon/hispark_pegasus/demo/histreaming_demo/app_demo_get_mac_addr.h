@@ -18,8 +18,8 @@
 
 #include <hi_types_base.h>
 
-#define MAC_ADDR "%02x:%02x:%02x:%02x:%02x:%02x"
-#define HISPARK_SSID_MIN_MAC_LEN   (6)
-hi_u8 *GetSsid(void);
+#define MAC_ADDR                 "%02x:%02x:%02x:%02x:%02x:%02x"
+#define HISPARK_SSID_MIN_MAC_LEN (6)
+hi_u8* GetSsid(void);
 hi_u32 hi3816_get_mac_addr(hi_void);
 #endif

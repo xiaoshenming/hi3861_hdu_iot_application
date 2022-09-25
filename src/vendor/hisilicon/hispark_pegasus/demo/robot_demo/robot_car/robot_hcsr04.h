@@ -17,6 +17,5 @@
 #ifndef __ROBOT_HCSR04_H__
 #define __ROBOT_HCSR04_H__
 
-
 float GetDistance(void);
 #endif

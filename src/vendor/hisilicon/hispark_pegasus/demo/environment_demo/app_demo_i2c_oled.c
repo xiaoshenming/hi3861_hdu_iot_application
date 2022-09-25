@@ -16,39 +16,39 @@
 #include <unistd.h>
 #include <hi_gpio.h>
 #include <hi_io.h>
-#include "ssd1306_oled.h"
-#include "iot_i2c.h"
-#include "ohos_init.h"
+#include "app_demo_config.h"
+#include "app_demo_environment.h"
+#include "app_demo_multi_sample.h"
 #include "cmsis_os2.h"
+#include "hi_time.h"
 #include "iot_gpio.h"
 #include "iot_gpio_ex.h"
-#include "hi_time.h"
-#include "app_demo_multi_sample.h"
-#include "app_demo_environment.h"
-#include "app_demo_config.h"
+#include "iot_i2c.h"
+#include "ohos_init.h"
+#include "ssd1306_oled.h"
 
-#define I2C_REG_ARRAY_LEN           (64)
-#define OLED_SEND_BUFF_LEN          (28)
-#define OLED_SEND_BUFF_LEN2         (25)
-#define OLED_SEND_BUFF_LEN3         (27)
-#define OLED_SEND_BUFF_LEN4         (29)
-#define Max_Column                  (128)
-#define OLED_DEMO_TASK_STAK_SIZE    (1024*2)
-#define OLED_DEMO_TASK_PRIORITY     (25)
-#define OLED_DISPLAY_INTERVAL_TIME  (1)
-#define SEND_CMD_LEN                (2)
+#define I2C_REG_ARRAY_LEN          (64)
+#define OLED_SEND_BUFF_LEN         (28)
+#define OLED_SEND_BUFF_LEN2        (25)
+#define OLED_SEND_BUFF_LEN3        (27)
+#define OLED_SEND_BUFF_LEN4        (29)
+#define Max_Column                 (128)
+#define OLED_DEMO_TASK_STAK_SIZE   (1024 * 2)
+#define OLED_DEMO_TASK_PRIORITY    (25)
+#define OLED_DISPLAY_INTERVAL_TIME (1)
+#define SEND_CMD_LEN               (2)
 #define MAX_COLUM                  (128)
 
-#define CHAR_SIZE   16
-#define Y_PIXEL_POINT 16
-#define X_PIXEL_POINT 8
+#define CHAR_SIZE          16
+#define Y_PIXEL_POINT      16
+#define X_PIXEL_POINT      8
 #define X_REMAINING_PIXELS 6
 
-#define X_PIXEL_POINT_POSITION_120  (120)
-#define Y_LINES_PIXEL_2   (2)
-#define X_COLUMNS_PIXEL_8 (8)
+#define X_PIXEL_POINT_POSITION_120 (120)
+#define Y_LINES_PIXEL_2            (2)
+#define X_COLUMNS_PIXEL_8          (8)
 
-unsigned char  g_oled_demo_task_id = 0;
+unsigned char g_oled_demo_task_id = 0;
 unsigned int g_mux_id = 0;
 static unsigned char hi3861_board_led_test = 0;
 
@@ -247,9 +247,9 @@ static const unsigned char f8X16[] = {
 };
 
 /*
-    *@bref   向ssd1306 屏幕寄存器写入命令
-    *status 0：表示写入成功，否则失败
-*/
+ *@bref   向ssd1306 屏幕寄存器写入命令
+ *status 0：表示写入成功，否则失败
+ */
 static unsigned int I2cWriteByte(unsigned char regAddr, unsigned char cmd)
 {
     unsigned int status = 0;
@@ -259,8 +259,8 @@ static unsigned int I2cWriteByte(unsigned char regAddr, unsigned char cmd)
     IotI2cData oledI2cCmd = { 0 };
     IotI2cData oledI2cWriteCmd = { 0 };
 
-    unsigned char sendUserCmd [SEND_CMD_LEN] = {OLED_ADDRESS_WRITE_CMD, userData};
-    unsigned char sendUserData [SEND_CMD_LEN] = {OLED_ADDRESS_WRITE_DATA, userData};
+    unsigned char sendUserCmd[SEND_CMD_LEN] = { OLED_ADDRESS_WRITE_CMD, userData };
+    unsigned char sendUserData[SEND_CMD_LEN] = { OLED_ADDRESS_WRITE_DATA, userData };
 
     /* 如果是写命令，发写命令地址0x00 */
     if (regAddr == OLED_ADDRESS_WRITE_CMD) {
@@ -343,7 +343,7 @@ static unsigned int SetOledControlCmd(void)
     if (status != 0) {
         return -1;
     }
-    status= WriteCmd(SET_SEGMENT_REMAP); // set segment remap
+    status = WriteCmd(SET_SEGMENT_REMAP); // set segment remap
     if (status != 0) {
         return -1;
     }
@@ -358,7 +358,7 @@ static unsigned int SetOledScanDisplayCmd(void)
 {
     unsigned int status = 0;
 
-    status =WriteCmd(SET_MULTIPLEX); // --set multiplex ratio(1 to 64)
+    status = WriteCmd(SET_MULTIPLEX); // --set multiplex ratio(1 to 64)
     if (status != 0) {
         return -1;
     }
@@ -397,7 +397,7 @@ static unsigned int SetOledColorPreChargeCmd(void)
     if (status != 0) {
         return -1;
     }
-    status= WriteCmd(COLOR);
+    status = WriteCmd(COLOR);
     if (status != 0) {
         return -1;
     }
@@ -482,19 +482,19 @@ unsigned int OledInit(void)
  */
 void OledSetPosition(unsigned char x, unsigned char y)
 {
-    WriteCmd(0xb0 + y); /* 0xb0 */
+    WriteCmd(0xb0 + y);                 /* 0xb0 */
     WriteCmd(((x & 0xf0) >> 4) | 0x10); /* 设置起点坐标0x10，4 */
-    WriteCmd(x & 0x0f); /* 0x0f */
+    WriteCmd(x & 0x0f);                 /* 0x0f */
 }
 /* 全屏填充 */
-#define Y_PIXEL_POINT_MAX   (128)
-#define X_PIXEL_8   (8)
+#define Y_PIXEL_POINT_MAX (128)
+#define X_PIXEL_8         (8)
 void OledFillScreen(unsigned char fiiData)
 {
-    for (unsigned char m = 0; m < X_PIXEL_8; m++) { /* 从OLED 的第0行开始，填充屏幕 */
-        WriteCmd(0xb0 + m); /* 0xb0 */
-        WriteCmd(0x00); /* 0x00 */
-        WriteCmd(0x10); /* 0x10 */
+    for (unsigned char m = 0; m < X_PIXEL_8; m++) {             /* 从OLED 的第0行开始，填充屏幕 */
+        WriteCmd(0xb0 + m);                                     /* 0xb0 */
+        WriteCmd(0x00);                                         /* 0x00 */
+        WriteCmd(0x10);                                         /* 0x10 */
         for (unsigned char n = 0; n < Y_PIXEL_POINT_MAX; n++) { /* 从OLED的第0列个像素点开始填充屏幕 */
             WriteData(fiiData);
         }
@@ -507,13 +507,12 @@ void OledFillScreen(unsigned char fiiData)
  * pos :write positon start from x axis
  * len:write data len
  */
-void OledPositionCleanScreen(unsigned char fillData, unsigned char line,
-    unsigned char pos, unsigned char len)
+void OledPositionCleanScreen(unsigned char fillData, unsigned char line, unsigned char pos, unsigned char len)
 {
     unsigned char m = line;
     WriteCmd(0xb0 + m); /* 0xb0 */
-    WriteCmd(0x00); /* 0x00 */
-    WriteCmd(0x10); /* 0x10 */
+    WriteCmd(0x00);     /* 0x00 */
+    WriteCmd(0x10);     /* 0x10 */
 
     for (unsigned char n = pos; n < len; n++) {
         WriteData(fillData);
@@ -538,11 +537,11 @@ void OledShowChar(unsigned char x, unsigned char y, unsigned char chr, unsigned 
     }
     if (charSize == CHAR_SIZE) { /* 当要写入的字为两个字节 */
         OledSetPosition(xPosition, yPosition);
-        for (int i = 0; i < X_PIXEL_POINT; i++) { /* 从OLED的第0列个像素点开始 */
+        for (int i = 0; i < X_PIXEL_POINT; i++) {    /* 从OLED的第0列个像素点开始 */
             WriteData(f8X16[c * Y_PIXEL_POINT + i]); /* 16,8 */
         }
         OledSetPosition(xPosition, yPosition + 1);
-        for (int j = 0; j < X_PIXEL_POINT; j++) { /* 从OLED的第0列个像素点开始 */
+        for (int j = 0; j < X_PIXEL_POINT; j++) {                    /* 从OLED的第0列个像素点开始 */
             WriteData(f8X16[c * Y_PIXEL_POINT + j + X_PIXEL_POINT]); /* 16,8 */
         }
     } else {
@@ -560,7 +559,7 @@ void OledShowChar(unsigned char x, unsigned char y, unsigned char chr, unsigned 
  * chr:write data
  * char_size:select typeface
  */
-void OledShowStr(unsigned char x, unsigned char y, unsigned char *chr, unsigned char charSize)
+void OledShowStr(unsigned char x, unsigned char y, unsigned char* chr, unsigned char charSize)
 {
     unsigned char j = 0;
     unsigned char xPosition = x;
@@ -572,7 +571,7 @@ void OledShowStr(unsigned char x, unsigned char y, unsigned char *chr, unsigned 
     }
     while (chr[j] != '\0') {
         OledShowChar(xPosition, yPosition, chr[j], charSize);
-        xPosition += X_COLUMNS_PIXEL_8; /* 8列组成一个字符位置 */
+        xPosition += X_COLUMNS_PIXEL_8;               /* 8列组成一个字符位置 */
         if (xPosition > X_PIXEL_POINT_POSITION_120) { /* 120 */
             xPosition = 0;
             yPosition += Y_LINES_PIXEL_2; /* 每2行写 */
@@ -584,12 +583,12 @@ void OledShowStr(unsigned char x, unsigned char y, unsigned char *chr, unsigned 
 /* 小数转字符串
  * 输入：double 小数
  * 输出：转换后的字符串
-*/
-unsigned char *FlaotToString(double d, unsigned char *str)
+ */
+unsigned char* FlaotToString(double d, unsigned char* str)
 {
-    unsigned char str1[40] = {0};
+    unsigned char str1[40] = { 0 };
     double data = d;
-    unsigned char *floatString = str;
+    unsigned char* floatString = str;
     int j = 0;
     int m;
 
@@ -600,17 +599,17 @@ unsigned char *FlaotToString(double d, unsigned char *str)
     m = (int)data; /* 浮点数的整数部分 */
     while (m > 0) {
         str1[j++] = m % 10 + '0'; /* 10 : 对10求余 */
-        m = m / 10; /* 10 : 对10求模 */
+        m = m / 10;               /* 10 : 对10求模 */
     }
 
     for (int k = 0; k < j; k++) {
         floatString[k] = str1[j - 1 - k]; /* 1： 被提取的整数部分正序存放到另一个数组 */
     }
     floatString[j++] = '.';
- 
-    data = data - (int)data; /* 小数部分提取 */
+
+    data = data - (int)data;      /* 小数部分提取 */
     for (int i = 0; i < 1; i++) { /* 1: 取小数点1位 */
-        data = data * 10; /* 10：取整数 */
+        data = data * 10;         /* 10：取整数 */
         floatString[j++] = (int)data + '0';
         data = data - (int)d;
     }
@@ -628,10 +627,7 @@ unsigned char *FlaotToString(double d, unsigned char *str)
 /* shut down all led */
 void AllLedOff(void)
 {
-    GpioControl(HI_IO_NAME_GPIO_10, HI_GPIO_IDX_10, HI_GPIO_DIR_OUT,
-                HI_GPIO_VALUE0, HI_IO_FUNC_GPIO_10_GPIO);
-    GpioControl(HI_IO_NAME_GPIO_11, HI_GPIO_IDX_11, HI_GPIO_DIR_OUT,
-                HI_GPIO_VALUE0, HI_IO_FUNC_GPIO_10_GPIO);
-    GpioControl(HI_IO_NAME_GPIO_12, HI_GPIO_IDX_12, HI_GPIO_DIR_OUT,
-                HI_GPIO_VALUE0, HI_IO_FUNC_GPIO_12_GPIO);
+    GpioControl(HI_IO_NAME_GPIO_10, HI_GPIO_IDX_10, HI_GPIO_DIR_OUT, HI_GPIO_VALUE0, HI_IO_FUNC_GPIO_10_GPIO);
+    GpioControl(HI_IO_NAME_GPIO_11, HI_GPIO_IDX_11, HI_GPIO_DIR_OUT, HI_GPIO_VALUE0, HI_IO_FUNC_GPIO_10_GPIO);
+    GpioControl(HI_IO_NAME_GPIO_12, HI_GPIO_IDX_12, HI_GPIO_DIR_OUT, HI_GPIO_VALUE0, HI_IO_FUNC_GPIO_12_GPIO);
 }

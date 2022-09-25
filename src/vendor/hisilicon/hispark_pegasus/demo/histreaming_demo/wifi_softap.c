@@ -13,20 +13,20 @@
  * limitations under the License.
  */
 
-#include <hi_types_base.h>
 #include <app_demo_get_mac_addr.h>
+#include <hi_types_base.h>
 #include "hi_wifi_api.h"
 #include "lwip/ip_addr.h"
 #include "lwip/netifapi.h"
 #include "wifi_softap.h"
 
-#define APP_INIT_VAP_NUM    2
-#define APP_INIT_USR_NUM    2
+#define APP_INIT_VAP_NUM 2
+#define APP_INIT_USR_NUM 2
 
-static struct netif *g_lwip_netif = NULL;
+static struct netif* g_lwip_netif = NULL;
 
 /* clear netif's ip, gateway and netmask */
-void hi_softap_reset_addr(const struct netif *pst_lwip_netif)
+void hi_softap_reset_addr(const struct netif* pst_lwip_netif)
 {
     ip4_addr_t st_gw;
     ip4_addr_t st_ipaddr;
@@ -48,11 +48,11 @@ int hi_wifi_start_softap(void)
 {
     int ret = 0;
     errno_t rc = 0;
-    unsigned char *ssid = NULL;
+    unsigned char* ssid = NULL;
 
-    char ifname[WIFI_IFNAME_MAX_SIZE + 1] = {0};
+    char ifname[WIFI_IFNAME_MAX_SIZE + 1] = { 0 };
     int len = sizeof(ifname);
-    hi_wifi_softap_config hapd_conf = {0};
+    hi_wifi_softap_config hapd_conf = { 0 };
     const unsigned char wifi_vap_res_num = APP_INIT_VAP_NUM;
     const unsigned char wifi_user_res_num = APP_INIT_USR_NUM;
     ip4_addr_t st_gw;
@@ -88,9 +88,9 @@ int hi_wifi_start_softap(void)
         return -1;
     }
 
-    IP4_ADDR(&st_gw, 192, 168, 1, 1);          /* input your IP for example: 192.168.1.1 */
-    IP4_ADDR(&st_ipaddr, 192, 168, 1, 1);      /* input your netmask for example: 192.168.1.1 */
-    IP4_ADDR(&st_netmask, 255, 255, 255, 0);     /* input your gateway for example: 255.255.255.0 */
+    IP4_ADDR(&st_gw, 192, 168, 1, 1);        /* input your IP for example: 192.168.1.1 */
+    IP4_ADDR(&st_ipaddr, 192, 168, 1, 1);    /* input your netmask for example: 192.168.1.1 */
+    IP4_ADDR(&st_netmask, 255, 255, 255, 0); /* input your gateway for example: 255.255.255.0 */
     netifapi_netif_set_addr(g_lwip_netif, &st_ipaddr, &st_netmask, &st_gw);
 
     netifapi_dhcps_start(g_lwip_netif, 0, 0);
@@ -117,4 +117,3 @@ void hi_wifi_stop_softap(void)
 
     g_lwip_netif = NULL;
 }
-

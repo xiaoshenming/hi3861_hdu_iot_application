@@ -13,27 +13,27 @@
  * limitations under the License.
  */
 
-#include <hi_mem.h>
 #include <cJSON.h>
 #include <string.h>
-#include "iot_main.h"
-#include "iot_log.h"
+#include <hi_mem.h>
 #include "iot_config.h"
+#include "iot_log.h"
+#include "iot_main.h"
 #include "iot_profile.h"
 
 // < format the report data to json string mode
-static cJSON  *FormateProflleValue(IoTProfileKV_t  *kv)
+static cJSON* FormateProflleValue(IoTProfileKV_t* kv)
 {
-    cJSON  *ret = NULL;
+    cJSON* ret = NULL;
     switch (kv->type) {
         case EN_IOT_DATATYPE_INT:
             ret = cJSON_CreateNumber(kv->iValue);
             break;
         case EN_IOT_DATATYPE_LONG:
-            ret = cJSON_CreateNumber((double)(*(long *)kv->value));
+            ret = cJSON_CreateNumber((double)(*(long*)kv->value));
             break;
         case EN_IOT_DATATYPE_STRING:
-            ret = cJSON_CreateString((const char *)kv->value);
+            ret = cJSON_CreateString((const char*)kv->value);
             break;
         default:
             break;
@@ -41,11 +41,11 @@ static cJSON  *FormateProflleValue(IoTProfileKV_t  *kv)
     return ret;
 }
 
-static cJSON *MakeKvs(IoTProfileKV_t *kvlst)
+static cJSON* MakeKvs(IoTProfileKV_t* kvlst)
 {
-    cJSON *root;
-    cJSON *kv;
-    IoTProfileKV_t  *kvInfo;
+    cJSON* root;
+    cJSON* kv;
+    IoTProfileKV_t* kvInfo;
 
     // < build a root node
     root = cJSON_CreateObject();
@@ -72,16 +72,16 @@ static cJSON *MakeKvs(IoTProfileKV_t *kvlst)
     return root;
 }
 
-#define CN_PROFILE_SERVICE_KEY_SERVICEID "service_id"
+#define CN_PROFILE_SERVICE_KEY_SERVICEID   "service_id"
 #define CN_PROFILE_SERVICE_KEY_PROPERTIIES "properties"
-#define CN_PROFILE_SERVICE_KEY_EVENTTIME "event_time"
-#define CN_PROFILE_KEY_SERVICES   "services"
-static cJSON *MakeService(IoTProfileService_t *serviceInfo)
+#define CN_PROFILE_SERVICE_KEY_EVENTTIME   "event_time"
+#define CN_PROFILE_KEY_SERVICES            "services"
+static cJSON* MakeService(IoTProfileService_t* serviceInfo)
 {
-    cJSON *root;
-    cJSON *serviceID;
-    cJSON *properties;
-    cJSON *eventTime;
+    cJSON* root;
+    cJSON* serviceID;
+    cJSON* properties;
+    cJSON* eventTime;
 
     // < build a root node
     root = cJSON_CreateObject();
@@ -127,11 +127,11 @@ static cJSON *MakeService(IoTProfileService_t *serviceInfo)
     return root;
 }
 
-static cJSON *MakeServices(IoTProfileService_t *serviceInfo)
+static cJSON* MakeServices(IoTProfileService_t* serviceInfo)
 {
-    cJSON *services = NULL;
-    cJSON *service;
-    IoTProfileService_t  *serviceTmp;
+    cJSON* services = NULL;
+    cJSON* service;
+    IoTProfileService_t* serviceTmp;
 
     // < create the services array node
     services = cJSON_CreateArray();
@@ -160,10 +160,10 @@ static cJSON *MakeServices(IoTProfileService_t *serviceInfo)
 
 // < use this function to make a topic to publish
 // < if request_id  is needed depends on the fmt
-static char *MakeTopic(const char *fmt, const char *deviceID, const char *requestID)
+static char* MakeTopic(const char* fmt, const char* deviceID, const char* requestID)
 {
     int len;
-    char *ret = NULL;
+    char* ret = NULL;
 
     len = strlen(fmt) + strlen(deviceID);
     if (requestID != NULL) {
@@ -181,16 +181,16 @@ static char *MakeTopic(const char *fmt, const char *deviceID, const char *reques
     return ret;
 }
 
-#define CN_PROFILE_CMDRESP_KEY_RETCODE        "result_code"
-#define CN_PROFILE_CMDRESP_KEY_RESPNAME       "response_name"
-#define CN_PROFILE_CMDRESP_KEY_PARAS          "paras"
-static char *MakeProfileCmdResp(IoTCmdResp_t *payload)
+#define CN_PROFILE_CMDRESP_KEY_RETCODE  "result_code"
+#define CN_PROFILE_CMDRESP_KEY_RESPNAME "response_name"
+#define CN_PROFILE_CMDRESP_KEY_PARAS    "paras"
+static char* MakeProfileCmdResp(IoTCmdResp_t* payload)
 {
-    char *ret = NULL;
-    cJSON *root;
-    cJSON *retCode;
-    cJSON *respName;
-    cJSON *paras;
+    char* ret = NULL;
+    cJSON* root;
+    cJSON* retCode;
+    cJSON* respName;
+    cJSON* paras;
 
     // < create the root node
     root = cJSON_CreateObject();
@@ -234,11 +234,11 @@ static char *MakeProfileCmdResp(IoTCmdResp_t *payload)
     return ret;
 }
 
-static char *MakeProfilePropertyReport(IoTProfileService_t *payload)
+static char* MakeProfilePropertyReport(IoTProfileService_t* payload)
 {
-    char *ret = NULL;
-    cJSON *root;
-    cJSON *services;
+    char* ret = NULL;
+    cJSON* root;
+    cJSON* services;
 
     // < create the root node
     root = cJSON_CreateObject();
@@ -261,15 +261,15 @@ static char *MakeProfilePropertyReport(IoTProfileService_t *payload)
     return ret;
 }
 
-#define WECHAT_SUBSCRIBE_TYPE       "update"
-#define WECHAT_SUBSCRIBE_VERSION    "1.0.0"
-#define WECHAT_SUBSCRIBE_TOKEN      "DeviceSubscribe"
-static char *MakeProfileReport(WeChatProfile *payload)
+#define WECHAT_SUBSCRIBE_TYPE    "update"
+#define WECHAT_SUBSCRIBE_VERSION "1.0.0"
+#define WECHAT_SUBSCRIBE_TOKEN   "DeviceSubscribe"
+static char* MakeProfileReport(WeChatProfile* payload)
 {
-    char *ret = NULL;
-    cJSON *root;
-    cJSON *state;
-    cJSON *reported;
+    char* ret = NULL;
+    cJSON* root;
+    cJSON* state;
+    cJSON* reported;
 
     /* create json root node */
     root = cJSON_CreateObject();
@@ -310,14 +310,14 @@ static char *MakeProfileReport(WeChatProfile *payload)
     return ret;
 }
 
-#define CN_PROFILE_TOPICFMT_TOPIC            "$shadow/operation/19VUBHD786/mqtt"
-int IoTProfilePropertyReport(char *deviceID, WeChatProfile *payload)
+#define CN_PROFILE_TOPICFMT_TOPIC "$shadow/operation/19VUBHD786/mqtt"
+int IoTProfilePropertyReport(char* deviceID, WeChatProfile* payload)
 {
     int ret = -1;
-    char *topic;
-    char *msg;
+    char* topic;
+    char* msg;
 
-    if ((deviceID == NULL) || (payload== NULL)) {
+    if ((deviceID == NULL) || (payload == NULL)) {
         return ret;
     }
     topic = MakeTopic(CN_PROFILE_TOPICFMT_TOPIC, deviceID, NULL);

@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
+#include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <memory.h>
 
-#include "ohos_init.h"
 #include "cmsis_os2.h"
-#include "iot_gpio.h"
 #include "hi_io.h"
-#include "hi_time.h"
-#include "iot_pwm.h"
 #include "hi_pwm.h"
+#include "hi_time.h"
+#include "iot_gpio.h"
+#include "iot_pwm.h"
+#include "ohos_init.h"
 
-#define GPIO0 0
-#define GPIO1 1
-#define GPIO9 9
-#define GPIO10 10
-#define GPIOFUNC 0
-#define PWM_FREQ_FREQUENCY  (60000)
+#define GPIO0              0
+#define GPIO1              1
+#define GPIO9              9
+#define GPIO10             10
+#define GPIOFUNC           0
+#define PWM_FREQ_FREQUENCY (60000)
 
-void gpio_control (unsigned int  gpio, IotGpioValue value)
+void gpio_control(unsigned int gpio, IotGpioValue value)
 {
     hi_io_set_func(gpio, GPIOFUNC);
     IoTGpioSetDir(gpio, IOT_GPIO_DIR_OUT);

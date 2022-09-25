@@ -23,4 +23,4 @@
 int StartHotspot(void);
 void StopHotspot(void);
 
-#endif  // WIFI_STARTER_H
+#endif // WIFI_STARTER_H

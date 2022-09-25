@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#include "robot_control.h"
+#include <memory.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "cmsis_os2.h"
 #include "hi_adc.h"
 #include "hi_io.h"
@@ -22,20 +24,18 @@
 #include "iot_errno.h"
 #include "iot_gpio.h"
 #include "ohos_init.h"
+#include "robot_control.h"
 #include "robot_hcsr04.h"
 #include "robot_l9110s.h"
 #include "robot_sg90.h"
 #include "trace_model.h"
-#include <memory.h>
-#include <stdio.h>
-#include <stdlib.h>
 
-#define GPIO5 5
-#define FUNC_GPIO 0
+#define GPIO5          5
+#define FUNC_GPIO      0
 #define IOT_IO_PULL_UP 1
-#define VLT_MIN (100)
-#define OLED_FALG_ON ((unsigned char)0x01)
-#define OLED_FALG_OFF ((unsigned char)0x00)
+#define VLT_MIN        (100)
+#define OLED_FALG_ON   ((unsigned char)0x01)
+#define OLED_FALG_OFF  ((unsigned char)0x00)
 unsigned short g_gpio5_adc_buf[ADC_TEST_LENGTH] = { 0 };
 unsigned int g_gpio5_tick = 0;
 unsigned int g_car_control_demo_task_id = 0;
@@ -223,17 +223,17 @@ void* RobotCarTestTask(void* param)
 
     while (1) {
         switch (g_car_status) {
-        case CAR_STOP_STATUS:
-            car_stop();
-            break;
-        case CAR_OBSTACLE_AVOIDANCE_STATUS:
-            car_mode_control_func();
-            break;
-        case CAR_TRACE_STATUS:
-            trace_module();
-            break;
-        default:
-            break;
+            case CAR_STOP_STATUS:
+                car_stop();
+                break;
+            case CAR_OBSTACLE_AVOIDANCE_STATUS:
+                car_mode_control_func();
+                break;
+            case CAR_TRACE_STATUS:
+                trace_module();
+                break;
+            default:
+                break;
         }
         IoTWatchDogDisable();
         osDelay(time);

@@ -13,38 +13,38 @@
  * limitations under the License.
  */
 
-#include <hi_task.h>
 #include <string.h>
-#include <hi_wifi_api.h>
-#include <hi_mux.h>
-#include <hi_io.h>
 #include <hi_gpio.h>
+#include <hi_io.h>
+#include <hi_mux.h>
+#include <hi_task.h>
+#include <hi_wifi_api.h>
+#include "cmsis_os2.h"
 #include "iot_config.h"
 #include "iot_log.h"
 #include "iot_main.h"
 #include "iot_profile.h"
 #include "ohos_init.h"
-#include "cmsis_os2.h"
 
 /* attribute initiative to report */
 #define TAKE_THE_INITIATIVE_TO_REPORT
-#define ONE_SECOND                          (1000)
+#define ONE_SECOND (1000)
 /* oc request id */
-#define CN_COMMADN_INDEX                    "commands/request_id="
-#define WECHAT_SUBSCRIBE_LIGHT              "light"
-#define WECHAT_SUBSCRIBE_LIGHT_ON_STATE     "1"
-#define WECHAT_SUBSCRIBE_LIGHT_OFF_STATE    "0"
+#define CN_COMMADN_INDEX                 "commands/request_id="
+#define WECHAT_SUBSCRIBE_LIGHT           "light"
+#define WECHAT_SUBSCRIBE_LIGHT_ON_STATE  "1"
+#define WECHAT_SUBSCRIBE_LIGHT_OFF_STATE "0"
 
 int g_ligthStatus = -1;
 typedef void (*FnMsgCallBack)(hi_gpio_value val);
 
 typedef struct FunctionCallback {
-    hi_bool  stop;
+    hi_bool stop;
     hi_u32 conLost;
     hi_u32 queueID;
     hi_u32 iotTaskID;
-    FnMsgCallBack    msgCallBack;
-}FunctionCallback;
+    FnMsgCallBack msgCallBack;
+} FunctionCallback;
 FunctionCallback g_functinoCallback;
 
 /* CPU Sleep time Set */
@@ -63,7 +63,7 @@ static void DeviceConfigInit(hi_gpio_value val)
     hi_gpio_set_ouput_val(HI_GPIO_IDX_9, val);
 }
 
-static int  DeviceMsgCallback(FnMsgCallBack msgCallBack)
+static int DeviceMsgCallback(FnMsgCallBack msgCallBack)
 {
     g_functinoCallback.msgCallBack = msgCallBack;
     return 0;
@@ -76,7 +76,7 @@ static void wechatControlDeviceMsg(hi_gpio_value val)
 
 // < this is the callback function, set to the mqtt, and if any messages come, it will be called
 // < The payload here is the json string
-static void DemoMsgRcvCallBack(int qos, const char *topic, const char *payload)
+static void DemoMsgRcvCallBack(int qos, const char* topic, const char* payload)
 {
     IOT_LOG_DEBUG("RCVMSG:QOS:%d TOPIC:%s PAYLOAD:%s\r\n", qos, topic, payload);
     /* 云端下发命令后，板端的操作处理 */
@@ -133,7 +133,7 @@ hi_void IotPublishSample(void)
 
 // < this is the demo main task entry,here we will set the wifi/cjson/mqtt ready and
 // < wait if any work to do in the while
-static hi_void *DemoEntry(const char *arg)
+static hi_void* DemoEntry(const char* arg)
 {
     WifiStaReadyWait();
     cJsonInit();
@@ -153,9 +153,9 @@ static hi_void *DemoEntry(const char *arg)
 
 // < This is the demo entry, we create a task here,
 // and all the works has been done in the demo_entry
-#define CN_IOT_TASK_STACKSIZE  0x1000
-#define CN_IOT_TASK_PRIOR 25
-#define CN_IOT_TASK_NAME "IOTDEMO"
+#define CN_IOT_TASK_STACKSIZE 0x1000
+#define CN_IOT_TASK_PRIOR     25
+#define CN_IOT_TASK_NAME      "IOTDEMO"
 
 static void AppDemoIot(void)
 {

@@ -21,81 +21,79 @@
  * 3, WAIT FOR ANY MESSAGE COMES OR ANY MESSAGE TO SEND
  */
 
-#include <string.h>
 #include <securec.h>
+#include <string.h>
 #include <hi_task.h>
-#include "cmsis_os2.h"
-#include "iot_watchdog.h"
-#include "iot_errno.h"
-#include "iot_config.h"
-#include "iot_log.h"
 #include "MQTTClient.h"
+#include "cmsis_os2.h"
+#include "iot_config.h"
+#include "iot_errno.h"
+#include "iot_log.h"
 #include "iot_main.h"
+#include "iot_watchdog.h"
 
 // this is the configuration head
-#define CN_IOT_SERVER    "tcp://121.36.42.100:1883"
+#define CN_IOT_SERVER "tcp://121.36.42.100:1883"
 
-#define CONFIG_COMMAND_TIMEOUT    10000L
-#define CN_KEEPALIVE_TIME    50
-#define CN_CLEANSESSION    1
-#define CN_HMAC_PWD_LEN   65 // SHA256 IS 32 BYTES AND END APPEND'\0'
-#define CN_EVENT_TIME    "1970000100"
-#define CN_CLIENTID_FMT    "%s_0_0_%s" // This is the cient ID format, deviceID_0_0_TIME
-#define CN_QUEUE_WAITTIMEOUT    1000
-#define CN_QUEUE_MSGNUM    16
-#define CN_QUEUE_MSGSIZE    (sizeof(hi_pvoid))
+#define CONFIG_COMMAND_TIMEOUT 10000L
+#define CN_KEEPALIVE_TIME      50
+#define CN_CLEANSESSION        1
+#define CN_HMAC_PWD_LEN        65 // SHA256 IS 32 BYTES AND END APPEND'\0'
+#define CN_EVENT_TIME          "1970000100"
+#define CN_CLIENTID_FMT        "%s_0_0_%s" // This is the cient ID format, deviceID_0_0_TIME
+#define CN_QUEUE_WAITTIMEOUT   1000
+#define CN_QUEUE_MSGNUM        16
+#define CN_QUEUE_MSGSIZE       (sizeof(hi_pvoid))
 
-#define CN_TASK_PRIOR    28
-#define CN_TASK_STACKSIZE    0X2000
-#define CN_TASK_NAME    "IoTMain"
+#define CN_TASK_PRIOR     28
+#define CN_TASK_STACKSIZE 0X2000
+#define CN_TASK_NAME      "IoTMain"
 
 typedef enum {
     EN_IOT_MSG_PUBLISH = 0,
     EN_IOT_MSG_RECV,
-}EnIotMsgT;
+} EnIotMsgT;
 
 typedef struct {
     EnIotMsgT type;
     int qos;
-    const char *topic;
-    const char *payload;
-}IoTMsgT;
+    const char* topic;
+    const char* payload;
+} IoTMsgT;
 
 typedef struct {
-    hi_bool  stop;
+    hi_bool stop;
     hi_u32 conLost;
     hi_u32 queueID;
     hi_u32 iotTaskID;
     FnMsgCallBack msgCallBack;
     MQTTClient_deliveryToken tocken;
-}IotAppCbT;
+} IotAppCbT;
 static IotAppCbT g_ioTAppCb;
 
-static const char *g_defaultSubscribeTopic[] = {
-    "$oc/devices/"CONFIG_DEVICE_ID"/sys/messages/down",
-    "$oc/devices/"CONFIG_DEVICE_ID"/sys/properties/set/#",
-    "$oc/devices/"CONFIG_DEVICE_ID"/sys/properties/get/#",
-    "$oc/devices/"CONFIG_DEVICE_ID"/sys/shadow/get/response/#",
-    "$oc/devices/"CONFIG_DEVICE_ID"/sys/events/down",
-    "$oc/devices/"CONFIG_DEVICE_ID"/sys/commands/#"
-};
+static const char* g_defaultSubscribeTopic[] = { "$oc/devices/" CONFIG_DEVICE_ID "/sys/messages/down",
+                                                 "$oc/devices/" CONFIG_DEVICE_ID "/sys/properties/set/#",
+                                                 "$oc/devices/" CONFIG_DEVICE_ID "/sys/properties/get/#",
+                                                 "$oc/devices/" CONFIG_DEVICE_ID "/sys/shadow/get/response/#",
+                                                 "$oc/devices/" CONFIG_DEVICE_ID "/sys/events/down",
+                                                 "$oc/devices/" CONFIG_DEVICE_ID "/sys/commands/#" };
 
-#define CN_TOPIC_SUBSCRIBE_NUM    (sizeof(g_defaultSubscribeTopic) / sizeof(const char *))
+#define CN_TOPIC_SUBSCRIBE_NUM (sizeof(g_defaultSubscribeTopic) / sizeof(const char*))
 
-static int MsgRcvCallBack(unsigned char *context, char *topic, int topicLen, MQTTClient_message *message)
+static int MsgRcvCallBack(unsigned char* context, char* topic, int topicLen, MQTTClient_message* message)
 {
-    IoTMsgT *msg;
-    char *buf;
+    IoTMsgT* msg;
+    char* buf;
     hi_u32 bufSize;
     int topicLenght = topicLen;
 
     if (topicLenght == 0) {
         topicLenght = strlen(topic);
     }
-    bufSize = topicLenght + 1  + message->payloadlen + 1 + sizeof(IoTMsgT);
+    bufSize = topicLenght + 1 + message->payloadlen + 1 + sizeof(IoTMsgT);
     buf = hi_malloc(0, bufSize);
     if (buf != NULL) {
-        msg = (IoTMsgT *)buf;
+        msg = (IoTMsgT*)buf;
         buf += sizeof(IoTMsgT);
         bufSize -= sizeof(IoTMsgT);
         msg->qos = message->qos;
@@ -121,18 +119,18 @@ static int MsgRcvCallBack(unsigned char *context, char *topic, int topicLen, MQT
 }
 
 // when the connect lost and this callback will be called
-static void ConnLostCallBack(unsigned char *context, char *cause)
+static void ConnLostCallBack(unsigned char* context, char* cause)
 {
     IOT_LOG_DEBUG("Connection lost:caused by:%s\r\n", cause == NULL ? "Unknown" : cause);
     return;
 }
 
-void IoTMsgProces(IoTMsgT *msg, MQTTClient_message pubmsg, MQTTClient client)
+void IoTMsgProces(IoTMsgT* msg, MQTTClient_message pubmsg, MQTTClient client)
 {
     hi_u32 ret;
     switch (msg->type) {
         case EN_IOT_MSG_PUBLISH:
-            pubmsg.payload = (void *)msg->payload;
+            pubmsg.payload = (void*)msg->payload;
             pubmsg.payloadlen = (int)strlen(msg->payload);
             pubmsg.qos = msg->qos;
             pubmsg.retained = 0;
@@ -158,10 +156,10 @@ void IoTMsgProces(IoTMsgT *msg, MQTTClient_message pubmsg, MQTTClient client)
 static int ProcessQueueMsg(MQTTClient client)
 {
     printf("ProcessQueueMsg\r\n");
-    hi_u32     ret;
-    hi_u32     msgSize;
-    IoTMsgT    *msg;
-    hi_u32     timeout;
+    hi_u32 ret;
+    hi_u32 msgSize;
+    IoTMsgT* msg;
+    hi_u32 timeout;
     MQTTClient_message pubmsg = MQTTClient_message_initializer;
 
     timeout = CN_QUEUE_WAITTIMEOUT;
@@ -176,12 +174,12 @@ static int ProcessQueueMsg(MQTTClient client)
             IoTMsgProces(msg, pubmsg, client);
             hi_free(0, msg);
         }
-        timeout = 0;  // continous to deal the message without wait here
+        timeout = 0; // continous to deal the message without wait here
     } while (ret == HI_ERR_SUCCESS);
     return;
 }
 
-void MqttProcess(MQTTClient client, char *clientID, char *userPwd, MQTTClient_connectOptions connOpts, int subQos[])
+void MqttProcess(MQTTClient client, char* clientID, char* userPwd, MQTTClient_connectOptions connOpts, int subQos[])
 {
     int rc = MQTTClient_create(&client, CN_IOT_SERVER, clientID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
     if (rc != MQTTCLIENT_SUCCESS) {
@@ -208,7 +206,7 @@ void MqttProcess(MQTTClient client, char *clientID, char *userPwd, MQTTClient_co
     IOT_LOG_DEBUG("Connect success\r\n");
 
     rc = MQTTClient_subscribeMany(client, CN_TOPIC_SUBSCRIBE_NUM, (char* const*)g_defaultSubscribeTopic,
-                                  (int *)&subQos[0]);
+                                  (int*)&subQos[0]);
     if (rc != MQTTCLIENT_SUCCESS) {
         IOT_LOG_ERROR("Subscribe the default topic failed,Please check the parameters\r\n");
         MQTTClient_destroy(&client);
@@ -216,7 +214,7 @@ void MqttProcess(MQTTClient client, char *clientID, char *userPwd, MQTTClient_co
     }
     IOT_LOG_DEBUG("Subscribe success\r\n");
     while (MQTTClient_isConnected(client)) {
-        ProcessQueueMsg(client); // do the job here
+        ProcessQueueMsg(client);           // do the job here
         int ret = ProcessQueueMsg(client); // do the job here
         if (ret == HI_ERR_SUCCESS) {
             return;
@@ -229,10 +227,10 @@ void MqttProcess(MQTTClient client, char *clientID, char *userPwd, MQTTClient_co
 
 static hi_void MainEntryProcess(hi_void)
 {
-    int subQos[CN_TOPIC_SUBSCRIBE_NUM] = {1};
-    char *clientID = NULL;
-    char *userID = NULL;
-    char *userPwd = NULL;
+    int subQos[CN_TOPIC_SUBSCRIBE_NUM] = { 1 };
+    char* clientID = NULL;
+    char* userID = NULL;
+    char* userPwd = NULL;
 
     MQTTClient client = NULL;
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
@@ -241,9 +239,10 @@ static hi_void MainEntryProcess(hi_void)
     if (clientID == NULL) {
         return;
     }
-    if (snprintf_s(clientID, strlen(CN_CLIENTID_FMT) + strlen(CONFIG_DEVICE_ID) + strlen(CN_EVENT_TIME) +
-                   CN_QUEUE_MSGNUM, strlen(CN_CLIENTID_FMT) + strlen(CONFIG_DEVICE_ID) + strlen(CN_EVENT_TIME) + 1,
-                   CN_CLIENTID_FMT, CONFIG_DEVICE_ID, CN_EVENT_TIME) < 0) {
+    if (snprintf_s(clientID,
+                   strlen(CN_CLIENTID_FMT) + strlen(CONFIG_DEVICE_ID) + strlen(CN_EVENT_TIME) + CN_QUEUE_MSGNUM,
+                   strlen(CN_CLIENTID_FMT) + strlen(CONFIG_DEVICE_ID) + strlen(CN_EVENT_TIME) + 1, CN_CLIENTID_FMT,
+                   CONFIG_DEVICE_ID, CN_EVENT_TIME) < 0) {
         return;
     }
     userID = CONFIG_DEVICE_ID;
@@ -252,9 +251,9 @@ static hi_void MainEntryProcess(hi_void)
         hi_free(0, clientID);
         return;
     }
-    (void)HmacGeneratePwd((const unsigned char *)CONFIG_DEVICE_PWD, strlen(CONFIG_DEVICE_PWD),
-                          (const unsigned char *)CN_EVENT_TIME, strlen(CN_EVENT_TIME),
-                          (unsigned char *)userPwd, CN_HMAC_PWD_LEN);
+    (void)HmacGeneratePwd((const unsigned char*)CONFIG_DEVICE_PWD, strlen(CONFIG_DEVICE_PWD),
+                          (const unsigned char*)CN_EVENT_TIME, strlen(CN_EVENT_TIME), (unsigned char*)userPwd,
+                          CN_HMAC_PWD_LEN);
 
     conn_opts.keepAliveInterval = CN_KEEPALIVE_TIME;
     conn_opts.cleansession = CN_CLEANSESSION;
@@ -267,13 +266,13 @@ static hi_void MainEntryProcess(hi_void)
     return;
 }
 
-static hi_void *MainEntry(hi_void *arg)
+static hi_void* MainEntry(hi_void* arg)
 {
     (void)arg;
     while (g_ioTAppCb.stop == HI_FALSE) {
         MainEntryProcess();
         IOT_LOG_DEBUG("The connection lost and we will try another connect\r\n");
-        hi_sleep(1000*5); /* 延时5*1000ms */
+        hi_sleep(1000 * 5); /* 延时5*1000ms */
     }
     return NULL;
 }
@@ -281,7 +280,7 @@ static hi_void *MainEntry(hi_void *arg)
 int IoTMain(void)
 {
     hi_u32 ret;
-    hi_task_attr attr = {0};
+    hi_task_attr attr = { 0 };
     g_ioTAppCb.queueID = osMessageQueueNew(CN_QUEUE_MSGNUM, CN_QUEUE_MSGSIZE, NULL);
     attr.stack_size = CN_TASK_STACKSIZE;
     attr.task_prio = CN_TASK_PRIOR;
@@ -300,17 +299,17 @@ int IoTSetMsgCallback(FnMsgCallBack msgCallback)
     return 0;
 }
 
-int IotSendMsg(int qos, const char *topic, const char *payload)
+int IotSendMsg(int qos, const char* topic, const char* payload)
 {
     int rc = -1;
-    IoTMsgT *msg;
-    char *buf;
+    IoTMsgT* msg;
+    char* buf;
     hi_u32 bufSize;
 
     bufSize = strlen(topic) + 1 + strlen(payload) + 1 + sizeof(IoTMsgT);
     buf = hi_malloc(0, bufSize);
     if (buf != NULL) {
-        msg = (IoTMsgT *)buf;
+        msg = (IoTMsgT*)buf;
         buf += sizeof(IoTMsgT);
         bufSize -= sizeof(IoTMsgT);
         msg->qos = qos;

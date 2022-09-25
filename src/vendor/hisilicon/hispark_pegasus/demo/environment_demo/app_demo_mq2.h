@@ -19,7 +19,7 @@
 typedef struct {
     double g_combustibleGasValue;
     unsigned char g_ahu20GasBuff[6];
-}Mq2SensorDef;
+} Mq2SensorDef;
 
 void SetCombuSensorValue(void);
 float GetCombuSensorValue(void);

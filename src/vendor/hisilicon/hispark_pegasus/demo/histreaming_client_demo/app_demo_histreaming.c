@@ -13,36 +13,36 @@
  * limitations under the License.
  */
 
+#include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <memory.h>
 #include <hi_pwm.h>
 #include <hi_time.h>
 /* Link Header Files */
-#include <link_service.h>
 #include <link_platform.h>
-#include <hi_io.h>
+#include <link_service.h>
 #include <hi_early_debug.h>
 #include <hi_gpio.h>
-#include <hi_types_base.h>
+#include <hi_io.h>
 #include <hi_stdlib.h>
 #include <hi_task.h>
-#include "ohos_init.h"
+#include <hi_types_base.h>
 #include "cmsis_os2.h"
 #include "iot_gpio_ex.h"
+#include "ohos_init.h"
 #include "wifi_connecter.h"
 
 #include "app_demo_histreaming.h"
 
-#define HISTREAMING_DEMO_TASK_STAK_SIZE (1024*8)
+#define HISTREAMING_DEMO_TASK_STAK_SIZE (1024 * 8)
 #define HISTREAMING_DEMO_TASK_PRIORITY  25
-#define REV_BUFF_LEN    512
+#define REV_BUFF_LEN                    512
 
-char rev_buff[512] = {0};
-unsigned char hex_buff[512] = {0};
+char rev_buff[512] = { 0 };
+unsigned char hex_buff[512] = { 0 };
 unsigned int hex_len = 0;
 
-UartDefConfig uartDefConfig = {0};
+UartDefConfig uartDefConfig = { 0 };
 
 int SetUartRecvFlag(UartRecvDef def)
 {
@@ -51,7 +51,7 @@ int SetUartRecvFlag(UartRecvDef def)
     } else {
         uartDefConfig.g_uartReceiveFlag = HI_FALSE;
     }
-    
+
     return uartDefConfig.g_uartReceiveFlag;
 }
 
@@ -74,27 +74,27 @@ int GetUartConfig(UartDefType type)
 
 void ResetUartReceiveMsg(void)
 {
-    (void)memset_s(uartDefConfig.g_receiveUartBuff, sizeof(uartDefConfig.g_receiveUartBuff),
-        0x0, sizeof(uartDefConfig.g_receiveUartBuff));
+    (void)memset_s(uartDefConfig.g_receiveUartBuff, sizeof(uartDefConfig.g_receiveUartBuff), 0x0,
+                   sizeof(uartDefConfig.g_receiveUartBuff));
 }
 
-unsigned char *GetUartReceiveMsg(void)
+unsigned char* GetUartReceiveMsg(void)
 {
     return uartDefConfig.g_receiveUartBuff;
 }
 
-int StringToHex(char *str, unsigned char *out, unsigned int *outlen)
+int StringToHex(char* str, unsigned char* out, unsigned int* outlen)
 {
-    char *p = str;
+    char* p = str;
     char high = 0, low = 0;
     int tmplen = strlen(p), cnt = 0;
     tmplen = strlen(p);
     while (cnt < (tmplen / HIGH_NUM)) {
         high = ((*p > HIGH_ASCII) && ((*p <= 'F') || (*p <= 'f'))) ? *p - HIGH_NUM2 - HIGH_NUM3 : *p - HIGH_NUM2;
-        low = (*(++ p) > HIGH_ASCII && ((*p <= 'F') || (*p <= 'f'))) ? *(p) - HIGH_NUM2 - HIGH_NUM3 : *(p) - HIGH_NUM2;
+        low = (*(++p) > HIGH_ASCII && ((*p <= 'F') || (*p <= 'f'))) ? *(p)-HIGH_NUM2 - HIGH_NUM3 : *(p)-HIGH_NUM2;
         out[cnt] = (((high & 0x0f) << HIGH_NUM4) | (low & 0x0f));
-        p ++;
-        cnt ++;
+        p++;
+        cnt++;
     }
     if (tmplen % HIGH_NUM != 0) {
         out[cnt] = ((*p > HIGH_ASCII) && ((*p <= 'F') || (*p <= 'f'))) ? *p - HIGH_NUM2 - HIGH_NUM3 : *p - HIGH_NUM2;
@@ -115,12 +115,11 @@ int StringToHex(char *str, unsigned char *out, unsigned int *outlen)
 static int GetStatusValue(struct LinkService* ar, const char* property, char* value, int len)
 {
     (void)(ar);
-    if (strcmp(property, "Status") == 0) {
-    }
-/*
- * if Ok return 0,
- * Otherwise, any error, return StatusFailure
- */
+    if (strcmp(property, "Status") == 0) { }
+    /*
+     * if Ok return 0,
+     * Otherwise, any error, return StatusFailure
+     */
     return 0;
 }
 /**
@@ -143,7 +142,7 @@ static int ModifyStatus(struct LinkService* ar, const char* property, char* valu
     }
     /* modify status property */
     /* colorful light module */
-    printf("%s, %d\r\n",  rev_buff, len);
+    printf("%s, %d\r\n", rev_buff, len);
 
     StringToHex(rev_buff, hex_buff, &hex_len);
     uartDefConfig.g_uartLen = hex_len;
@@ -154,10 +153,10 @@ static int ModifyStatus(struct LinkService* ar, const char* property, char* valu
     }
     printf("\r\n");
     (void)SetUartRecvFlag(UART_RECV_TRUE);
-/*
- * if Ok return 0,
- * Otherwise, any error, return StatusFailure
- */
+    /*
+     * if Ok return 0,
+     * Otherwise, any error, return StatusFailure
+     */
     return 0;
 }
 
@@ -172,7 +171,7 @@ static const char* GetDeviceType(const struct LinkService* ar)
     return g_wifiStaType;
 }
 
-static void *g_linkPlatform = NULL;
+static void* g_linkPlatform = NULL;
 
 void* HistreamingOpen(void)
 {
@@ -184,7 +183,7 @@ void* HistreamingOpen(void)
         printf("malloc wifiIot failure\n");
         return NULL;
     }
-    wifiIot->get    = GetStatusValue;
+    wifiIot->get = GetStatusValue;
     wifiIot->modify = ModifyStatus;
     wifiIot->type = GetDeviceType;
 
@@ -207,9 +206,9 @@ void* HistreamingOpen(void)
     return (void*)link;
 }
 
-void HistreamingClose(const char *link)
+void HistreamingClose(const char* link)
 {
-    LinkPlatform *linkPlatform = (LinkPlatform*)(link);
+    LinkPlatform* linkPlatform = (LinkPlatform*)(link);
     if (!linkPlatform) {
         return;
     }
@@ -224,7 +223,7 @@ void HistreamingClose(const char *link)
 hi_void HistreamingDemo(hi_void)
 {
     ConnectToHotspot();
-    osThreadAttr_t histreaming = {0};
+    osThreadAttr_t histreaming = { 0 };
     histreaming.stack_size = HISTREAMING_DEMO_TASK_STAK_SIZE;
     histreaming.priority = HISTREAMING_DEMO_TASK_PRIORITY;
     histreaming.name = (hi_char*)"histreaming_demo";

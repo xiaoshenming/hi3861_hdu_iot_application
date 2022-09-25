@@ -26,14 +26,14 @@ void TcpServerTest(unsigned short port)
     int backlog = 1;
     int sockfd = socket(AF_INET, SOCK_STREAM, 0); // TCP socket
 
-    struct sockaddr_in clientAddr = {0};
+    struct sockaddr_in clientAddr = { 0 };
     socklen_t clientAddrLen = sizeof(clientAddr);
-    struct sockaddr_in serverAddr = {0};
+    struct sockaddr_in serverAddr = { 0 };
     serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(port);  // 端口号，从主机字节序转为网络字节序
+    serverAddr.sin_port = htons(port);              // 端口号，从主机字节序转为网络字节序
     serverAddr.sin_addr.s_addr = htonl(INADDR_ANY); // 允许任意主机接入， 0.0.0.0
 
-    ssize_t retval = bind(sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr)); // 绑定端口
+    ssize_t retval = bind(sockfd, (struct sockaddr*)&serverAddr, sizeof(serverAddr)); // 绑定端口
     if (retval < 0) {
         printf("bind failed, %ld!\r\n", retval);
         printf("do_cleanup...\r\n");
@@ -54,11 +54,11 @@ void TcpServerTest(unsigned short port)
     //  UNIX系统上经典的并发模型是“每个连接一个进程”——创建子进程处理连接，父进程继续接受其他客户端的连接
     //  鸿蒙liteos-a内核之上，可以使用UNIX的“每个连接一个进程”的并发模型
     //     liteos-m内核之上，可以使用“每个连接一个线程”的并发模型
-    int connfd = accept(sockfd, (struct sockaddr *)&clientAddr, &clientAddrLen);
+    int connfd = accept(sockfd, (struct sockaddr*)&clientAddr, &clientAddrLen);
     if (connfd < 0) {
         printf("accept failed, %d, %d\r\n", connfd, errno);
         printf("do_cleanup...\r\n");
-        lwip_close (sockfd);
+        lwip_close(sockfd);
     }
     printf("accept success, connfd = %d!\r\n", connfd);
     printf("client addr info: host = %s, port = %d\r\n", inet_ntoa(clientAddr.sin_addr), ntohs(clientAddr.sin_port));
@@ -87,7 +87,7 @@ void TcpServerTest(unsigned short port)
 
 void NetDemoTest(unsigned short port, const char* host)
 {
-    (void) host;
+    (void)host;
     printf("TcpServerTest start\r\n");
     printf("I will listen on \r\n");
     TcpServerTest(port);

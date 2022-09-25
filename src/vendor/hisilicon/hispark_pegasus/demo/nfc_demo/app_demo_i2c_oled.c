@@ -14,16 +14,16 @@
  */
 
 #include <unistd.h>
-#include "ssd1306_oled.h"
+#include "app_demo_config.h"
+#include "app_demo_multi_sample.h"
 #include "c081_nfc.h"
-#include "iot_i2c.h"
-#include "ohos_init.h"
 #include "cmsis_os2.h"
+#include "hi_time.h"
 #include "iot_gpio.h"
 #include "iot_gpio_ex.h"
-#include "hi_time.h"
-#include "app_demo_multi_sample.h"
-#include "app_demo_config.h"
+#include "iot_i2c.h"
+#include "ohos_init.h"
+#include "ssd1306_oled.h"
 
 /* 6*8的点阵 */
 static const unsigned char f6X8[][6] = {
@@ -219,80 +219,61 @@ static const unsigned char f8X16[] = {
     0x00, 0x06, 0x01, 0x01, 0x02, 0x02, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // ~ 94
 };
 
-#define NDEF_DATA_LEN_MAX           (1024)
-#define MAX_COLUM                  (128)
+#define NDEF_DATA_LEN_MAX (1024)
+#define MAX_COLUM         (128)
 
 hi_u8 ndefFileWechat[NDEF_DATA_LEN_MAX] = {
-    0x00, 0x20,
-    0xd4, 0x0f, 0x0e, 0x61, 0x6e, 0x64, 0x72, 0x6f,
-    0x69, 0x64, 0x2e, 0x63, 0x6f, 0x6d, 0x3a, 0x70,
-    0x6b, 0x67, 0x63, 0x6f, 0x6d, 0x2e, 0x74, 0x65,
-    0x6e, 0x63, 0x65, 0x6e, 0x74, 0x2e, 0x6d, 0x6d,
+    0x00, 0x20, 0xd4, 0x0f, 0x0e, 0x61, 0x6e, 0x64, 0x72, 0x6f, 0x69, 0x64, 0x2e, 0x63, 0x6f, 0x6d, 0x3a,
+    0x70, 0x6b, 0x67, 0x63, 0x6f, 0x6d, 0x2e, 0x74, 0x65, 0x6e, 0x63, 0x65, 0x6e, 0x74, 0x2e, 0x6d, 0x6d,
 };
 hi_u8 ndefFileTodayHeadline[NDEF_DATA_LEN_MAX] = {
-    0x00, 0x2d,
-    0xd4, 0x0f, 0x1b, 0x61, 0x6e, 0x64, 0x72, 0x6f,
-    0x69, 0x64, 0x2e, 0x63, 0x6f, 0x6d, 0x3a, 0x70,
-    0x6b, 0x67, 0x63, 0x6f, 0x6d, 0x2e, 0x73, 0x73,
-    0x2e, 0x61, 0x6e, 0x64, 0x72, 0x6f, 0x69, 0x64,
-    0x2e, 0x61, 0x72, 0x74, 0x69, 0x63, 0x6c, 0x65,
-    0x2e, 0x6e, 0x65, 0x77, 0x73,
+    0x00, 0x2d, 0xd4, 0x0f, 0x1b, 0x61, 0x6e, 0x64, 0x72, 0x6f, 0x69, 0x64, 0x2e, 0x63, 0x6f, 0x6d,
+    0x3a, 0x70, 0x6b, 0x67, 0x63, 0x6f, 0x6d, 0x2e, 0x73, 0x73, 0x2e, 0x61, 0x6e, 0x64, 0x72, 0x6f,
+    0x69, 0x64, 0x2e, 0x61, 0x72, 0x74, 0x69, 0x63, 0x6c, 0x65, 0x2e, 0x6e, 0x65, 0x77, 0x73,
 };
 hi_u8 ndefFileTaobao[NDEF_DATA_LEN_MAX] = {
-    0x00, 0x23,
-    0xd4, 0x0f, 0x11, 0x61, 0x6e, 0x64, 0x72, 0x6f,
-    0x69, 0x64, 0x2e, 0x63, 0x6f, 0x6d, 0x3a, 0x70,
-    0x6b, 0x67, 0x63, 0x6f, 0x6d, 0x2e, 0x74, 0x61,
-    0x6f, 0x62, 0x61, 0x6f, 0x2e, 0x74, 0x61, 0x6f,
-    0x62, 0x61, 0x6f,
+    0x00, 0x23, 0xd4, 0x0f, 0x11, 0x61, 0x6e, 0x64, 0x72, 0x6f, 0x69, 0x64, 0x2e, 0x63, 0x6f, 0x6d, 0x3a, 0x70, 0x6b,
+    0x67, 0x63, 0x6f, 0x6d, 0x2e, 0x74, 0x61, 0x6f, 0x62, 0x61, 0x6f, 0x2e, 0x74, 0x61, 0x6f, 0x62, 0x61, 0x6f,
 };
 hi_u8 ndefFileHWSmartLife[NDEF_DATA_LEN_MAX] = {
-    0x00, 0x26,
-    0xd4, 0x0f, 0x14, 0x61, 0x6e, 0x64, 0x72, 0x6f,
-    0x69, 0x64, 0x2e, 0x63, 0x6f, 0x6d, 0x3a, 0x70,
-    0x6b, 0x67, 0x63, 0x6f, 0x6d, 0x2e, 0x68, 0x75,
-    0x61, 0x77, 0x65, 0x69, 0x2e, 0x73, 0x6d, 0x61,
-    0x72, 0x74, 0x68, 0x6f, 0x6d, 0x65,
+    0x00, 0x26, 0xd4, 0x0f, 0x14, 0x61, 0x6e, 0x64, 0x72, 0x6f, 0x69, 0x64, 0x2e, 0x63,
+    0x6f, 0x6d, 0x3a, 0x70, 0x6b, 0x67, 0x63, 0x6f, 0x6d, 0x2e, 0x68, 0x75, 0x61, 0x77,
+    0x65, 0x69, 0x2e, 0x73, 0x6d, 0x61, 0x72, 0x74, 0x68, 0x6f, 0x6d, 0x65,
 };
 hi_u8 ndefFileHistreaming[NDEF_DATA_LEN_MAX] = {
-    0x00, 0x3d,
-    0xd4, 0x0f, 0x2b, 0x61, 0x6e, 0x64, 0x72, 0x6f,
-    0x69, 0x64, 0x2e, 0x63, 0x6f, 0x6d, 0x3a, 0x70,
-    0x6b, 0x67, 0x61, 0x70, 0x70, 0x6b, 0x69, 0x74,
-    0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x73, 0x6f, 0x75,
-    0x72, 0x63, 0x65, 0x2e, 0x67, 0x69, 0x7a, 0x77,
-    0x69, 0x74, 0x73, 0x2e, 0x63, 0x6f, 0x6d, 0x2e,
-    0x6d, 0x79, 0x61, 0x70, 0x70, 0x6c, 0x69, 0x63,
-    0x61, 0x74, 0x69, 0x6f, 0x6e,
+    0x00, 0x3d, 0xd4, 0x0f, 0x2b, 0x61, 0x6e, 0x64, 0x72, 0x6f, 0x69, 0x64, 0x2e, 0x63, 0x6f, 0x6d,
+    0x3a, 0x70, 0x6b, 0x67, 0x61, 0x70, 0x70, 0x6b, 0x69, 0x74, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x73,
+    0x6f, 0x75, 0x72, 0x63, 0x65, 0x2e, 0x67, 0x69, 0x7a, 0x77, 0x69, 0x74, 0x73, 0x2e, 0x63, 0x6f,
+    0x6d, 0x2e, 0x6d, 0x79, 0x61, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e,
 };
 
-#define I2C_REG_ARRAY_LEN           (64)
-#define OLED_SEND_BUFF_LEN          (28)
-#define OLED_SEND_BUFF_LEN2         (25)
-#define OLED_SEND_BUFF_LEN3         (27)
-#define OLED_SEND_BUFF_LEN4         (29)
-#define Max_Column                  (128)
-#define OLED_DEMO_TASK_STAK_SIZE    (1024*2)
-#define OLED_DEMO_TASK_PRIORITY     (25)
-#define OLED_DISPLAY_INTERVAL_TIME  (1)
-#define SEND_CMD_LEN                (2)
+#define I2C_REG_ARRAY_LEN          (64)
+#define OLED_SEND_BUFF_LEN         (28)
+#define OLED_SEND_BUFF_LEN2        (25)
+#define OLED_SEND_BUFF_LEN3        (27)
+#define OLED_SEND_BUFF_LEN4        (29)
+#define Max_Column                 (128)
+#define OLED_DEMO_TASK_STAK_SIZE   (1024 * 2)
+#define OLED_DEMO_TASK_PRIORITY    (25)
+#define OLED_DISPLAY_INTERVAL_TIME (1)
+#define SEND_CMD_LEN               (2)
 
-#define CHAR_SIZE   16
-#define Y_PIXEL_POINT 16
-#define X_PIXEL_POINT 8
+#define CHAR_SIZE          16
+#define Y_PIXEL_POINT      16
+#define X_PIXEL_POINT      8
 #define X_REMAINING_PIXELS 6
 
-#define X_PIXEL_POINT_POSITION_120  (120)
-#define Y_LINES_PIXEL_2   (2)
-#define X_COLUMNS_PIXEL_8 (8)
+#define X_PIXEL_POINT_POSITION_120 (120)
+#define Y_LINES_PIXEL_2            (2)
+#define X_COLUMNS_PIXEL_8          (8)
 
 // extern  unsigned char ndefFile[NDEF_DATA_LEN_MAX];
-static  unsigned char  Hi3861BoardLedTest = 0;
-unsigned char *ndfe;
+static unsigned char Hi3861BoardLedTest = 0;
+unsigned char* ndfe;
 /*
-    *@bref   向ssd1306 屏幕寄存器写入命令
-    *status 0：表示写入成功，否则失败
-*/
+ *@bref   向ssd1306 屏幕寄存器写入命令
+ *status 0：表示写入成功，否则失败
+ */
 static unsigned int I2cWriteByte(unsigned char regAddr, unsigned char cmd)
 {
     unsigned int status;
@@ -302,23 +283,21 @@ static unsigned int I2cWriteByte(unsigned char regAddr, unsigned char cmd)
     IotI2cData oledI2cCmd = { 0 };
     IotI2cData oledI2cWriteCmd = { 0 };
 
-    unsigned char sendUserCmd [SEND_CMD_LEN] = {OLED_ADDRESS_WRITE_CMD, userData};
-    unsigned char sendUserData [SEND_CMD_LEN] = {OLED_ADDRESS_WRITE_DATA, userData};
+    unsigned char sendUserCmd[SEND_CMD_LEN] = { OLED_ADDRESS_WRITE_CMD, userData };
+    unsigned char sendUserData[SEND_CMD_LEN] = { OLED_ADDRESS_WRITE_DATA, userData };
 
     /* 如果是写命令，发写命令地址0x00 */
     if (regAddr == OLED_ADDRESS_WRITE_CMD) {
         oledI2cWriteCmd.sendBuf = sendUserCmd;
         oledI2cWriteCmd.sendLen = sendLen;
-        status = IoTI2cWrite(IOT_I2C_IDX_0, OLED_ADDRESS,
-            oledI2cWriteCmd.sendBuf, oledI2cWriteCmd.sendLen);
+        status = IoTI2cWrite(IOT_I2C_IDX_0, OLED_ADDRESS, oledI2cWriteCmd.sendBuf, oledI2cWriteCmd.sendLen);
         if (status != 0) {
             return status;
         }
     } else if (regAddr == OLED_ADDRESS_WRITE_DATA) {
         oledI2cCmd.sendBuf = sendUserData;
         oledI2cCmd.sendLen = sendLen;
-        status = IoTI2cWrite(IOT_I2C_IDX_0, OLED_ADDRESS,
-            oledI2cCmd.sendBuf, oledI2cCmd.sendLen);
+        status = IoTI2cWrite(IOT_I2C_IDX_0, OLED_ADDRESS, oledI2cCmd.sendBuf, oledI2cCmd.sendLen);
         if (status != 0) {
             return status;
         }
@@ -387,7 +366,7 @@ static int SetOledControlCmd(void)
     if (status != 0) {
         return -1;
     }
-    status= WriteCmd(SET_SEGMENT_REMAP); // set segment remap
+    status = WriteCmd(SET_SEGMENT_REMAP); // set segment remap
     if (status != 0) {
         return -1;
     }
@@ -402,7 +381,7 @@ static int SetOledScanDisplayCmd(void)
 {
     int status;
 
-    status =WriteCmd(SET_MULTIPLEX); // --set multiplex ratio(1 to 64)
+    status = WriteCmd(SET_MULTIPLEX); // --set multiplex ratio(1 to 64)
     if (status != 0) {
         return -1;
     }
@@ -441,7 +420,7 @@ static int SetOledColorPreChargeCmd(void)
     if (status != 0) {
         return -1;
     }
-    status= WriteCmd(COLOR);
+    status = WriteCmd(COLOR);
     if (status != 0) {
         return -1;
     }
@@ -526,20 +505,20 @@ unsigned int OledInit(void)
 */
 void OledSetPosition(unsigned char x, unsigned char y)
 {
-    WriteCmd(0xb0 + y); /* send 0xb0 + y cmd */
+    WriteCmd(0xb0 + y);                 /* send 0xb0 + y cmd */
     WriteCmd(((x & 0xf0) >> 4) | 0x10); /* send  (x & 0xf0) >> 4) | 0x10 cmd */
-    WriteCmd(x & 0x0f); /* send x & 0x0f */
+    WriteCmd(x & 0x0f);                 /* send x & 0x0f */
 }
 
 /* 全屏填充 */
-#define Y_PIXEL_POINT_MAX   (128)
-#define X_PIXEL_8 (8)
+#define Y_PIXEL_POINT_MAX (128)
+#define X_PIXEL_8         (8)
 void OledFillScreen(unsigned char fiiData)
 {
-    for (unsigned char m = 0; m < X_PIXEL_8; m++) { /* 从OLED 的第0行开始，填充屏幕 */
-        WriteCmd(0xb0 + m); /* 0xb0 */
-        WriteCmd(0x00); /* 0x00 */
-        WriteCmd(0x10); /* 0x10 */
+    for (unsigned char m = 0; m < X_PIXEL_8; m++) {             /* 从OLED 的第0行开始，填充屏幕 */
+        WriteCmd(0xb0 + m);                                     /* 0xb0 */
+        WriteCmd(0x00);                                         /* 0x00 */
+        WriteCmd(0x10);                                         /* 0x10 */
         for (unsigned char n = 0; n < Y_PIXEL_POINT_MAX; n++) { /* 从OLED的第0列个像素点开始填充屏幕 */
             WriteData(fiiData);
         }
@@ -552,13 +531,12 @@ void OledFillScreen(unsigned char fiiData)
  *  pos :write positon start from x axis
  *  len:write data len
  */
-void OledPositionCleanScreen(unsigned char fillData, unsigned char line,
-    unsigned char pos, unsigned char len)
+void OledPositionCleanScreen(unsigned char fillData, unsigned char line, unsigned char pos, unsigned char len)
 {
     unsigned char m = line;
     WriteCmd(0xb0 + m); /* 0xb0 */
-    WriteCmd(0x00); /* 0x00 */
-    WriteCmd(0x10); /* 0x10 */
+    WriteCmd(0x00);     /* 0x00 */
+    WriteCmd(0x10);     /* 0x10 */
 
     for (unsigned char n = pos; n < len; n++) {
         WriteData(fillData);
@@ -585,10 +563,10 @@ void OledShowChar(unsigned char x, unsigned char y, unsigned char chr, unsigned 
     if (charSize == CHAR_SIZE) { /* 当要写入的字为两个字节 */
         OledSetPosition(xPosition, yPosition);
         for (unsigned char i = 0; i < X_PIXEL_POINT; i++) { /* 从OLED的第0列个像素点开始 */
-            WriteData(f8X16[c * Y_PIXEL_POINT + i]); /* 16,8 */
+            WriteData(f8X16[c * Y_PIXEL_POINT + i]);        /* 16,8 */
         }
         OledSetPosition(xPosition, yPosition + 1);
-        for (unsigned char j = 0; j < X_PIXEL_POINT; j++) { /* 从OLED的第0列个像素点开始 */
+        for (unsigned char j = 0; j < X_PIXEL_POINT; j++) {          /* 从OLED的第0列个像素点开始 */
             WriteData(f8X16[c * Y_PIXEL_POINT + j + X_PIXEL_POINT]); /* 16,8 */
         }
     } else {
@@ -607,7 +585,7 @@ void OledShowChar(unsigned char x, unsigned char y, unsigned char chr, unsigned 
  *  char_size:select typeface
  */
 
-void OledShowStr(unsigned char x, unsigned char y, unsigned char *chr, unsigned char charSize)
+void OledShowStr(unsigned char x, unsigned char y, unsigned char* chr, unsigned char charSize)
 {
     unsigned char j = 0;
     unsigned char xPosition = x;
@@ -619,7 +597,7 @@ void OledShowStr(unsigned char x, unsigned char y, unsigned char *chr, unsigned 
     }
     while (chr[j] != '\0') {
         OledShowChar(xPosition, yPosition, chr[j], charSize);
-        xPosition += X_COLUMNS_PIXEL_8; /* 8列组成一个字符位置 */
+        xPosition += X_COLUMNS_PIXEL_8;               /* 8列组成一个字符位置 */
         if (xPosition > X_PIXEL_POINT_POSITION_120) { /* 120 */
             xPosition = 0;
             yPosition += Y_LINES_PIXEL_2; /* 每2行写 */
@@ -630,21 +608,16 @@ void OledShowStr(unsigned char x, unsigned char y, unsigned char *chr, unsigned 
 
 static void OledNfcDisplayInit(void)
 {
-    OledFillScreen(OLED_CLEAN_SCREEN); // clear screen
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_0, \
-                "WiFi-AP  ON  U:1", OLED_DISPLAY_STRING_TYPE_1); /* 0, 0, xx, 1 */
-    OledShowStr(OLED_X_POSITION_15, OLED_Y_POSITION_1, \
-                "NFC Test", 1); /* 15, 1, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_3, \
-                "Mode:          ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 3, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, \
-                "1.NFC Mode     ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
+    OledFillScreen(OLED_CLEAN_SCREEN);                                                                 // clear screen
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_0, "WiFi-AP  ON  U:1", OLED_DISPLAY_STRING_TYPE_1); /* 0, 0, xx, 1 */
+    OledShowStr(OLED_X_POSITION_15, OLED_Y_POSITION_1, "NFC Test", 1);                                /* 15, 1, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_3, "Mode:          ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 3, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, "1.NFC Mode     ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
 }
 
 static void NFCTagWechatMode(void)
 {
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, \
-                "1.NFC wechat    ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, "1.NFC wechat    ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
     SetNdefData();
     int ret = GetNdefData(ndefFileWechat, sizeof(ndefFileWechat));
     if (ret != 0) {
@@ -654,8 +627,7 @@ static void NFCTagWechatMode(void)
 
 static void NFCTagTodayHeadlineMode(void)
 {
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, \
-                "2.Today_headlin ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, "2.Today_headlin ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
     SetNdefData();
     int ret = GetNdefData(ndefFileTodayHeadline, sizeof(ndefFileTodayHeadline));
     if (ret != 0) {
@@ -665,8 +637,7 @@ static void NFCTagTodayHeadlineMode(void)
 
 static void NFCTagTaobaoMode(void)
 {
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, \
-                "3.Taobao        ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, "3.Taobao        ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
     SetNdefData();
     int ret = GetNdefData(ndefFileTaobao, sizeof(ndefFileTaobao));
     if (ret != 0) {
@@ -676,8 +647,7 @@ static void NFCTagTaobaoMode(void)
 
 static void NFCTagHWSmartLifeMode(void)
 {
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, \
-                "4.HW_SM_life", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, "4.HW_SM_life", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
     SetNdefData();
     int ret = GetNdefData(ndefFileHWSmartLife, sizeof(ndefFileHWSmartLife));
     if (ret != 0) {
@@ -687,8 +657,7 @@ static void NFCTagHWSmartLifeMode(void)
 
 static void NFCTagHistreamingMode(void)
 {
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, \
-                "5.Histreaming   ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, "5.Histreaming   ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
     SetNdefData();
     int ret = GetNdefData(ndefFileHistreaming, sizeof(ndefFileHistreaming));
     if (ret != 0) {
@@ -711,12 +680,9 @@ static void OledScreenInitConfig(void)
 
 void NfcOledReturnMode(void)
 {
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, \
-                "Return Menu     ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_6, \
-                "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 6, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, \
-                "Continue        ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, "Return Menu     ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_6, "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 6, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "Continue        ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
 }
 
 /* nfc menu display */
@@ -764,4 +730,3 @@ void OledNfcDisplay(void)
         TaskMsleep(SLEEP_10_MS); // 10ms
     }
 }
-

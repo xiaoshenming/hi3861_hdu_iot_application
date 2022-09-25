@@ -13,11 +13,11 @@
  * limitations under the License.
  */
 
-#include "wifi_device.h"
 #include "cmsis_os2.h"
+#include "wifi_device.h"
 
-#include "lwip/netifapi.h"
 #include "lwip/api_shell.h"
+#include "lwip/netifapi.h"
 #include "wifi_connecter.h"
 
 static void PrintLinkedInfo(WifiLinkedInfo* info)
@@ -28,11 +28,11 @@ static void PrintLinkedInfo(WifiLinkedInfo* info)
         return;
     }
 
-    static char macAddress[32] = {0};
+    static char macAddress[32] = { 0 };
     unsigned char* mac = info->bssid;
-    if (snprintf_s(macAddress, sizeof(macAddress) + 1, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X",
-        mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]) < 0) { /* mac地址从0,1,2,3,4,5位 */
-            return;
+    if (snprintf_s(macAddress, sizeof(macAddress) + 1, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X", mac[0],
+                   mac[1], mac[2], mac[3], mac[4], mac[5]) < 0) { /* mac地址从0,1,2,3,4,5位 */
+        return;
     }
 }
 
@@ -40,7 +40,8 @@ static volatile int g_connected = 0;
 
 static void OnWifiConnectionChanged(int state, WifiLinkedInfo* info)
 {
-    if (!info) return;
+    if (!info)
+        return;
 
     printf("%s %d, state = %d, info = \r\n", __FUNCTION__, __LINE__, state);
     PrintLinkedInfo(info);
@@ -57,19 +58,17 @@ static void OnWifiScanStateChanged(int state, int size)
     printf("%s %d, state = %X, size = %d\r\n", __FUNCTION__, __LINE__, state, size);
 }
 
-static WifiEvent g_defaultWifiEventListener = {
-    .OnWifiConnectionChanged = OnWifiConnectionChanged,
-    .OnWifiScanStateChanged = OnWifiScanStateChanged
-};
+static WifiEvent g_defaultWifiEventListener = { .OnWifiConnectionChanged = OnWifiConnectionChanged,
+                                                .OnWifiScanStateChanged = OnWifiScanStateChanged };
 
 static struct netif* g_iface = NULL;
 
-err_t netifapi_set_hostname(struct netif *netif, char *hostname, u8_t namelen);
+err_t netifapi_set_hostname(struct netif* netif, char* hostname, u8_t namelen);
 #define SSID_LEN (2)
-#define PSK_LEN (9)
+#define PSK_LEN  (9)
 int ConnectToHotspot(void)
 {
-    WifiDeviceConfig config = {0};
+    WifiDeviceConfig config = { 0 };
 
     // 准备AP的配置参数
     strcpy_s(config.ssid, SSID_LEN, PARAM_HOTSPOT_SSID);
@@ -94,7 +93,7 @@ int ConnectToHotspot(void)
     printf("ConnectTo(%d): %d\r\n", netId, errCode);
 
     while (!g_connected) { // wait until connect to AP
-        osDelay(10); /* 持续10ms去连接AP */
+        osDelay(10);       /* 持续10ms去连接AP */
     }
     printf("g_connected: %d\r\n", g_connected);
 

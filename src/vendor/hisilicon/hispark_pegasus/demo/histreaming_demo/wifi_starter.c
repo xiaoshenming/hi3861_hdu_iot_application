@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#include "wifi_starter.h"
 #include "cmsis_os2.h"
+#include "wifi_starter.h"
 
 #include "lwip/netifapi.h"
 
@@ -39,11 +39,11 @@ static void PrintStationInfo(const StationInfo* info)
     if (!info) {
         return;
     }
-    static char macAddress[32] = {0};
+    static char macAddress[32] = { 0 };
     unsigned char* mac = info->macAddress;
-    if (snprintf_s(macAddress, sizeof(macAddress) + 1, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X",
-        mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]) < 0) { /* mac地址从0,1,2,3,4,5位 */
-            return;
+    if (snprintf_s(macAddress, sizeof(macAddress) + 1, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X", mac[0],
+                   mac[1], mac[2], mac[3], mac[4], mac[5]) < 0) { /* mac地址从0,1,2,3,4,5位 */
+        return;
     }
 }
 
@@ -69,14 +69,14 @@ WifiEvent g_defaultWifiEventListener = {
 
 static struct netif* g_iface = NULL;
 
-#define SSID_LEN    (11)
+#define SSID_LEN (11)
 
 int StartHotspot(void)
 {
     WifiErrorCode errCode;
     errCode = WIFI_SUCCESS;
 
-    HotspotConfig config = {0};
+    HotspotConfig config = { 0 };
 
     // 准备AP的配置参数
     strcpy_s(config.ssid, SSID_LEN, "HiSpark-AP");
@@ -105,9 +105,9 @@ int StartHotspot(void)
         ip4_addr_t gateway;
         ip4_addr_t netmask;
 
-        IP4_ADDR(&ipaddr,  192, 168, 1, 1);     /* input your IP for example: 192.168.1.1 */
-        IP4_ADDR(&gateway, 192, 168, 1, 1);     /* input your gateway for example: 192.168.1.1 */
-        IP4_ADDR(&netmask, 255, 255, 255, 0);   /* input your netmask for example: 255.255.255.0 */
+        IP4_ADDR(&ipaddr, 192, 168, 1, 1);    /* input your IP for example: 192.168.1.1 */
+        IP4_ADDR(&gateway, 192, 168, 1, 1);   /* input your gateway for example: 192.168.1.1 */
+        IP4_ADDR(&netmask, 255, 255, 255, 0); /* input your netmask for example: 255.255.255.0 */
         err_t ret = netifapi_netif_set_addr(g_iface, &ipaddr, &netmask, &gateway);
         printf("netifapi_netif_set_addr: %d\r\n", ret);
 

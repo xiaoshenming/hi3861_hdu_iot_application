@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
+#include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <memory.h>
 
-#include "ohos_init.h"
 #include "cmsis_os2.h"
-#include "iot_gpio.h"
 #include "hi_io.h"
 #include "hi_time.h"
+#include "iot_gpio.h"
+#include "ohos_init.h"
 
-
-#define GPIO_8 8
-#define GPIO_7 7
+#define GPIO_8    8
+#define GPIO_7    7
 #define GPIO_FUNC 0
 
-float GetDistance  (void)
+float GetDistance(void)
 {
     static unsigned long start_time = 0, time = 0;
     float distance = 0.0;

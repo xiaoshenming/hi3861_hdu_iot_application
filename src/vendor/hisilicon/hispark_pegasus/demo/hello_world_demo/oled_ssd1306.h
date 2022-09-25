@@ -34,10 +34,7 @@ void OledSetPosition(uint8_t x, uint8_t y);
 
 void OledFillScreen(uint8_t fillData);
 
-enum Font {
-    FONT6_X8 = 1,
-    FONT8_X16
-};
+enum Font { FONT6_X8 = 1, FONT8_X16 };
 typedef enum Font Font;
 
 void OledShowChar(uint8_t x, uint8_t y, uint8_t ch, Font font);

@@ -13,13 +13,12 @@
  * limitations under the License.
  */
 
-#include "iot_errno.h"
-#include "iot_gpio_ex.h"
 #include "hi_gpio.h"
 #include "hi_io.h"
 #include "hi_task.h"
 #include "hi_types_base.h"
-
+#include "iot_errno.h"
+#include "iot_gpio_ex.h"
 
 unsigned int IoSetPull(unsigned int id, IotIoPull val)
 {

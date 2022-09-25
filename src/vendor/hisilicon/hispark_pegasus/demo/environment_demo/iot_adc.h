@@ -109,9 +109,8 @@ typedef enum {
  * @since 1.0
  * @version 1.0
  */
-unsigned int AdcRead(IotAdcChannelIndex channel, unsigned const short *data, IotAdcEquModelSel equModel,
-    IotAdcCurBais curBais, unsigned const short rstCnt);
-
+unsigned int AdcRead(IotAdcChannelIndex channel, unsigned const short* data, IotAdcEquModelSel equModel,
+                     IotAdcCurBais curBais, unsigned const short rstCnt);
 
 #endif
 /** @} */

@@ -15,16 +15,15 @@
 
 #include <stdio.h>
 #include <unistd.h>
-#include "ohos_init.h"
 #include "cmsis_os2.h"
+#include "hi_io.h"
 #include "iot_gpio.h"
 #include "iot_watchdog.h"
-#include "hi_io.h"
-
+#include "ohos_init.h"
 
 #define IOT_GPIO_IDX_10 10 // for hispark_pegasus
 
-static void *LedCntrolDemo(const char *arg)
+static void* LedCntrolDemo(const char* arg)
 {
     (void)arg;
     printf("LedTask start\r\n");

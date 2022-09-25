@@ -16,31 +16,31 @@
 #ifndef APP_DEMO_CONFIG_H
 #define APP_DEMO_CONFIG_H
 
-#define SEND_OLED_FILL_SCRRENC_CMD  ((unsigned char)0x0)
-#define SEND_CMD_LEN    (8)
+#define SEND_OLED_FILL_SCRRENC_CMD ((unsigned char)0x0)
+#define SEND_CMD_LEN               (8)
 
-#define OLED_X_POSITION_0    (0)
-#define OLED_X_POSITION_15   (15)
-#define OLED_X_POSITION_16   (16)
-#define OLED_X_POSITION_18   (18)
-#define OLED_X_POSITION_40   (40)
-#define OLED_X_POSITION_48   (48)
-#define OLED_X_POSITION_56   (56)
-#define OLED_X_POSITION_60   (60)
-#define OLED_X_POSITION_81   (81)
-#define OLED_X_POSITION_120  (120)
+#define OLED_X_POSITION_0   (0)
+#define OLED_X_POSITION_15  (15)
+#define OLED_X_POSITION_16  (16)
+#define OLED_X_POSITION_18  (18)
+#define OLED_X_POSITION_40  (40)
+#define OLED_X_POSITION_48  (48)
+#define OLED_X_POSITION_56  (56)
+#define OLED_X_POSITION_60  (60)
+#define OLED_X_POSITION_81  (81)
+#define OLED_X_POSITION_120 (120)
 
-#define OLED_Y_POSITION_0     ((unsigned char)0x0)
-#define OLED_Y_POSITION_1     ((unsigned char)0x1)
-#define OLED_Y_POSITION_2     ((unsigned char)0x2)
-#define OLED_Y_POSITION_3     ((unsigned char)0x3)
-#define OLED_Y_POSITION_4     ((unsigned char)0x4)
-#define OLED_Y_POSITION_5     ((unsigned char)0x5)
-#define OLED_Y_POSITION_6     ((unsigned char)0x6)
-#define OLED_Y_POSITION_7     ((unsigned char)0x7)
+#define OLED_Y_POSITION_0 ((unsigned char)0x0)
+#define OLED_Y_POSITION_1 ((unsigned char)0x1)
+#define OLED_Y_POSITION_2 ((unsigned char)0x2)
+#define OLED_Y_POSITION_3 ((unsigned char)0x3)
+#define OLED_Y_POSITION_4 ((unsigned char)0x4)
+#define OLED_Y_POSITION_5 ((unsigned char)0x5)
+#define OLED_Y_POSITION_6 ((unsigned char)0x6)
+#define OLED_Y_POSITION_7 ((unsigned char)0x7)
 
-#define OLED_DISPLAY_STRING_TYPE_1   (1)
-#define OLED_DISPLAY_STRING_TYPE_16  (16)
+#define OLED_DISPLAY_STRING_TYPE_1  (1)
+#define OLED_DISPLAY_STRING_TYPE_16 (16)
 
 typedef enum {
     TIME_COUNT_0 = 0,
@@ -50,7 +50,7 @@ typedef enum {
     TIME_COUNT_4,
     TIME_COUNT_5,
     TIME_COUNT_6
-}TimeCountEnv;
+} TimeCountEnv;
 
 typedef struct LightTimer {
     int Timer1Status;
@@ -79,12 +79,12 @@ typedef struct LightTimer {
     int HumanTimerRedLightStatus;
     int HumanTimerYellowLightStatus;
     int HumanTimerGreenLightStatus;
-}LightTimerCfg;
+} LightTimerCfg;
 
 typedef struct {
     int timer1Count;
     int timer2Count;
-}TimerMsg;
+} TimerMsg;
 
 typedef struct {
     unsigned int g_redLedAutoModuTimeCount;
@@ -93,7 +93,7 @@ typedef struct {
     unsigned int g_redLedHumanModuTimeCount;
     unsigned int g_yellowLedHumanModuTimeCount;
     unsigned int g_greenLedHumanModuTimeCount;
-}TrafficLedStatusType;
+} TrafficLedStatusType;
 
 typedef enum {
     RED_LED_AUTOMODE_TIMECOUNT,
@@ -102,8 +102,7 @@ typedef enum {
     RED_LED_HUMANMODE_TIMECOUNT,
     YELLOW_LED_HUMANMODE_TIMECOUNT,
     GREEN_LED_HUMANMODE_TIMECOUNT,
-}TrafficLedStatusDef;
-
+} TrafficLedStatusDef;
 
 unsigned char DelayAndFreshScreen(unsigned int delayTime, unsigned char beepStatus);
 void TrafficAutoModeSample(void);

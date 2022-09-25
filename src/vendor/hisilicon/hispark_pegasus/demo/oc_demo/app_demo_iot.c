@@ -13,16 +13,16 @@
  * limitations under the License.
  */
 
-#include <hi_task.h>
 #include <string.h>
+#include <hi_task.h>
+#include "app_demo_config.h"
+#include "app_demo_multi_sample.h"
+#include "cmsis_os2.h"
 #include "iot_config.h"
 #include "iot_log.h"
 #include "iot_main.h"
 #include "iot_profile.h"
 #include "ohos_init.h"
-#include "cmsis_os2.h"
-#include "app_demo_multi_sample.h"
-#include "app_demo_config.h"
 #include "wifi_connecter.h"
 
 /* report traffic light count */
@@ -32,25 +32,25 @@ static int g_iState = 0;
 /* attribute initiative to report */
 #define TAKE_THE_INITIATIVE_TO_REPORT
 /* oc request id */
-#define CN_COMMADN_INDEX                    "commands/request_id="
+#define CN_COMMADN_INDEX "commands/request_id="
 /* oc report HiSpark attribute */
-#define IO_FUNC_GPIO_OUT 0
-#define IOT_GPIO_INDEX_10 10
-#define IOT_GPIO_INDEX_11 11
-#define IOT_GPIO_INDEX_12 12
-#define TRAFFIC_LIGHT_CMD_PAYLOAD           "led_value"
-#define TRAFFIC_LIGHT_CMD_CONTROL_MODE      "ControlModule"
-#define TRAFFIC_LIGHT_CMD_AUTO_MODE         "AutoModule"
-#define TRAFFIC_LIGHT_CMD_HUMAN_MODE        "HumanModule"
-#define TRAFFIC_LIGHT_YELLOW_ON_PAYLOAD     "YELLOW_LED_ON"
-#define TRAFFIC_LIGHT_RED_ON_PAYLOAD        "RED_LED_ON"
-#define TRAFFIC_LIGHT_GREEN_ON_PAYLOAD      "GREEN_LED_ON"
-#define TRAFFIC_LIGHT_SERVICE_ID_PAYLOAD    "TrafficLight"
-#define TRAFFIC_LIGHT_BEEP_CONTROL          "BeepControl"
-#define TRAFFIC_LIGHT_BEEP_ON               "BEEP_ON"
-#define TRAFFIC_LIGHT_BEEP_OFF              "BEEP_OFF"
-#define TRAFFIC_LIGHT_HUMAN_INTERVENTION_ON     "HUMAN_MODULE_ON"
-#define TRAFFIC_LIGHT_HUMAN_INTERVENTION_OFF    "HUMAN_MODULE_OFF"
+#define IO_FUNC_GPIO_OUT                     0
+#define IOT_GPIO_INDEX_10                    10
+#define IOT_GPIO_INDEX_11                    11
+#define IOT_GPIO_INDEX_12                    12
+#define TRAFFIC_LIGHT_CMD_PAYLOAD            "led_value"
+#define TRAFFIC_LIGHT_CMD_CONTROL_MODE       "ControlModule"
+#define TRAFFIC_LIGHT_CMD_AUTO_MODE          "AutoModule"
+#define TRAFFIC_LIGHT_CMD_HUMAN_MODE         "HumanModule"
+#define TRAFFIC_LIGHT_YELLOW_ON_PAYLOAD      "YELLOW_LED_ON"
+#define TRAFFIC_LIGHT_RED_ON_PAYLOAD         "RED_LED_ON"
+#define TRAFFIC_LIGHT_GREEN_ON_PAYLOAD       "GREEN_LED_ON"
+#define TRAFFIC_LIGHT_SERVICE_ID_PAYLOAD     "TrafficLight"
+#define TRAFFIC_LIGHT_BEEP_CONTROL           "BeepControl"
+#define TRAFFIC_LIGHT_BEEP_ON                "BEEP_ON"
+#define TRAFFIC_LIGHT_BEEP_OFF               "BEEP_OFF"
+#define TRAFFIC_LIGHT_HUMAN_INTERVENTION_ON  "HUMAN_MODULE_ON"
+#define TRAFFIC_LIGHT_HUMAN_INTERVENTION_OFF "HUMAN_MODULE_OFF"
 
 #define TASK_SLEEP_1000MS (1000)
 
@@ -74,7 +74,7 @@ void TrafficLightAppOption(HiTrafficLightMode appOptionMode, HiControlModeType a
     }
 }
 
-static void TrafficLightMsgRcvCallBack(char *payload)
+static void TrafficLightMsgRcvCallBack(char* payload)
 {
     unsigned char currentMode = 0;
     unsigned char currentType = 0;
@@ -84,24 +84,18 @@ static void TrafficLightMsgRcvCallBack(char *payload)
         if (strstr(payload, TRAFFIC_LIGHT_YELLOW_ON_PAYLOAD) != NULL) { // YELLOW LED
             OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "2.Yellow On     ",
                         OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
-            GpioControl(IOT_GPIO_INDEX_10, IOT_GPIO_INDEX_10,
-                        IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE0, IO_FUNC_GPIO_OUT);
-            GpioControl(IOT_GPIO_INDEX_12, IOT_GPIO_INDEX_12,
-                        IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
+            GpioControl(IOT_GPIO_INDEX_10, IOT_GPIO_INDEX_10, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE0, IO_FUNC_GPIO_OUT);
+            GpioControl(IOT_GPIO_INDEX_12, IOT_GPIO_INDEX_12, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
         } else if (strstr(payload, TRAFFIC_LIGHT_RED_ON_PAYLOAD) != NULL) { // RED LED
             OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "1.Red On       ",
-                        OLED_DISPLAY_STRING_TYPE_1);  /* 0, 7, xx, 1 */
-            GpioControl(IOT_GPIO_INDEX_10, IOT_GPIO_INDEX_10,
-                        IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
-            GpioControl(IOT_GPIO_INDEX_11, IOT_GPIO_INDEX_11,
-                        IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE0, IO_FUNC_GPIO_OUT);
+                        OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+            GpioControl(IOT_GPIO_INDEX_10, IOT_GPIO_INDEX_10, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
+            GpioControl(IOT_GPIO_INDEX_11, IOT_GPIO_INDEX_11, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE0, IO_FUNC_GPIO_OUT);
         } else if (strstr(payload, TRAFFIC_LIGHT_GREEN_ON_PAYLOAD) != NULL) { // GREEN LED
             OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "3.Green On      ",
                         OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
-            GpioControl(IOT_GPIO_INDEX_12, IOT_GPIO_INDEX_12,
-                        IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE0, IO_FUNC_GPIO_OUT);
-            GpioControl(IOT_GPIO_INDEX_11, IOT_GPIO_INDEX_11,
-                        IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
+            GpioControl(IOT_GPIO_INDEX_12, IOT_GPIO_INDEX_12, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE0, IO_FUNC_GPIO_OUT);
+            GpioControl(IOT_GPIO_INDEX_11, IOT_GPIO_INDEX_11, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
         }
         TrafficLightAppOption(currentMode, currentType);
     } else if (strstr(payload, TRAFFIC_LIGHT_CMD_AUTO_MODE) != NULL) { // Auto module
@@ -116,7 +110,7 @@ static void TrafficLightMsgRcvCallBack(char *payload)
         }
         TrafficLightAppOption(currentMode, currentType);
     } else if (strstr(payload, TRAFFIC_LIGHT_BEEP_CONTROL) != NULL) { // BEEP option
-        if (strstr(payload, TRAFFIC_LIGHT_BEEP_ON) != NULL) { // BEEP ON
+        if (strstr(payload, TRAFFIC_LIGHT_BEEP_ON) != NULL) {         // BEEP ON
             ocBeepStatus = BEEP_ON;
         } else if (strstr(payload, TRAFFIC_LIGHT_BEEP_OFF) != NULL) { // BEEP OFF
             ocBeepStatus = BEEP_OFF;
@@ -126,10 +120,10 @@ static void TrafficLightMsgRcvCallBack(char *payload)
 
 // /< this is the callback function, set to the mqtt, and if any messages come, it will be called
 // /< The payload here is the json string
-static void DemoMsgRcvCallBack(int qos, const char *topic, char *payload)
+static void DemoMsgRcvCallBack(int qos, const char* topic, char* payload)
 {
-    const char *requesID;
-    char *tmp;
+    const char* requesID;
+    char* tmp;
     IoTCmdResp resp;
     IOT_LOG_DEBUG("RCVMSG:QOS:%d TOPIC:%s PAYLOAD:%s\r\n", qos, topic, payload);
     /* app 下发的操作 */
@@ -141,7 +135,7 @@ static void DemoMsgRcvCallBack(int qos, const char *topic, char *payload)
         requesID = tmp + strlen(CN_COMMADN_INDEX);
         resp.requestID = requesID;
         resp.respName = NULL;
-        resp.retCode = 0;   ////< which means 0 success and others failed
+        resp.retCode = 0; ////< which means 0 success and others failed
         resp.paras = NULL;
         (void)IoTProfileCmdResp(CONFIG_DEVICE_PWD, &resp);
     }
@@ -199,11 +193,11 @@ void SetupTrflControlModule(HiTrafficLightMode currentMode, HiControlModeType cu
     property.type = EN_IOT_DATATYPE_STRING;
     property.key = "ControlModule";
     if (currentType == RED_ON) {
-            property.value = "RED_LED_ON";
+        property.value = "RED_LED_ON";
     } else if (currentType == YELLOW_ON) {
-            property.value = "YELLOW_LED_ON";
+        property.value = "YELLOW_LED_ON";
     } else if (currentType == GREEN_ON) {
-            property.value = "GREEN_LED_ON";
+        property.value = "GREEN_LED_ON";
     }
     memset_s(&service, sizeof(service), 0, sizeof(service));
     service.serviceID = "TrafficLight";
@@ -241,7 +235,7 @@ void ReportLedLightTimeCount(void)
     memset_s(&property, sizeof(property), 0, sizeof(property));
     property.type = EN_IOT_DATATYPE_INT;
     property.key = "AutoModuleYLedTC";
-    property.iValue = GetLedStatus(YELLOW_LED_AUTOMODE_TIMECOUNT) ;
+    property.iValue = GetLedStatus(YELLOW_LED_AUTOMODE_TIMECOUNT);
     memset_s(&service, sizeof(service), 0, sizeof(service));
     service.serviceID = "TrafficLight";
     service.serviceProperty = &property;
@@ -378,7 +372,7 @@ static void ReportTrafficLightMsg(void)
 }
 ///< this is the demo main task entry,here we will set the wifi/cjson/mqtt ready ,and
 ///< wait if any work to do in the while
-static void *DemoEntry(const char *arg)
+static void* DemoEntry(const char* arg)
 {
     hi_watchdog_disable();
     WifiStaReadyWait();
@@ -402,9 +396,9 @@ static void *DemoEntry(const char *arg)
 }
 
 ///< This is the demo entry, we create a task here, and all the works has been done in the demo_entry
-#define CN_IOT_TASK_STACKSIZE  0x1000
-#define CN_IOT_TASK_PRIOR 28
-#define CN_IOT_TASK_NAME "IOTDEMO"
+#define CN_IOT_TASK_STACKSIZE 0x1000
+#define CN_IOT_TASK_PRIOR     28
+#define CN_IOT_TASK_NAME      "IOTDEMO"
 static void AppDemoIot(void)
 {
     osThreadAttr_t attr;

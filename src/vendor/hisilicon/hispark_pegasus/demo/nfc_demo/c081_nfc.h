@@ -17,7 +17,7 @@
 #define C081_NFC_H
 
 void NfcInit(void);
-unsigned int  WriteRead(unsigned char regHigh8bitCmd, unsigned char regLow8bitCmd,
-    unsigned char* recvData, unsigned char sendLen, unsigned char readLen);
+unsigned int WriteRead(unsigned char regHigh8bitCmd, unsigned char regLow8bitCmd, unsigned char* recvData,
+                       unsigned char sendLen, unsigned char readLen);
 
 #endif

@@ -15,27 +15,27 @@
 
 #include <stdio.h>
 #include <unistd.h>
-#include "ohos_init.h"
+#include "app_demo_multi_sample.h"
 #include "cmsis_os2.h"
 #include "iot_watchdog.h"
-#include "app_demo_multi_sample.h"
+#include "ohos_init.h"
 
-#define TASK_STACK  (1024 * 4)
+#define TASK_STACK          (1024 * 4)
 #define INTERRUPT_TASK_PRIO (26)
 #define TRAFFIC_TASK_PRIO   (25)
-void KeyInterruptScan(const char *arg)
+void KeyInterruptScan(const char* arg)
 {
     (void)arg;
     AppMultiSampleDemo();
 }
 
-void TrafficLightDemo(const char *arg)
+void TrafficLightDemo(const char* arg)
 {
     if (StartHotspot() != 0) {
         printf("start ap failed\r\n");
     }
     printf("start ap success\r\n");
-    void *link_platform = HistreamingOpen();
+    void* link_platform = HistreamingOpen();
     TrafficLightFunc();
     printf("traffic light open ok\r\n");
 }

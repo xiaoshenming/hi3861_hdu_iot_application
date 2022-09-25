@@ -16,12 +16,12 @@
 #ifndef WIFI_CONNECTER_H
 #define WIFI_CONNECTER_H
 
-#define PARAM_HOTSPOT_SSID "H"   // your AP SSID
-#define PARAM_HOTSPOT_PSK  "12345678"  // your AP PSK
+#define PARAM_HOTSPOT_SSID "H"               // your AP SSID
+#define PARAM_HOTSPOT_PSK  "12345678"        // your AP PSK
 #define PARAM_HOTSPOT_TYPE WIFI_SEC_TYPE_PSK // defined in wifi_device_config.h
 
 int ConnectToHotspot(void);
 
 void DisconnectWithHotspot(int netId);
 
-#endif  // WIFI_CONNECTER_H
+#endif // WIFI_CONNECTER_H

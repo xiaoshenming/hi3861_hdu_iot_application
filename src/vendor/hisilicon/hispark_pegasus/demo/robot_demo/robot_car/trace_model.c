@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-#include "ohos_init.h"
 #include "cmsis_os2.h"
-#include "iot_gpio.h"
 #include "hi_io.h"
-#include "hi_time.h"
-#include "iot_watchdog.h"
-#include "robot_control.h"
-#include "iot_errno.h"
 #include "hi_pwm.h"
+#include "hi_time.h"
 #include "hi_timer.h"
+#include "iot_errno.h"
+#include "iot_gpio.h"
 #include "iot_pwm.h"
+#include "iot_watchdog.h"
+#include "ohos_init.h"
+#include "robot_control.h"
 
-#define GPIO0 0
-#define GPIO1 1
-#define GPIO9 9
-#define GPIO10 10
-#define GPIO11 11
-#define GPIO12 12
-#define GPIO_FUNC 0
-#define car_speed_left 0
+#define GPIO0           0
+#define GPIO1           1
+#define GPIO9           9
+#define GPIO10          10
+#define GPIO11          11
+#define GPIO12          12
+#define GPIO_FUNC       0
+#define car_speed_left  0
 #define car_speed_right 0
 
 unsigned int g_car_speed_left = car_speed_left;

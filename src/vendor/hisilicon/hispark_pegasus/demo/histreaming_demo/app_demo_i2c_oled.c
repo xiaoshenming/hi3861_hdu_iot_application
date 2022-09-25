@@ -15,35 +15,34 @@
 
 #include <unistd.h>
 #include <hi_io.h>
+#include "app_demo_multi_sample.h"
+#include "cmsis_os2.h"
+#include "hi_gpio.h"
 #include "hi_time.h"
+#include "iot_gpio.h"
 #include "iot_i2c.h"
 #include "ohos_init.h"
-#include "cmsis_os2.h"
-#include "iot_gpio.h"
-#include "hi_gpio.h"
-#include "ssd1306_oled.h"
-#include "app_demo_multi_sample.h"
 #include "ssd1306_oled.h"
 
-#define I2C_REG_ARRAY_LEN           (64)
-#define OLED_SEND_BUFF_LEN          (28)
-#define OLED_SEND_BUFF_LEN2         (25)
-#define OLED_SEND_BUFF_LEN3         (27)
-#define OLED_SEND_BUFF_LEN4         (29)
+#define I2C_REG_ARRAY_LEN          (64)
+#define OLED_SEND_BUFF_LEN         (28)
+#define OLED_SEND_BUFF_LEN2        (25)
+#define OLED_SEND_BUFF_LEN3        (27)
+#define OLED_SEND_BUFF_LEN4        (29)
 #define MAX_COLUM                  (128)
-#define OLED_DEMO_TASK_STAK_SIZE    (1024 * 2)
-#define OLED_DEMO_TASK_PRIORITY     (25)
-#define OLED_DISPLAY_INTERVAL_TIME  (1)
-#define SEND_CMD_LEN                (2)
+#define OLED_DEMO_TASK_STAK_SIZE   (1024 * 2)
+#define OLED_DEMO_TASK_PRIORITY    (25)
+#define OLED_DISPLAY_INTERVAL_TIME (1)
+#define SEND_CMD_LEN               (2)
 
-#define CHAR_SIZE   16
-#define Y_PIXEL_POINT 16
-#define X_PIXEL_POINT 8
+#define CHAR_SIZE          16
+#define Y_PIXEL_POINT      16
+#define X_PIXEL_POINT      8
 #define X_REMAINING_PIXELS 6
 
-#define X_PIXEL_POINT_POSITION_120  (120)
-#define Y_LINES_PIXEL_2   (2)
-#define X_COLUMNS_PIXEL_8 (8)
+#define X_PIXEL_POINT_POSITION_120 (120)
+#define Y_LINES_PIXEL_2            (2)
+#define X_COLUMNS_PIXEL_8          (8)
 
 /* 6*8的点阵 */
 static const unsigned char f6X8[][6] = {
@@ -251,8 +250,8 @@ static unsigned int I2cWriteByte(unsigned char regAddr, unsigned char cmd)
     IotI2cData oledI2cCmd = { 0 };
     IotI2cData oledI2cWriteCmd = { 0 };
 
-    unsigned char sendUserCmd [SEND_CMD_LEN] = {OLED_ADDRESS_WRITE_CMD, userData};
-    unsigned char sendUserData [SEND_CMD_LEN] = {OLED_ADDRESS_WRITE_DATA, userData};
+    unsigned char sendUserCmd[SEND_CMD_LEN] = { OLED_ADDRESS_WRITE_CMD, userData };
+    unsigned char sendUserData[SEND_CMD_LEN] = { OLED_ADDRESS_WRITE_DATA, userData };
 
     /* 如果是写命令，发写命令地址0x00 */
     if (regAddr == OLED_ADDRESS_WRITE_CMD) {
@@ -469,22 +468,22 @@ unsigned int OledInit(void)
  * @bref set start position 设置起始点坐标
  * @param unsigned char x:write start from x axis
  * unsigned char y:write start from y axis
-*/
+ */
 void OledSetPosition(unsigned char x, unsigned char y)
 {
-    WriteCmd(0xb0 + y); /* send 0xb0 +y */
+    WriteCmd(0xb0 + y);                 /* send 0xb0 +y */
     WriteCmd(((x & 0xf0) >> 4) | 0x10); /* 设置起点坐标0x10，4 */
-    WriteCmd(x & 0x0f); /* send x & 0x0f */
+    WriteCmd(x & 0x0f);                 /* send x & 0x0f */
 }
 /* 全屏填充 */
-#define Y_PIXEL_POINT_MAX   (128)
-#define X_PIXEL_8 (8)
+#define Y_PIXEL_POINT_MAX (128)
+#define X_PIXEL_8         (8)
 void OledFillScreen(unsigned char fiiData)
 {
-    for (unsigned char m = 0; m < X_PIXEL_8; m++) { /* 从OLED 的第0行开始，填充屏幕 */
-        WriteCmd(0xb0 + m); /* 0xb0 */
-        WriteCmd(0x00); /* 0x00 */
-        WriteCmd(0x10); /* 0x10 */
+    for (unsigned char m = 0; m < X_PIXEL_8; m++) {             /* 从OLED 的第0行开始，填充屏幕 */
+        WriteCmd(0xb0 + m);                                     /* 0xb0 */
+        WriteCmd(0x00);                                         /* 0x00 */
+        WriteCmd(0x10);                                         /* 0x10 */
         for (unsigned char n = 0; n < Y_PIXEL_POINT_MAX; n++) { /* 从OLED的第0列个像素点开始填充屏幕 */
             WriteData(fiiData);
         }
@@ -501,8 +500,8 @@ void OledPositionCleanScreen(unsigned char fillData, unsigned char line, unsigne
 {
     unsigned char m = line;
     WriteCmd(0xb0 + m); /* 0xb0 */
-    WriteCmd(0x00); /* 0x00 */
-    WriteCmd(0x10); /* 0x10 */
+    WriteCmd(0x00);     /* 0x00 */
+    WriteCmd(0x10);     /* 0x10 */
 
     for (unsigned char n = pos; n < len; n++) {
         WriteData(fillData);
@@ -515,7 +514,6 @@ void OledPositionCleanScreen(unsigned char fillData, unsigned char line, unsigne
  * chr:write data
  * char_size:select typeface
  */
-
 
 void OledShowChar(unsigned char x, unsigned char y, unsigned char chr, unsigned char charSize)
 {
@@ -530,10 +528,10 @@ void OledShowChar(unsigned char x, unsigned char y, unsigned char chr, unsigned 
     if (charSize == CHAR_SIZE) { /* 当要写入的字为两个字节 */
         OledSetPosition(xPosition, yPosition);
         for (unsigned char i = 0; i < X_PIXEL_POINT; i++) { /* 从OLED的第0列个像素点开始 */
-            WriteData(f8X16[c * Y_PIXEL_POINT + i]); /* 16,8 */
+            WriteData(f8X16[c * Y_PIXEL_POINT + i]);        /* 16,8 */
         }
         OledSetPosition(xPosition, yPosition + 1);
-        for (unsigned char j = 0; j < X_PIXEL_POINT; j++) { /* 从OLED的第0列个像素点开始 */
+        for (unsigned char j = 0; j < X_PIXEL_POINT; j++) {          /* 从OLED的第0列个像素点开始 */
             WriteData(f8X16[c * Y_PIXEL_POINT + j + X_PIXEL_POINT]); /* 16,8 */
         }
     } else {
@@ -551,7 +549,7 @@ void OledShowChar(unsigned char x, unsigned char y, unsigned char chr, unsigned 
  * chr:write data
  * char_size:select typeface
  */
-void OledShowStr(unsigned char x, unsigned char y, unsigned char *chr, unsigned char charSize)
+void OledShowStr(unsigned char x, unsigned char y, unsigned char* chr, unsigned char charSize)
 {
     unsigned char j = 0;
     unsigned char xPosition = x;
@@ -563,7 +561,7 @@ void OledShowStr(unsigned char x, unsigned char y, unsigned char *chr, unsigned 
     }
     while (chr[j] != '\0') {
         OledShowChar(xPosition, yPosition, chr[j], charSize);
-        xPosition += X_COLUMNS_PIXEL_8; /* 8列组成一个字符位置 */
+        xPosition += X_COLUMNS_PIXEL_8;               /* 8列组成一个字符位置 */
         if (xPosition > X_PIXEL_POINT_POSITION_120) { /* 120 */
             xPosition = 0;
             yPosition += Y_LINES_PIXEL_2; /* 每2行写 */
@@ -575,28 +573,24 @@ void OledShowStr(unsigned char x, unsigned char y, unsigned char *chr, unsigned 
 /* 显示主界面 */
 void OledMainMenuDisplay(void)
 {
-    OledFillScreen(0x00); // clear screen
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_1,
-                "1.Colorful light", OLED_DISPLAY_STRING_TYPE_1); /* 0, 1, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_2,
-                "2.Traffic light", OLED_DISPLAY_STRING_TYPE_1); /* 0, 2, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_3,
-                "3.Environment", OLED_DISPLAY_STRING_TYPE_1); /* 0, 3, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4,
-                "4.NFC test", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
+    OledFillScreen(0x00);                                                                              // clear screen
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_1, "1.Colorful light", OLED_DISPLAY_STRING_TYPE_1); /* 0, 1, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_2, "2.Traffic light", OLED_DISPLAY_STRING_TYPE_1);  /* 0, 2, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_3, "3.Environment", OLED_DISPLAY_STRING_TYPE_1);    /* 0, 3, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, "4.NFC test", OLED_DISPLAY_STRING_TYPE_1);       /* 0, 4, xx, 1 */
 
     if (GetKeyStatus(MENU_SELECT) == COLORFUL_LIGHT_MENU) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "Selet:1   Enter", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "Selet:1   Enter",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else if (GetKeyStatus(MENU_SELECT) == TRAFFIC_LIGHT_MENU) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "Selet:2   Enter", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "Selet:2   Enter",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else if (GetKeyStatus(MENU_SELECT) == ENVIRONMENT_MENU) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "Selet:3   Enter", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "Selet:3   Enter",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else if (GetKeyStatus(MENU_SELECT) == NFC_TEST_MENU) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "Selet:4   Enter", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "Selet:4   Enter",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 

@@ -15,30 +15,30 @@
 
 // /<this demo make the wifi to connect to the specified AP
 
-#include <unistd.h>
-#include <hi_wifi_api.h>
 #include <lwip/ip_addr.h>
 #include <lwip/netifapi.h>
-#include <hi_types_base.h>
-#include <hi_task.h>
+#include <unistd.h>
 #include <hi_mem.h>
-#include "wifi_device.h"
+#include <hi_task.h>
+#include <hi_types_base.h>
+#include <hi_wifi_api.h>
 #include "cmsis_os2.h"
-#include "wifi_device_config.h"
 #include "lwip/api_shell.h"
 #include "udp_config.h"
+#include "wifi_device.h"
+#include "wifi_device_config.h"
 
-#define APP_INIT_VAP_NUM    2
-#define APP_INIT_USR_NUM    2
+#define APP_INIT_VAP_NUM 2
+#define APP_INIT_USR_NUM 2
 
-static struct netif *g_lwipNetif = NULL;
-static hi_bool  g_scanDone = HI_FALSE;
+static struct netif* g_lwipNetif = NULL;
+static hi_bool g_scanDone = HI_FALSE;
 static struct netif* g_iface = NULL;
 void WifiStaStop(int netId);
 static int WifiStaStart(void);
 int g_netId = -1;
 int g_staConnect = 0;
-#define MAC_ADDR_BUF_LEN (32)
+#define MAC_ADDR_BUF_LEN    (32)
 #define WIFI_CONNECT_STATUS ((unsigned char)0x02)
 /**
  @brief  print wifi sta module link information
@@ -53,11 +53,11 @@ static void PrintLinkedInfo(const WifiLinkedInfo* info)
         return;
     }
 
-    static char macAddress[MAC_ADDR_BUF_LEN] = {0};
+    static char macAddress[MAC_ADDR_BUF_LEN] = { 0 };
     unsigned char* mac = info->bssid;
-    if (snprintf_s(macAddress, sizeof(macAddress) + 1, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X",
-        mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]) < 0) { /* mac地址从0,1,2,3,4,5位 */
-            return;
+    if (snprintf_s(macAddress, sizeof(macAddress) + 1, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X", mac[0],
+                   mac[1], mac[2], mac[3], mac[4], mac[5]) < 0) { /* mac地址从0,1,2,3,4,5位 */
+        return;
     }
 }
 /**
@@ -91,17 +91,15 @@ static void OnWifiScanStateChanged(int state, int size)
     printf("%s %d, state = %X, size = %d\r\n", __FUNCTION__, __LINE__, state, size);
 }
 
-static WifiEvent g_defaultWifiEventListener = {
-    .OnWifiConnectionChanged = OnWifiConnectionChanged,
-    .OnWifiScanStateChanged = OnWifiScanStateChanged
-};
+static WifiEvent g_defaultWifiEventListener = { .OnWifiConnectionChanged = OnWifiConnectionChanged,
+                                                .OnWifiScanStateChanged = OnWifiScanStateChanged };
 /**
     @brief This function will start wifi station module, and WiFi will connect to the hotspot
 */
 
 static int WifiStaStart(void)
 {
-    WifiDeviceConfig apConfig = {0};
+    WifiDeviceConfig apConfig = { 0 };
     (void)strcpy_s(apConfig.ssid, strlen(AP_SSID) + 1, AP_SSID);
     (void)strcpy_s(apConfig.preSharedKey, strlen(AP_PWD) + 1, AP_PWD);
     apConfig.securityType = WIFI_SEC_TYPE_PSK;
@@ -123,7 +121,7 @@ static int WifiStaStart(void)
     printf("ConnectTo(%d): %d\r\n", netId, errCode);
 
     while (!g_staConnect) { // wait until connect to AP
-        osDelay(10);    /* 连接10ms */
+        osDelay(10);        /* 连接10ms */
     }
     printf("g_staConnect: %d\r\n", g_staConnect);
 

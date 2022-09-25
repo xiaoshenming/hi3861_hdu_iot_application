@@ -13,43 +13,43 @@
  * limitations under the License.
  */
 
-#include <hi_stdlib.h>
 #include <math.h>
+#include <hi_stdlib.h>
 #include <hi_time.h>
-#include "ohos_init.h"
-#include "cmsis_os2.h"
-#include "iot_pwm.h"
-#include "iot_gpio.h"
-#include "ssd1306_oled.h"
-#include "iot_adc.h"
-#include "iot_gpio_ex.h"
-#include "app_demo_multi_sample.h"
 #include "app_demo_i2c_oled.h"
 #include "app_demo_mq2.h"
+#include "app_demo_multi_sample.h"
+#include "cmsis_os2.h"
+#include "iot_adc.h"
+#include "iot_gpio.h"
+#include "iot_gpio_ex.h"
+#include "iot_pwm.h"
+#include "ohos_init.h"
+#include "ssd1306_oled.h"
 
-#define MQ2_DEMO_TASK_STAK_SIZE    (1024 * 8)
-#define MQ2_DEMO_TASK_PRIORITY    (25)
-#define ADC_TEST_LENGTH    (20)
-#define VLT_MIN    (100)
-#define CAL_PPM    (25) // 校准环境中PPM值
-#define RL    (1) // RL阻值
-#define MQ2_RATIO    (1111)
+#define MQ2_DEMO_TASK_STAK_SIZE (1024 * 8)
+#define MQ2_DEMO_TASK_PRIORITY  (25)
+#define ADC_TEST_LENGTH         (20)
+#define VLT_MIN                 (100)
+#define CAL_PPM                 (25) // 校准环境中PPM值
+#define RL                      (1)  // RL阻值
+#define MQ2_RATIO               (1111)
 
-#define X_CONSTANT  (613.9f)
-#define Y_CONSTANT  (-2.074f)
+#define X_CONSTANT   (613.9f)
+#define Y_CONSTANT   (-2.074f)
 #define X_CONSTANT_2 (11.5428 * 22)
 #define Y_CONSTANT_2 (0.6549)
 #define VOILTAGE_5_V (5)
 
-#define PPM_THRESHOLD_300 (300)
+#define PPM_THRESHOLD_300  (300)
 #define PPM_THRESHOLD_3000 (3000)
-#define SAMPLING_TIME (0xff)
+#define SAMPLING_TIME      (0xff)
 
-#define ADC_RANGE_MAX ((float)4096.0)
-#define ADC_VOLTAGE_1_8_V  ((float)1.8)
+#define ADC_RANGE_MAX       ((float)4096.0)
+#define ADC_VOLTAGE_1_8_V   ((float)1.8)
 #define ADC_VOLTAGE_4_TIMES (4)
 
-Mq2SensorDef combGas = {0};
+Mq2SensorDef combGas = { 0 };
 float g_r0 = 22; /* R0 c初始值 */
 void SetCombuSensorValue(void)
 {
@@ -93,7 +93,7 @@ float Mq2GetPpm(float voltage)
         IoTGpioSetDir(HI_GPIO_9, IOT_GPIO_DIR_OUT);
     }
     ppm = pow(X_CONSTANT_2 * vol / (VOILTAGE_5_V - vol), 1.0 / Y_CONSTANT_2); /* 计算ppm */
-    if (ppm < PPM_THRESHOLD_300) { /* 排除空气中其他气体的干扰 */
+    if (ppm < PPM_THRESHOLD_300) {                                            /* 排除空气中其他气体的干扰 */
         ppm = 0;
     }
 
@@ -119,14 +119,13 @@ void Mq2GetData(void)
     unsigned short data = 0; /* 0 */
     float voltage;
     // ADC_Channal_2(gpio5)  自动识别模式  CNcomment:4次平均算法模式 CNend
-    unsigned int ret = AdcRead(IOT_ADC_CHANNEL_5, &data,
-                               IOT_ADC_EQU_MODEL_4, IOT_ADC_CUR_BAIS_DEFAULT, SAMPLING_TIME);
+    unsigned int ret = AdcRead(IOT_ADC_CHANNEL_5, &data, IOT_ADC_EQU_MODEL_4, IOT_ADC_CUR_BAIS_DEFAULT, SAMPLING_TIME);
     if (ret != HI_ERR_SUCCESS) {
         printf("ADC Read Fail\n");
         return HI_NULL;
     }
-    voltage = (float)(data * ADC_VOLTAGE_1_8_V *
-        ADC_VOLTAGE_4_TIMES / ADC_RANGE_MAX); /* vlt * 1.8* 4 / 4096.0为将码字转换为电压 */
+    voltage = (float)(data * ADC_VOLTAGE_1_8_V * ADC_VOLTAGE_4_TIMES /
+                      ADC_RANGE_MAX); /* vlt * 1.8* 4 / 4096.0为将码字转换为电压 */
     combGas.g_combustibleGasValue = Mq2GetPpm(voltage);
     printf("g_combustibleGasValue is %lf\r\n", combGas.g_combustibleGasValue);
 }

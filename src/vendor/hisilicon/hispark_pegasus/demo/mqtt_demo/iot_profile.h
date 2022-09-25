@@ -19,8 +19,8 @@
 #include <hi_types_base.h>
 #include "iot_config.h"
 
-#define OC_BEEP_STATUS_ON       ((hi_u8) 0x01)
-#define OC_BEEP_STATUS_OFF      ((hi_u8) 0x00)
+#define OC_BEEP_STATUS_ON  ((hi_u8)0x01)
+#define OC_BEEP_STATUS_OFF ((hi_u8)0x00)
 
 // < enum all the data type for the oc profile
 typedef enum {
@@ -28,43 +28,40 @@ typedef enum {
     EN_IOT_DATATYPE_LONG,
     EN_IOT_DATATYPE_FLOAT,
     EN_IOT_DATATYPE_DOUBLE,
-    EN_IOT_DATATYPE_STRING,           // < must be ended with '\0'
+    EN_IOT_DATATYPE_STRING, // < must be ended with '\0'
     EN_IOT_DATATYPE_LAST,
-}IoTDataType_t;
+} IoTDataType_t;
 
-typedef enum {
-    OC_LED_ON = 1,
-    OC_LED_OFF
-}OcLedValue;
+typedef enum { OC_LED_ON = 1, OC_LED_OFF } OcLedValue;
 
 typedef struct {
-    void                            *nxt; // < ponit to the next key
-    const char                      *key;
-    const char                      *value;
-    hi_u32                          iValue;
-    IoTDataType_t                   type;
-}IoTProfileKV_t;
+    void* nxt; // < ponit to the next key
+    const char* key;
+    const char* value;
+    hi_u32 iValue;
+    IoTDataType_t type;
+} IoTProfileKV_t;
 
 typedef struct {
-    void *nxt;
-    char *serviceID;
-    char *eventTime;
-    IoTProfileKV_t *serviceProperty;
-}IoTProfileService_t;
+    void* nxt;
+    char* serviceID;
+    char* eventTime;
+    IoTProfileKV_t* serviceProperty;
+} IoTProfileService_t;
 
 typedef struct {
-    int  retCode;           // < response code, 0 success while others failed
-    const char   *respName; // < response name
-    const char   *requestID; // < specified by the message command
-    IoTProfileKV_t  *paras; // < the command paras
-}IoTCmdResp_t;
+    int retCode;           // < response code, 0 success while others failed
+    const char* respName;  // < response name
+    const char* requestID; // < specified by the message command
+    IoTProfileKV_t* paras; // < the command paras
+} IoTCmdResp_t;
 
 typedef struct {
-    const char *subState;
-    const char *subReport;
-    const char *reportVersion;
-    const char *Token;
-}WeChatProfileStatus;
+    const char* subState;
+    const char* subReport;
+    const char* reportVersion;
+    const char* Token;
+} WeChatProfileStatus;
 
 typedef struct {
     int lightActionStatus;
@@ -72,23 +69,23 @@ typedef struct {
     int temperatureData;
     int humidityActionData;
     int lightIntensityActionData;
-    const char *subDeviceActionLight;
-    const char *subDeviceActionMotor;
-    const char *subDeviceActionTemperature;
-    const char *subDeviceActionHumidity;
-    const char *subDeviceActionLightIntensity;
-}WeChatProfileReporte;
+    const char* subDeviceActionLight;
+    const char* subDeviceActionMotor;
+    const char* subDeviceActionTemperature;
+    const char* subDeviceActionHumidity;
+    const char* subDeviceActionLightIntensity;
+} WeChatProfileReporte;
 
 typedef struct {
-    const char *subscribeType;
+    const char* subscribeType;
     WeChatProfileStatus status;
     WeChatProfileReporte reportAction;
-}WeChatProfile;
+} WeChatProfile;
 
 /**
  * use this function to report the property to the iot platform
-*/
-int IoTProfilePropertyReport(char *deviceID, WeChatProfile *payload);
+ */
+int IoTProfilePropertyReport(char* deviceID, WeChatProfile* payload);
 void cJsonInit(void);
 void WifiStaReadyWait(void);
 #endif

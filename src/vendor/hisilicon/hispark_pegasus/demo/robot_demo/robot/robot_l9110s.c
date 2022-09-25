@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
+#include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <memory.h>
 
-#include "ohos_init.h"
 #include "cmsis_os2.h"
-#include "iot_gpio.h"
 #include "hi_io.h"
-#include "hi_time.h"
-#include "iot_pwm.h"
 #include "hi_pwm.h"
+#include "hi_time.h"
+#include "iot_gpio.h"
+#include "iot_pwm.h"
+#include "ohos_init.h"
 
-#define GPIO0 0
-#define GPIO1 1
-#define GPIO9 9
-#define GPIO10 10
-#define GPIOFUNC 0
-#define TASK_STAK_SIZE    (1024*10)
+#define GPIO0          0
+#define GPIO1          1
+#define GPIO9          9
+#define GPIO10         10
+#define GPIOFUNC       0
+#define TASK_STAK_SIZE (1024 * 10)
 
-void gpio_control (unsigned int gpio, IotGpioValue value)
+void gpio_control(unsigned int gpio, IotGpioValue value)
 {
     hi_io_set_func(gpio, GPIOFUNC);
     IoTGpioSetDir(gpio, IOT_GPIO_DIR_OUT);
@@ -96,7 +96,6 @@ void RobotTask(void* parame)
     car_stop();
     osDelay(time);
 }
-
 
 static void RobotDemo(void)
 {

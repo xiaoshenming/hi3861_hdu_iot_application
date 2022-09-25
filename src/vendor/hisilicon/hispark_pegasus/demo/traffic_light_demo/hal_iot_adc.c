@@ -19,8 +19,8 @@
 #include "hi_adc.h"
 #include "iot_adc.h"
 
-unsigned int AdcRead(const IotAdcChannelIndex channel, const unsigned short *data,
-                     const IotAdcEquModelSel equModel, const IotAdcCurBais curBais, unsigned short rstCnt)
+unsigned int AdcRead(const IotAdcChannelIndex channel, const unsigned short* data, const IotAdcEquModelSel equModel,
+                     const IotAdcCurBais curBais, unsigned short rstCnt)
 {
     return hi_adc_read((hi_adc_channel_index)channel, (hi_u16*)data, (hi_adc_equ_model_sel)equModel,
                        (hi_adc_cur_bais)curBais, (hi_u16)rstCnt);

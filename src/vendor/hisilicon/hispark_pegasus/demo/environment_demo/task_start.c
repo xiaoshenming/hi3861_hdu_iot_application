@@ -15,13 +15,13 @@
 
 #include <stdio.h>
 #include <unistd.h>
-#include "ohos_init.h"
+#include "app_demo_multi_sample.h"
 #include "cmsis_os2.h"
 #include "iot_watchdog.h"
-#include "app_demo_multi_sample.h"
+#include "ohos_init.h"
 
-#define ENVIRONMENT_TASK_STACK  (1024)
-void EnvironmentDemo(const char *arg)
+#define ENVIRONMENT_TASK_STACK (1024)
+void EnvironmentDemo(const char* arg)
 {
     (void)arg;
     AppMultiSampleDemo();
@@ -31,7 +31,7 @@ void EnvironmentDemo(const char *arg)
 
 static void StartTask(void)
 {
-    osThreadAttr_t attr = {0};
+    osThreadAttr_t attr = { 0 };
     IoTWatchDogDisable();
 
     attr.name = "EnvironmentDemo";

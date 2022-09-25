@@ -13,22 +13,22 @@
  * limitations under the License.
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "lwip/netifapi.h"
 
 #define CLIENT_SOCKET_CREATE_FAILED (-1)
-#define UDP_SERVER_PORT (6655) /* TEST Port */
-#define UDP_CLIENT_PORT (5566) /* TEST Port */
+#define UDP_SERVER_PORT             (6655) /* TEST Port */
+#define UDP_CLIENT_PORT             (5566) /* TEST Port */
 
 #define UDP_RECV_BUF_LEN (255)
 
 int UdpClientDemo(void)
 {
-    struct sockaddr_in sin = {0};
-    struct sockaddr_in serverAddr = {0};
+    struct sockaddr_in sin = { 0 };
+    struct sockaddr_in serverAddr = { 0 };
     /* create socket */
     int sClient = socket(AF_INET, SOCK_DGRAM, 0);
     if (sClient == CLIENT_SOCKET_CREATE_FAILED) {
@@ -50,10 +50,10 @@ int UdpClientDemo(void)
     serverAddr.sin_addr.s_addr = inet_addr("XXXX.XXX.X.XXX");
 
     int len = sizeof(sin);
-    char *sendData = "这是客户端的消息\r\n";
+    char* sendData = "这是客户端的消息\r\n";
     while (1) {
         sendto(sClient, sendData, strlen(sendData), 0, (struct sockaddr*)&serverAddr, len);
-        char recvData[UDP_RECV_BUF_LEN] = {0};
+        char recvData[UDP_RECV_BUF_LEN] = { 0 };
         /* buff大小设置为255 */
         int recvLen = recvfrom(sClient, recvData, UDP_RECV_BUF_LEN, 0, (struct sockaddr*)&serverAddr, &len);
         if (recvLen) {

@@ -14,34 +14,33 @@
  */
 
 #include "coap.h"
-#include "net.h"
 #include "los_task.h"
 #include "lwip/tcpip.h"
 #include "lwip/udp.h"
-
+#include "net.h"
 
 #define TEST_IPV4 1
 static u32_t g_coapTestTaskid = -1;
 static int g_servRunning = 0;
-static coap_context_t *g_servCtx = NULL;
+static coap_context_t* g_servCtx = NULL;
 /*
  * The resource 'hello' GET method handler
  */
-static void HelloHandler(coap_context_t *ctx, struct coap_resource_t *resource, coap_session_t *session,
-                         coap_pdu_t *request, coap_binary_t *token, coap_string_t *query, coap_pdu_t *response)
+static void HelloHandler(coap_context_t* ctx, struct coap_resource_t* resource, coap_session_t* session,
+                         coap_pdu_t* request, coap_binary_t* token, coap_string_t* query, coap_pdu_t* response)
 {
     unsigned char buf[3];
     /* response with text "Hello World!" */
     const char* responseData = "Hello World! CoAP";
     size_t len = 0;
-    unsigned char *data = NULL;
+    unsigned char* data = NULL;
     (void)ctx;
     (void)resource;
     (void)session;
     response->code = COAP_RESPONSE_CODE(205); /* 返回值205，代表连接成功 */
-    coap_add_option(response, COAP_OPTION_CONTENT_TYPE,
-                    coap_encode_var_safe(buf, 3, COAP_MEDIATYPE_TEXT_PLAIN), buf); /* 3个字节长度 */
-    coap_add_data(response, strlen(responseData), (unsigned char *)responseData);
+    coap_add_option(response, COAP_OPTION_CONTENT_TYPE, coap_encode_var_safe(buf, 3, COAP_MEDIATYPE_TEXT_PLAIN),
+                    buf); /* 3个字节长度 */
+    coap_add_data(response, strlen(responseData), (unsigned char*)responseData);
     if (coap_get_data(request, &len, &data)) {
         printf("Hello World! CoAP\n");
     }

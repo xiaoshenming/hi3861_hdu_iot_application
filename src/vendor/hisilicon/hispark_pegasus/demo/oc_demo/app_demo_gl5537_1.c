@@ -13,29 +13,29 @@
  * limitations under the License.
  */
 
-#include <hi_stdlib.h>
-#include <hi_watchdog.h>
-#include <hi_early_debug.h>
-#include <hi_time.h>
-#include <hi_io.h>
-#include <hi_gpio.h>
 #include <hi_adc.h>
-#include <hi_task.h>
+#include <hi_early_debug.h>
+#include <hi_gpio.h>
+#include <hi_io.h>
 #include <hi_pwm.h>
-#include "ssd1306_oled.h"
+#include <hi_stdlib.h>
+#include <hi_task.h>
+#include <hi_time.h>
+#include <hi_watchdog.h>
 #include "iot_adc.h"
+#include "ssd1306_oled.h"
 
-#define     ADC_TEST_LENGTH             (20)
-#define     VLT_MIN                     (100)
-#define     OLED_FALG_ON                ((unsigned char)0x01)
-#define     OLED_FALG_OFF               ((unsigned char)0x00)
+#define ADC_TEST_LENGTH (20)
+#define VLT_MIN         (100)
+#define OLED_FALG_ON    ((unsigned char)0x01)
+#define OLED_FALG_OFF   ((unsigned char)0x00)
 
-#define VOLTAGE_1_8_V  ((float)1.8)
+#define VOLTAGE_1_8_V   ((float)1.8)
 #define VOLTAGE_4_TIMES (4)
 
-#define VOLTAGE_0_6_V   ((float)0.6)
+#define VOLTAGE_0_6_V ((float)0.6)
 #define VOLTAGE_1_V   ((float)1.0)
-#define VOLTAGE_1_5_V   ((float)1.5)
+#define VOLTAGE_1_5_V ((float)1.5)
 #define VOLTAGE_3_V   ((float)3.0)
 
 #define ADC_CHANNAL_RANGE ((float)4096.0)
@@ -58,14 +58,14 @@ unsigned char GetLightStatus(void)
         unsigned int ret = AdcRead(IOT_ADC_CHANNEL_4, &data, HI_ADC_EQU_MODEL_4, HI_ADC_CUR_BAIS_DEFAULT, 0xF0);
         if (ret != HI_ERR_SUCCESS) {
             printf("ADC Read Fail\n");
-            return  HI_NULL;
+            return HI_NULL;
         }
         g_adcBuf[i] = data;
     }
     for (int j = 0; j < ADC_TEST_LENGTH; j++) {
         vlt = g_adcBuf[j];
-        voltage = (float)vlt * VOLTAGE_1_8_V * \
-                        VOLTAGE_4_TIMES / ADC_CHANNAL_RANGE; /* vlt * 1.8 * 4 / 4096.0为将码字转换为电压 */
+        voltage = (float)vlt * VOLTAGE_1_8_V * VOLTAGE_4_TIMES /
+            ADC_CHANNAL_RANGE; /* vlt * 1.8 * 4 / 4096.0为将码字转换为电压 */
         vltMax = (voltage > vltMax) ? voltage : vltMax;
         vltMin = (voltage < vltMin) ? voltage : vltMin;
     }
@@ -77,7 +77,7 @@ unsigned char GetLightStatus(void)
     }
 }
 /* get gpio5 Voltage */
-void GetGpio5Voltage(const char *param)
+void GetGpio5Voltage(const char* param)
 {
     unsigned short data = 0;
     unsigned short vlt;
@@ -92,7 +92,7 @@ void GetGpio5Voltage(const char *param)
         unsigned int ret = AdcRead(IOT_ADC_CHANNEL_2, &data, IOT_ADC_EQU_MODEL_4, IOT_ADC_CUR_BAIS_DEFAULT, 0xF0);
         if (ret != HI_ERR_SUCCESS) {
             printf("ADC Read Fail\n");
-            return  HI_NULL;
+            return HI_NULL;
         }
         g_gpio5AdcBuf[i] = data;
     }

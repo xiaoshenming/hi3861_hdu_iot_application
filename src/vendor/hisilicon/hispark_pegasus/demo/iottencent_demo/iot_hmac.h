@@ -26,7 +26,7 @@
  * @param buf: used to storage the hmac code
  * @param buf_len:the buf length
  * @return:0 success while others failed
-*/
-int HmacGeneratePwd(const unsigned char *content, int contentLen, const unsigned char *key,
-    int keyLen, unsigned char *buf);
+ */
+int HmacGeneratePwd(const unsigned char* content, int contentLen, const unsigned char* key, int keyLen,
+                    unsigned char* buf);
 #endif

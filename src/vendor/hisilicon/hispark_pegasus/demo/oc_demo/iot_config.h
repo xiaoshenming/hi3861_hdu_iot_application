@@ -22,8 +22,8 @@
 
 // /<CONFIG THE WIFI
 /* Please modify the ssid and pwd for the own */
-#define CONFIG_AP_SSID  "H" // WIFI SSID
-#define CONFIG_AP_PWD "12345678" // WIFI PWD
+#define CONFIG_AP_SSID "H"        // WIFI SSID
+#define CONFIG_AP_PWD  "12345678" // WIFI PWD
 
 // /<Configure the iot platform
 /* Please modify the device id and pwd for your own */
@@ -36,8 +36,8 @@
 // if both disabled, it means use the tcp mode
 /* app_demo_iot entery function */
 /* Tencent iot Cloud user ID , password */
-#define CONFIG_USER_ID    "xxxxxxxxxxxxxx"
-#define CONFIG_USER_PWD   "xxxxxxxxxxxxxx"
+#define CONFIG_USER_ID  "xxxxxxxxxxxxxx"
+#define CONFIG_USER_PWD "xxxxxxxxxxxxxx"
 
 static void AppDemoIot(void);
 #endif

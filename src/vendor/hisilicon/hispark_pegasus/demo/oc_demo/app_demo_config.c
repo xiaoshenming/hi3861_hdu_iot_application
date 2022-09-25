@@ -15,44 +15,44 @@
 
 #include <stdio.h>
 #include <unistd.h>
-#include "ohos_init.h"
-#include "cmsis_os2.h"
-#include "iot_pwm.h"
-#include "iot_i2c.h"
-#include "iot_gpio.h"
-#include "hi_timer.h"
-#include "hi_gpio.h"
-#include "app_demo_multi_sample.h"
-#include "ssd1306_oled.h"
-#include "app_demo_i2c_oled.h"
 #include "app_demo_config.h"
+#include "app_demo_i2c_oled.h"
+#include "app_demo_multi_sample.h"
+#include "cmsis_os2.h"
+#include "hi_gpio.h"
+#include "hi_timer.h"
+#include "iot_gpio.h"
+#include "iot_i2c.h"
+#include "iot_pwm.h"
+#include "ohos_init.h"
+#include "ssd1306_oled.h"
 
-#define IOT_GPIO_INDEX_9 9
+#define IOT_GPIO_INDEX_9  9
 #define IOT_GPIO_INDEX_10 10
 #define IOT_GPIO_INDEX_11 11
 #define IOT_GPIO_INDEX_12 12
 
 #define IO_FUNC_GPIO_9_PWM0_OUT 5
-#define IO_FUNC_GPIO_OUT 0
+#define IO_FUNC_GPIO_OUT        0
 
 unsigned char g_ledCountFlag = 0;
 
-#define HUMAN_MODU_RED_COUNT_SECOND     (30)
-#define COUNT_FIVE_SECOND               (5)
-#define COUNT_THREE_SECOND_FLASH        (3)
+#define HUMAN_MODU_RED_COUNT_SECOND (30)
+#define COUNT_FIVE_SECOND           (5)
+#define COUNT_THREE_SECOND_FLASH    (3)
 
-#define COUNT_MAX_SECOND        (4294967296)
+#define COUNT_MAX_SECOND (4294967296)
 
-#define DELAY_CYCLE_COUNT   (20000)
-#define CN_QUEUE_WAITTIMEOUT   1000
-#define LED_FLASHING_TIME  (7)
-#define LAMP_FLASHING_TIME_RESET (1)
-#define LAMP_FLASHING_TIME_RESET_0 (0)
-#define DATA_OUT_OF_BOUND (-1)
-#define AUTO_MODULE_LIGHT_ON_TIME   (6)
-#define DATA_OUT_OF_BOUND (-1)
-#define AUTO_MODULE_LIGHT_ON_TIME_10_SECOND   (10)
-#define AUTO_MODULE_LIGHT_ON_TIME_30_SECOND   (31)
+#define DELAY_CYCLE_COUNT                   (20000)
+#define CN_QUEUE_WAITTIMEOUT                1000
+#define LED_FLASHING_TIME                   (7)
+#define LAMP_FLASHING_TIME_RESET            (1)
+#define LAMP_FLASHING_TIME_RESET_0          (0)
+#define DATA_OUT_OF_BOUND                   (-1)
+#define AUTO_MODULE_LIGHT_ON_TIME           (6)
+#define DATA_OUT_OF_BOUND                   (-1)
+#define AUTO_MODULE_LIGHT_ON_TIME_10_SECOND (10)
+#define AUTO_MODULE_LIGHT_ON_TIME_30_SECOND (31)
 
 static unsigned int g_redLedAutoModuTimeCount = 0;
 static unsigned int g_yellowLedAutoModuTimeCount = 0;
@@ -82,7 +82,7 @@ static unsigned int timer5Count = LED_FLASHING_TIME;
 static unsigned int timer10Count = LED_FLASHING_TIME;
 static unsigned int humanGreenFlashCount = LED_FLASHING_TIME;
 
-TrafficLedStatusType trafficStaType = {0};
+TrafficLedStatusType trafficStaType = { 0 };
 
 LightTimerCfg TrafficLightTimer = {
     .Timer1Status = 0,
@@ -154,228 +154,228 @@ unsigned char SetTimeCount(unsigned char setTimeCount)
 static void RedOledLedLigthTimeShowNum9(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:9 Y:0 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:9 Y:0 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:9 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:9 Y:0 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
 static void RedOledLedLigthTimeShowNum8(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:8 Y:0 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:8 Y:0 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:8 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:8 Y:0 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
 static void RedOledLedLigthTimeShowNum7(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:7 Y:0 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:7 Y:0 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:7 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:7 Y:0 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
 static void RedOledLedLigthTimeShowNum6(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:6 Y:0 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:6 Y:0 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:6 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:6 Y:0 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
 static void RedOledLedLigthTimeShowNum5(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:5 Y:0 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:5 Y:0 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:5 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:5 Y:0 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
 static void RedOledLedLigthTimeShowNum4(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:4 Y:0 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:4 Y:0 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:4 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:4 Y:0 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
 static void RedOledLedLigthTimeShowNum3(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:3 Y:0 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:3 Y:0 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:3 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:3 Y:0 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
 static void RedOledLedLigthTimeShowNum2(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:2 Y:0 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:2 Y:0 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:2 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:2 Y:0 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
 static void RedOledLedLigthTimeShowNum1(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:1 Y:0 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:1 Y:0 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:1 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:1 Y:0 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
 static void RedOledLedLigthTimeShowNum0(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 // 绿色
 static void GreenOledLedLigthTimeShowNum9(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:9 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:9 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:9 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:9 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
 static void GreenOledLedLigthTimeShowNum8(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:8 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:8 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:8 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:8 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
 static void GreenOledLedLigthTimeShowNum7(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:7 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:7 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:7 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:7 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
 static void GreenOledLedLigthTimeShowNum6(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:6 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:6 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:6 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:6 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
 static void GreenOledLedLigthTimeShowNum5(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:5 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:5 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:5 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:5 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
 static void GreenOledLedLigthTimeShowNum4(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:4 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:4 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:4 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:4 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
 static void GreenOledLedLigthTimeShowNum3(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:3 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:3 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:3 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:3 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
 static void GreenOledLedLigthTimeShowNum2(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:2 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:2 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:2 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:2 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
 static void GreenOledLedLigthTimeShowNum1(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:1 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:1 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:1 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:1 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
 static void GreenOledLedLigthTimeShowNum0(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 int OledLedLightHumanReckonShow(int timeCount)
 {
     int ret = 0;
-    unsigned char showTimeCount[4] = {0};
-    unsigned char beepStatus[2] = {0};
-    char *space = "  ";
+    unsigned char showTimeCount[4] = { 0 };
+    unsigned char beepStatus[2] = { 0 };
+    char* space = "  ";
     static int status = 0;
     static int sta = 0;
     static unsigned char currentMode = 0;
@@ -399,25 +399,21 @@ int OledLedLightHumanReckonShow(int timeCount)
     }
     if (timeCount < AUTO_MODULE_LIGHT_ON_TIME_10_SECOND && sta == HI_FALSE) {
         sta = HI_TRUE;
-        OledShowStr(OLED_X_POSITION_16, OLED_Y_POSITION_7,
-                    space, OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_16, OLED_Y_POSITION_7, space, OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
-    OledShowStr(OLED_X_POSITION_16, OLED_Y_POSITION_7,
-                showTimeCount, OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+    OledShowStr(OLED_X_POSITION_16, OLED_Y_POSITION_7, showTimeCount, OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
         ret = snprintf_s(beepStatus, sizeof(beepStatus), sizeof(beepStatus), "%d", BEEP_ON);
         if (ret < 0) {
             printf("change data format failed\r\n");
         }
-        OledShowStr(OLED_X_POSITION_120, OLED_Y_POSITION_7,
-                    beepStatus, OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_120, OLED_Y_POSITION_7, beepStatus, OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
         ret = snprintf_s(beepStatus, sizeof(beepStatus), sizeof(beepStatus), "%d", BEEP_OFF);
         if (ret < 0) {
             printf("change data format failed\r\n");
         }
-        OledShowStr(OLED_X_POSITION_120, OLED_Y_POSITION_7,
-                    beepStatus, OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_120, OLED_Y_POSITION_7, beepStatus, OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
     return 0;
 }
@@ -517,43 +513,43 @@ void RedTimeCount6(void)
 {
     GpioControl(IOT_GPIO_INDEX_10, IOT_GPIO_INDEX_10, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:3 Y:0 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:3 Y:0 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:3 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:3 Y:0 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 void RedTimeCount4(void)
 {
     GpioControl(IOT_GPIO_INDEX_10, IOT_GPIO_INDEX_10, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:2 Y:0 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:2 Y:0 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:2 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:2 Y:0 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 void RedTimeCount2(void)
 {
     GpioControl(IOT_GPIO_INDEX_10, IOT_GPIO_INDEX_10, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:1 Y:0 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:1 Y:0 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:1 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:1 Y:0 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 void RedTimeCount0(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 
@@ -618,8 +614,7 @@ static int OledHumanNormalRedLedLigthReckonByTimeShow(unsigned int timeCount)
 
     OledAutoHumanGreenBeepControl();
     /* human control mode */
-    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE &&
-        GetKeyStatus(CURRENT_TYPE) == TRAFFIC_NORMAL_TYPE) {
+    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_NORMAL_TYPE) {
         currentMode = GetKeyStatus(CURRENT_MODE);
         currentType = GetKeyStatus(CURRENT_TYPE);
         RedLedLigthReckonByTimeShow(timeCount);
@@ -630,7 +625,7 @@ static int OledHumanNormalRedLedLigthReckonByTimeShow(unsigned int timeCount)
             return KEY_DOWN_INTERRUPT;
         }
     }
-    
+
     if (currentType != GetKeyStatus(CURRENT_TYPE)) {
         currentType = GetKeyStatus(CURRENT_TYPE);
         return KEY_DOWN_INTERRUPT;
@@ -647,8 +642,7 @@ static int OledHumanRedLedLigthReckonByTimeShow(unsigned int timeCount)
 
     OledAutoHumanGreenBeepControl();
     /* human control mode */
-    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE &&
-        GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE) {
+    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE) {
         currentMode = GetKeyStatus(CURRENT_MODE);
         currentType = GetKeyStatus(CURRENT_TYPE);
         RedLedLigthReckonByTimeShow(timeCount);
@@ -659,7 +653,7 @@ static int OledHumanRedLedLigthReckonByTimeShow(unsigned int timeCount)
             return KEY_DOWN_INTERRUPT;
         }
     }
-    
+
     if (currentType != GetKeyStatus(CURRENT_TYPE)) {
         currentType = GetKeyStatus(CURRENT_TYPE);
         return KEY_DOWN_INTERRUPT;
@@ -720,8 +714,7 @@ static int OledHumanRedLedLigthFiveSecondCountShow(unsigned int timeCount)
 
     OledAutoHumanGreenBeepControl();
     /* human control mode */
-    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE &&
-        GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE) {
+    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE) {
         currentMode = GetKeyStatus(CURRENT_MODE);
         currentType = GetKeyStatus(CURRENT_TYPE);
         RedLedLightOnFiveSecond(timeCount);
@@ -764,43 +757,43 @@ void YellowTimeCount6(void)
 {
     GpioControl(IOT_GPIO_INDEX_12, IOT_GPIO_INDEX_12, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:3 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:3 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:3 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:3 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 void YellowTimeCount4(void)
 {
     GpioControl(IOT_GPIO_INDEX_12, IOT_GPIO_INDEX_12, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:2 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:2 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:2 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:2 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 void YellowTimeCount2(void)
 {
     GpioControl(IOT_GPIO_INDEX_12, IOT_GPIO_INDEX_12, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:1 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:1 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:1 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:1 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 void YellowTimeCount0(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 static int OledYellowLedLigthReckonByTimeShow(unsigned char timeCount)
@@ -835,43 +828,43 @@ void GreenTimeCount6(void)
 {
     GpioControl(IOT_GPIO_INDEX_11, IOT_GPIO_INDEX_11, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:3 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:3 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:3 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:3 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 void GreenTimeCount4(void)
 {
     GpioControl(IOT_GPIO_INDEX_11, IOT_GPIO_INDEX_11, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:2 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:2 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:2 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:2 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 void GreenTimeCount2(void)
 {
     GpioControl(IOT_GPIO_INDEX_11, IOT_GPIO_INDEX_11, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:1 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:1 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:0 Y:0 G:1 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:1 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 void GreenTimeCount0(void)
 {
     if (GetKeyStatus(OC_BEEP_STATUS) == BEEP_ON) {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:1 Y:0 G:0 B:1 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:1 Y:0 G:0 B:1 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     } else {
-        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7,
-                    "R:1 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+        OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:1 Y:0 G:0 B:0 ",
+                    OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     }
 }
 int OledGreenLedLigthReckonByTimeShow(unsigned int timeCount)
@@ -920,7 +913,7 @@ void RedLedLightOnFiveSecond(unsigned int timeCount)
     } else {
         RedOledLedLigthTimeShowNum0();
     }
-    
+
     if (timeCount == COUNT_RESET) {
         GpioControl(IOT_GPIO_INDEX_10, IOT_GPIO_INDEX_10, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE0, IO_FUNC_GPIO_OUT);
         TrafficLightTimer.Timer2Status = HI_TRUE;
@@ -1024,8 +1017,7 @@ int OledRedLedLigthOnRecordShow(int timer2, unsigned int timer1)
     int ret;
 
     if ((TrafficLightTimer.TimerYellowLightStatus == HI_FALSE) &&
-        (TrafficLightTimer.TimerGreenLightStatus == HI_FALSE) &&
-        (TrafficLightTimer.Timer1Status == HI_FALSE) &&
+        (TrafficLightTimer.TimerGreenLightStatus == HI_FALSE) && (TrafficLightTimer.Timer1Status == HI_FALSE) &&
         (TrafficLightTimer.Timer2Status == HI_FALSE)) {
         ret = OledRedLedLigthOnFiveSecondCountShow(timer2);
         if (ret == KEY_DOWN_INTERRUPT) {
@@ -1052,15 +1044,13 @@ int OledRedLedLigthOnRecordShow(int timer2, unsigned int timer1)
 
 void AutoHumanYellowStatusSet(unsigned int timeCount)
 {
-    if ((TrafficLightTimer.TimerYellowLightStatus == HI_TRUE) &&
-        (TrafficLightTimer.Timer1Status == HI_FALSE)) {
+    if ((TrafficLightTimer.TimerYellowLightStatus == HI_TRUE) && (TrafficLightTimer.Timer1Status == HI_FALSE)) {
         if (timeCount == LAMP_FLASHING_TIME_RESET_0) {
             TrafficLightTimer.TimerYellowLightStatus = HI_FALSE;
             TrafficLightTimer.TimerGreenLightStatus = HI_TRUE;
         }
     }
-    if (TrafficLightTimer.HumanTimerYellowLightStatus == HI_TRUE &&
-        TrafficLightTimer.Timer6Status == HI_FALSE &&
+    if (TrafficLightTimer.HumanTimerYellowLightStatus == HI_TRUE && TrafficLightTimer.Timer6Status == HI_FALSE &&
         TrafficLightTimer.Timer7Status == HI_FALSE) {
         if (timeCount == LAMP_FLASHING_TIME_RESET_0) {
             TrafficLightTimer.HumanTimerYellowLightStatus = HI_FALSE;
@@ -1112,8 +1102,7 @@ static int OledHumanRedLedLigth30SecondCountShow(unsigned int timeCount)
 
     OledAutoHumanGreenBeepControl();
     /* human control mode */
-    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE &&
-        GetKeyStatus(CURRENT_TYPE) == TRAFFIC_NORMAL_TYPE) {
+    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_NORMAL_TYPE) {
         currentMode = GetKeyStatus(CURRENT_MODE);
         currentType = GetKeyStatus(CURRENT_TYPE);
         NormalTypeRedLedLightOnRecord30Second(timeCount);
@@ -1140,8 +1129,7 @@ static int OledHumanNormalYellowLedLigthOnRecordShow(unsigned int timeCount)
 
     OledAutoHumanGreenBeepControl();
     /* human mode */
-    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE &&
-        GetKeyStatus(CURRENT_TYPE) == TRAFFIC_NORMAL_TYPE) {
+    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_NORMAL_TYPE) {
         currentMode = GetKeyStatus(CURRENT_MODE);
         currentType = GetKeyStatus(CURRENT_TYPE);
         OledYellowLedLigthReckonByTimeShow(timeCount);
@@ -1170,8 +1158,7 @@ static int OledHumanYellowLedLigthOnRecordShow(unsigned int timeCount)
 
     OledAutoHumanGreenBeepControl();
     /* human mode */
-    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE &&
-        GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE) {
+    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE) {
         currentMode = GetKeyStatus(CURRENT_MODE);
         currentType = GetKeyStatus(CURRENT_TYPE);
         OledYellowLedLigthReckonByTimeShow(timeCount);
@@ -1244,8 +1231,7 @@ static int OledHumanNormalGreenLedLigthReckonByTimeShow(unsigned char timeCount)
 
     OledAutoHumanGreenBeepControl();
     /* auto mode */
-    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE &&
-        GetKeyStatus(CURRENT_TYPE) == TRAFFIC_NORMAL_TYPE) {
+    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_NORMAL_TYPE) {
         currentMode = GetKeyStatus(CURRENT_MODE);
         currentType = GetKeyStatus(CURRENT_TYPE);
         OledGreenLedLigthReckonByTimeShow(timeCount);
@@ -1273,8 +1259,7 @@ static int OledHumanGreenLedLigthReckonByTimeShow(unsigned char timeCount)
 
     OledAutoHumanGreenBeepControl();
     /* auto mode */
-    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE &&
-        GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE) {
+    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE) {
         currentMode = GetKeyStatus(CURRENT_MODE);
         currentType = GetKeyStatus(CURRENT_TYPE);
         OledGreenLedLigthReckonByTimeShow(timeCount);
@@ -1318,10 +1303,8 @@ int OledGreenLedLigthOnRecordShow(unsigned char timer4, unsigned char timer5)
 {
     unsigned char ret = 0;
 
-    if ((TrafficLightTimer.TimerGreenLightStatus == HI_TRUE) &&
-        (TrafficLightTimer.Timer3Status == HI_FALSE) &&
-        (TrafficLightTimer.Timer2Status == HI_FALSE) &&
-        (TrafficLightTimer.Timer1Status == HI_FALSE)) {
+    if ((TrafficLightTimer.TimerGreenLightStatus == HI_TRUE) && (TrafficLightTimer.Timer3Status == HI_FALSE) &&
+        (TrafficLightTimer.Timer2Status == HI_FALSE) && (TrafficLightTimer.Timer1Status == HI_FALSE)) {
         ret = OledGreenLedLigthOnFiveSecondCountShow(timer4);
         if (ret == KEY_DOWN_INTERRUPT) {
             return KEY_DOWN_INTERRUPT;
@@ -1345,10 +1328,8 @@ int OledHumanModeGreenLedLigthOnRecordShow(unsigned char timer9, unsigned char t
 {
     int ret = 0;
 
-    if ((TrafficLightTimer.HumanTimerGreenLightStatus == HI_TRUE) &&
-        (TrafficLightTimer.Timer6Status == HI_FALSE) &&
-        (TrafficLightTimer.Timer7Status == HI_FALSE) &&
-        (TrafficLightTimer.Timer10Status == HI_FALSE)) {
+    if ((TrafficLightTimer.HumanTimerGreenLightStatus == HI_TRUE) && (TrafficLightTimer.Timer6Status == HI_FALSE) &&
+        (TrafficLightTimer.Timer7Status == HI_FALSE) && (TrafficLightTimer.Timer10Status == HI_FALSE)) {
         ret = OledHumanGreenLedLigthFiveSecondCountShow(timer9);
         if (ret == KEY_DOWN_INTERRUPT) {
             return KEY_DOWN_INTERRUPT;
@@ -1376,7 +1357,7 @@ int OledHumanModeGreenLedLigthOnRecordShow(unsigned char timer9, unsigned char t
     return 0;
 }
 
-#define CN_QUEUE_WAITTIMEOUT   1000
+#define CN_QUEUE_WAITTIMEOUT 1000
 void AutoModeCountReset(void)
 {
     timer1Count = SetTimeCount(LED_FLASHING_TIME);
@@ -1435,8 +1416,7 @@ void TrafficAutoModeSample(void)
     IoTGpioSetDir(IOT_GPIO_INDEX_9, IOT_GPIO_DIR_OUT);
     AutoModeCountReset();
     while (1) {
-        ret = OledRedLedLigthOnRecordShow(TrafficLightTimer.Timer2Count,
-            TrafficLightTimer.Timer1Count);
+        ret = OledRedLedLigthOnRecordShow(TrafficLightTimer.Timer2Count, TrafficLightTimer.Timer1Count);
         if (ret == KEY_DOWN_INTERRUPT) {
             printf("red led close\r\n");
             AllLedOff();
@@ -1450,8 +1430,7 @@ void TrafficAutoModeSample(void)
             (void)SetKeyType(TRAFFIC_NORMAL_TYPE);
             break;
         }
-        ret = OledGreenLedLigthOnRecordShow(TrafficLightTimer.Timer4Count,
-                                            TrafficLightTimer.Timer5Count);
+        ret = OledGreenLedLigthOnRecordShow(TrafficLightTimer.Timer4Count, TrafficLightTimer.Timer5Count);
         if (ret == KEY_DOWN_INTERRUPT) {
             printf("green led close\r\n");
             AllLedOff();
@@ -1472,10 +1451,10 @@ void NormalTypeRedLedLightOnRecord30Second(unsigned char normalTimeCount)
 
     if (normalTimeCount < AUTO_MODULE_LIGHT_ON_TIME_30_SECOND) {
         OledLedLightHumanReckonShow(normalTimeCount);
-    }  else {
+    } else {
         RedOledLedLigthTimeShowNum0();
     }
-    
+
     if (normalTimeCount == COUNT_RESET) {
         GpioControl(IOT_GPIO_INDEX_10, IOT_GPIO_INDEX_10, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE0, IO_FUNC_GPIO_OUT);
         TrafficLightTimer.Timer6Status = HI_TRUE;
@@ -1486,21 +1465,18 @@ int NormalTypeRedLedLightOnRecord(unsigned char normalTimeCount1, unsigned char 
 {
     int ret = 0;
     // 红灯亮30秒
-    if (TrafficLightTimer.Timer6Status == HI_FALSE &&
-        TrafficLightTimer.Timer7Status == HI_FALSE &&
+    if (TrafficLightTimer.Timer6Status == HI_FALSE && TrafficLightTimer.Timer7Status == HI_FALSE &&
         TrafficLightTimer.HumanTimerYellowLightStatus == HI_FALSE &&
-        TrafficLightTimer.HumanTimerGreenLightStatus == HI_FALSE &&
-        TrafficLightTimer.Timer8Status == HI_FALSE &&
+        TrafficLightTimer.HumanTimerGreenLightStatus == HI_FALSE && TrafficLightTimer.Timer8Status == HI_FALSE &&
         TrafficLightTimer.Timer9Status == HI_FALSE) {
         ret = OledHumanRedLedLigth30SecondCountShow(normalTimeCount1);
         if (ret == KEY_DOWN_INTERRUPT) {
             return KEY_DOWN_INTERRUPT;
         }
     }
-    
+
     // 红灯闪3秒
-    if (TrafficLightTimer.Timer6Status == HI_TRUE &&
-        TrafficLightTimer.Timer2Status == HI_FALSE &&
+    if (TrafficLightTimer.Timer6Status == HI_TRUE && TrafficLightTimer.Timer2Status == HI_FALSE &&
         TrafficLightTimer.Timer1Status == HI_FALSE) {
         TrafficLightTimer.Timer7Status = HI_TRUE;
         ret = OledHumanNormalRedLedLigthReckonByTimeShow(normalTimeCount2);
@@ -1526,8 +1502,7 @@ void TrafficNormalType(void)
     IoTGpioSetDir(IOT_GPIO_INDEX_9, IOT_GPIO_DIR_OUT);
     AutoModeCountReset();
     while (1) {
-        ret = NormalTypeRedLedLightOnRecord(TrafficLightTimer.Timer6Count,
-                                            TrafficLightTimer.Timer7Count);
+        ret = NormalTypeRedLedLightOnRecord(TrafficLightTimer.Timer6Count, TrafficLightTimer.Timer7Count);
         if (ret == KEY_DOWN_INTERRUPT) {
             printf("normal type red led\r\n");
             AllLedOff();
@@ -1540,8 +1515,7 @@ void TrafficNormalType(void)
 
             break;
         }
-        ret = OledHumanModeGreenLedLigthOnRecordShow(TrafficLightTimer.Timer9Count,
-            TrafficLightTimer.Timer10Count);
+        ret = OledHumanModeGreenLedLigthOnRecordShow(TrafficLightTimer.Timer9Count, TrafficLightTimer.Timer10Count);
         if (ret == KEY_DOWN_INTERRUPT) {
             printf("normal type green led\r\n");
             AllLedOff();
@@ -1580,26 +1554,18 @@ void TrafficHumanModeSample(void)
 
 void OledTrafficControlModeShow(void)
 {
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_0, \
-                "WiFi-AP OFF  U:0", OLED_DISPLAY_STRING_TYPE_1); /* 0, 0, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_1, \
-                "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 1, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_2, \
-                " Traffic Light  ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 2, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_3, \
-                "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 3, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, \
-                "Mode:           ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_5, \
-                "1.Control mode: ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 5, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_6, \
-                "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 6, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, \
-                "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_0, "WiFi-AP OFF  U:0", OLED_DISPLAY_STRING_TYPE_1); /* 0, 0, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_1, "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 1, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_2, " Traffic Light  ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 2, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_3, "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 3, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, "Mode:           ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_5, "1.Control mode: ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 5, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_6, "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 6, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     switch (GetKeyStatus(CURRENT_TYPE)) {
         case RED_ON:
             OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "1.Red On       ",
-                        OLED_DISPLAY_STRING_TYPE_1);  /* 0, 7, xx, 1 */
+                        OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
             break;
         case YELLOW_ON:
             OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "2.Yellow On     ",
@@ -1617,28 +1583,20 @@ void OledTrafficControlModeShow(void)
 
 void OledTrafficAutoModeShow(void)
 {
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, \
-                "Mode:           ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_5, \
-                "2.Auto mode:    ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 5, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_6, \
-                "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 6, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, \
-                "R:0 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, "Mode:           ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_5, "2.Auto mode:    ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 5, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_6, "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 6, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     AllLedOff();
     TrafficAutoModeSample();
 }
 
 void OledTrafficHumanModeShow(void)
 {
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, \
-                "Mode:           ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_5, \
-                "3.Human mode:   ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 5, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_6, \
-                "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 6, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, \
-                "R:0 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, "Mode:           ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_5, "3.Human mode:   ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 5, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_6, "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 6, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "R:0 Y:0 G:0 B:0 ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     AllLedOff();
     TrafficHumanModeSample();
 }
@@ -1648,14 +1606,10 @@ void OledTrafficReturnModeShow(void)
     static int status = 0;
     static unsigned char currentMode = 0;
 
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, \
-                "Return Menu     ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_5, \
-                "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 5, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_6, \
-                "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 6, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, \
-                "Continue        ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, "Return Menu     ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_5, "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 5, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_6, "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 6, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "Continue        ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
     AllLedOff();
     IoTPwmStart(HI_PWM0, PWM_LOW_DUTY, PWM_FULL_DUTY); // 关闭beep
     if (!status) {
@@ -1671,29 +1625,20 @@ void TrafficDisplayInit(void)
 {
     // clean screen
     OledFillScreen(OLED_CLEAN_SCREEN);
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_0, \
-                "WiFi-AP  ON  U:1", OLED_DISPLAY_STRING_TYPE_1); /* 0, 0, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_1, \
-                "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 1, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_2, \
-                " Traffic Light  ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 2, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_3, \
-                "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 3, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, \
-                "Mode:           ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_5, \
-                "1.Control mode: ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 5, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_6, \
-                "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 6, xx, 1 */
-    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, \
-                "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_0, "WiFi-AP  ON  U:1", OLED_DISPLAY_STRING_TYPE_1); /* 0, 0, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_1, "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 1, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_2, " Traffic Light  ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 2, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_3, "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 3, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_4, "Mode:           ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 4, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_5, "1.Control mode: ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 5, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_6, "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 6, xx, 1 */
+    OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "                ", OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
 }
 
 void TrafficDisplay(void)
 {
     unsigned char currentType = 0;
-    while (HI_ERR_SUCCESS != OledInit()) {
-    }
+    while (HI_ERR_SUCCESS != OledInit()) { }
     /* 按键中断初始化 */
     TestGpioInit();
     // clean screen
@@ -1736,8 +1681,7 @@ void Timer1Callback(unsigned int arg)
         TrafficLightTimer.Timer1Count = LED_FLASHING_TIME;
         return;
     }
-    if ((TrafficLightTimer.Timer2Status == HI_TRUE) &&
-        (TrafficLightTimer.Timer1Status == HI_TRUE)) {
+    if ((TrafficLightTimer.Timer2Status == HI_TRUE) && (TrafficLightTimer.Timer1Status == HI_TRUE)) {
         if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_AUTO_MODE) {
             timer1Count--;
             TrafficLightTimer.Timer1Count = timer1Count;
@@ -1745,10 +1689,8 @@ void Timer1Callback(unsigned int arg)
             printf("Timer1Count = %d\r\n", TrafficLightTimer.Timer1Count);
         }
     }
-    if (TrafficLightTimer.Timer6Status == HI_TRUE &&
-        TrafficLightTimer.Timer7Status == HI_TRUE) {
-        if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE &&
-            GetKeyStatus(CURRENT_TYPE) == TRAFFIC_NORMAL_TYPE) {
+    if (TrafficLightTimer.Timer6Status == HI_TRUE && TrafficLightTimer.Timer7Status == HI_TRUE) {
+        if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_NORMAL_TYPE) {
             timer7Count--;
             TrafficLightTimer.Timer7Count = timer7Count;
             if (TrafficLightTimer.Timer7Count == DATA_OUT_OF_BOUND) {
@@ -1758,10 +1700,8 @@ void Timer1Callback(unsigned int arg)
         }
     }
     /* 人工干预模式 */
-    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE &&
-        GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE &&
-        TrafficLightTimer.Timer2Status == HI_TRUE &&
-        TrafficLightTimer.Timer1Status == HI_TRUE) {
+    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE &&
+        TrafficLightTimer.Timer2Status == HI_TRUE && TrafficLightTimer.Timer1Status == HI_TRUE) {
         humanTimerCount--;
         TrafficLightTimer.Timer1Count = humanTimerCount;
         printf("humanTimerCount = %d\r\n", TrafficLightTimer.Timer1Count);
@@ -1770,14 +1710,11 @@ void Timer1Callback(unsigned int arg)
 
 void HumanTimer2Cb(void)
 {
-    if (TrafficLightTimer.Timer6Status == HI_FALSE &&
-        TrafficLightTimer.Timer7Status == HI_FALSE &&
+    if (TrafficLightTimer.Timer6Status == HI_FALSE && TrafficLightTimer.Timer7Status == HI_FALSE &&
         TrafficLightTimer.HumanTimerYellowLightStatus == HI_FALSE &&
-        TrafficLightTimer.HumanTimerGreenLightStatus == HI_FALSE &&
-        TrafficLightTimer.Timer8Status == HI_FALSE &&
+        TrafficLightTimer.HumanTimerGreenLightStatus == HI_FALSE && TrafficLightTimer.Timer8Status == HI_FALSE &&
         TrafficLightTimer.Timer9Status == HI_FALSE) {
-        if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE &&
-            GetKeyStatus(CURRENT_TYPE) == TRAFFIC_NORMAL_TYPE) {
+        if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_NORMAL_TYPE) {
             timer6Count--;
             TrafficLightTimer.Timer6Count = timer6Count;
             trafficStaType.g_redLedHumanModuTimeCount = timer6Count;
@@ -1785,10 +1722,8 @@ void HumanTimer2Cb(void)
                 TrafficLightTimer.Timer6Count = LAMP_FLASHING_TIME_RESET_0;
             }
         }
-        if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE &&
-            GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE &&
-            TrafficLightTimer.Timer2Status == HI_FALSE &&
-            TrafficLightTimer.Timer1Status == HI_FALSE &&
+        if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE &&
+            TrafficLightTimer.Timer2Status == HI_FALSE && TrafficLightTimer.Timer1Status == HI_FALSE &&
             (TrafficLightTimer.TimerYellowLightStatus == HI_FALSE) &&
             (TrafficLightTimer.TimerGreenLightStatus == HI_FALSE)) {
             humanRedTimerCount--;
@@ -1813,8 +1748,7 @@ void Timer2Callback(int arg)
         timer6Count = AUTO_MODULE_LIGHT_ON_TIME_30_SECOND;
         return;
     }
-    if ((TrafficLightTimer.Timer2Status == HI_FALSE) &&
-        (TrafficLightTimer.Timer1Status == HI_FALSE) &&
+    if ((TrafficLightTimer.Timer2Status == HI_FALSE) && (TrafficLightTimer.Timer1Status == HI_FALSE) &&
         (TrafficLightTimer.TimerYellowLightStatus == HI_FALSE) &&
         (TrafficLightTimer.TimerGreenLightStatus == HI_FALSE)) {
         if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_AUTO_MODE) {
@@ -1847,8 +1781,7 @@ void Timer3Callback(unsigned int arg)
         return;
     }
     if ((TrafficLightTimer.TimerYellowLightStatus == HI_TRUE) &&
-        (TrafficLightTimer.TimerGreenLightStatus == HI_FALSE) &&
-        (TrafficLightTimer.Timer1Status == HI_FALSE) &&
+        (TrafficLightTimer.TimerGreenLightStatus == HI_FALSE) && (TrafficLightTimer.Timer1Status == HI_FALSE) &&
         (TrafficLightTimer.Timer2Status == HI_FALSE)) {
         if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_AUTO_MODE) {
             timer3Count--;
@@ -1858,8 +1791,7 @@ void Timer3Callback(unsigned int arg)
         }
     }
     if (TrafficLightTimer.HumanTimerYellowLightStatus == HI_TRUE &&
-        TrafficLightTimer.HumanTimerGreenLightStatus == HI_FALSE &&
-        TrafficLightTimer.Timer6Status == HI_FALSE &&
+        TrafficLightTimer.HumanTimerGreenLightStatus == HI_FALSE && TrafficLightTimer.Timer6Status == HI_FALSE &&
         TrafficLightTimer.Timer7Status == HI_FALSE) {
         if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE) {
             timer8Count--;
@@ -1869,12 +1801,9 @@ void Timer3Callback(unsigned int arg)
         }
     }
     /* 人工干预模式 */
-    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE &&
-        GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE &&
-        TrafficLightTimer.TimerYellowLightStatus == HI_TRUE &&
-        TrafficLightTimer.TimerGreenLightStatus == HI_FALSE &&
-        TrafficLightTimer.Timer1Status == HI_FALSE &&
-        TrafficLightTimer.Timer2Status == HI_FALSE) {
+    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE &&
+        TrafficLightTimer.TimerYellowLightStatus == HI_TRUE && TrafficLightTimer.TimerGreenLightStatus == HI_FALSE &&
+        TrafficLightTimer.Timer1Status == HI_FALSE && TrafficLightTimer.Timer2Status == HI_FALSE) {
         yellowHumanCount--;
         TrafficLightTimer.Timer3Count = yellowHumanCount;
         printf("yellowHumanCount = %d\r\n", TrafficLightTimer.Timer3Count);
@@ -1899,10 +1828,8 @@ void Timer4Callback(unsigned int arg)
         return;
     }
     if ((TrafficLightTimer.TimerGreenLightStatus == HI_TRUE) &&
-        (TrafficLightTimer.TimerYellowLightStatus == HI_FALSE) &&
-        (TrafficLightTimer.Timer3Status == HI_FALSE) &&
-        (TrafficLightTimer.Timer1Status == HI_FALSE) &&
-        (TrafficLightTimer.Timer2Status == HI_FALSE)) {
+        (TrafficLightTimer.TimerYellowLightStatus == HI_FALSE) && (TrafficLightTimer.Timer3Status == HI_FALSE) &&
+        (TrafficLightTimer.Timer1Status == HI_FALSE) && (TrafficLightTimer.Timer2Status == HI_FALSE)) {
         if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_AUTO_MODE) {
             timer4Count--;
             TrafficLightTimer.Timer4Count = timer4Count;
@@ -1911,8 +1838,7 @@ void Timer4Callback(unsigned int arg)
         }
     }
     if (TrafficLightTimer.HumanTimerGreenLightStatus == HI_TRUE &&
-        TrafficLightTimer.HumanTimerYellowLightStatus == HI_FALSE &&
-        TrafficLightTimer.Timer10Status == HI_FALSE) {
+        TrafficLightTimer.HumanTimerYellowLightStatus == HI_FALSE && TrafficLightTimer.Timer10Status == HI_FALSE) {
         if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE) {
             timer9Count--;
             TrafficLightTimer.Timer9Count = timer9Count;
@@ -1921,13 +1847,10 @@ void Timer4Callback(unsigned int arg)
         }
     }
     /* 人工干预模式 */
-    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE &&
-        GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE &&
+    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE &&
         (TrafficLightTimer.TimerGreenLightStatus == HI_TRUE) &&
-        (TrafficLightTimer.TimerYellowLightStatus == HI_FALSE) &&
-        (TrafficLightTimer.Timer3Status == HI_FALSE) &&
-        (TrafficLightTimer.Timer1Status == HI_FALSE) &&
-        (TrafficLightTimer.Timer2Status == HI_FALSE)) {
+        (TrafficLightTimer.TimerYellowLightStatus == HI_FALSE) && (TrafficLightTimer.Timer3Status == HI_FALSE) &&
+        (TrafficLightTimer.Timer1Status == HI_FALSE) && (TrafficLightTimer.Timer2Status == HI_FALSE)) {
         humanGreenTimerCount--;
         TrafficLightTimer.Timer4Count = humanGreenTimerCount;
         printf("humanGreenTimerCount = %d\r\n", TrafficLightTimer.Timer4Count);
@@ -1952,10 +1875,8 @@ void Timer5Callback(unsigned int arg)
         return;
     }
     if ((TrafficLightTimer.TimerGreenLightStatus == HI_TRUE) &&
-        (TrafficLightTimer.TimerYellowLightStatus == HI_FALSE) &&
-        (TrafficLightTimer.Timer3Status == HI_TRUE) &&
-        (TrafficLightTimer.Timer1Status == HI_FALSE) &&
-        (TrafficLightTimer.Timer2Status == HI_FALSE)) {
+        (TrafficLightTimer.TimerYellowLightStatus == HI_FALSE) && (TrafficLightTimer.Timer3Status == HI_TRUE) &&
+        (TrafficLightTimer.Timer1Status == HI_FALSE) && (TrafficLightTimer.Timer2Status == HI_FALSE)) {
         if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_AUTO_MODE) {
             timer5Count--;
             TrafficLightTimer.Timer5Count = timer5Count;
@@ -1972,20 +1893,17 @@ void Timer5Callback(unsigned int arg)
         }
     }
     /* 人工干预模式 */
-    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE &&
-        GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE &&
+    if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE &&
         (TrafficLightTimer.TimerGreenLightStatus == HI_TRUE) &&
-        (TrafficLightTimer.TimerYellowLightStatus == HI_FALSE) &&
-        (TrafficLightTimer.Timer3Status == HI_TRUE) &&
-        (TrafficLightTimer.Timer1Status == HI_FALSE) &&
-        (TrafficLightTimer.Timer2Status == HI_FALSE)) {
+        (TrafficLightTimer.TimerYellowLightStatus == HI_FALSE) && (TrafficLightTimer.Timer3Status == HI_TRUE) &&
+        (TrafficLightTimer.Timer1Status == HI_FALSE) && (TrafficLightTimer.Timer2Status == HI_FALSE)) {
         humanGreenFlashCount--;
         TrafficLightTimer.Timer5Count = humanGreenFlashCount;
         printf("humanGreenFlashCount = %d\r\n", TrafficLightTimer.Timer5Count);
     }
 }
 
-#define CN_QUEUE_MSGNUM 16
+#define CN_QUEUE_MSGNUM  16
 #define CN_QUEUE_MSGSIZE (sizeof(hi_pvoid))
 
 void SoftwareTimersTaskEntry(void)
@@ -2049,7 +1967,7 @@ void SoftwareTimersTaskEntry(void)
     }
 }
 
-#define TIMER_TASK_STACK  (1024 * 4)
+#define TIMER_TASK_STACK (1024 * 4)
 
 static void TimerTask(void)
 {

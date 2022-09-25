@@ -24,4 +24,4 @@ int ConnectToHotspot(WifiDeviceConfig* apConfig);
 void DisconnectWithHotspot(int netId);
 void WifiStaReadyWait(void);
 
-#endif  // WIFI_CONNECTER_H
+#endif // WIFI_CONNECTER_H

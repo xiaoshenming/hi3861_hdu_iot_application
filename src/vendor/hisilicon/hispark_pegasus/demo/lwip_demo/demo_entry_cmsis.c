@@ -17,8 +17,8 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "ohos_init.h"
 #include "cmsis_os2.h"
+#include "ohos_init.h"
 
 #include "net_demo.h"
 #include "net_params.h"

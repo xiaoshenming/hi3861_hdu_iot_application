@@ -13,23 +13,23 @@
  * limitations under the License.
  */
 
-#include <stdint.h>
 #include <cJSON.h>
+#include <stdint.h>
 #include <hi_mem.h>
 
-static void *cJsonMalloc(size_t sz)
+static void* cJsonMalloc(size_t sz)
 {
     return hi_malloc(0, sz);
 }
 
-static void cJsonFree(const char *p)
+static void cJsonFree(const char* p)
 {
     hi_free(0, p);
 }
 
 void cJsonInit(void)
 {
-    cJSON_Hooks  hooks;
+    cJSON_Hooks hooks;
     hooks.malloc_fn = cJsonMalloc;
     hooks.free_fn = cJsonFree;
     cJSON_InitHooks(&hooks);

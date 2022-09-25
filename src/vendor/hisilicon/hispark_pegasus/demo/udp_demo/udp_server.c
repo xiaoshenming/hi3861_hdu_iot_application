@@ -15,32 +15,32 @@
 
 #include "lwip/netifapi.h"
 
-#include <hi_io.h>
 #include <hi_gpio.h>
+#include <hi_io.h>
 #include <hi_task.h>
 #include <hi_watchdog.h>
-#include "ohos_init.h"
 #include "cmsis_os2.h"
+#include "ohos_init.h"
 #include "udp_config.h"
 
-#include <string.h>
 #include <errno.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#define INVAILD_SOCKET          (-1)
-#define FREE_CPU_TIME_20MS      (20)
-#define INVALID_VALUE           "202.202.202.202"
+#define INVAILD_SOCKET     (-1)
+#define FREE_CPU_TIME_20MS (20)
+#define INVALID_VALUE      "202.202.202.202"
 
-#define NATIVE_IP_ADDRESS       "XXX.XXX.XX.XXX" // 用户查找本地IP后需要进行修改
-#define WECHAT_MSG_LIGHT_ON     "_light_on"
-#define WECHAT_MSG_LIGHT_OFF    "_light_off"
-#define DEVICE_MSG_LIGHT_ON     "device_light_on"
-#define DEVICE_MSG_LIGHT_OFF    "device_light_off"
-#define WECHAT_MSG_UNLOAD_PAGE  "UnoladPage"
-#define RECV_DATA_FLAG_OTHER    (2)
-#define HOST_PORT               (5566)
-#define DEVICE_PORT             (6655)
+#define NATIVE_IP_ADDRESS      "XXX.XXX.XX.XXX" // 用户查找本地IP后需要进行修改
+#define WECHAT_MSG_LIGHT_ON    "_light_on"
+#define WECHAT_MSG_LIGHT_OFF   "_light_off"
+#define DEVICE_MSG_LIGHT_ON    "device_light_on"
+#define DEVICE_MSG_LIGHT_OFF   "device_light_off"
+#define WECHAT_MSG_UNLOAD_PAGE "UnoladPage"
+#define RECV_DATA_FLAG_OTHER   (2)
+#define HOST_PORT              (5566)
+#define DEVICE_PORT            (6655)
 
 #define UDP_RECV_LEN (255)
 
@@ -52,7 +52,7 @@ typedef struct FunctionCallback {
     hi_u32 queueID;
     hi_u32 iotTaskID;
     FnMsgCallBack msgCallBack;
-}FunctionCallback;
+} FunctionCallback;
 FunctionCallback g_gfnCallback;
 
 void DeviceConfigInit(hi_gpio_value val)
@@ -62,7 +62,7 @@ void DeviceConfigInit(hi_gpio_value val)
     hi_gpio_set_ouput_val(HI_GPIO_IDX_9, val);
 }
 
-int  DeviceMsgCallback(FnMsgCallBack msgCallBack)
+int DeviceMsgCallback(FnMsgCallBack msgCallBack)
 {
     g_gfnCallback.msgCallBack = msgCallBack;
     return 0;
@@ -96,12 +96,12 @@ int UdpTransportInit(struct sockaddr_in serAddr, struct sockaddr_in remoteAddr)
     return sServer;
 }
 
-void *UdpServerDemo(const char *param)
+void* UdpServerDemo(const char* param)
 {
-    struct sockaddr_in serAddr = {0};
-    struct sockaddr_in remoteAddr = {0};
+    struct sockaddr_in serAddr = { 0 };
+    struct sockaddr_in remoteAddr = { 0 };
     static int recvDataFlag = -1;
-    char *sendData = NULL;
+    char* sendData = NULL;
     int sServer = 0;
 
     (char*)(param);
@@ -109,7 +109,7 @@ void *UdpServerDemo(const char *param)
     sServer = UdpTransportInit(serAddr, remoteAddr);
 
     int addrLen = sizeof(remoteAddr);
-    char recvData[UDP_RECV_LEN] = {0};
+    char recvData[UDP_RECV_LEN] = { 0 };
 
     while (1) {
         /* 255长度 */
@@ -150,9 +150,9 @@ void *UdpServerDemo(const char *param)
     return NULL;
 }
 
-#define UDP_TASK_STACKSIZE  0x1000
-#define UDP_TASK_PRIOR 27
-#define UDP_TASK_NAME "UDP_demo"
+#define UDP_TASK_STACKSIZE 0x1000
+#define UDP_TASK_PRIOR     27
+#define UDP_TASK_NAME      "UDP_demo"
 
 static void UDPTransport(void)
 {

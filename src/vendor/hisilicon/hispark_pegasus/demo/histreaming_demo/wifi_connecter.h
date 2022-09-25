@@ -23,4 +23,4 @@ int ConnectToHotspot(WifiDeviceConfig* apConfig);
 
 void DisconnectWithHotspot(int netId);
 
-#endif  // WIFI_CONNECTER_H
+#endif // WIFI_CONNECTER_H

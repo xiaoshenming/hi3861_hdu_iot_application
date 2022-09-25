@@ -14,27 +14,27 @@
  */
 
 #include <string.h>
-#include <hi_wifi_api.h>
 #include <hi_mux.h>
 #include <hi_task.h>
-#include "ohos_init.h"
+#include <hi_wifi_api.h>
 #include "cmsis_os2.h"
 #include "iot_config.h"
 #include "iot_log.h"
 #include "iot_main.h"
 #include "iot_profile.h"
+#include "ohos_init.h"
 
 /* attribute initiative to report */
 #define TAKE_THE_INITIATIVE_TO_REPORT
 /* oc request id */
-#define CN_COMMADN_INDEX    "commands/request_id="
+#define CN_COMMADN_INDEX "commands/request_id="
 
 // this is the callback function, set to the mqtt, and if any messages come, it will be called
 // The payload here is the json string
-static void DemoMsgRcvCallBack(int qos, const char *topic, const char *payload)
+static void DemoMsgRcvCallBack(int qos, const char* topic, const char* payload)
 {
-    const char *requesID;
-    char *tmp;
+    const char* requesID;
+    char* tmp;
     IoTCmdRespT resp;
     IOT_LOG_DEBUG("RCVMSG:QOS:%d TOPIC:%s PAYLOAD:%s\r\n", qos, topic, payload);
 
@@ -45,7 +45,7 @@ static void DemoMsgRcvCallBack(int qos, const char *topic, const char *payload)
         requesID = tmp + strlen(CN_COMMADN_INDEX);
         resp.requestID = requesID;
         resp.respName = NULL;
-        resp.retCode = 0;  // <which means 0 success and others failed
+        resp.retCode = 0; // <which means 0 success and others failed
         resp.paras = NULL;
         (void)IoTProfileCmdResp(CONFIG_DEVICE_PWD, &resp);
     }
@@ -73,15 +73,15 @@ hi_void IotPublishPersionTime(hi_u32 time)
 
 // this is the demo main task entry,here we will set the wifi/cjson/mqtt ready ,and
 // wait if any work to do in the while
-static hi_void *DemoEntry(hi_void *arg)
+static hi_void* DemoEntry(hi_void* arg)
 {
     WifiStaReadyWait();
 }
 
 // This is the demo entry, we create a task here, and all the works has been done in the demo_entry
 #define CN_IOT_TASK_STACKSIZE 0x1000
-#define CN_IOT_TASK_PRIOR 25
-#define CN_IOT_TASK_NAME "IOTDEMO"
+#define CN_IOT_TASK_PRIOR     25
+#define CN_IOT_TASK_NAME      "IOTDEMO"
 
 static void AppDemoIot(void)
 {

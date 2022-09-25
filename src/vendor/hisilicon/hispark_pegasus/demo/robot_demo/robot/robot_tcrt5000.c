@@ -13,22 +13,21 @@
  *
  * limitations under the License.
  */
- 
+
+#include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <memory.h>
 
-#include "ohos_init.h"
 #include "cmsis_os2.h"
-#include "iot_gpio.h"
 #include "hi_io.h"
 #include "hi_time.h"
+#include "iot_gpio.h"
+#include "ohos_init.h"
 
-
-#define GPIO11 11
-#define GPIO12 12
-#define TASK_STAK_SIZE    (1024*10)
-void get_tcrt5000_value (void)
+#define GPIO11         11
+#define GPIO12         12
+#define TASK_STAK_SIZE (1024 * 10)
+void get_tcrt5000_value(void)
 {
     IotGpioValue id_status;
     IoTGpioGetInputVal(GPIO11, &id_status);
@@ -55,7 +54,6 @@ void RobotTask(void* parame)
         get_tcrt5000_value();
     }
 }
-
 
 static void RobotDemo(void)
 {

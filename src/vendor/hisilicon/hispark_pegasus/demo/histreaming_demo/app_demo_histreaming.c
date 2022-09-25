@@ -14,32 +14,32 @@
  */
 
 // #ifdef CONFIG_HISTREAMING_SUPPORT
+#include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <memory.h>
 #include <hi_pwm.h>
 #include <hi_time.h>
 /* Link Header Files */
-#include <link_service.h>
-#include <link_platform.h>
 #include <histreaming.h>
-#include <hi_io.h>
+#include <link_platform.h>
+#include <link_service.h>
 #include <hi_early_debug.h>
 #include <hi_gpio.h>
+#include <hi_io.h>
 #include <hi_task.h>
 #include <hi_types_base.h>
 #include "app_demo_multi_sample.h"
-#include "ssd1306_oled.h"
 #include "iot_gpio.h"
+#include "ssd1306_oled.h"
 
 #define HISTREAMING_TASK
 #ifdef HISTREAMING_TASK
-#define HISTREAMING_DEMO_TASK_STAK_SIZE (1024*8)
+#define HISTREAMING_DEMO_TASK_STAK_SIZE (1024 * 8)
 #define HISTREAMING_DEMO_TASK_PRIORITY  25
-#define IO_FUNC_GPIO_OUT 0
-#define IOT_GPIO_INDEX_10 10
-#define IOT_GPIO_INDEX_11 11
-#define IOT_GPIO_INDEX_12 12
+#define IO_FUNC_GPIO_OUT                0
+#define IOT_GPIO_INDEX_10               10
+#define IOT_GPIO_INDEX_11               11
+#define IOT_GPIO_INDEX_12               12
 hi_u32 g_histreamingDemoTaskId = 0;
 #endif
 
@@ -50,27 +50,21 @@ static void HistreamingManualControlModule(const char* property, char* value)
     if (strcmp(property, "tl_s") == 0) {
         if (strcmp(value, "red_on") == 0) {
             OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "1.Red On       ",
-                        OLED_DISPLAY_STRING_TYPE_1);  /* 0, 7, xx, 1 */
-            GpioControl(IOT_GPIO_INDEX_10, IOT_GPIO_INDEX_10,
-                        IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
-            GpioControl(IOT_GPIO_INDEX_11, IOT_GPIO_INDEX_11,
-                        IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE0, IO_FUNC_GPIO_OUT);
+                        OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
+            GpioControl(IOT_GPIO_INDEX_10, IOT_GPIO_INDEX_10, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
+            GpioControl(IOT_GPIO_INDEX_11, IOT_GPIO_INDEX_11, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE0, IO_FUNC_GPIO_OUT);
         }
         if (strcmp(value, "yellow_on") == 0) {
             OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "2.Yellow On     ",
                         OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
-            GpioControl(IOT_GPIO_INDEX_10, IOT_GPIO_INDEX_10,
-                        IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE0, IO_FUNC_GPIO_OUT);
-            GpioControl(IOT_GPIO_INDEX_12, IOT_GPIO_INDEX_12,
-                        IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
+            GpioControl(IOT_GPIO_INDEX_10, IOT_GPIO_INDEX_10, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE0, IO_FUNC_GPIO_OUT);
+            GpioControl(IOT_GPIO_INDEX_12, IOT_GPIO_INDEX_12, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
         }
         if (strcmp(value, "green_on") == 0) {
             OledShowStr(OLED_X_POSITION_0, OLED_Y_POSITION_7, "3.Green On      ",
                         OLED_DISPLAY_STRING_TYPE_1); /* 0, 7, xx, 1 */
-            GpioControl(IOT_GPIO_INDEX_12, IOT_GPIO_INDEX_12,
-                        IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE0, IO_FUNC_GPIO_OUT);
-            GpioControl(IOT_GPIO_INDEX_11, IOT_GPIO_INDEX_11,
-                        IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
+            GpioControl(IOT_GPIO_INDEX_12, IOT_GPIO_INDEX_12, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE0, IO_FUNC_GPIO_OUT);
+            GpioControl(IOT_GPIO_INDEX_11, IOT_GPIO_INDEX_11, IOT_GPIO_DIR_OUT, IOT_GPIO_VALUE1, IO_FUNC_GPIO_OUT);
         }
     }
 }
@@ -115,7 +109,6 @@ static hi_u32 HistreamingTrafficLightReturnMainMenu(const char* property, char* 
     }
 }
 
-
 /* histreaming traffic light function control */
 static hi_void HistreamingTrafficLightControl(const char* property, char* value)
 {
@@ -131,7 +124,7 @@ static hi_void HistreamingTrafficLightControl(const char* property, char* value)
 static int GetStatusValue(const struct LinkService* ar, const char* property, const char* value, int len)
 {
     (void)(ar);
-    char *status = "Opend";
+    char* status = "Opend";
 
     printf("Receive property: %s(value=%s[%d])\n", property, value, len);
 
@@ -181,7 +174,7 @@ static const char* GetDeviceType(const struct LinkService* ar)
     return g_wifiStaType;
 }
 
-static void *g_linkPlatform = NULL;
+static void* g_linkPlatform = NULL;
 
 void* HistreamingOpen(void)
 {
@@ -194,7 +187,7 @@ void* HistreamingOpen(void)
         return NULL;
     }
 
-    wifiIot->get    = GetStatusValue;
+    wifiIot->get = GetStatusValue;
     wifiIot->modify = ModifyStatus;
     wifiIot->type = GetDeviceType;
     link = LinkPlatformGet();
@@ -219,9 +212,9 @@ void* HistreamingOpen(void)
     return (void*)link;
 }
 
-void HistreamingClose(const char *link)
+void HistreamingClose(const char* link)
 {
-    LinkPlatform *linkPlatform = (LinkPlatform*)(link);
+    LinkPlatform* linkPlatform = (LinkPlatform*)(link);
     if (!linkPlatform) {
         return;
     }
@@ -236,7 +229,7 @@ void HistreamingClose(const char *link)
 hi_void HistreamingDemo(hi_void)
 {
     hi_u32 ret;
-    hi_task_attr histreaming = {0};
+    hi_task_attr histreaming = { 0 };
     histreaming.stack_size = HISTREAMING_DEMO_TASK_STAK_SIZE;
     histreaming.task_prio = HISTREAMING_DEMO_TASK_PRIORITY;
     histreaming.task_name = "histreaming_demo";

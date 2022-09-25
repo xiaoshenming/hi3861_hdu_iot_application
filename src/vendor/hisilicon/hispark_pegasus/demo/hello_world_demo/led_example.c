@@ -16,14 +16,14 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include "ohos_init.h"
 #include "cmsis_os2.h"
 #include "iot_gpio.h"
+#include "ohos_init.h"
 
 #define LED_INTERVAL_TIME_US 300000
-#define LED_TASK_STACK_SIZE 512
-#define LED_TASK_PRIO 25
-#define LED_TEST_GPIO 9 // for hispark_pegasus
+#define LED_TASK_STACK_SIZE  512
+#define LED_TASK_PRIO        25
+#define LED_TEST_GPIO        9 // for hispark_pegasus
 
 static long long g_iState = 0;
 
@@ -35,7 +35,7 @@ enum LedState {
 
 enum LedState g_ledState = LED_SPARK;
 
-static void *LedTask(const char *arg)
+static void* LedTask(const char* arg)
 {
     (void)arg;
     while (1) {

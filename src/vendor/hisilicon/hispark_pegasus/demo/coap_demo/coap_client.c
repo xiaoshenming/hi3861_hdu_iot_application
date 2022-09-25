@@ -21,12 +21,12 @@
 #include "lwip/udp.h"
 #include "net.h"
 
-#define TEST_IPV4 1
+#define TEST_IPV4           1
 #define DHCP_COAP_TOKEN_LEN (4)
 static coap_context_t* g_cliCtx = NULL;
 /* The response handler */
-static void MessageHandler(struct coap_context_t* ctx, coap_session_t* session, coap_pdu_t* sent,
-    coap_pdu_t* received, coap_tid_t id)
+static void MessageHandler(struct coap_context_t* ctx, coap_session_t* session, coap_pdu_t* sent, coap_pdu_t* received,
+                           coap_tid_t id)
 {
     unsigned char* data;
     size_t dataLen;
@@ -81,9 +81,9 @@ s32_t CoapNewToken(u16_t msg_id, u8_t* token, u8_t token_len)
         return -1;
     }
     now_ms = sys_now();
-    token[0] = (u8_t)(msg_id); /* 0数据 */
+    token[0] = (u8_t)(msg_id);      /* 0数据 */
     token[1] = (u8_t)(msg_id >> 8); /* 1数据，8数据 */
-    token[2] = (u8_t)(now_ms); /* 2数据 */
+    token[2] = (u8_t)(now_ms);      /* 2数据 */
     token[3] = (u8_t)(now_ms >> 8); /* 3数据，8数据 */
     return 0;
 }

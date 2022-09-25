@@ -38,7 +38,7 @@ typedef enum {
     EN_IOT_LOG_LEVEL_ERROR,
     EN_IOT_LOG_LEVEL_FATAL,
     EN_IOT_LOG_LEVEL_MAX,
-}EnIotLogLevelT;
+} EnIotLogLevelT;
 
 /*
  * @brief:use this function to get the current output log
@@ -51,7 +51,7 @@ EnIotLogLevelT IoTLogLevelGet(void);
  * @parameter[in]:level, the level to get
  * @return: the mapped level name
  */
-const char *IoTLogLevelGetName(EnIotLogLevelT logLevel);
+const char* IoTLogLevelGetName(EnIotLogLevelT logLevel);
 /*
  * @brief:use this function to set the current output log
  * @parameter[in] level:defined by en_iot_log_level_t
@@ -69,38 +69,31 @@ int IoTLogLevelSet(EnIotLogLevelT level);
  */
 
 #ifndef IOT_PRINT
-#define IOT_PRINT(fmt, ...) \
-    do \
-    { \
-        printf(fmt, ##__VA_ARGS__); \
+#define IOT_PRINT(fmt, ...)                                                                                            \
+    do {                                                                                                               \
+        printf(fmt, ##__VA_ARGS__);                                                                                    \
     } while (0)
 #endif
 
 #ifdef CONFIG_LINKLOG_ENABLE
 
-#define IOT_LOG(level, fmt, ...) \
-    do \
-    { \
-        IOT_PRINT("[%s][%s] " fmt "\r\n", \
-        IoTLogLevelGetName((level)), __FUNCTION__, ##__VA_ARGS__); \
+#define IOT_LOG(level, fmt, ...)                                                                                       \
+    do {                                                                                                               \
+        IOT_PRINT("[%s][%s] " fmt "\r\n", IoTLogLevelGetName((level)), __FUNCTION__, ##__VA_ARGS__);                   \
     } while (0)
 
-#define IOT_LOG_TRACE(fmt, ...) \
-    do \
-    { \
-        if ((EN_IOT_LOG_LEVEL_TRACE) >= IoTLogLevelGet()) \
-        { \
-            IOT_LOG(EN_IOT_LOG_LEVEL_TRACE, fmt, ##__VA_ARGS__); \
-        } \
+#define IOT_LOG_TRACE(fmt, ...)                                                                                        \
+    do {                                                                                                               \
+        if ((EN_IOT_LOG_LEVEL_TRACE) >= IoTLogLevelGet()) {                                                            \
+            IOT_LOG(EN_IOT_LOG_LEVEL_TRACE, fmt, ##__VA_ARGS__);                                                       \
+        }                                                                                                              \
     } while (0)
 
-#define IOT_LOG_DEBUG(fmt, ...) \
-    do \
-    { \
-        if ((EN_IOT_LOG_LEVEL_DEBUG) >= IoTLogLevelGet()) \
-        { \
-            IOT_LOG(EN_IOT_LOG_LEVEL_DEBUG, fmt, ##__VA_ARGS__); \
-        } \
+#define IOT_LOG_DEBUG(fmt, ...)                                                                                        \
+    do {                                                                                                               \
+        if ((EN_IOT_LOG_LEVEL_DEBUG) >= IoTLogLevelGet()) {                                                            \
+            IOT_LOG(EN_IOT_LOG_LEVEL_DEBUG, fmt, ##__VA_ARGS__);                                                       \
+        }                                                                                                              \
     } while (0)
 
 #else
@@ -111,11 +104,10 @@ int IoTLogLevelSet(EnIotLogLevelT level);
 
 #endif
 
-#define IOT_LOG_TRACE(fmt, ...)   IOT_LOG(EN_IOT_LOG_LEVEL_TRACE, fmt, ##__VA_ARGS__)
-#define IOT_LOG_INFO(fmt, ...)   IOT_LOG(EN_IOT_LOG_LEVEL_INFO, fmt, ##__VA_ARGS__)
-#define IOT_LOG_WARN(fmt, ...)   IOT_LOG(EN_IOT_LOG_LEVEL_WARN, fmt, ##__VA_ARGS__)
-#define IOT_LOG_ERROR(fmt, ...)  IOT_LOG(EN_IOT_LOG_LEVEL_ERROR, fmt, ##__VA_ARGS__)
-#define IOT_LOG_FATAL(fmt, ...)  IOT_LOG(EN_IOT_LOG_LEVEL_FATAL, fmt, ##__VA_ARGS__)
-
+#define IOT_LOG_TRACE(fmt, ...) IOT_LOG(EN_IOT_LOG_LEVEL_TRACE, fmt, ##__VA_ARGS__)
+#define IOT_LOG_INFO(fmt, ...)  IOT_LOG(EN_IOT_LOG_LEVEL_INFO, fmt, ##__VA_ARGS__)
+#define IOT_LOG_WARN(fmt, ...)  IOT_LOG(EN_IOT_LOG_LEVEL_WARN, fmt, ##__VA_ARGS__)
+#define IOT_LOG_ERROR(fmt, ...) IOT_LOG(EN_IOT_LOG_LEVEL_ERROR, fmt, ##__VA_ARGS__)
+#define IOT_LOG_FATAL(fmt, ...) IOT_LOG(EN_IOT_LOG_LEVEL_FATAL, fmt, ##__VA_ARGS__)
 
 #endif /* IOT_LOG_H_ */

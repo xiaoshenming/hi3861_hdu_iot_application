@@ -16,7 +16,7 @@
 #ifndef HISTREAMING_H
 #define HISTREAMING_H
 
-void *HistreamingOpen(void);
-void HistreamingClose(const char *link);
+void* HistreamingOpen(void);
+void HistreamingClose(const char* link);
 
 #endif /* __HISTREAMING_DEMO_H__ */

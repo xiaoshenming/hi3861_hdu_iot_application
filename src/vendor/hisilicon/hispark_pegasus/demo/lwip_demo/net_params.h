@@ -17,11 +17,11 @@
 #define NET_PARAMS_H
 
 #ifndef PARAM_HOTSPOT_SSID
-#define PARAM_HOTSPOT_SSID "H"   // your AP SSID
+#define PARAM_HOTSPOT_SSID "H" // your AP SSID
 #endif
 
 #ifndef PARAM_HOTSPOT_PSK
-#define PARAM_HOTSPOT_PSK  "12345678"  // your AP PSK
+#define PARAM_HOTSPOT_PSK "12345678" // your AP PSK
 #endif
 
 #ifndef PARAM_HOTSPOT_TYPE
@@ -36,4 +36,4 @@
 #define PARAM_SERVER_PORT 5678
 #endif
 
-#endif  // NET_PARAMS_H
+#endif // NET_PARAMS_H

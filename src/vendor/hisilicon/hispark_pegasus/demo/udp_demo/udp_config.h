@@ -34,24 +34,24 @@
 /* if you need the iot log for the development ,
 please enable it, else please comment it
 */
-#define CONFIG_LINKLOG_ENABLE   1
+#define CONFIG_LINKLOG_ENABLE 1
 
 // /<CONFIG THE WIFI
 /* Please modify the ssid and pwd for the own */
-#define AP_SSID  "XXXXXXXXX" // WIFI SSID
-#define AP_PWD   "XXXXXXXXX" // WIFI PWD
+#define AP_SSID "XXXXXXXXX" // WIFI SSID
+#define AP_PWD  "XXXXXXXXX" // WIFI PWD
 
 // /<Configure the iot platform
 /* Please modify the device id and pwd for your own */
 /* 设备ID名称，请参考华为物联网云文档获取该设备的ID。例如:60790e01ba4b2702c053ff03_helloMQTT */
-#define CONFIG_DEVICE_ID  "xxxxxxx"
+#define CONFIG_DEVICE_ID "xxxxxxx"
 /* 设备密码，请参考华为物联网云文档设置该设备密码。例如：hispark2021 */
 #define CONFIG_DEVICE_PWD "xxxxxx"
 /* <if you use the tls mode and x509mode,
 please modify the DEVICE CA AND PRIVATE KEY IN iot_main.c
 */
 /* Tencent iot Cloud user ID , password */
-#define CONFIG_USER_ID    "xxxxxxxx"
-#define CONFIG_USER_PWD   "xxxxxxxx"
+#define CONFIG_USER_ID  "xxxxxxxx"
+#define CONFIG_USER_PWD "xxxxxxxx"
 
 #endif

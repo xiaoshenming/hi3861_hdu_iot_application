@@ -14,33 +14,33 @@
  * limitations under the License.
  */
 
+#include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <memory.h>
 
-#include "ohos_init.h"
 #include "cmsis_os2.h"
-#include "iot_gpio.h"
 #include "hi_io.h"
 #include "hi_time.h"
-#include "ssd1306.h"
+#include "iot_errno.h"
+#include "iot_gpio.h"
 #include "iot_i2c.h"
 #include "iot_watchdog.h"
+#include "ohos_init.h"
 #include "robot_control.h"
-#include "iot_errno.h"
+#include "ssd1306.h"
 
-#define OLED_I2C_BAUDRATE (400*1000)
-#define GPIO13 13
-#define GPIO14 14
-#define FUNC_SDA 6
-#define FUNC_SCL 6
-#define I2C0 0
-#define STACKSIZE 10240
-#define PRIORITY 25
+#define OLED_I2C_BAUDRATE (400 * 1000)
+#define GPIO13            13
+#define GPIO14            14
+#define FUNC_SDA          6
+#define FUNC_SCL          6
+#define I2C0              0
+#define STACKSIZE         10240
+#define PRIORITY          25
 
 void Ssd1306TestTask(void* arg)
 {
-    (void) arg;
+    (void)arg;
     hi_io_set_func(GPIO13, FUNC_SDA);
     hi_io_set_func(GPIO14, FUNC_SCL);
     IoTI2cInit(I2C0, OLED_I2C_BAUDRATE);

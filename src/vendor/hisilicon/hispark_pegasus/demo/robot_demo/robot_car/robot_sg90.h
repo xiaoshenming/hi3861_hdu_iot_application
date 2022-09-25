@@ -17,7 +17,6 @@
 #ifndef __ROBOT_SG90_H__
 #define __ROBOT_SG90_H__
 
-
 void engine_turn_left(void);
 void engine_turn_right(void);
 void regress_middle(void);

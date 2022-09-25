@@ -13,24 +13,25 @@
  * limitations under the License.
  */
 
-#include "wifi_device.h"
 #include "cmsis_os2.h"
+#include "wifi_device.h"
 
-#include "lwip/netifapi.h"
 #include "lwip/api_shell.h"
+#include "lwip/netifapi.h"
 
-#define OS_SLEEP_10MS (10)
+#define OS_SLEEP_10MS  (10)
 #define OS_SLEEP_100MS (100)
 
 static void PrintLinkedInfo(const WifiLinkedInfo* info)
 {
-    if (!info) return;
+    if (!info)
+        return;
 
-    static char macAddress[32] = {0};
+    static char macAddress[32] = { 0 };
     unsigned char* mac = info->bssid;
-    if (snprintf_s(macAddress, sizeof(macAddress) + 1, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X",
-        mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]) < 0) { /* mac地址从0,1,2,3,4,5位 */
-            return;
+    if (snprintf_s(macAddress, sizeof(macAddress) + 1, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X", mac[0],
+                   mac[1], mac[2], mac[3], mac[4], mac[5]) < 0) { /* mac地址从0,1,2,3,4,5位 */
+        return;
     }
 }
 
@@ -38,7 +39,8 @@ static volatile int g_connected = 0;
 
 static void OnWifiConnectionChanged(int state, const WifiLinkedInfo* info)
 {
-    if (!info) return;
+    if (!info)
+        return;
 
     printf("%s %d, state = %d, info = \r\n", __FUNCTION__, __LINE__, state);
     PrintLinkedInfo(info);
@@ -55,16 +57,14 @@ static void OnWifiScanStateChanged(int state, int size)
     printf("%s %d, state = %X, size = %d\r\n", __FUNCTION__, __LINE__, state, size);
 }
 
-static WifiEvent g_defaultWifiEventListener = {
-    .OnWifiConnectionChanged = OnWifiConnectionChanged,
-    .OnWifiScanStateChanged = OnWifiScanStateChanged
-};
+static WifiEvent g_defaultWifiEventListener = { .OnWifiConnectionChanged = OnWifiConnectionChanged,
+                                                .OnWifiScanStateChanged = OnWifiScanStateChanged };
 
 static struct netif* g_iface = NULL;
 
-err_t netifapi_set_hostname(struct netif *netif, char *hostname, u8_t namelen);
+err_t netifapi_set_hostname(struct netif* netif, char* hostname, u8_t namelen);
 
-int ConnectToHotspot(const WifiDeviceConfig*  apConfig)
+int ConnectToHotspot(const WifiDeviceConfig* apConfig)
 {
     WifiErrorCode errCode;
     int netId = -1;
@@ -103,9 +103,9 @@ int ConnectToHotspot(const WifiDeviceConfig*  apConfig)
         printf("netifapi_netif_common: %d\r\n", ret);
 #else
         // 下面这种方式也可以打印 IP、网关、子网掩码信息
-        ip4_addr_t ip = {0};
-        ip4_addr_t netmask = {0};
-        ip4_addr_t gw = {0};
+        ip4_addr_t ip = { 0 };
+        ip4_addr_t netmask = { 0 };
+        ip4_addr_t gw = { 0 };
         ret = netifapi_netif_get_addr(g_iface, &ip, &netmask, &gw);
         if (ret == ERR_OK) {
             printf("ip = %s\r\n", ip4addr_ntoa(&ip));
