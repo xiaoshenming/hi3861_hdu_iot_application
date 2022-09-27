@@ -139,8 +139,8 @@ HisignallingErrorType HisignallingMsgReceive(hi_u8* buf, hi_u32 len)
             ((hi_u8)crcCheckReceived != buf[len - 1])) {
             HISIGNALLING_LOG_ERROR("<Hi3861>: crc32 Verification failed!");
             HISIGNALLING_LOG_ERROR("<Hi3861>:crc_4=0x%x, crc_3=0x%x, crc_2=0x%x, crc_1=0x%x",
-                                    buf[len - BUF_LEN_4], buf[len - BUF_LEN_3], buf[len - BUF_LEN_2],
-                                    buf[len - BUF_LEN_1]); /* 4,3,2,1 addr offset */
+                                   buf[len - BUF_LEN_4], buf[len - BUF_LEN_3], buf[len - BUF_LEN_2],
+                                   buf[len - BUF_LEN_1]); /* 4,3,2,1 addr offset */
             return HISIGNALLING_RET_VAL_ERROR;
         }
     }
