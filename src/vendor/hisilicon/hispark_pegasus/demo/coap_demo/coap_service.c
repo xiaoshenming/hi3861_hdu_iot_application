@@ -45,14 +45,14 @@ static void HelloHandler(CoapData* coapData)
     const char* responseData = "Hello World! CoAP";
     size_t len = 0;
     unsigned char* data = NULL;
-    (void)coapData->ctx;
-    (void)coapData->resource;
-    (void)coapData->session;
-    coapData->response->code = COAP_RESPONSE_CODE(205); /* 返回值205，代表连接成功 */
-    coap_add_option(coapData->response, COAP_OPTION_CONTENT_TYPE,
-                    coap_encode_var_safe(buf, BUF_LEN, COAP_MEDIATYPE_TEXT_PLAIN), buf); /* 3个字节长度 */
-    coap_add_data(coapData->response, strlen(coap_pdu_t), (unsigned char*)coapData->responseData);
-    if (coap_get_data(coapData->request, &len, &data)) {
+    (void)coapData -> ctx;
+    (void)coapData -> resource;
+    (void)coapData -> session;
+    coapData->response->code = COAP_RESPONSE_CODE(205);
+    coap_add_option(coapData -> response, COAP_OPTION_CONTENT_TYPE,
+                    coap_encode_var_safe(buf, BUF_LEN, COAP_MEDIATYPE_TEXT_PLAIN), buf);
+    coap_add_data(coapData -> response, strlen(coap_pdu_t), (unsigned char*)coapData -> responseData);
+    if (coap_get_data(coapData -> request, &len, &data)) {
         printf("Hello World! CoAP\n");
     }
 }

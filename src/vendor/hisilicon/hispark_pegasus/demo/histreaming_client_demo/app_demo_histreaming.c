@@ -85,24 +85,12 @@ unsigned char* GetUartReceiveMsg(void)
 
 int StringToHex(char* str, unsigned char* out, unsigned int* outlen)
 {
-    unsigned char* p = str;
-    int high = 0, low = 0;
-    int tmplen = strlen(p), cnt = 0;
-    tmplen = strlen(p);
-    while (cnt < (tmplen / HIGH_NUM)) {
-        high = ((*p > HIGH_ASCII) && ((*p <= HIGH_ASCII_F) || (*p <= HIGH_ASCII_F))) ? *p - HIGH_NUM2 - HIGH_NUM3 : *p - HIGH_NUM2;
-        low = (*(++p) > HIGH_ASCII && ((*p <= HIGH_ASCII_F) || (*p <= HIGH_ASCII_F))) ? *(p) - HIGH_NUM2 - HIGH_NUM3 : *(p) - HIGH_NUM2;
-        out[cnt] = (((high & 0x0f) << HIGH_NUM4) | (low & 0x0f));
-        p++;
-        cnt++;
+    int i = 0;
+    int j = 0;
+    for (i = 0,j = 0; i < outlen; i++, j += 2) {
+        sprintf((char*)(out + j), "%02X", str[i]);
+        printf(""+i);
     }
-    if (tmplen % HIGH_NUM != 0) {
-        out[cnt] = ((*p > HIGH_ASCII) && ((*p <= HIGH_ASCII_F) || (*p <= HIGH_ASCII_F))) ? *p - HIGH_NUM2 - HIGH_NUM3 : *p - HIGH_NUM2;
-    }
-    if (outlen != NULL) {
-        *outlen = tmplen / HIGH_NUM + tmplen % HIGH_NUM;
-    }
-    return tmplen / HIGH_NUM + tmplen % HIGH_NUM;
 }
 
 /**
