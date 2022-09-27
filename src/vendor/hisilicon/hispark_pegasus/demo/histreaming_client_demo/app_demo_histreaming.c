@@ -89,19 +89,19 @@ unsigned char* GetUartReceiveMsg(void)
 int c2i(char ch)
 {
     // 如果是数字，则用数字的ASCII码减去48, 如果ch = '2' ,则 '2' - 48 = 2
-    if(isdigit(ch)) {
-        return ch - 48;
+    if (isdigit(ch)) {
+        return ch - HIGH_ASCII_AL;
     }
     // 如果是字母，但不是A~F,a~f则返回  
-    if ( ch < HIGH_ASCII_A || (ch > HIGH_ASCII_F && ch < HIGH_ASCII_AL) || ch > HIGH_ASCII_ZL ) {
-        return -1;
+    if (ch < HIGH_ASCII_A || (ch > HIGH_ASCII_F && ch < HIGH_ASCII_AL) || ch > HIGH_ASCII_ZL) {
+        return 0;
     }
     // 如果是大写字母，则用数字的ASCII码减去55, 如果ch = 'A' ,则 'A' - 55 = 10
     // 如果是小写字母，则用数字的ASCII码减去87, 如果ch = 'a' ,则 'a' - 87 = 10
     if (isalpha(ch)) {
-        return isupper(ch) ? ch - 55 : ch - 87;
+        return 0;
     }
-    return -1;
+    return 0;
 }
 
 int StringToHex(char* str)
@@ -114,7 +114,7 @@ int StringToHex(char* str)
     len = strlen(str);
 
     for (i = 0, temp = 0; i < len; i++, temp = 0) {
-        temp = c2i( *(hex + i) );
+        temp = c2i(*(hex + i));
         bits = (len - i - HIGH_NUM1) * HIGH_NUM4;
         temp = temp << bits;
         num = num | temp;
