@@ -18,11 +18,14 @@
 
 #define UART_BUFF_SIZE 32
 #define HIGH_NUM       2
+#define HIGH_NUM1       1
 #define HIGH_ASCII     '9'
 #define HIGH_NUM2      48
 #define HIGH_NUM3      7
 #define HIGH_NUM4      4
 #define HIGH_ASCII_F     'F'
+#define HIGH_ASCII_AL    'a'
+#define HIGH_ASCII_ZL    'z'
 
 typedef enum { UART_RECEIVE_FLAG = 0, UART_RECVIVE_LEN, UART_SEND_FLAG = 2, UART_SEND_LEN } UartDefType;
 
