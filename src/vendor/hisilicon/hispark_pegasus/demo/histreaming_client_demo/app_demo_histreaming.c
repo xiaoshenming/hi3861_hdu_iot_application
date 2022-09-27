@@ -88,7 +88,7 @@ unsigned char* GetUartReceiveMsg(void)
  */
 int c2i(char ch)
 {
-    // 如果是字母，但不是A~F,a~f则返回  
+    // 如果是字母，但不是A~F,a~f则返回
     if (ch < HIGH_ASCII_A || (ch > HIGH_ASCII_F && ch < HIGH_ASCII_AL) || ch > HIGH_ASCII_ZL) {
         return 0;
     }
