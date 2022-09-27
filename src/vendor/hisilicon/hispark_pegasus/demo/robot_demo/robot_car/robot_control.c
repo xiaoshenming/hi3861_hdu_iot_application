@@ -24,11 +24,11 @@
 #include "iot_errno.h"
 #include "iot_gpio.h"
 #include "ohos_init.h"
-#include "robot_control.h"
 #include "robot_hcsr04.h"
 #include "robot_l9110s.h"
 #include "robot_sg90.h"
 #include "trace_model.h"
+#include "robot_control.h"
 
 #define GPIO5          5
 #define FUNC_GPIO      0
@@ -81,7 +81,7 @@ void gpio5_isr_func_mode(void)
     }
 }
 
-unsigned char get_gpio5_voltage(void* param)
+unsigned char get_gpio5_voltage()
 {
     int i;
     unsigned short data;
@@ -96,7 +96,6 @@ unsigned char get_gpio5_voltage(void* param)
     float vlt_1 = 0.6;
     float vlt_2 = 1.0;
 
-    hi_unref_param(param);
     memset_s(g_gpio5_adc_buf, sizeof(g_gpio5_adc_buf), 0x0, sizeof(g_gpio5_adc_buf));
     for (i = 0; i < ADC_TEST_LENGTH; i++) {
         ret = hi_adc_read(HI_ADC_CHANNEL_2, &data, HI_ADC_EQU_MODEL_4, HI_ADC_CUR_BAIS_DEFAULT, 0xF0);
@@ -214,7 +213,7 @@ static void car_mode_control_func(void)
     }
 }
 
-void* RobotCarTestTask(void* param)
+void* RobotCarTestTask()
 {
     printf("switch\r\n");
     switch_init();

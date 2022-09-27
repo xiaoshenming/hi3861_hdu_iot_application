@@ -16,12 +16,12 @@
 #include <string.h>
 #include <hi_mux.h>
 #include <hi_time.h>
-#include "app_demo_aht20.h"
 #include "app_demo_multi_sample.h"
 #include "cmsis_os2.h"
 #include "iot_errno.h"
 #include "iot_i2c.h"
 #include "ohos_init.h"
+#include "app_demo_aht20.h"
 
 #define AHT_REG_ARRAY_LEN         (6)
 #define AHT_OC_ARRAY_LEN          (6)

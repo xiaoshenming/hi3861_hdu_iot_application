@@ -28,8 +28,8 @@
 #include "iot_config.h"
 #include "iot_errno.h"
 #include "iot_log.h"
-#include "iot_main.h"
 #include "iot_watchdog.h"
+#include "iot_main.h"
 
 // this is the configuration head
 #define CN_IOT_SERVER "tcp://121.36.42.100:1883"
@@ -70,12 +70,14 @@ typedef struct {
 } IotAppCbT;
 static IotAppCbT g_ioTAppCb;
 
-static const char* g_defaultSubscribeTopic[] = { "$oc/devices/" CONFIG_DEVICE_ID "/sys/messages/down",
-                                                 "$oc/devices/" CONFIG_DEVICE_ID "/sys/properties/set/#",
-                                                 "$oc/devices/" CONFIG_DEVICE_ID "/sys/properties/get/#",
-                                                 "$oc/devices/" CONFIG_DEVICE_ID "/sys/shadow/get/response/#",
-                                                 "$oc/devices/" CONFIG_DEVICE_ID "/sys/events/down",
-                                                 "$oc/devices/" CONFIG_DEVICE_ID "/sys/commands/#" };
+static const char* g_defaultSubscribeTopic[] = { 
+    "$oc/devices/"CONFIG_DEVICE_ID"/sys/messages/down",
+    "$oc/devices/"CONFIG_DEVICE_ID"/sys/properties/set/#",
+    "$oc/devices/"CONFIG_DEVICE_ID"/sys/properties/get/#",
+    "$oc/devices/"CONFIG_DEVICE_ID"/sys/shadow/get/response/#",
+    "$oc/devices/"CONFIG_DEVICE_ID"/sys/events/down",
+    "$oc/devices/"CONFIG_DEVICE_ID"/sys/commands/#"
+};
 
 #define CN_TOPIC_SUBSCRIBE_NUM (sizeof(g_defaultSubscribeTopic) / sizeof(const char*))
 

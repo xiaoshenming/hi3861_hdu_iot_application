@@ -63,7 +63,7 @@ float GetDistance(void)
     return distance;
 }
 
-void RobotTask(void* parame)
+void RobotTask()
 {
     (void)parame;
     printf("start test hcsr04\r\n");

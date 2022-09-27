@@ -271,8 +271,8 @@ hi_u8 ndefFileHistreaming[NDEF_DATA_LEN_MAX] = {
 static unsigned char Hi3861BoardLedTest = 0;
 unsigned char* ndfe;
 /*
- *@bref   向ssd1306 屏幕寄存器写入命令
- *status 0：表示写入成功，否则失败
+ * @bref   向ssd1306 屏幕寄存器写入命令
+ * status 0：表示写入成功，否则失败
  */
 static unsigned int I2cWriteByte(unsigned char regAddr, unsigned char cmd)
 {

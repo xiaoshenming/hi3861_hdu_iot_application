@@ -189,32 +189,7 @@ void ssd1306_Init(void)
                                 // 10b, Page Addressing Mode (RESET); 11b, Invalid
 
     ssd1306_WriteCommand(0xB0); // Set Page Start Address for Page Addressing Mode, 0-7
-
-#ifdef SSD1306_MIRROR_VERT
-    ssd1306_WriteCommand(0xC0); // Mirror vertically
-#else
-    ssd1306_WriteCommand(0xC8); // Set COM Output Scan Direction
-#endif
-
-    ssd1306_WriteCommand(0x00); // ---set low column address
-    ssd1306_WriteCommand(0x10); // ---set high column address
-
-    ssd1306_WriteCommand(0x40); // --set start line address - CHECK
-
-    ssd1306_SetContrast(0xFF);
-
-#ifdef SSD1306_MIRROR_HORIZ
-    ssd1306_WriteCommand(0xA0); // Mirror horizontally
-#else
-    ssd1306_WriteCommand(0xA1); // --set segment re-map 0 to 127 - CHECK
-#endif
-
-#ifdef SSD1306_INVERSE_COLOR
-    ssd1306_WriteCommand(0xA7); // --set inverse color
-#else
-    ssd1306_WriteCommand(0xA6); // --set normal color
-#endif
-
+    ssd1306Command();
 // Set multiplex ratio.
 #if (SSD1306_HEIGHT == 128)
     // Found in the Luma Python lib for SH1106.
@@ -273,6 +248,34 @@ void ssd1306_Init(void)
     SSD1306.CurrentY = 0;
 
     SSD1306.Initialized = 1;
+}
+
+void ssd1306Command()
+{
+    #ifdef SSD1306_MIRROR_VERT
+    ssd1306_WriteCommand(0xC0); // Mirror vertically
+#else
+    ssd1306_WriteCommand(0xC8); // Set COM Output Scan Direction
+#endif
+
+    ssd1306_WriteCommand(0x00); // ---set low column address
+    ssd1306_WriteCommand(0x10); // ---set high column address
+
+    ssd1306_WriteCommand(0x40); // --set start line address - CHECK
+
+    ssd1306_SetContrast(0xFF);
+
+#ifdef SSD1306_MIRROR_HORIZ
+    ssd1306_WriteCommand(0xA0); // Mirror horizontally
+#else
+    ssd1306_WriteCommand(0xA1); // --set segment re-map 0 to 127 - CHECK
+#endif
+
+#ifdef SSD1306_INVERSE_COLOR
+    ssd1306_WriteCommand(0xA7); // --set inverse color
+#else
+    ssd1306_WriteCommand(0xA6); // --set normal color
+#endif
 }
 
 // Fill the whole screen with the given color
@@ -480,11 +483,17 @@ static uint16_t ssd1306_NormalizeTo0_360(uint16_t par_deg)
     }
     return loc_angle;
 }
+
+typedef struct {
+    uint8_t x;
+    uint8_t y;
+} SSD1306Coordinate;
+
 /* DrawArc. Draw angle is beginning from 4 quart of trigonometric circle (3pi/2)
  * start_angle in degree
  * sweep in degree
  */
-void ssd1306_DrawArc(uint8_t x, uint8_t y, uint8_t radius, uint16_t start_angle, uint16_t sweep, SSD1306_COLOR color)
+void ssd1306_DrawArc(SSD1306Coordinate* coordinate, uint8_t radius, uint16_t start_angle, uint16_t sweep, SSD1306_COLOR color)
 {
 #define CIRCLE_APPROXIMATION_SEGMENTS 36
     float approx_degree;
@@ -503,8 +512,8 @@ void ssd1306_DrawArc(uint8_t x, uint8_t y, uint8_t radius, uint16_t start_angle,
     approx_degree = loc_sweep / (float)approx_segments;
     while (count < approx_segments) {
         rad = ssd1306_DegToRad(count * approx_degree);
-        xp1 = x + (int8_t)(sin(rad) * radius);
-        yp1 = y + (int8_t)(cos(rad) * radius);
+        xp1 = coordinate -> x + (int8_t)(sin(rad) * radius);
+        yp1 = coordinate -> y + (int8_t)(cos(rad) * radius);
         count++;
         if (count != approx_segments) {
             rad = ssd1306_DegToRad(count * approx_degree);
@@ -586,15 +595,20 @@ void ssd1306_DrawBitmap(const uint8_t* bitmap, uint32_t size)
     }
 }
 
-void ssd1306_DrawRegion(uint8_t x, uint8_t y, uint8_t w, uint8_t h, const uint8_t* data, uint32_t size, uint32_t stride)
+typedef struct {
+    uint8_t w;
+    uint8_t h;
+} SSD1306Length;
+
+void ssd1306_DrawRegion(SSD1306Coordinate coordinate, SSD1306Length length, const uint8_t* data, uint32_t size, uint32_t stride)
 {
-    if (x + w > SSD1306_WIDTH || y + h > SSD1306_HEIGHT || w * h == 0) {
+    if (coordinate -> x + length -> w > SSD1306_WIDTH || coordinate -> y + length -> h > SSD1306_HEIGHT || length -> w * length -> h == 0) {
         printf("%dx%d @ %d, %d out of range or invalid!\r\n", w, h, x, y);
         return;
     }
 
-    uint8_t w_temp = w;
-    uint8_t h_temp = h;
+    uint8_t w_temp = length -> w;
+    uint8_t h_temp = length -> h;
     uint32_t stride_temp = stride;
     w_temp = (w_temp <= SSD1306_WIDTH ? w_temp : SSD1306_WIDTH);
     h_temp = (h_temp <= SSD1306_HEIGHT ? h_temp : SSD1306_HEIGHT);
@@ -608,7 +622,7 @@ void ssd1306_DrawRegion(uint8_t x, uint8_t y, uint8_t w, uint8_t h, const uint8_
             uint32_t idx = base + (j / c);
             uint8_t byte = idx < size ? data[idx] : 0;
             uint8_t bit = byte & (0x80 >> (j % c));
-            ssd1306_DrawPixel(x + j, y + i, bit ? White : Black);
+            ssd1306_DrawPixel(coordinate -> x + j, coordinate -> y + i, bit ? White : Black);
         }
     }
 }

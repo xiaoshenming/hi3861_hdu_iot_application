@@ -80,7 +80,7 @@ void car_stop(void)
     gpio_control(GPIO10, IOT_GPIO_VALUE1);
 }
 
-void RobotTask(void* parame)
+void RobotTask()
 {
     (void)parame;
     printf("start test l9110s\r\n");

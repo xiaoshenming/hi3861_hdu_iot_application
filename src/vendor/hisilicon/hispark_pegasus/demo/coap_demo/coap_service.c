@@ -23,25 +23,36 @@
 static u32_t g_coapTestTaskid = -1;
 static int g_servRunning = 0;
 static coap_context_t* g_servCtx = NULL;
+#define BUF_LEN 3
+
+typedef struct {
+    coap_context_t* ctx; // /<ponit to the next key
+    coap_resource_t* resource;
+    coap_session_t* session;
+    coap_pdu_t* request;
+    coap_binary_t* token;
+    coap_string_t query;
+    coap_pdu_t* response;
+} CoapData;
+
 /*
  * The resource 'hello' GET method handler
  */
-static void HelloHandler(coap_context_t* ctx, struct coap_resource_t* resource, coap_session_t* session,
-                         coap_pdu_t* request, coap_binary_t* token, coap_string_t* query, coap_pdu_t* response)
+static void HelloHandler(CoapData* coapData)
 {
-    unsigned char buf[3];
+    unsigned char buf[BUF_LEN];
     /* response with text "Hello World!" */
     const char* responseData = "Hello World! CoAP";
     size_t len = 0;
     unsigned char* data = NULL;
-    (void)ctx;
-    (void)resource;
-    (void)session;
-    response->code = COAP_RESPONSE_CODE(205); /* 返回值205，代表连接成功 */
-    coap_add_option(response, COAP_OPTION_CONTENT_TYPE, coap_encode_var_safe(buf, 3, COAP_MEDIATYPE_TEXT_PLAIN),
+    (void)coapData->ctx;
+    (void)coapData->resource;
+    (void)coapData->session;
+    coapData->response->code = COAP_RESPONSE_CODE(205); /* 返回值205，代表连接成功 */
+    coap_add_option(coapData->response, COAP_OPTION_CONTENT_TYPE, coap_encode_var_safe(buf, BUF_LEN, COAP_MEDIATYPE_TEXT_PLAIN),
                     buf); /* 3个字节长度 */
-    coap_add_data(response, strlen(responseData), (unsigned char*)responseData);
-    if (coap_get_data(request, &len, &data)) {
+    coap_add_data(coapData->response, strlen(coap_pdu_t), (unsigned char*)coapData->responseData);
+    if (coap_get_data(coapData->request, &len, &data)) {
         printf("Hello World! CoAP\n");
     }
 }

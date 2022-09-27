@@ -15,7 +15,6 @@
 
 #include <stdio.h>
 #include <unistd.h>
-#include "app_demo_config.h"
 #include "app_demo_i2c_oled.h"
 #include "app_demo_multi_sample.h"
 #include "cmsis_os2.h"
@@ -26,6 +25,7 @@
 #include "iot_pwm.h"
 #include "ohos_init.h"
 #include "ssd1306_oled.h"
+#include "app_demo_config.h"
 
 #define IOT_GPIO_INDEX_9  9
 #define IOT_GPIO_INDEX_10 10

@@ -17,13 +17,13 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "app_demo_aht20.h"
-#include "app_demo_config.h"
 #include "app_demo_environment.h"
 #include "app_demo_mq2.h"
 #include "app_demo_multi_sample.h"
 #include "cmsis_os2.h"
 #include "iot_i2c.h"
 #include "ohos_init.h"
+#include "app_demo_config.h"
 
 static unsigned short g_hi3861BoardLedTest = 0;
 

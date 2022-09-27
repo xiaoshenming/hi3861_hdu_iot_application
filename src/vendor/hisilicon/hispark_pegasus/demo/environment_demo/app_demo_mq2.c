@@ -17,7 +17,6 @@
 #include <hi_stdlib.h>
 #include <hi_time.h>
 #include "app_demo_i2c_oled.h"
-#include "app_demo_mq2.h"
 #include "app_demo_multi_sample.h"
 #include "cmsis_os2.h"
 #include "iot_adc.h"
@@ -26,6 +25,7 @@
 #include "iot_pwm.h"
 #include "ohos_init.h"
 #include "ssd1306_oled.h"
+#include "app_demo_mq2.h"
 
 #define MQ2_DEMO_TASK_STAK_SIZE (1024 * 8)
 #define MQ2_DEMO_TASK_PRIORITY  (25)

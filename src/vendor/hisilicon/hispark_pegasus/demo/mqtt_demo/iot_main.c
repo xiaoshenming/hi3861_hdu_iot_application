@@ -32,9 +32,9 @@
 #include "iot_errno.h"
 #include "iot_hmac.h"
 #include "iot_log.h"
-#include "iot_main.h"
 #include "iot_watchdog.h"
 #include "ohos_init.h"
+#include "iot_main.h"
 
 // < this is the configuration head
 #define CN_IOT_SERVER          "tcp://106.55.124.154:1883" // Tencent iot cloud address

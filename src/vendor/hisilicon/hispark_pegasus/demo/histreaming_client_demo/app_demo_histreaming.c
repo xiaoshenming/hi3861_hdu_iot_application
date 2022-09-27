@@ -91,7 +91,7 @@ int StringToHex(char* str, unsigned char* out, unsigned int* outlen)
     tmplen = strlen(p);
     while (cnt < (tmplen / HIGH_NUM)) {
         high = ((*p > HIGH_ASCII) && ((*p <= 'F') || (*p <= 'f'))) ? *p - HIGH_NUM2 - HIGH_NUM3 : *p - HIGH_NUM2;
-        low = (*(++p) > HIGH_ASCII && ((*p <= 'F') || (*p <= 'f'))) ? *(p)-HIGH_NUM2 - HIGH_NUM3 : *(p)-HIGH_NUM2;
+        low = (*(++p) > HIGH_ASCII && ((*p <= 'F') || (*p <= 'f'))) ? *(p) - HIGH_NUM2 - HIGH_NUM3 : *(p) - HIGH_NUM2;
         out[cnt] = (((high & 0x0f) << HIGH_NUM4) | (low & 0x0f));
         p++;
         cnt++;

@@ -99,7 +99,7 @@ void regress_middle(void)
 }
 
 /* 任务实现 */
-void RobotTask(void* parame)
+void RobotTask()
 {
     (void)parame;
     unsigned int time = 200;

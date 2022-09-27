@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-#include "app_demo_config.h"
 #include "c081_nfc.h"
 #include "cmsis_os2.h"
 #include "iot_gpio.h"
@@ -21,6 +20,7 @@
 #include "iot_i2c.h"
 #include "ohos_init.h"
 #include "ssd1306_oled.h"
+#include "app_demo_config.h"
 
 unsigned char readReg = 0;
 #define SEND_CMD_LEN       (2)

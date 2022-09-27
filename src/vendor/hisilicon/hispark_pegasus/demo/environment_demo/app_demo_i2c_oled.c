@@ -247,8 +247,8 @@ static const unsigned char f8X16[] = {
 };
 
 /*
- *@bref   向ssd1306 屏幕寄存器写入命令
- *status 0：表示写入成功，否则失败
+ * @bref   向ssd1306 屏幕寄存器写入命令
+ * status 0：表示写入成功，否则失败
  */
 static unsigned int I2cWriteByte(unsigned char regAddr, unsigned char cmd)
 {

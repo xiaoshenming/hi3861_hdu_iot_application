@@ -44,7 +44,7 @@ void get_tcrt5000_value(void)
     }
 }
 
-void RobotTask(void* parame)
+void RobotTask()
 {
     (void)parame;
     printf("start test tcrt5000\r\n");
