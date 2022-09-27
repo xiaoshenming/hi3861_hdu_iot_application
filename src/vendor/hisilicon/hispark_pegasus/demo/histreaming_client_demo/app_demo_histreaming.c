@@ -85,8 +85,8 @@ unsigned char* GetUartReceiveMsg(void)
 
 int StringToHex(char* str, unsigned char* out, unsigned int* outlen)
 {
-    char* p = str;
-    char high = 0, low = 0;
+    unsigned char* p = str;
+    int high = 0, low = 0;
     int tmplen = strlen(p), cnt = 0;
     tmplen = strlen(p);
     while (cnt < (tmplen / HIGH_NUM)) {

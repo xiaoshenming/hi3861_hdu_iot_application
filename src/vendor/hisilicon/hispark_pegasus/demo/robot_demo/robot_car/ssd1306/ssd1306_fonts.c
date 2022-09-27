@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-#include "ssd1306_fonts.h"
-
 #ifdef SSD1306_INCLUDE_FONT_7x10
 static const uint16_t Font7x10[] = {
     0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, // sp
