@@ -88,10 +88,6 @@ unsigned char* GetUartReceiveMsg(void)
  */
 int c2i(char ch)
 {
-    // 如果是数字，则用数字的ASCII码减去48, 如果ch = '2' ,则 '2' - 48 = 2
-    if (isdigit(ch)) {
-        return ch - HIGH_ASCII_AL;
-    }
     // 如果是字母，但不是A~F,a~f则返回  
     if (ch < HIGH_ASCII_A || (ch > HIGH_ASCII_F && ch < HIGH_ASCII_AL) || ch > HIGH_ASCII_ZL) {
         return 0;

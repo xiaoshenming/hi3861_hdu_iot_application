@@ -24,7 +24,6 @@ static u32_t g_coapTestTaskid = -1;
 static int g_servRunning = 0;
 static coap_context_t* g_servCtx = NULL;
 #define BUF_LEN 3
-#define 
 
 typedef struct {
     coap_context_t* ctx; // /<ponit to the next key
