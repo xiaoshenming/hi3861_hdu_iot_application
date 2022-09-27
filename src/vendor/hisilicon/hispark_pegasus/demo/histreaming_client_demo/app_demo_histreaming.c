@@ -83,14 +83,22 @@ unsigned char* GetUartReceiveMsg(void)
     return uartDefConfig.g_receiveUartBuff;
 }
 
-int StringToHex(char* str, unsigned char* out, unsigned int* outlen)
+int StringToHex(char* str)
 {
-    int i = 0;
-    int j = 0;
-    for (i = 0,j = 0; i < outlen; i++, j += 2) {
-        sprintf((char*)(out + j), "%02X", str[i]);
-        printf(""+i);
+    int len;
+    int num = 0;
+    int temp;
+    int bits;
+    int i;
+    len = strlen(str);
+
+    for (i = 0, temp = 0; i < len; i++, temp = 0) {
+        temp = c2i( *(hex + i) );
+        bits = (len - i - 1) * 4;
+        temp = temp << bits;
+        num = num | temp;
     }
+    return num;
 }
 
 /**
@@ -132,7 +140,7 @@ static int ModifyStatus(struct LinkService* ar, const char* property, char* valu
     /* colorful light module */
     printf("%s, %d\r\n", rev_buff, len);
 
-    StringToHex(rev_buff, hex_buff, &hex_len);
+    hex_buff = StringToHex(rev_buff);
     uartDefConfig.g_uartLen = hex_len;
     (void)memcpy_s(uartDefConfig.g_receiveUartBuff, uartDefConfig.g_uartLen, hex_buff, uartDefConfig.g_uartLen);
 
