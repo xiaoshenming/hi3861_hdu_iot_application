@@ -29,6 +29,7 @@
 #define HMAC256_LEN    65
 #define HIGHT_BYTE  9
 #define HIGHT_BYTE_STRING    10
+#define BUFOUT_LEN    2
 
 // make a byte to 2 ascii hex
 static int Byte2hexstr(unsigned char* bufin, int len, char* bufout)
@@ -39,10 +40,10 @@ static int Byte2hexstr(unsigned char* bufin, int len, char* bufout)
     for (int i = 0; i < len; i++) {
         unsigned char tmpH = (bufin[i] >> 4) & 0X0F; /* 高字节前4位保存到tmpH */
         unsigned char tmpL = bufin[i] & 0x0F;
-        bufout[2 * i] = (tmpH > HIGHT_BYTE) ?
+        bufout[BUFOUT_LEN * i] = (tmpH > HIGHT_BYTE) ?
             (tmpH - HIGHT_BYTE_STRING + 'a') :
             (tmpH + '0'); /* 如果高字节大于9与高字节减10，将高字节转成字符形式,同时字符占2字节 */
-        bufout[2 * i + 1] = (tmpL > HIGHT_BYTE) ?
+        bufout[BUFOUT_LEN * i + 1] = (tmpL > HIGHT_BYTE) ?
             (tmpL - HIGHT_BYTE_STRING + 'a') :
             (tmpL + '0'); /* 如果低字节大于9与高字节减10，将低字节转成字符形式，同时字符占2字节 */
     }

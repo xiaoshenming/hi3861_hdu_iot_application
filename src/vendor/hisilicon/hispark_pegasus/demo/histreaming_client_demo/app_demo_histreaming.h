@@ -22,6 +22,7 @@
 #define HIGH_NUM2      48
 #define HIGH_NUM3      7
 #define HIGH_NUM4      4
+#define HIGH_ASCII_F     'F'
 
 typedef enum { UART_RECEIVE_FLAG = 0, UART_RECVIVE_LEN, UART_SEND_FLAG = 2, UART_SEND_LEN } UartDefType;
 

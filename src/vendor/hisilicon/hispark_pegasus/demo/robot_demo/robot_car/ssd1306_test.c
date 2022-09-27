@@ -38,7 +38,7 @@
 #define STACKSIZE         10240
 #define PRIORITY          25
 
-void Ssd1306TestTask()
+void Ssd1306TestTask(void)
 {
     hi_io_set_func(GPIO13, FUNC_SDA);
     hi_io_set_func(GPIO14, FUNC_SCL);

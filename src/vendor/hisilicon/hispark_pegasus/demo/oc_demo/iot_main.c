@@ -71,7 +71,7 @@ typedef struct {
 } IotAppCbT;
 static IotAppCbT g_ioTAppCb;
 
-static const char* g_defaultSubscribeTopic[] = { 
+static const char* g_defaultSubscribeTopic[] = {
     "$oc/devices/" CONFIG_DEVICE_ID "/sys/messages/down",
     "$oc/devices/" CONFIG_DEVICE_ID "/sys/properties/set/#",
     "$oc/devices/" CONFIG_DEVICE_ID "/sys/properties/get/#",

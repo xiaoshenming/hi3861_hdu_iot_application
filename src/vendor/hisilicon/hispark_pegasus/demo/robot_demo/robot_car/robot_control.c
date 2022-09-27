@@ -81,7 +81,7 @@ void gpio5_isr_func_mode(void)
     }
 }
 
-unsigned char get_gpio5_voltage()
+unsigned char get_gpio5_voltage(void)
 {
     int i;
     unsigned short data;
@@ -213,7 +213,7 @@ static void car_mode_control_func(void)
     }
 }
 
-void* RobotCarTestTask()
+void* RobotCarTestTask(void)
 {
     printf("switch\r\n");
     switch_init();

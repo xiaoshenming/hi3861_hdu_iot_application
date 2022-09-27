@@ -17,7 +17,6 @@
 #ifndef __SSD1306_FONTS_H__
 #define __SSD1306_FONTS_H__
 #include <stdint.h>
-#include "ssd1306_conf.h"
 
 typedef struct {
     const uint8_t FontWidth; /*!< Font width in pixels */

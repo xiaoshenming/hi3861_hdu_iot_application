@@ -14,7 +14,6 @@
  */
 
 #include <unistd.h>
-#include "app_demo_config.h"
 #include "c081_nfc.h"
 #include "cmsis_os2.h"
 #include "iot_gpio.h"
@@ -22,6 +21,7 @@
 #include "iot_i2c.h"
 #include "ohos_init.h"
 #include "ssd1306_oled.h"
+#include "app_demo_config.h"
 
 #define NDEF_FILE_LEN   (1024)
 #define TASK_SLEEP_10MS (10)

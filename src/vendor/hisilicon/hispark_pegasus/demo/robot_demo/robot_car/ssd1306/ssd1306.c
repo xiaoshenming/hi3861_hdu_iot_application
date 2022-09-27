@@ -493,7 +493,8 @@ typedef struct {
  * start_angle in degree
  * sweep in degree
  */
-void ssd1306_DrawArc(SSD1306Coordinate* coordinate, uint8_t radius, uint16_t start_angle, uint16_t sweep, SSD1306_COLOR color)
+void ssd1306_DrawArc(SSD1306Coordinate* coordinate, uint8_t radius, uint16_t start_angle,
+                     uint16_t sweep, SSD1306_COLOR color)
 {
 #define CIRCLE_APPROXIMATION_SEGMENTS 36
     float approx_degree;
@@ -600,9 +601,11 @@ typedef struct {
     uint8_t h;
 } SSD1306Length;
 
-void ssd1306_DrawRegion(SSD1306Coordinate coordinate, SSD1306Length length, const uint8_t* data, uint32_t size, uint32_t stride)
+void ssd1306_DrawRegion(SSD1306Coordinate coordinate, SSD1306Length length, const uint8_t* data,
+                        uint32_t size, uint32_t stride)
 {
-    if (coordinate -> x + length -> w > SSD1306_WIDTH || coordinate -> y + length -> h > SSD1306_HEIGHT || length -> w * length -> h == 0) {
+    if (coordinate -> x + length -> w > SSD1306_WIDTH || coordinate -> y + length -> h > SSD1306_HEIGHT ||
+        length -> w * length -> h == 0) {
         printf("%dx%d @ %d, %d out of range or invalid!\r\n", w, h, x, y);
         return;
     }
