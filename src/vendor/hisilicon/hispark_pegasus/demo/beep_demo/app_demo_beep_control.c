@@ -33,11 +33,11 @@ static int g_iState = 0;
 #define IOT_PWM_BEEP      9
 #define IOT_GPIO_KEY      8
 
-static void* PWMBeepTask(const char* arg)
+static void PWMBeepTask(void)
 {
     while (1) {
         if (g_beepState) {
-            IoTPwmStart(IOT_PWM_PORT_PWM0, 50, 4000); /* 占空比50 / 4000,频率4000 */
+            IoTPwmStart(IOT_PWM_PORT_PWM0, 50, 4000); /* 占空比50 / 4000,频率4000; Duty cycle 50 / 4000,Frequency 4000 */
         } else {
             IoTPwmStop(IOT_PWM_PORT_PWM0);
         }
@@ -48,9 +48,9 @@ static void* PWMBeepTask(const char* arg)
     }
 }
 
-static void OnButtonPressed(const char* arg)
+static void OnButtonPressed(char *arg)
 {
-    (void)arg;
+    (void) arg;
     g_beepState = !g_beepState;
     printf("PRESS_KEY!\n");
     g_iState++;
@@ -66,7 +66,7 @@ static void StartPWMBeepTask(void)
     IoSetPull(IOT_GPIO_KEY, IOT_IO_PULL_UP);
     IoTGpioRegisterIsrFunc(IOT_GPIO_KEY, IOT_INT_TYPE_EDGE, IOT_GPIO_EDGE_FALL_LEVEL_LOW, OnButtonPressed, NULL);
     IoTGpioInit(IOT_PWM_BEEP);
-    IoSetFunc(IOT_PWM_BEEP, 5); /* 设置IO5的功能 */
+    IoSetFunc(IOT_PWM_BEEP, 5); /* 设置IO5的功能; Set the function of IO5 */
     IoTGpioSetDir(IOT_PWM_BEEP, IOT_GPIO_DIR_OUT);
     IoTPwmInit(IOT_PWM_PORT_PWM0);
     IoTWatchDogDisable();
@@ -76,7 +76,7 @@ static void StartPWMBeepTask(void)
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 1024; /* 堆栈大小为1024 */
+    attr.stack_size = 1024; /* 堆栈大小为1024; Stack size is 1024 */
     attr.priority = osPriorityNormal;
 
     if (osThreadNew((osThreadFunc_t)PWMBeepTask, NULL, &attr) == NULL) {

@@ -50,7 +50,7 @@ static void OledDemo(void)
     attr.stack_size = 4096; /* 任务大小4096 */
     attr.priority = osPriorityNormal;
 
-    if (osThreadNew(OledmentTask, NULL, &attr) == NULL) {
+    if (osThreadNew((osThreadFunc_t)OledmentTask, NULL, &attr) == NULL) {
         printf("[OledDemo] Falied to create OledmentTask!\n");
     }
 }
