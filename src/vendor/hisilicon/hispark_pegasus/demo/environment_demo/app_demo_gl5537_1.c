@@ -54,7 +54,9 @@ unsigned char GetLightStatus(void)
     float vltMin = VLT_MIN;
     memset_s(g_adcBuf, sizeof(g_adcBuf), 0x0, sizeof(g_adcBuf));
     for (int i = 0; i < ADC_TEST_LENGTH; i++) {
-        // ADC_Channal_6  自动识别模式  CNcomment:4次平均算法模式 CNend
+        /* ADC_Channal_6  自动识别模式  CNcomment:4次平均算法模式 CNend
+         * ADC_ Channal_ 6 Automatic recognition mode CNcomment: 4 times average algorithm mode CNend
+         */
         unsigned int ret = AdcRead(IOT_ADC_CHANNEL_4, &data, HI_ADC_EQU_MODEL_4, HI_ADC_CUR_BAIS_DEFAULT, 0xF0);
         if (ret != HI_ERR_SUCCESS) {
             printf("ADC Read Fail\n");
@@ -65,12 +67,12 @@ unsigned char GetLightStatus(void)
     for (int j = 0; j < ADC_TEST_LENGTH; j++) {
         vlt = g_adcBuf[j];
         voltage = (float)vlt * VOLTAGE_1_8_V * VOLTAGE_4_TIMES /
-            ADC_CHANNAL_RANGE; /* vlt * 1.8 * 4 / 4096.0为将码字转换为电压 */
+            ADC_CHANNAL_RANGE; /* vlt * 1.8 * 4 / 4096.0 转换为电压 */
         vltMax = (voltage > vltMax) ? voltage : vltMax;
         vltMin = (voltage < vltMin) ? voltage : vltMin;
     }
-
-    if (vltMax > VOLTAGE_3_V) { /* 判断电压是否大于3.0V */
+    /* 判断电压是否大于3.0V Judge whether the voltage is greater than 3.0V */
+    if (vltMax > VOLTAGE_3_V) {
         return OLED_FALG_ON;
     } else {
         return OLED_FALG_OFF;
@@ -89,7 +91,10 @@ void GetGpio5Voltage(const char* param)
     hi_unref_param(param);
     memset_s(g_gpio5AdcBuf, sizeof(g_gpio5AdcBuf), 0x0, sizeof(g_gpio5AdcBuf));
     for (int i = 0; i < ADC_TEST_LENGTH; i++) {
-        // ADC_Channal_2  自动识别模式  CNcomment:4次平均算法模式 CNend
+        /* 
+         * ADC_Channal_2  自动识别模式  CNcomment:4次平均算法模式 CNend
+         * ADC_ Channal_ 2 Automatic recognition mode CNcomment: 4 times average algorithm mode CNend
+         */
         unsigned int ret = AdcRead(IOT_ADC_CHANNEL_2, &data, IOT_ADC_EQU_MODEL_4, IOT_ADC_CUR_BAIS_DEFAULT, 0xF0);
         if (ret != HI_ERR_SUCCESS) {
             printf("ADC Read Fail\n");
@@ -101,15 +106,23 @@ void GetGpio5Voltage(const char* param)
     for (int i = 0; i < ADC_TEST_LENGTH; i++) {
         vlt = g_gpio5AdcBuf[i];
         voltage = (float)vlt * VOLTAGE_1_8_V * VOLTAGE_4_TIMES /
-            ADC_CHANNAL_RANGE; /* vlt * 1.8* 4 / 4096.0为将码字转换为电压 */
+            ADC_CHANNAL_RANGE; /* vlt * 1.8* 4 / 4096.0 转换为电压 */
         vltMax = (voltage > vltMax) ? voltage : vltMax;
         vltMin = (voltage < vltMin) ? voltage : vltMin;
     }
-    if (vltMax > VOLTAGE_0_6_V && vltMax < VOLTAGE_1_V) { /* 电压最大值大于0.6小于1.0 */
+    /*
+     * The maximum voltage is greater than 0.6 and less than 1.0
+     * 电压最大值大于0.6小于1.0
+     * The maximum voltage is greater than 1.0 and less than 1.5
+     * 电压最大值大于1.0小于1.5
+     * The maximum voltage is less than 0.6.6
+     * 电压最大值小于0.6
+     */
+    if (vltMax > VOLTAGE_0_6_V && vltMax < VOLTAGE_1_V) {
         GpioKey1IsrFuncMode();
-    } else if (vltMax > VOLTAGE_1_V && vltMax < VOLTAGE_1_5_V) { /* 电压最大值大于1.0小于1.5 */
+    } else if (vltMax > VOLTAGE_1_V && vltMax < VOLTAGE_1_5_V) {
         GpioKey2IsrFuncType();
-    } else if (vltMax < VOLTAGE_0_6_V) { /* 电压最大值小于0.6 */
+    } else if (vltMax < VOLTAGE_0_6_V) {
         printf("gpio9_led_light:vltMax=%0.2f, vltMin=%0.2f\r\n", vltMax, vltMin);
         Gpio9LedLightFunc();
     }

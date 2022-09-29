@@ -135,7 +135,10 @@ void TestGpioInit(void)
     PwmInit(HI_GPIO_12, HI_PWM_OUT, HI_PWM3); // GPIO12 PWM port3,5
 }
 
-/* 所有pwm的占空比为1，所有灯熄灭 */
+/*
+ * 所有pwm的占空比为1，所有灯熄灭 
+ * The duty cycle of all pwm is 1, and all lamps are off
+ */
 void AllLightOut(void)
 {
     IoTPwmStart(HI_PWM1, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 1 */
@@ -184,7 +187,10 @@ void ControlModeSample(void)
     }
 }
 
-/* 中断检测函数，每10ms检测一次 */
+/* 
+ * 中断检测函数，每10ms检测一次
+ * Interrupt detection function, once every 10ms
+*/
 unsigned char DelayAndCheckKeyInterrupt(unsigned int delayTime)
 {
     unsigned int cycleCount = delayTime / DELAY_10_MS;
@@ -204,7 +210,7 @@ unsigned char DelayAndCheckKeyInterrupt(unsigned int delayTime)
     return HI_NULL;
 }
 
-/* 红、黄、绿每1秒轮流亮 */
+/* 红、黄、绿每1秒轮流亮 Red, yellow and green light up in turn every 1 second */
 void CycleForOneSecond(void)
 {
     while (1) {
@@ -234,7 +240,10 @@ void CycleForOneSecond(void)
     }
 }
 
-/* 红、黄、绿每0.5秒轮流亮 */
+/*
+ * 红、黄、绿每0.5秒轮流亮
+ * Red, yellow and green light up in turn every 0.5 seconds
+ */
 void CycleForHalfSecond(void)
 {
     while (1) {
@@ -263,7 +272,10 @@ void CycleForHalfSecond(void)
     }
 }
 
-/* 红、黄、绿每0.25秒轮流亮 */
+/*
+ * 红、黄、绿每0.25秒轮流亮 
+ * Red, yellow and green light up in turn every 0.25 seconds
+ */
 void CycleForQuarterSecond(void)
 {
     while (1) {
@@ -333,7 +345,7 @@ void ColorfulLightSample(void)
     }
 }
 
-/* 红色由暗到最亮 */
+/* 红色由暗到最亮 Red from dark to brightest */
 void RedLightDarkToBright(void)
 {
     unsigned char currentType = 0;
@@ -343,7 +355,7 @@ void RedLightDarkToBright(void)
     currentType = GetKeyStatus(CURRENT_TYPE);
     AllLightOut();
     while (1) {
-        for (unsigned int i = 1; i < DELAY_TIMES_100; i++) { /* 计算延时100次 */
+        for (unsigned int i = 1; i < DELAY_TIMES_100; i++) { /* 计算延时100次 Calculation delay 100 times */
             IoTPwmStart(HI_PWM1, i, PWM_SMALL_DUTY); /* 1 */
             if ((currentMode != GetKeyStatus(CURRENT_MODE)) || (currentType != GetKeyStatus(CURRENT_TYPE))) {
                 return NULL;
@@ -353,7 +365,7 @@ void RedLightDarkToBright(void)
     }
 }
 
-/* 绿灯由暗到最亮 */
+/* 绿灯由暗到最亮 Green light from dark to bright */
 void GreenLightDarkToBright(void)
 {
     unsigned char currentType = 0;
@@ -363,7 +375,7 @@ void GreenLightDarkToBright(void)
     currentType = GetKeyStatus(CURRENT_TYPE);
     AllLightOut();
     while (1) {
-        for (hi_s32 i = 1; i < DELAY_TIMES_100; i++) { /* 计算延时100次 */
+        for (hi_s32 i = 1; i < DELAY_TIMES_100; i++) { /* 计算延时100次 Calculation delay 100 times */
             IoTPwmStart(HI_PWM2, i, PWM_SMALL_DUTY); /* PWM0 */
             if ((currentMode != GetKeyStatus(CURRENT_MODE)) || (currentType != GetKeyStatus(CURRENT_TYPE))) {
                 return NULL;
@@ -373,7 +385,7 @@ void GreenLightDarkToBright(void)
     }
 }
 
-/* 蓝灯由暗到最亮 */
+/* 蓝灯由暗到最亮 Blue light from dark to bright */
 void BlueLightDarkToBright(void)
 {
     unsigned char currentType = 0;
@@ -383,7 +395,7 @@ void BlueLightDarkToBright(void)
     currentType = GetKeyStatus(CURRENT_TYPE);
     AllLightOut();
     while (1) {
-        for (int i = 1; i < DELAY_TIMES_100; i++) { /* 计算延时100次 */
+        for (int i = 1; i < DELAY_TIMES_100; i++) { /* 计算延时100次 Calculation delay 100 times */
             if ((currentMode != GetKeyStatus(CURRENT_MODE)) || (currentType != GetKeyStatus(CURRENT_TYPE))) {
                 return NULL;
             }
@@ -404,7 +416,7 @@ void PurpleLightDarkToBright(void)
     currentType = GetKeyStatus(CURRENT_TYPE);
     AllLightOut();
     while (1) {
-        for (int i = 0; i < DELAY_TIMES_5; i++) { /* 计算延时5次 */
+        for (int i = 0; i < DELAY_TIMES_5; i++) { /* 计算延时5次 Calculation delay 5 times */
             IoTPwmStart(HI_PWM1, PWM_FRQ_50 + (i * PWM_FRQ_10), PWM_SMALL_DUTY); /* 1 */
             IoTPwmStart(HI_PWM2, i, PWM_SMALL_DUTY); /* 2 */
             IoTPwmStart(HI_PWM3, PWM_FRQ_50 + (i * PWM_FRQ_10), PWM_SMALL_DUTY); /* 3 */
@@ -416,7 +428,7 @@ void PurpleLightDarkToBright(void)
     }
 }
 
-/* 白灯由暗到全亮。 */
+/* 白灯由暗到全亮 White light from dark to full bright */
 void AllLightDarkToBright(void)
 {
     unsigned char currentType = 0;
@@ -426,7 +438,7 @@ void AllLightDarkToBright(void)
     currentType = GetKeyStatus(CURRENT_TYPE);
     AllLightOut();
     while (1) {
-        for (int i = 1; i < DELAY_TIMES_100; i++) { /* 计算延时100次 */
+        for (int i = 1; i < DELAY_TIMES_100; i++) { /* 计算延时100次 Calculation delay 100 times */
             IoTPwmStart(HI_PWM1, i, PWM_SMALL_DUTY); /* 1 */
             IoTPwmStart(HI_PWM2, i, PWM_SMALL_DUTY); /* 2 */
             IoTPwmStart(HI_PWM3, i, PWM_SMALL_DUTY); /* 3 */
@@ -486,7 +498,7 @@ void PwmControlSample(void)
     }
 }
 
-/* 用按键控制白灯的亮度 */
+/* 用按键控制白灯的亮度 Use the key to control the brightness of the white light */
 void BrightnessControlSample(void)
 {
     unsigned char currentType = 0;
@@ -526,6 +538,9 @@ void BrightnessControlSample(void)
 /*
  * mode:5.Human detect
  * 模式5：人体红外检测模式（设置一个好看的灯亮度）,有人靠近灯亮，无人在检测区域灯灭
+ * Mode 5: Human body infrared detection mode
+ * (set a beautiful light brightness), when someone approaches the light,
+ * the light will be on, and no one will turn off in the detection area
  */
 void HumanDetectSample(void)
 {
@@ -550,18 +565,18 @@ void HumanDetectSample(void)
             someoneWalking = OLED_FALG_OFF;
         }
         if (someoneWalking == OLED_FALG_ON) {
-            IoTPwmStart(HI_PWM1, PWM_FRQ_50, PWM_SMALL_DUTY); /* 1,占空比百分之50 */
-            IoTPwmStart(HI_PWM2, PWM_FRQ_50, PWM_SMALL_DUTY); /* 2,占空比百分之50 */
-            IoTPwmStart(HI_PWM3, PWM_FRQ_50, PWM_SMALL_DUTY); /* 3,占空比百分之50 */
+            IoTPwmStart(HI_PWM1, PWM_FRQ_50, PWM_SMALL_DUTY); /* 1,占空比百分之50 1. Duty cycle 50% */
+            IoTPwmStart(HI_PWM2, PWM_FRQ_50, PWM_SMALL_DUTY); /* 2,占空比百分之50 2. Duty cycle 50% */
+            IoTPwmStart(HI_PWM3, PWM_FRQ_50, PWM_SMALL_DUTY); /* 3,占空比百分之50 3. Duty cycle 50% */
         } else if (someoneWalking == OLED_FALG_OFF) {
-            IoTPwmStart(HI_PWM1, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 1,占空比百分之50 */
-            IoTPwmStart(HI_PWM2, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 2,占空比百分之50 */
-            IoTPwmStart(HI_PWM3, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 3,占空比百分之50 */
+            IoTPwmStart(HI_PWM1, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 1,占空比百分之50 1. Duty cycle 50% */
+            IoTPwmStart(HI_PWM2, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 2,占空比百分之50 2. Duty cycle 50% */
+            IoTPwmStart(HI_PWM3, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 3,占空比百分之50 3. Duty cycle 50% */
         }
         if (currentMode != GetKeyStatus(CURRENT_MODE)) {
-            IoTPwmStart(HI_PWM1, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 1,占空比百分之50 */
-            IoTPwmStart(HI_PWM2, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 2,占空比百分之50 */
-            IoTPwmStart(HI_PWM3, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 3,占空比百分之50 */
+            IoTPwmStart(HI_PWM1, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 1,占空比百分之50 1. Duty cycle 50% */
+            IoTPwmStart(HI_PWM2, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 2,占空比百分之50 2. Duty cycle 50% */
+            IoTPwmStart(HI_PWM3, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 3,占空比百分之50 3. Duty cycle 50% */
             break;
         }
         hi_sleep(SLEEP_1_MS);
@@ -581,18 +596,18 @@ void LightDetectSample(void)
     while (1) {
         withLigh = GetLightStatus();
         if (withLigh == OLED_FALG_ON) {
-            IoTPwmStart(HI_PWM1, PWM_FRQ_50, PWM_SMALL_DUTY); /* 1,占空比百分之50 */
-            IoTPwmStart(HI_PWM2, PWM_FRQ_50, PWM_SMALL_DUTY); /* 2,占空比百分之50 */
-            IoTPwmStart(HI_PWM3, PWM_FRQ_50, PWM_SMALL_DUTY); /* 3,占空比百分之50 */
+            IoTPwmStart(HI_PWM1, PWM_FRQ_50, PWM_SMALL_DUTY); /* 1,占空比百分之50 1. Duty cycle 50% */
+            IoTPwmStart(HI_PWM2, PWM_FRQ_50, PWM_SMALL_DUTY); /* 2,占空比百分之50 2. Duty cycle 50% */
+            IoTPwmStart(HI_PWM3, PWM_FRQ_50, PWM_SMALL_DUTY); /* 3,占空比百分之50 3. Duty cycle 50% */
         } else if (withLigh == OLED_FALG_OFF) {
-            IoTPwmStart(HI_PWM1, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 1,占空比百分之50 */
-            IoTPwmStart(HI_PWM2, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 2,占空比百分之50 */
-            IoTPwmStart(HI_PWM3, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 3,占空比百分之50 */
+            IoTPwmStart(HI_PWM1, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 1,占空比百分之50 1. Duty cycle 50% */
+            IoTPwmStart(HI_PWM2, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 2,占空比百分之50 2. Duty cycle 50% */
+            IoTPwmStart(HI_PWM3, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 3,占空比百分之50 3. Duty cycle 50% */
         }
         if (currentMode != GetKeyStatus(CURRENT_MODE)) {
-            IoTPwmStart(HI_PWM1, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 1,占空比百分之50 */
-            IoTPwmStart(HI_PWM2, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 2,占空比百分之50 */
-            IoTPwmStart(HI_PWM3, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 3,占空比百分之50 */
+            IoTPwmStart(HI_PWM1, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 1,占空比百分之50 1. Duty cycle 50% */
+            IoTPwmStart(HI_PWM2, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 2,占空比百分之50 2. Duty cycle 50% */
+            IoTPwmStart(HI_PWM3, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 3,占空比百分之50 3. Duty cycle 50% */
             break;
         }
         hi_sleep(SLEEP_1_MS);
@@ -631,13 +646,13 @@ void UnionDetectSample(void)
         withLigh = GetLightStatus();
         if (((someoneWalking == OLED_FALG_ON) && (withLigh == OLED_FALG_OFF)) ||
             (someoneWalking == OLED_FALG_OFF)) {
-            IoTPwmStart(HI_PWM1, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 1,占空比百分之50 */
-            IoTPwmStart(HI_PWM2, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 2,占空比百分之50 */
-            IoTPwmStart(HI_PWM3, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 3,占空比百分之50 */
+            IoTPwmStart(HI_PWM1, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 1,占空比百分之50 1. Duty cycle 50% */
+            IoTPwmStart(HI_PWM2, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 2,占空比百分之50 2. Duty cycle 50% */
+            IoTPwmStart(HI_PWM3, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 3,占空比百分之50 3. Duty cycle 50% */
         } else if ((withLigh == OLED_FALG_ON) && (someoneWalking == OLED_FALG_ON)) {
-            IoTPwmStart(HI_PWM1, PWM_FRQ_50, PWM_SMALL_DUTY); /* 1,占空比百分之50 */
-            IoTPwmStart(HI_PWM2, PWM_FRQ_50, PWM_SMALL_DUTY); /* 2,占空比百分之50 */
-            IoTPwmStart(HI_PWM3, PWM_FRQ_50, PWM_SMALL_DUTY); /* 3,占空比百分之50 */
+            IoTPwmStart(HI_PWM1, PWM_FRQ_50, PWM_SMALL_DUTY); /* 1,占空比百分之50 1. Duty cycle 50% */
+            IoTPwmStart(HI_PWM2, PWM_FRQ_50, PWM_SMALL_DUTY); /* 2,占空比百分之50 2. Duty cycle 50% */
+            IoTPwmStart(HI_PWM3, PWM_FRQ_50, PWM_SMALL_DUTY); /* 3,占空比百分之50 3. Duty cycle 50% */
         }
         if (currentMode != GetKeyStatus(CURRENT_MODE)) {
             IoTPwmStart(HI_PWM1, PWM_LOW_DUTY, PWM_SMALL_DUTY);
@@ -678,7 +693,12 @@ void ReturnMainEnumSample(void)
 void Gpio9LedLightFunc(void)
 {
     globalStaType.g_gpio9Tick++;
-    if (globalStaType.g_gpio9Tick % PAIR_2 == 0) { /* tick 时间 对2 求余， 余数为0则打开LED灯，否则关闭LED灯，即不断闪烁 */
+    /*
+     * tick 时间 对2 求余， 余数为0则打开LED灯，否则关闭LED灯，即不断闪烁
+     * Tick time is the remainder of 2. If the remainder is 0, turn on the LED;
+     * otherwise, turn off the LED and it will flash continuously
+     */
+    if (globalStaType.g_gpio9Tick % PAIR_2 == 0) {
         printf("led off\r\n");
         HisparkBoardTest(IOT_GPIO_VALUE1);
     } else {
@@ -720,6 +740,8 @@ void OledShowMenuSelect(void)
 /*
  * 按键7每按下一次，就会产生中断并调用该函数
  * 用来调整类型
+ * Each time the key 7 is pressed, an interrupt is
+ * generated and the function is called,Used to adjust the type
  */
 void GpioKey1IsrFuncMode(void)
 {
@@ -819,6 +841,8 @@ void OledShowTrafficLightMenuSelect(void)
 /*
  * 按键7每按下一次，就会产生中断并调用该函数
  * 用来调整类型
+ * Each time the key 7 is pressed, an interrupt is
+ * generated and the function is called,Used to adjust the type
  */
 void GpioKey2IsrFuncType(void)
 {
@@ -848,12 +872,18 @@ void Gpio8Interrupt(const char *param)
         return HI_NULL;
     }
     globalStaType.g_gpio8CurrentType++;
-    if (globalStaType.g_gpio8CurrentType % PAIR_2 == 0) {  /* tick 时间 对2 求余， 余数为0则打开蜂鸣器响，否则关闭L蜂鸣器 */
+    /*
+     * tick 时间 对2 求余， 余数为0则打开蜂鸣器响，否则关闭L蜂鸣器
+     * Tick time is the remainder of 2. If the remainder is 0,
+     * the buzzer will be turned on; otherwise, the buzzer L will be turned off
+     */
+    if (globalStaType.g_gpio8CurrentType % PAIR_2 == 0) {
         globalStaType.g_ocBeepStatus = BEEP_OFF;
     } else {
         globalStaType.g_ocBeepStatus = BEEP_ON;
     }
-    if (globalStaType.g_gpio8CurrentType >= TICK_COUNT_MAX) { /* 避免越界，清零 */
+    /* 避免越界，清零 Avoid overstepping boundaries and clear */
+    if (globalStaType.g_gpio8CurrentType >= TICK_COUNT_MAX) {
         globalStaType.g_gpio8CurrentType = 0;
     }
 }
@@ -868,6 +898,14 @@ void Gpio8Interrupt(const char *param)
  * 6、人体红外+光敏联合检测模式。
  * 7、返回模式
  * 创建两个按键中断，按键响应后会调用对应的回调函数
+ * 1. Three color light control mode: press type S1 button once to
+ * switch between green light, yellow light and red light
+ * 2. Colorful mode. Each time you press S2, different types of colorful
+ * 3. PWM stepless dimming mode, each press S2, different dimming types
+ * 4. Human body infrared detection mode (set a beautiful light brightness)
+ * 5. Photosensitive detection mode
+ * 6. Human body infrared+photosensitive joint detection mode.
+ * 7. Return Mode
  */
 void AppMultiSampleDemo(void)
 {

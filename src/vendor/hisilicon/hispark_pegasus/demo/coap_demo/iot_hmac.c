@@ -38,16 +38,21 @@ static int Byte2hexstr(unsigned char* bufin, int len, char* bufout)
         return -1;
     }
     for (int i = 0; i < len; i++) {
-        unsigned char tmpH = (bufin[i] >> 4) & 0X0F; /* 高字节前4位保存到tmpH */
+        /* The first 4 bits of the high byte are saved to tmpH */
+        unsigned char tmpH = (bufin[i] >> 4) & 0X0F;
         unsigned char tmpL = bufin[i] & 0x0F;
+        /* If the high byte is greater than 9 and the high byte is reduced by 10,
+        the high byte is converted into character form, and the character occupies 2 bytes */
         bufout[BUFOUT_LEN * i] = (tmpH > HIGHT_BYTE) ?
             (tmpH - HIGHT_BYTE_STRING + 'a') :
-            (tmpH + '0'); /* 如果高字节大于9与高字节减10，将高字节转成字符形式,同时字符占2字节 */
+            (tmpH + '0');
+        /* If the high byte is greater than 9 and the high byte is reduced by 10,
+        the high byte is converted into character form, and the character occupies 2 bytes */
         bufout[BUFOUT_LEN * i + 1] = (tmpL > HIGHT_BYTE) ?
             (tmpL - HIGHT_BYTE_STRING + 'a') :
-            (tmpL + '0'); /* 如果低字节大于9与高字节减10，将低字节转成字符形式，同时字符占2字节 */
+            (tmpL + '0');
     }
-    bufout[2 * len] = '\0'; /* 字符占2字节 */
+    bufout[2 * len] = '\0'; /* Characters occupy 2 bytes */
     return 0;
 }
 
@@ -57,8 +62,9 @@ int HmacGeneratePwd(unsigned char* content, int contentLen, unsigned char* key, 
     mbedtls_md_context_t mbedtls_md_ctx;
     const mbedtls_md_info_t* mdInfo;
     unsigned char hash[CN_HMAC256_LEN];
+    /* 2X CN_ HMAC256_ LEN+1 judges whether buflon is reasonable */
     if (key == NULL || content == NULL || buf == NULL || keyLen == 0 || contentLen == 0 ||
-        ((CN_HMAC256_LEN * 2 + 1) > HMAC256_LEN)) { /* 2倍的CN_HMAC256_LEN+1判断buflen是否合理 */
+        ((CN_HMAC256_LEN * 2 + 1) > HMAC256_LEN)) {
         return ret;
     }
 

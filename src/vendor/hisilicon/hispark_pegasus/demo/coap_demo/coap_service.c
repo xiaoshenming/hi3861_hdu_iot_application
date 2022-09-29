@@ -48,7 +48,8 @@ static void HelloHandler(CoapData* coapData)
     (void)coapData -> ctx;
     (void)coapData -> resource;
     (void)coapData -> session;
-    coapData -> response -> code = COAP_RESPONSE_CODE(205); /* 返回值205，代表连接成功 */
+    /* The return value is 205, indicating that the connection is successful */
+    coapData -> response -> code = COAP_RESPONSE_CODE(205);
     coap_add_option(coapData -> response, COAP_OPTION_CONTENT_TYPE,
                     coap_encode_var_safe(buf, BUF_LEN, COAP_MEDIATYPE_TEXT_PLAIN), buf);
     coap_add_data(coapData -> response, strlen(coap_pdu_t), (unsigned char*)coapData -> responseData);
@@ -65,7 +66,7 @@ void CoapServerThread(UINT32 uwParam1, UINT32 uwParam2, UINT32 uwParam3, UINT32 
     printf("[%s][%d] thread running\n", __FUNCTION__, __LINE__);
     ctx = (coap_context_t*)uwParam1;
     while (g_servRunning == 1) {
-        hi_sleep(1000); /* 休眠1000ms */
+        hi_sleep(1000); /* wait 1000ms */
         coap_check_notify_lwip(ctx);
     }
     if (g_servCtx != NULL) {
@@ -102,9 +103,9 @@ int CoapServerStart(void)
     coap_add_resource(g_servCtx, hello_resource);
     /* create a thread task */
     stappTask.pfnTaskEntry = (TSK_ENTRY_FUNC)CoapServerThread;
-    stappTask.uwStackSize = 10 * LOSCFG_BASE_CORE_TSK_DEFAULT_STACK_SIZE; /* task为10 */
+    stappTask.uwStackSize = 10 * LOSCFG_BASE_CORE_TSK_DEFAULT_STACK_SIZE; /* task is 10 */
     stappTask.pcName = "coap_test_task";
-    stappTask.usTaskPrio = 11; /* task为11 */
+    stappTask.usTaskPrio = 11; /* task is 11 */
     stappTask.uwResved = LOS_TASK_STATUS_DETACHED;
     stappTask.auwArgs[0] = (UINT32)g_servCtx;
     printf("task create CoapServerThread\n");

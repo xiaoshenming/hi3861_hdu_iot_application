@@ -106,7 +106,7 @@ static unsigned int Ath20CheckAndInit(unsigned char initCmd, unsigned char initH
     return IOT_SUCCESS;
 }
 
-/* 发送触犯测量命令 */
+/* 发送触犯测量命令 Send violation measurement command */
 unsigned int Aht20Write(unsigned char triggerCmd, unsigned char highByteCmd, unsigned char lowByteCmd)
 {
     unsigned int status = 0;
@@ -123,7 +123,7 @@ unsigned int Aht20Write(unsigned char triggerCmd, unsigned char highByteCmd, uns
     return IOT_SUCCESS;
 }
 
-/* 读取 aht20 serson 数据 */
+/* 读取 aht20 serson 数据 Read aht20 series data */
 unsigned int Aht20Read(unsigned int recvLen, unsigned char type)
 {
     unsigned int status = 0;
@@ -144,14 +144,14 @@ unsigned int Aht20Read(unsigned int recvLen, unsigned char type)
                         aht20I2cData.receiveLen);
     if (type == AHT_TEMPERATURE) {
         temper = (float)(((recvData[BUFF_BIT_3] & LOW_4_BIT) << IOT_BIT_16) | (recvData[BUFF_BIT_4] << IOT_BIT_8) |
-                         recvData[BUFF_BIT_5]);                          // 温度拼接
+                         recvData[BUFF_BIT_5]);                          // 温度拼接 Temperature splicing
         temperT = (temper / AHT_CALCULATION) * CONSTER_200 - CONSTER_50; // T = (S_t/2^20)*200-50
         sensorV.g_ahtTemper = temperT;
         return IOT_SUCCESS;
     }
     if (type == AHT_HUMIDITY) {
         humi = (float)((recvData[BUFF_BIT_1] << IOT_BIT_12 | recvData[BUFF_BIT_2] << IOT_BIT_4) |
-                       ((recvData[BUFF_BIT_3] & HIGH_4_BIT) >> IOT_BIT_4)); // 湿度拼接
+                       ((recvData[BUFF_BIT_3] & HIGH_4_BIT) >> IOT_BIT_4)); // 湿度拼接 Temperature splicing
         humiH = humi / AHT_CALCULATION * CONSTER_100;
         sensorV.g_ahtHumi = humiH;
         return IOT_SUCCESS;
@@ -170,7 +170,7 @@ void* AppDemoAht20(char* param)
     IoSetFunc(HI_GPIO_14, HI_I2C_SDA_SCL); /* GPIO14  SCL */
 
     IoTI2cInit(IOT_I2C_IDX_0, BAUDRATE_INIT); /* baudrate: 400000 */
-    /* 上电等待40ms */
+    /* wait 40ms */
     hi_udelay(AHT_DELAY_40MS); // 40ms
     while (1) {
         if (ret == IOT_SUCCESS) {
@@ -186,7 +186,7 @@ void* AppDemoAht20(char* param)
             if (status != IOT_SUCCESS) {
                 printf("get tempwerature data error!\r\n");
             }
-            hi_udelay(AHT_DELAY_100MS); // 100ms等待测量完成
+            hi_udelay(AHT_DELAY_100MS); // wait 100ms
             status = Aht20Read(AHT_REG_ARRAY_LEN, AHT_TEMPERATURE);
             if (status != IOT_SUCCESS) {
                 printf("get tempwerature data error!\r\n");
@@ -208,7 +208,7 @@ void GetAht20SensorData(void)
     /* on hold master mode */
     status = Aht20Write(AHT_DEVICE_TEST_CMD, AHT_DEVICE_PARAM_HIGH_BYTE,
                         AHT_DEVICE_PARAM_LOW_BYTE); // tempwerature
-    hi_udelay(AHT_DELAY_100MS);                     // 100ms等待测量完成
+    hi_udelay(AHT_DELAY_100MS);                     // wait 100ms
     status = Aht20Read(AHT_REG_ARRAY_LEN, AHT_TEMPERATURE);
     status = Aht20Read(AHT_REG_ARRAY_LEN, AHT_HUMIDITY);
 }

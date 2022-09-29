@@ -1610,7 +1610,7 @@ void TrafficDisplay(void)
 {
     unsigned char currentType = 0;
     while (HI_ERR_SUCCESS != OledInit()) { }
-    /* 按键中断初始化 */
+    /* 按键中断初始化 Key interrupt initialization */
     TestGpioInit();
     // clean screen
     TrafficDisplayInit();
@@ -1669,7 +1669,7 @@ void Timer1Callback(unsigned int arg)
             printf("Timer7Count = %d\r\n", TrafficLightTimer.Timer7Count);
         }
     }
-    /* 人工干预模式 */
+    /* 人工干预模式 Manual intervention mode */
     if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE &&
         TrafficLightTimer.Timer2Status == HI_TRUE && TrafficLightTimer.Timer1Status == HI_TRUE) {
         humanTimerCount--;
@@ -1765,7 +1765,7 @@ void Timer3Callback(unsigned int arg)
             printf("Timer8Count = %d\r\n", TrafficLightTimer.Timer8Count);
         }
     }
-    /* 人工干预模式 */
+    /* 人工干预模式 Manual intervention mode */
     if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE &&
         TrafficLightTimer.TimerYellowLightStatus == HI_TRUE && TrafficLightTimer.TimerGreenLightStatus == HI_FALSE &&
         TrafficLightTimer.Timer1Status == HI_FALSE && TrafficLightTimer.Timer2Status == HI_FALSE) {
@@ -1809,7 +1809,7 @@ void Timer4Callback(unsigned int arg)
             printf("Timer9Count = %d\r\n", TrafficLightTimer.Timer9Count);
         }
     }
-    /* 人工干预模式 */
+    /* 人工干预模式 Manual intervention mode */
     if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE &&
         (TrafficLightTimer.TimerGreenLightStatus == HI_TRUE) &&
         (TrafficLightTimer.TimerYellowLightStatus == HI_FALSE) && (TrafficLightTimer.Timer3Status == HI_FALSE) &&
@@ -1854,7 +1854,7 @@ void Timer5Callback(unsigned int arg)
             printf("Timer10Count = %d\r\n", TrafficLightTimer.Timer10Count);
         }
     }
-    /* 人工干预模式 */
+    /* 人工干预模式 Manual intervention mode */
     if (GetKeyStatus(CURRENT_MODE) == TRAFFIC_HUMAN_MODE && GetKeyStatus(CURRENT_TYPE) == TRAFFIC_HUMAN_TYPE &&
         (TrafficLightTimer.TimerGreenLightStatus == HI_TRUE) &&
         (TrafficLightTimer.TimerYellowLightStatus == HI_FALSE) && (TrafficLightTimer.Timer3Status == HI_TRUE) &&
@@ -1877,27 +1877,43 @@ void SoftwareTimersTaskEntry(void)
     unsigned int timerId5;
     unsigned int ret;
 
-    /* 创建周期性软件定时器，时间为1000ms,启动到1000ms数时执行回调函数1 */
+    /*
+     * 创建周期性软件定时器，时间为1000ms,启动到1000ms数时执行回调函数1
+     * Create a periodic software timer with a time of 1000ms,
+     * and execute callback function 1 when the timer reaches 1000ms
+     */
     ret = hi_timer_create(&timerId1);
     if (ret != HI_ERR_SUCCESS) {
         printf("Failed to create timer 1\r\n");
     }
-    /* 创建周期性软件定时器，每1000ms数执行回调函数2 */
+    /*
+     * 创建周期性软件定时器，每1000ms数执行回调函数2
+     * Create a periodic software timer and execute callback function 2 every 1000ms
+     */
     ret = hi_timer_create(&timerId2);
     if (ret != HI_ERR_SUCCESS) {
         printf("Failed to create timer 2\r\n");
     }
-    /* 创建周期性软件定时器，每1000ms数执行回调函数3 */
+    /*
+     * 创建周期性软件定时器，每1000ms数执行回调函数3
+     * Create a periodic software timer and execute callback function 3 every 1000ms
+     */
     ret = hi_timer_create(&timerId3);
     if (ret != HI_ERR_SUCCESS) {
         printf("Failed to create timer 3\r\n");
     }
-    /* 创建周期性软件定时器，每1000ms数执行回调函数4 */
+    /*
+     * 创建周期性软件定时器，每1000ms数执行回调函数4
+     * Create a periodic software timer and execute callback function 3 every 1000ms
+     */
     ret = hi_timer_create(&timerId4);
     if (ret != HI_ERR_SUCCESS) {
         printf("Failed to create timer 4\r\n");
     }
-    /* 创建周期性软件定时器，每1000ms数执行回调函数5 */
+    /*
+     * 创建周期性软件定时器，每1000ms数执行回调函数5
+     * Create a periodic software timer and execute callback function 3 every 1000ms
+     */
     ret = hi_timer_create(&timerId5);
     if (ret != HI_ERR_SUCCESS) {
         printf("Failed to create timer 5\r\n");

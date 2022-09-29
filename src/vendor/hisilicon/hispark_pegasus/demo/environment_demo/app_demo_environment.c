@@ -103,7 +103,7 @@ void ShowCombustibleGasValue(void)
 /* environment function hamdle and display */
 void EnvironmentFunc(void)
 {
-    /* 初始化时屏幕 i2c baudrate setting */
+    /* i2c baudrate setting */
     IoTI2cInit(0, HI_I2C_IDX_BAUDRATE);        /* baudrate: 400kbps */
     IoTI2cSetBaudrate(0, HI_I2C_IDX_BAUDRATE); /* 0, 400kbps */
     /* init oled i2c */

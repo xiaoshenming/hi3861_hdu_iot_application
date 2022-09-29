@@ -62,9 +62,9 @@
 #define BEEP_QUARTER_SECOND_INTERVAL    (4)
 
 
-#define RED_LIGHT_FLASH_TIME        (3)    // 红灯闪3秒
-#define YELLOW_LIGHT_FLASH_TIME     (3)    // 黄灯闪3秒
-#define GREEN_LIGHT_FLASH_TIME      (3)    // 绿灯闪3秒
+#define RED_LIGHT_FLASH_TIME        (3)
+#define YELLOW_LIGHT_FLASH_TIME     (3)
+#define GREEN_LIGHT_FLASH_TIME      (3)
 
 #define TRAFFIC_AUTO_MODE_TIME_COUNT            (3)
 #define TRAFFIC_HUMAN_MODE_NORMAL_TIME_COUNT    (3)

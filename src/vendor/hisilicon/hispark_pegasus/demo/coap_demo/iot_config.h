@@ -29,9 +29,9 @@
 
 // /<Configure the iot platform
 /* Please modify the device id and pwd for your own */
-// 设备ID名称，请参考华为物联网云文档获取该设备的ID。例如:60790e01ba4b2702c053ff03_helloMQTT
+// deviceID:60790e01ba4b2702c053ff03_helloMQTT
 #define CONFIG_DEVICE_ID  "60790e01ba4b2702c053ff03_helloMQTT"
-#define CONFIG_DEVICE_PWD "hispark2021" // 设备密码，请参考华为物联网云文档设置该设备密码。例如：hispark2021
+#define CONFIG_DEVICE_PWD "hispark2021" // password：hispark2021
 // /<if you use the tls mode and x509mode, please modify the DEVICE CA AND PRIVATE KEY IN iot_main.c
 // #define CONFIG_MQTT_SSL /< which means use the tls
 // #define CONFIG_MQTT_SSL_X509 which means use the x509 mode, and must enable the SSL;

@@ -64,7 +64,7 @@ void WifiReconnected(int connnetId)
         while (memcmp(&ipAddr, &ipAny, sizeof(ip4_addr_t)) == 0) {
             IOT_LOG_DEBUG("<Wifi reconnecting>:Wait the DHCP READY");
             netifapi_netif_get_addr(g_lwipNetif, &ipAddr, NULL, NULL);
-            hi_sleep(1000); /* 休眠1000ms */
+            hi_sleep(1000); /* wait 1000ms */
         }
         g_wifiSecondConnected = HI_FALSE;
         g_wifiFirstConnecting = WIFI_CONNECT_STATUS;
@@ -167,7 +167,7 @@ static void PrintLinkedInfo(WifiLinkedInfo* info)
     static char macAddress[32] = { 0 };
     unsigned char* mac = info->bssid;
     if (snprintf_s(macAddress, sizeof(macAddress) + 1, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X", mac[0],
-                   mac[1], mac[2], mac[3], mac[4], mac[5]) < 0) { /* mac地址从0,1,2,3,4,5位 */
+                   mac[1], mac[2], mac[3], mac[4], mac[5]) < 0) { /* mac adress is 0,1,2,3,4,5 */
         return;
     }
 }
@@ -220,7 +220,7 @@ static int WifiStartSta(void)
     printf("ConnectTo(%d): %d\r\n", netId, errCode);
 
     while (!g_connected) { // wait until connect to AP
-        osDelay(10);       /* 等待1000ms */
+        osDelay(10);       /* wait 1000ms */
     }
     printf("g_connected: %d\r\n", g_connected);
 

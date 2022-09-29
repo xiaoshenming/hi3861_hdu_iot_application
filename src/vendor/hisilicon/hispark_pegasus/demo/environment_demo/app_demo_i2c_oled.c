@@ -451,7 +451,7 @@ static unsigned int SetOledVcomhChargePumpCmd(void)
 unsigned int OledInit(void)
 {
     unsigned int status = 0;
-    hi_udelay(DELAY_100_MS); // 100ms 这里的延时很重要
+    hi_udelay(DELAY_100_MS); // 100ms
 
     status = SetOledAddress();
     if (status != 0) {
@@ -483,7 +483,7 @@ unsigned int OledInit(void)
 void OledSetPosition(unsigned char x, unsigned char y)
 {
     WriteCmd(0xb0 + y);                 /* 0xb0 */
-    WriteCmd(((x & 0xf0) >> 4) | 0x10); /* 设置起点坐标0x10，4 */
+    WriteCmd(((x & 0xf0) >> 4) | 0x10); /* 设置起点坐标0x10，4 Set starting point coordinate 0x10 */
     WriteCmd(x & 0x0f);                 /* 0x0f */
 }
 /* 全屏填充 */
@@ -491,11 +491,13 @@ void OledSetPosition(unsigned char x, unsigned char y)
 #define X_PIXEL_8         (8)
 void OledFillScreen(unsigned char fiiData)
 {
-    for (unsigned char m = 0; m < X_PIXEL_8; m++) {             /* 从OLED 的第0行开始，填充屏幕 */
+    /* 从OLED 的第0行开始，填充屏幕 Fill the screen starting from line 0 of OLED */
+    for (unsigned char m = 0; m < X_PIXEL_8; m++) {
         WriteCmd(0xb0 + m);                                     /* 0xb0 */
         WriteCmd(0x00);                                         /* 0x00 */
         WriteCmd(0x10);                                         /* 0x10 */
-        for (unsigned char n = 0; n < Y_PIXEL_POINT_MAX; n++) { /* 从OLED的第0列个像素点开始填充屏幕 */
+        /* 从OLED的第0列个像素点开始填充屏幕 Fill the screen from pixel point in column 0 of OLED */
+        for (unsigned char n = 0; n < Y_PIXEL_POINT_MAX; n++) {
             WriteData(fiiData);
         }
     }
@@ -527,26 +529,30 @@ void OledPositionCleanScreen(unsigned char fillData, unsigned char line, unsigne
  */
 void OledShowChar(unsigned char x, unsigned char y, unsigned char chr, unsigned char charSize)
 {
-    unsigned char c = chr - ' '; // 得到偏移后的值
+    unsigned char c = chr - ' '; // 得到偏移后的值 Get the offset value
     unsigned char xPosition = x;
     unsigned char yPosition = y;
 
     if (xPosition > MAX_COLUM - 1) {
         xPosition = 0;
-        yPosition = yPosition + Y_LINES_PIXEL_2; /* 每2行写 */
+        yPosition = yPosition + Y_LINES_PIXEL_2; /* 每2行写 Write every 2 lines */
     }
-    if (charSize == CHAR_SIZE) { /* 当要写入的字为两个字节 */
+    /* 当要写入的字为两个字节 When the word to be written is two bytes */
+    if (charSize == CHAR_SIZE) {
         OledSetPosition(xPosition, yPosition);
-        for (int i = 0; i < X_PIXEL_POINT; i++) {    /* 从OLED的第0列个像素点开始 */
+        /* 从OLED的第0列个像素点开始 Starting from pixel point in column 0 of OLED */
+        for (int i = 0; i < X_PIXEL_POINT; i++) {
             WriteData(f8X16[c * Y_PIXEL_POINT + i]); /* 16,8 */
         }
         OledSetPosition(xPosition, yPosition + 1);
-        for (int j = 0; j < X_PIXEL_POINT; j++) {                    /* 从OLED的第0列个像素点开始 */
+        /* 从OLED的第0列个像素点开始 Starting from pixel point in column 0 of OLED */
+        for (int j = 0; j < X_PIXEL_POINT; j++) {
             WriteData(f8X16[c * Y_PIXEL_POINT + j + X_PIXEL_POINT]); /* 16,8 */
         }
     } else {
         OledSetPosition(xPosition, yPosition);
-        for (int k = 0; k < X_REMAINING_PIXELS; k++) { /* 从OLED的第0列个像素点开始 */
+        /* 从OLED的第0列个像素点开始 Starting from pixel point in column 0 of OLED */
+        for (int k = 0; k < X_REMAINING_PIXELS; k++) {
             WriteData(f6X8[c][k]);
         }
     }
@@ -571,10 +577,10 @@ void OledShowStr(unsigned char x, unsigned char y, unsigned char* chr, unsigned 
     }
     while (chr[j] != '\0') {
         OledShowChar(xPosition, yPosition, chr[j], charSize);
-        xPosition += X_COLUMNS_PIXEL_8;               /* 8列组成一个字符位置 */
+        xPosition += X_COLUMNS_PIXEL_8; /* 8列组成一个字符位置 8 columns form a character position */
         if (xPosition > X_PIXEL_POINT_POSITION_120) { /* 120 */
             xPosition = 0;
-            yPosition += Y_LINES_PIXEL_2; /* 每2行写 */
+            yPosition += Y_LINES_PIXEL_2; /* 每2行写 Write every 2 lines */
         }
         j++;
     }
@@ -583,6 +589,9 @@ void OledShowStr(unsigned char x, unsigned char y, unsigned char* chr, unsigned 
 /* 小数转字符串
  * 输入：double 小数
  * 输出：转换后的字符串
+ * Decimal to String
+ * Input: double decimal
+ * Output: converted strings
  */
 unsigned char* FlaotToString(double d, unsigned char* str)
 {
@@ -595,21 +604,23 @@ unsigned char* FlaotToString(double d, unsigned char* str)
     if (str == NULL) {
         return;
     }
-
-    m = (int)data; /* 浮点数的整数部分 */
+    /* 浮点数的整数部分 The integer part of a floating point number */
+    m = (int)data;
     while (m > 0) {
-        str1[j++] = m % 10 + '0'; /* 10 : 对10求余 */
-        m = m / 10;               /* 10 : 对10求模 */
+        str1[j++] = m % 10 + '0'; /* 10 : 对10求余 Remain 10 */
+        m = m / 10;               /* 10 : 对10求模 Modulus of 10 */
     }
-
+    /* 1:被提取的整数部分正序存放到另一个数组
+     * The extracted integer part is stored in another array in positive order
+     */
     for (int k = 0; k < j; k++) {
-        floatString[k] = str1[j - 1 - k]; /* 1： 被提取的整数部分正序存放到另一个数组 */
+        floatString[k] = str1[j - 1 - k];
     }
     floatString[j++] = '.';
 
-    data = data - (int)data;      /* 小数部分提取 */
-    for (int i = 0; i < 1; i++) { /* 1: 取小数点1位 */
-        data = data * 10;         /* 10：取整数 */
+    data = data - (int)data;      /* 小数部分提取 Fractional part extraction */
+    for (int i = 0; i < 1; i++) { /* 1:取小数点1位 1:Take 1 decimal place */
+        data = data * 10;         /* 10：取整数 10: Take integer */
         floatString[j++] = (int)data + '0';
         data = data - (int)d;
     }

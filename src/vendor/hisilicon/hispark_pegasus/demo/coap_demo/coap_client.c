@@ -35,7 +35,7 @@ static void MessageHandler(struct coap_context_t* ctx, coap_session_t* session, 
     (void)sent;
     (void)received;
     (void)id;
-    if (COAP_RESPONSE_CLASS(received->code) == 2) { /* 获取的数据2 */
+    if (COAP_RESPONSE_CLASS(received->code) == 2) { /* Acquired data data is 2 */
         if (coap_get_data(received, &dataLen, &data)) {
             printf("Received data\n");
         }
@@ -55,7 +55,7 @@ int CoapClientStart(void)
 #else
     ip_addr_set_any(true, &(src_addr.addr));
 #endif
-    src_addr.port = 23456; /* 主机端口号23456 */
+    src_addr.port = 23456; /* 主机端口号23456 Host port number23456 */
     g_cliCtx = coap_new_context_lwip(&src_addr);
     if (!g_cliCtx) {
         return -1;
@@ -81,10 +81,10 @@ s32_t CoapNewToken(u16_t msg_id, u8_t* token, u8_t token_len)
         return -1;
     }
     now_ms = sys_now();
-    token[0] = (u8_t)(msg_id);      /* 0数据 */
-    token[1] = (u8_t)(msg_id >> 8); /* 1数据，8数据 */
-    token[2] = (u8_t)(now_ms);      /* 2数据 */
-    token[3] = (u8_t)(now_ms >> 8); /* 3数据，8数据 */
+    token[0] = (u8_t)(msg_id);      /* data0 */
+    token[1] = (u8_t)(msg_id >> 8); /* data1,Shift 8 bits right */
+    token[2] = (u8_t)(now_ms);      /* data2, */
+    token[3] = (u8_t)(now_ms >> 8); /* data3,Shift 8 bits right */
     return 0;
 }
 #define STRING_LEN (7)
@@ -110,7 +110,7 @@ int CoapClientSendMsg(char* dst)
     if (session == NULL) {
         coap_address_init(&listen_addr);
         ip_addr_set_any(false, &(listen_addr.addr));
-        listen_addr.port = 23456; /* 监听端口号23456 */
+        listen_addr.port = 23456; /* 监听端口号23456 port number */
         session = coap_new_client_session(g_cliCtx, &listen_addr, &dst_addr, COAP_PROTO_UDP);
         if (session == NULL) {
             printf("[%s][%d] new client session failed\n", __FUNCTION__, __LINE__);
@@ -148,7 +148,7 @@ int CoapClientSend(void)
         return -1;
     }
     /* argv[0] is server_addr */
-    CoapClientSendMsg(PARAM_SERVER_ADDR); /* 主机IP地址 */
+    CoapClientSendMsg(PARAM_SERVER_ADDR); /* 主机IP地址 Host IP address */
     return 0;
 }
 

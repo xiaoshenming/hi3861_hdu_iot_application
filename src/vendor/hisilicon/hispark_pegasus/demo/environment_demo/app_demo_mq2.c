@@ -31,8 +31,8 @@
 #define MQ2_DEMO_TASK_PRIORITY  (25)
 #define ADC_TEST_LENGTH         (20)
 #define VLT_MIN                 (100)
-#define CAL_PPM                 (25) // 校准环境中PPM值
-#define RL                      (1)  // RL阻值
+#define CAL_PPM                 (25) // 校准环境中PPM值 PPM value in calibration environment
+#define RL                      (1)  // RL阻值 RL resistance
 #define MQ2_RATIO               (1111)
 
 #define X_CONSTANT   (613.9f)
@@ -50,7 +50,7 @@
 #define ADC_VOLTAGE_4_TIMES (4)
 
 Mq2SensorDef combGas = { 0 };
-float g_r0 = 22; /* R0 c初始值 */
+float g_r0 = 22; /* R0 c初始值 C Initial value */
 void SetCombuSensorValue(void)
 {
     combGas.g_combustibleGasValue = 0.0;
@@ -62,11 +62,16 @@ float GetCombuSensorValue(void)
 }
 
 /*
- *  ppm：为可燃气体的浓度
- *  VRL：电压输出值
- *  Rs：器件在不同气体，不同浓度下的电阻值
- *  R0：器件在洁净空气中的电阻值
- *  RL：负载电阻阻值
+ * ppm：为可燃气体的浓度
+ * VRL：电压输出值
+ * Rs：器件在不同气体，不同浓度下的电阻值
+ * R0：器件在洁净空气中的电阻值
+ * RL：负载电阻阻值
+ * Ppm: concentration of combustible gas
+ * VRL: voltage output value
+ * Rs: resistance value of the device under different gases and concentrations
+ * R0: resistance value of device in clean air
+ * RL: load resistance
  */
 void Mq2PpmCalibration(float rS)
 {
@@ -74,7 +79,7 @@ void Mq2PpmCalibration(float rS)
     printf("R0:%f\r\n", g_r0);
 }
 
-/* MQ2传感器数据处理 */
+/* MQ2传感器数据处理 MQ2 sensor data processing */
 float Mq2GetPpm(float voltage)
 {
     float vol = voltage;
@@ -84,7 +89,7 @@ float Mq2GetPpm(float voltage)
 
     float VolDif = (VOILTAGE_5_V - vol);
     float SeekModule = VolDif / vol;
-    float rS = SeekModule * RL; /* 计算 RS值 */
+    float rS = SeekModule * RL; /* 计算RS值 Calculate RS value */
     (void)memset_s(&ppm, sizeof(ppm), 0x0, sizeof(ppm));
     if (flag) {
         flag = 0;
@@ -92,12 +97,15 @@ float Mq2GetPpm(float voltage)
         IoSetFunc(HI_GPIO_9, HI_PWM_OUT); // gpio9 pwm
         IoTGpioSetDir(HI_GPIO_9, IOT_GPIO_DIR_OUT);
     }
-    ppm = pow(X_CONSTANT_2 * vol / (VOILTAGE_5_V - vol), 1.0 / Y_CONSTANT_2); /* 计算ppm */
-    if (ppm < PPM_THRESHOLD_300) {                                            /* 排除空气中其他气体的干扰 */
+    ppm = pow(X_CONSTANT_2 * vol / (VOILTAGE_5_V - vol), 1.0 / Y_CONSTANT_2); /* 计算ppm Calculate ppm */
+    if (ppm < PPM_THRESHOLD_300) { /* 排除空气中其他气体的干扰 Eliminate the interference of other gases in the air */
         ppm = 0;
     }
-
-    if (ppm > PPM_THRESHOLD_3000) { /* 当ppm 大于3000时，蜂鸣器报警 */
+    /*
+     * 当ppm 大于3000时，蜂鸣器报警
+     * When ppm is greater than 3000, the buzzer will alarm
+     */
+    if (ppm > PPM_THRESHOLD_3000) {
         if (count < 1) {
             count++;
             IoTPwmStart(0, PWM_DUTY, PWM_SMALL_DUTY);
@@ -118,14 +126,18 @@ void Mq2GetData(void)
 {
     unsigned short data = 0; /* 0 */
     float voltage;
-    // ADC_Channal_2(gpio5)  自动识别模式  CNcomment:4次平均算法模式 CNend
+    /* 
+     * ADC_Channal_2(gpio5)  自动识别模式  CNcomment:4次平均算法模式 CNend
+     * ADC_ Channal_ 2 (gpio5) Automatic recognition mode CNcomment:
+     * 4 times average algorithm mode CNend
+     */
     unsigned int ret = AdcRead(IOT_ADC_CHANNEL_5, &data, IOT_ADC_EQU_MODEL_4, IOT_ADC_CUR_BAIS_DEFAULT, SAMPLING_TIME);
     if (ret != HI_ERR_SUCCESS) {
         printf("ADC Read Fail\n");
         return HI_NULL;
     }
     voltage = (float)(data * ADC_VOLTAGE_1_8_V * ADC_VOLTAGE_4_TIMES /
-                      ADC_RANGE_MAX); /* vlt * 1.8* 4 / 4096.0为将码字转换为电压 */
+                      ADC_RANGE_MAX); /* vlt * 1.8* 4 / 4096.0 码字转换为电压 */
     combGas.g_combustibleGasValue = Mq2GetPpm(voltage);
     printf("g_combustibleGasValue is %lf\r\n", combGas.g_combustibleGasValue);
 }

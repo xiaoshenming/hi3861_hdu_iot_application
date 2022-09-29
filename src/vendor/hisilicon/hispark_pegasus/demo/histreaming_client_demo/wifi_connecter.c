@@ -31,7 +31,7 @@ static void PrintLinkedInfo(WifiLinkedInfo* info)
     static char macAddress[32] = { 0 };
     unsigned char* mac = info->bssid;
     if (snprintf_s(macAddress, sizeof(macAddress) + 1, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X", mac[0],
-                   mac[1], mac[2], mac[3], mac[4], mac[5]) < 0) { /* mac地址从0,1,2,3,4,5位 */
+                   mac[1], mac[2], mac[3], mac[4], mac[5]) < 0) { /* mac adress is 0,1,2,3,4,5 */
         return;
     }
 }
@@ -70,12 +70,12 @@ int ConnectToHotspot(void)
 {
     WifiDeviceConfig config = { 0 };
 
-    // 准备AP的配置参数
+    // 准备AP的配置参数 Prepare configuration parameters for AP
     strcpy_s(config.ssid, SSID_LEN, PARAM_HOTSPOT_SSID);
     strcpy_s(config.preSharedKey, PSK_LEN, PARAM_HOTSPOT_PSK);
     config.securityType = PARAM_HOTSPOT_TYPE;
 
-    osDelay(10); /* 延时10ms */
+    osDelay(10); /* wait 10ms */
     WifiErrorCode errCode;
     int netId = -1;
 
@@ -93,7 +93,7 @@ int ConnectToHotspot(void)
     printf("ConnectTo(%d): %d\r\n", netId, errCode);
 
     while (!g_connected) { // wait until connect to AP
-        osDelay(10);       /* 持续10ms去连接AP */
+        osDelay(10);       /* wait 10ms connect AP */
     }
     printf("g_connected: %d\r\n", g_connected);
 

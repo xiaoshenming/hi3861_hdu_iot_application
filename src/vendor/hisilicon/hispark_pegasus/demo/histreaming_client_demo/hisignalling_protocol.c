@@ -129,7 +129,7 @@ HisignallingErrorType HisignallingMsgReceive(hi_u8* buf, hi_u32 len)
         return HISGNALLING_RET_VAL_MAX;
     }
 
-    /* 校验crc */
+    /* 校验crc Check crc */
     if (len > HISGNALLING_MSG_CRC32_LEN) {
         crcCheckReceived = crc32(buf, len - HISGNALLING_MSG_CRC32_LEN);
         if (((hi_u8)((crcCheckReceived & 0xff000000) >> RIGHT_MOVE_24_BIT) != buf[len - 4]) && /* 4: addr offset */
@@ -152,7 +152,7 @@ HisignallingErrorType HisignallingMsgReceive(hi_u8* buf, hi_u32 len)
         (void)SetUartRecvFlag(UART_RECV_FALSE);
     }
 
-    /* 输出回显收到的数据 */
+    /* 输出回显收到的数据 Output echo received data */
     if ((buf[0] == HISIGNALLING_MSG_FRAME_HEADER_1) && (buf[1] == HISIGNALLING_MSG_FRAME_HEADER_2)) {
         for (int i = 0; i < len; i++) {
             HISIGNALLING_LOG_INFO("0x%x", buf[i]);
@@ -200,9 +200,9 @@ hi_void* HisignallingMsgHandle(char* param)
     unsigned char* recBuff = NULL;
     while (1) {
         if (GetUartConfig(UART_RECEIVE_FLAG) == HI_TRUE) {
-            /* 接收数据 */
+            /* 接收数据 receive data */
             HisignallingMsgReceive(GetUartReceiveMsg(), GetUartConfig(UART_RECVIVE_LEN));
-            /* 回显数据组包 */
+            /* 回显数据组包 Echo Data Packaging */
             if (GetUartConfig(UART_RECVIVE_LEN) > (HISGNALLING_MSG_CRC32_LEN + HISIGNALLING_MSG_HEADER_TAIL_LEN)) {
                 recBuff = GetUartReceiveMsg();
             }
