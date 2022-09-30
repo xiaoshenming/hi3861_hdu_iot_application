@@ -91,7 +91,7 @@ void GetGpio5Voltage(const char* param)
     hi_unref_param(param);
     memset_s(g_gpio5AdcBuf, sizeof(g_gpio5AdcBuf), 0x0, sizeof(g_gpio5AdcBuf));
     for (int i = 0; i < ADC_TEST_LENGTH; i++) {
-        /* 
+        /*
          * ADC_Channal_2  自动识别模式  CNcomment:4次平均算法模式 CNend
          * ADC_ Channal_ 2 Automatic recognition mode CNcomment: 4 times average algorithm mode CNend
          */

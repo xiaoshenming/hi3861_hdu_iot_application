@@ -93,7 +93,7 @@ int c2i(char ch)
     if (ch < HIGH_ASCII_A || (ch > HIGH_ASCII_F && ch < HIGH_ASCII_AL) || ch > HIGH_ASCII_ZL) {
         return 0;
     }
-    /* 
+    /*
      * 如果是大写字母，则用数字的ASCII码减去55, 如果ch = 'A' ,则 'A' - 55 = 10
      * 如果是小写字母，则用数字的ASCII码减去87, 如果ch = 'a' ,则 'a' - 87 = 10
      * If it is a capital letter, subtract 55 from the ASCII code of the number. If ch='A', 'A' - 55=10

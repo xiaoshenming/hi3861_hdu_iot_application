@@ -62,9 +62,8 @@ int HmacGeneratePwd(unsigned char* content, int contentLen, unsigned char* key, 
     mbedtls_md_context_t mbedtls_md_ctx;
     const mbedtls_md_info_t* mdInfo;
     unsigned char hash[CN_HMAC256_LEN];
-    /* 2X CN_ HMAC256_ LEN+1 judges whether buflon is reasonable */
     if (key == NULL || content == NULL || buf == NULL || keyLen == 0 || contentLen == 0 ||
-        ((CN_HMAC256_LEN * 2 + 1) > HMAC256_LEN)) {
+        ((CN_HMAC256_LEN * 2 + 1) > HMAC256_LEN)) { /* 2X CN_ HMAC256_ LEN+1 judges whether buflon is reasonable */
         return ret;
     }
 

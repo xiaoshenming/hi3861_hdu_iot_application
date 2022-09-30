@@ -126,7 +126,7 @@ void Mq2GetData(void)
 {
     unsigned short data = 0; /* 0 */
     float voltage;
-    /* 
+    /*
      * ADC_Channal_2(gpio5)  自动识别模式  CNcomment:4次平均算法模式 CNend
      * ADC_ Channal_ 2 (gpio5) Automatic recognition mode CNcomment:
      * 4 times average algorithm mode CNend
