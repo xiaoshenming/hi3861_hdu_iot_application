@@ -32,7 +32,6 @@
 #define APP_INIT_USR_NUM 2
 
 static struct netif* gLwipNetif = NULL;
-static hi_bool gScanDone = HI_FALSE;
 unsigned char wifiStatus = 0;
 
 unsigned char wifiFirstConnecting = 0;
@@ -60,7 +59,7 @@ void wifiReconnected(int netId)
         recnetId = WifiStartSta();
         netifapi_dhcp_start(gLwipNetif);
         while (0 == memcmp(&ipAddr, &ipAny, sizeof(ip4_addr_t))) {
-            IOT_LOG_DEBUG("<Wifi reconnecting>:Wait the DHCP READY");
+            printf("<Wifi reconnecting>:Wait the DHCP READY");
             netifapi_netif_get_addr(gLwipNetif, &ipAddr, NULL, NULL);
             hi_sleep(1000); /* 1000: cpu sleep 1000 ms */
         }
@@ -69,95 +68,9 @@ void wifiReconnected(int netId)
         wifiStatus = HI_WIFI_EVT_CONNECTED;
     }
 }
-/* clear netif's ip, gateway and netmask */
-static void StaResetAddr(struct netif* lwipNetif)
-{
-    ip4_addr_t st_gw;
-    ip4_addr_t st_ipaddr;
-    ip4_addr_t st_netmask;
-
-    if (lwipNetif == NULL) {
-        IOT_LOG_ERROR("hisi_reset_addr::Null param of netdev");
-        return;
-    }
-
-    IP4_ADDR(&st_gw, 0, 0, 0, 0);
-    IP4_ADDR(&st_ipaddr, 0, 0, 0, 0);
-    IP4_ADDR(&st_netmask, 0, 0, 0, 0);
-
-    netifapi_netif_set_addr(lwipNetif, &st_ipaddr, &st_netmask, &st_gw);
-}
-
-static void WpaEventCB(const hi_wifi_event* hisiEvent)
-{
-    if (hisiEvent == NULL)
-        return;
-    IOT_LOG_DEBUG("EVENT_TYPE:%d", hisiEvent->event);
-    switch (hisiEvent->event) {
-        case HI_WIFI_EVT_SCAN_DONE:
-            IOT_LOG_DEBUG("WiFi: Scan results available");
-            gScanDone = HI_TRUE;
-            break;
-        case HI_WIFI_EVT_CONNECTED:
-            IOT_LOG_DEBUG("WiFi: Connected");
-            netifapi_dhcp_start(gLwipNetif);
-            wifiStatus = HI_WIFI_EVT_CONNECTED;
-            if (wifiSecondConnected) {
-                wifiSecondConnected = HI_FALSE;
-                wifiFirstConnecting = WIFI_CONNECT_STATUS;
-            }
-            break;
-        case HI_WIFI_EVT_DISCONNECTED:
-            IOT_LOG_DEBUG("WiFi: Disconnected");
-            netifapi_dhcp_stop(gLwipNetif);
-            StaResetAddr(gLwipNetif);
-            wifiStatus = HI_WIFI_EVT_DISCONNECTED;
-            wifiReconnected(cnetId);
-            break;
-        case HI_WIFI_EVT_WPS_TIMEOUT:
-            IOT_LOG_DEBUG("WiFi: wps is timeout");
-            wifiStatus = HI_WIFI_EVT_WPS_TIMEOUT;
-            break;
-        default:
-            break;
-    }
-}
-
-static int StaStartConnect(void)
-{
-    int ret;
-    errno_t rc;
-    hi_wifi_assoc_request assoc_req = { 0 };
-
-    /* copy SSID to assoc_req */
-    rc = memcpy_s(assoc_req.ssid, HI_WIFI_MAX_SSID_LEN + 1, CONFIG_AP_SSID, strlen(CONFIG_AP_SSID));
-    if (rc != EOK) {
-        return -1;
-    }
-
-    /*
-     * OPEN mode
-     * for WPA2-PSK mode:
-     * set assoc_req.auth as HI_WIFI_SECURITY_WPA2PSK,
-     * then memcpy(assoc_req.key, "12345678", 8).
-     */
-    assoc_req.auth = HI_WIFI_SECURITY_WPA2PSK;
-    rc = memcpy_s(assoc_req.key, HI_WIFI_MAX_KEY_LEN + 1, CONFIG_AP_PWD, strlen(CONFIG_AP_PWD));
-    if (rc != EOK) {
-        return -1;
-    }
-
-    ret = hi_wifi_sta_connect(&assoc_req);
-    if (ret != HISI_OK) {
-        return -1;
-    }
-
-    return 0;
-}
 
 static void PrintLinkedInfo(WifiLinkedInfo* info)
 {
-    int ret = 0;
     if (!info) {
         return;
     }
@@ -263,5 +176,5 @@ void WifiStaReadyWait(void)
     IP4_ADDR(&ipAny, 0, 0, 0, 0);
     IP4_ADDR(&ipAddr, 0, 0, 0, 0);
     cnetId = WifiStartSta();
-    IOT_LOG_DEBUG("wifi sta dhcp done");
+    printf("wifi sta dhcp done");
 }

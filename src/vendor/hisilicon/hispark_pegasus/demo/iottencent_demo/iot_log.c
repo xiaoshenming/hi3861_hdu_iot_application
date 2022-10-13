@@ -15,7 +15,7 @@
 
 #include <iot_log.h>
 
-static EnIotLogLevel gIoTLogLevel = EN_IOT_LOG_LEVEL_TRACE;
+static EnIotLogLevel gIoTLogLevel = EN_IOT_LOG_LEVEL_MAX;
 static const char* gIoTLogLevelNames[] = { "TRACE", "DEBUG", "INFO ", "WARN ", "ERROR", "FATAL" };
 
 int IoTLogLevelSet(EnIotLogLevel level)

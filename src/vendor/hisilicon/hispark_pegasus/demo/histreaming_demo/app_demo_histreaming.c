@@ -14,7 +14,9 @@
  */
 
 // #ifdef CONFIG_HISTREAMING_SUPPORT
+
 #include <memory.h>
+#include "hi_mem.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <hi_pwm.h>
@@ -25,8 +27,6 @@
 #include <hi_early_debug.h>
 #include <hi_io.h>
 #include <hi_gpio.h>
-#include "hi_mem.h"
-#include "hi_stdlib.h"
 #include <link_platform.h>
 #include <link_service.h>
 #include "app_demo_multi_sample.h"

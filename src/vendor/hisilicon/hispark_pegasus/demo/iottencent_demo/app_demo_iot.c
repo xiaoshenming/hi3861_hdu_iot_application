@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+#include "stdio.h"
 #include <string.h>
 #include <hi_gpio.h>
 #include <hi_io.h>
@@ -23,8 +24,10 @@
 #include "iot_config.h"
 #include "iot_log.h"
 #include "iot_main.h"
+#include "iot_watchdog.h"
 #include "iot_profile.h"
 #include "ohos_init.h"
+#include "cjson_init.h"
 
 /* attribute initiative to report */
 #define TAKE_THE_INITIATIVE_TO_REPORT
@@ -41,7 +44,7 @@ typedef void (*FnMsgCallBack)(hi_gpio_value val);
 typedef struct FunctionCallback {
     hi_bool stop;
     hi_u32 conLost;
-    hi_u32 queueID;
+    unsigned char * queueID;
     hi_u32 iotTaskID;
     FnMsgCallBack msgCallBack;
 } FunctionCallback;
@@ -63,12 +66,6 @@ static void DeviceConfigInit(hi_gpio_value val)
     hi_gpio_set_ouput_val(HI_GPIO_IDX_9, val);
 }
 
-static int DeviceMsgCallback(FnMsgCallBack msgCallBack)
-{
-    g_functinoCallback.msgCallBack = msgCallBack;
-    return 0;
-}
-
 static void wechatControlDeviceMsg(hi_gpio_value val)
 {
     DeviceConfigInit(val);
@@ -76,9 +73,9 @@ static void wechatControlDeviceMsg(hi_gpio_value val)
 
 // < this is the callback function, set to the mqtt, and if any messages come, it will be called
 // < The payload here is the json string
-static void DemoMsgRcvCallBack(int qos, const char* topic, const char* payload)
+static void DemoMsgRcvCallBack(int qos, char* topic, char* payload)
 {
-    IOT_LOG_DEBUG("RCVMSG:QOS:%d TOPIC:%s PAYLOAD:%s\r\n", qos, topic, payload);
+    printf("RCVMSG:QOS:%d TOPIC:%s PAYLOAD:%s\r\n", qos, topic, payload);
     /* 云端下发命令后，板端的操作处理 */
     if (strstr(payload, WECHAT_SUBSCRIBE_LIGHT) != NULL) {
         if (strstr(payload, WECHAT_SUBSCRIBE_LIGHT_OFF_STATE) != NULL) {
@@ -89,7 +86,6 @@ static void DemoMsgRcvCallBack(int qos, const char* topic, const char* payload)
             g_ligthStatus = HI_TRUE;
         }
     }
-    return HI_NULL;
 }
 
 /* publish sample */
@@ -128,18 +124,24 @@ hi_void IotPublishSample(void)
         weChatProfile.reportAction.lightActionStatus = 0; /* 0: light off */
     }
     /* profile report */
-    IoTProfilePropertyReport(CONFIG_USER_ID, &weChatProfile);
+    int ret = IoTProfilePropertyReport(CONFIG_USER_ID, &weChatProfile);
+    if (ret == 0) {
+        printf("PropertyReport failed\r\n");
+    }
 }
 
 // < this is the demo main task entry,here we will set the wifi/cjson/mqtt ready and
 // < wait if any work to do in the while
-static hi_void* DemoEntry(const char* arg)
+static void DemoEntry(void)
 {
     WifiStaReadyWait();
     cJsonInit();
     IoTMain();
     /* 云端下发回调 */
-    IoTSetMsgCallback(DemoMsgRcvCallBack);
+    int ret = IoTSetMsgCallback(DemoMsgRcvCallBack);
+    if (ret == 0) {
+        printf("IoTSetMsgCallback failed\r\n");
+    }
     /* 主动上报 */
 #ifdef TAKE_THE_INITIATIVE_TO_REPORT
     while (1) {
@@ -148,7 +150,6 @@ static hi_void* DemoEntry(const char* arg)
 #endif
         TaskMsleep(ONE_SECOND);
     }
-    return NULL;
 }
 
 // < This is the demo entry, we create a task here,

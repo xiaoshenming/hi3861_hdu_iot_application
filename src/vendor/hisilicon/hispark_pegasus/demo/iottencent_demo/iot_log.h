@@ -22,8 +22,6 @@
  *
  * */
 typedef enum {
-    // < this is used as the trace function,like the function enter and function out
-    EN_IOT_LOG_LEVEL_TRACE = 0,
     // < this is used as the debug, you could add any debug as you wish
     EN_IOT_LOG_LEVEL_DEBUG,
     // < which means it is import message, and you should known
@@ -86,13 +84,6 @@ int IoTLogLevelSet(EnIotLogLevel level);
         IOT_PRINT("[%s][%s] " fmt "\r\n", IoTLogLevelGetName((level)), __FUNCTION__, ##__VA_ARGS__);                   \
     } while (0)
 
-#define IOT_LOG_TRACE(fmt, ...)                                                                                        \
-    do {                                                                                                               \
-        if ((EN_IOT_LOG_LEVEL_TRACE) >= IoTLogLevelGet()) {                                                            \
-            IOT_LOG(EN_IOT_LOG_LEVEL_TRACE, fmt, ##__VA_ARGS__);                                                       \
-        }                                                                                                              \
-    } while (0)
-
 #define IOT_LOG_DEBUG(fmt, ...)                                                                                        \
     do {                                                                                                               \
         if ((EN_IOT_LOG_LEVEL_DEBUG) >= IoTLogLevelGet()) {                                                            \
@@ -102,11 +93,9 @@ int IoTLogLevelSet(EnIotLogLevel level);
 
 #else
 #define IOT_LOG(level, fmt, ...)
-#define IOT_LOG_TRACE(fmt, ...)
 #define IOT_LOG_DEBUG(fmt, ...)
 #endif
 
-#define IOT_LOG_TRACE(fmt, ...) IOT_LOG(EN_IOT_LOG_LEVEL_TRACE, fmt, ##__VA_ARGS__)
 #define IOT_LOG_INFO(fmt, ...)  IOT_LOG(EN_IOT_LOG_LEVEL_INFO, fmt, ##__VA_ARGS__)
 #define IOT_LOG_WARN(fmt, ...)  IOT_LOG(EN_IOT_LOG_LEVEL_WARN, fmt, ##__VA_ARGS__)
 #define IOT_LOG_ERROR(fmt, ...) IOT_LOG(EN_IOT_LOG_LEVEL_ERROR, fmt, ##__VA_ARGS__)
