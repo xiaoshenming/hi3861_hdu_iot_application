@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-#include "hi_mem.h"
 #include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,6 +31,7 @@
 #include "iot_gpio_ex.h"
 #include "ohos_init.h"
 #include "wifi_connecter.h"
+#include "hi_mem.h"
 #include "app_demo_histreaming.h"
 
 #define HISTREAMING_DEMO_TASK_STAK_SIZE (1024 * 8)
