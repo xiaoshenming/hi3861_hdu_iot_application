@@ -18,7 +18,8 @@
 
 void AllLedOff(void);
 unsigned char DelayCheckKey(unsigned int delayTime);
-void OledShowStr(unsigned char x, unsigned char y, unsigned char* chr, unsigned char charSize);
+void OledShowStr(unsigned char x, unsigned char y, char* chr, unsigned char charSize);
+void OledShowChar(unsigned char x, unsigned char y, unsigned char chr, unsigned char charSize);
 void OledPositionCleanScreen(unsigned char fillData, unsigned char line, unsigned char pos, unsigned char len);
 unsigned int OledInit(void);
 

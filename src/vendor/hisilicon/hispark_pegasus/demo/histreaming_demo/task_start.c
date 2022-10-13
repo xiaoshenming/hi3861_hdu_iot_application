@@ -19,23 +19,29 @@
 #include "cmsis_os2.h"
 #include "iot_watchdog.h"
 #include "ohos_init.h"
+#include "histreaming.h"
+#include "wifi_starter.h"
+#include "app_demo_traffic_sample.h"
 
 #define TASK_STACK          (1024 * 4)
 #define INTERRUPT_TASK_PRIO (26)
 #define TRAFFIC_TASK_PRIO   (25)
-void KeyInterruptScan(const char* arg)
+void KeyInterruptScan(char* arg)
 {
     (void)arg;
     AppMultiSampleDemo();
 }
 
-void TrafficLightDemo(const char* arg)
+void TrafficLightDemo(void)
 {
     if (StartHotspot() != 0) {
         printf("start ap failed\r\n");
     }
     printf("start ap success\r\n");
     void* link_platform = HistreamingOpen();
+    if (link_platform == NULL) {
+        printf("traffic light open failed\r\n");
+    }
     TrafficLightFunc();
     printf("traffic light open ok\r\n");
 }

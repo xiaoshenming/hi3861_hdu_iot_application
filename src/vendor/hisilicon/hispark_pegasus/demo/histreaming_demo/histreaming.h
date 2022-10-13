@@ -13,10 +13,13 @@
  * limitations under the License.
  */
 
-#ifndef HISTREAMING_H
-#define HISTREAMING_H
+#ifndef APP_DEMO_HISTREAMING_H
+#define APP_DEMO_HISTREAMING_H
+
+#include <link_platform.h>
+#include <link_service.h>
 
 void* HistreamingOpen(void);
-void HistreamingClose(const char* link);
+void HistreamingClose(LinkPlatform* link);
 
 #endif /* __HISTREAMING_DEMO_H__ */

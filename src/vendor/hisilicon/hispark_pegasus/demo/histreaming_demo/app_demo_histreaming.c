@@ -20,7 +20,6 @@
 #include <hi_pwm.h>
 #include <hi_time.h>
 /* Link Header Files */
-#include <histreaming.h>
 #include <link_platform.h>
 #include <link_service.h>
 #include <hi_early_debug.h>
@@ -31,6 +30,10 @@
 #include "app_demo_multi_sample.h"
 #include "iot_gpio.h"
 #include "ssd1306_oled.h"
+#include "app_demo_i2c_oled.h"
+#include "hi_stdlib.h"
+#include "hi_mem.h"
+#include <histreaming.h>
 
 #define HISTREAMING_TASK
 #ifdef HISTREAMING_TASK
@@ -102,11 +105,12 @@ static hi_u32 HistreamingTrafficLightReturnMainMenu(const char* property, char* 
         if (strcmp(value, "tlr") == 0) {
             int ret = SetKeyStatus(TRAFFIC_RETURN_MODE);
             if (ret != TRAFFIC_RETURN_MODE) {
-                return;
+                return -1;
             }
             return HI_ERR_SUCCESS;
         }
     }
+    return HI_ERR_SUCCESS;
 }
 
 /* histreaming traffic light function control */
@@ -121,7 +125,7 @@ static hi_void HistreamingTrafficLightControl(const char* property, char* value)
     HistreamingTrafficLightReturnMainMenu(property, value);
 }
 
-static int GetStatusValue(const struct LinkService* ar, const char* property, const char* value, int len)
+static int GetStatusValue(struct LinkService* ar, const char* property, char* value, int len)
 {
     (void)(ar);
     char* status = "Opend";
@@ -138,7 +142,7 @@ static int GetStatusValue(const struct LinkService* ar, const char* property, co
     return 0;
 }
 /* recv from app cmd */
-static int ModifyStatus(const struct LinkService* ar, const char* property, const char* value, int len)
+static int ModifyStatus(struct LinkService* ar, const char* property, char* value, int len)
 {
     int ret;
     (void)(ar);
@@ -167,7 +171,7 @@ static int ModifyStatus(const struct LinkService* ar, const char* property, cons
  * It is a Wifi IoT device
  */
 static const char* g_wifiStaType = "Light";
-static const char* GetDeviceType(const struct LinkService* ar)
+static const char* GetDeviceType(struct LinkService* ar)
 {
     (void)(ar);
 
@@ -212,7 +216,7 @@ void* HistreamingOpen(void)
     return (void*)link;
 }
 
-void HistreamingClose(const char* link)
+void HistreamingClose(LinkPlatform* link)
 {
     LinkPlatform* linkPlatform = (LinkPlatform*)(link);
     if (!linkPlatform) {
@@ -225,18 +229,3 @@ void HistreamingClose(const char* link)
         LinkPlatformFree(linkPlatform);
     }
 }
-#ifdef HISTREAMING_TASK
-hi_void HistreamingDemo(hi_void)
-{
-    hi_u32 ret;
-    hi_task_attr histreaming = { 0 };
-    histreaming.stack_size = HISTREAMING_DEMO_TASK_STAK_SIZE;
-    histreaming.task_prio = HISTREAMING_DEMO_TASK_PRIORITY;
-    histreaming.task_name = "histreaming_demo";
-    ret = hi_task_create(&g_histreamingDemoTaskId, &histreaming, HistreamingOpen, HI_NULL);
-    if (ret != HI_ERR_SUCCESS) {
-        printf("Falied to create histreaming demo task!\n");
-    }
-}
-#endif
-// #endif

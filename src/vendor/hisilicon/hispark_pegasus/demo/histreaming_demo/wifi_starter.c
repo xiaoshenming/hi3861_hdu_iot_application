@@ -32,10 +32,8 @@ static void OnHotspotStateChanged(int state)
 
 static volatile int g_joinedStations = 0;
 
-static void PrintStationInfo(const StationInfo* info)
+static void PrintStationInfo(StationInfo* info)
 {
-    int len = 0;
-
     if (!info) {
         return;
     }
@@ -47,14 +45,14 @@ static void PrintStationInfo(const StationInfo* info)
     }
 }
 
-static void OnHotspotStaJoin(const StationInfo* info)
+static void OnHotspotStaJoin(StationInfo* info)
 {
     g_joinedStations++;
     PrintStationInfo(info);
     printf("+OnHotspotStaJoin: active stations = %d.\r\n", g_joinedStations);
 }
 
-static void OnHotspotStaLeave(const StationInfo* info)
+static void OnHotspotStaLeave(StationInfo* info)
 {
     g_joinedStations--;
     PrintStationInfo(info);

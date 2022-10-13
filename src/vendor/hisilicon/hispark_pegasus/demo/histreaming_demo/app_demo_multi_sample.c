@@ -20,10 +20,13 @@
 #include <hi_watchdog.h>
 #include "iot_errno.h"
 #include "iot_gpio.h"
+#include "hi_gpio.h"
+#include "hi_task.h"
 #include "ssd1306_oled.h"
 #include "app_demo_i2c_oled.h"
 #include "iot_gpio_ex.h"
 #include "app_demo_gl5537_1.h"
+#include "iot_pwm.h"
 #include "app_demo_multi_sample.h"
 
 #define DELAY_TIMES_100 100
@@ -201,7 +204,7 @@ unsigned char DelayAndCheckKeyInterrupt(unsigned int delayTime)
         hi_udelay(DELAY_5_MS); // 10ms
         hi_sleep(SLEEP_1_MS);
     }
-    return HI_NULL;
+    return 0;
 }
 
 /* 红、黄、绿每1秒轮流亮 */
@@ -346,7 +349,6 @@ void RedLightDarkToBright(void)
         for (unsigned int i = 1; i < DELAY_TIMES_100; i++) { /* 计算延时100次 */
             IoTPwmStart(HI_PWM1, i, PWM_SMALL_DUTY); /* 1 */
             if ((currentMode != GetKeyStatus(CURRENT_MODE)) || (currentType != GetKeyStatus(CURRENT_TYPE))) {
-                return NULL;
             }
             hi_sleep((SLEEP_6_S - i + 1) / SLEEP_30_MS); /* 1 */
         }
@@ -366,7 +368,6 @@ void GreenLightDarkToBright(void)
         for (hi_s32 i = 1; i < DELAY_TIMES_100; i++) { /* 计算延时100次 */
             IoTPwmStart(HI_PWM2, i, PWM_SMALL_DUTY); /* PWM0 */
             if ((currentMode != GetKeyStatus(CURRENT_MODE)) || (currentType != GetKeyStatus(CURRENT_TYPE))) {
-                return NULL;
             }
             hi_sleep((SLEEP_6_S - i + 1) / SLEEP_30_MS); /* 1 */
         }
@@ -385,7 +386,6 @@ void BlueLightDarkToBright(void)
     while (1) {
         for (int i = 1; i < DELAY_TIMES_100; i++) { /* 计算延时100次 */
             if ((currentMode != GetKeyStatus(CURRENT_MODE)) || (currentType != GetKeyStatus(CURRENT_TYPE))) {
-                return NULL;
             }
             IoTPwmStart(HI_PWM3, i, PWM_SMALL_DUTY); /* PWM3 */
 
@@ -409,7 +409,6 @@ void PurpleLightDarkToBright(void)
             IoTPwmStart(HI_PWM2, i, PWM_SMALL_DUTY); /* 2 */
             IoTPwmStart(HI_PWM3, PWM_FRQ_50 + (i * PWM_FRQ_10), PWM_SMALL_DUTY); /* 3 */
             if ((currentMode != GetKeyStatus(CURRENT_MODE)) || (currentType != GetKeyStatus(CURRENT_TYPE))) {
-                return NULL;
             }
             hi_sleep(SLEEP_50_MS);
         }
@@ -431,7 +430,6 @@ void AllLightDarkToBright(void)
             IoTPwmStart(HI_PWM2, i, PWM_SMALL_DUTY); /* 2 */
             IoTPwmStart(HI_PWM3, i, PWM_SMALL_DUTY); /* 3 */
             if ((currentMode != GetKeyStatus(CURRENT_MODE)) || (currentType != GetKeyStatus(CURRENT_TYPE))) {
-                return NULL;
             }
             hi_sleep((SLEEP_6_S - i + 1) / SLEEP_30_MS); /* 1 */
         }
@@ -672,7 +670,10 @@ void ReturnMainEnumSample(void)
         if (currentMode != GetKeyStatus(CURRENT_MODE)) {
             break;
         }
-        task_msleep(SLEEP_1_MS);
+        TaskMsleep(SLEEP_1_MS);
+    }
+    if (currentType == 0) {
+        printf("select fail\r\n");
     }
 }
 void Gpio9LedLightFunc(void)
@@ -715,6 +716,9 @@ void OledShowMenuSelect(void)
         default:
             break;
     }
+    if (currentMode == 0) {
+        printf("select fail\r\n");
+    }
 }
 
 /*
@@ -727,7 +731,6 @@ void GpioKey1IsrFuncMode(void)
     unsigned int currentGpio5Tick = hi_get_tick();
     unsigned int tickInterval = currentGpio5Tick - globalStaType.g_gpio5Tick;
     if (tickInterval < KEY_INTERRUPT_PROTECT_TIME) {
-        return HI_NULL;
     }
     globalStaType.g_gpio5Tick = currentGpio5Tick;
     globalStaType.g_keyDownFlag = KEY_GPIO_5;
@@ -738,7 +741,6 @@ void GpioKey1IsrFuncMode(void)
         if (globalStaType.g_menuSelect >= MAX_FUNCTION_DEMO_NUM) {
             globalStaType.g_menuSelect = COLORFUL_LIGHT_MENU;
         }
-        return HI_ERR_SUCCESS;
     }
 
     if (GetKeyStatus(MENU_MODE) == SUB_MODE_SELECT_MODE) {
@@ -749,6 +751,9 @@ void GpioKey1IsrFuncMode(void)
         }
         currentType = SetKeyType(CONTROL_MODE);
         OledShowTrafficLightMenuSelect();
+    }
+    if (currentType == 0) {
+        printf("select fail\r\n");
     }
 }
 
@@ -787,6 +792,9 @@ void OledShowColorfulLightMenuSelect(void)
         default:
             break;
     }
+    if (currentType == 0) {
+        printf("select fail\r\n");
+    }
 }
 void OledShowTrafficLightMenuSelect(void)
 {
@@ -815,6 +823,9 @@ void OledShowTrafficLightMenuSelect(void)
         default:
             break;
     }
+    if (currentType == 0) {
+        printf("select fail\r\n");
+    }
 }
 /*
  * 按键7每按下一次，就会产生中断并调用该函数
@@ -827,7 +838,6 @@ void GpioKey2IsrFuncType(void)
     unsigned int tickInterval = currentGpio7Tick - globalStaType.g_gpio7Tick;
 
     if (tickInterval < KEY_INTERRUPT_PROTECT_TIME) {
-        return HI_NULL;
     }
     globalStaType.g_gpio7Tick = currentGpio7Tick;
     globalStaType.g_keyDownFlag = KEY_GPIO_7;
@@ -836,16 +846,15 @@ void GpioKey2IsrFuncType(void)
     OledShowTrafficLightMenuSelect();
 }
 
-void Gpio8Interrupt(const char *param)
+void Gpio8Interrupt(char *arg)
 {
-    hi_unref_param(param);
+    (void) arg;
     unsigned int currentGpio8Tick = hi_get_tick();
     unsigned int tickInterval = currentGpio8Tick - globalStaType.g_gpio8Tick;
     printf("gpio8 interrupt \r\n");
 
     if (tickInterval < KEY_INTERRUPT_PROTECT_TIME) {
         printf("gpio8 interrupt return\r\n");
-        return HI_NULL;
     }
     globalStaType.g_gpio8CurrentType++;
     if (globalStaType.g_gpio8CurrentType % PAIR_2 == 0) {  /* tick 时间 对2 求余， 余数为0则打开蜂鸣器响，否则关闭L蜂鸣器 */

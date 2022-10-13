@@ -23,6 +23,7 @@
 #include "hi_gpio.h"
 #include "app_demo_multi_sample.h"
 #include "ssd1306_oled.h"
+#include "app_demo_config.h"
 #include "app_demo_traffic_sample.h"
 
 #define IOT_GPIO_INDEX_9 9
