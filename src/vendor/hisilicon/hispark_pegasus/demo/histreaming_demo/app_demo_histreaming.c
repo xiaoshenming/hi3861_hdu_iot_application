@@ -16,9 +16,10 @@
 // #ifdef CONFIG_HISTREAMING_SUPPORT
 
 #include <memory.h>
-#include "hi_mem.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "hi_mem.h"
+#include "hi_stdlib.h"
 #include <hi_pwm.h>
 #include <hi_time.h>
 /* Link Header Files */
@@ -29,10 +30,10 @@
 #include <hi_gpio.h>
 #include <link_platform.h>
 #include <link_service.h>
-#include "app_demo_multi_sample.h"
+#include <histreaming.h>
 #include "ssd1306_oled.h"
 #include "app_demo_i2c_oled.h"
-#include <histreaming.h>
+#include "app_demo_multi_sample.h"
 
 #define HISTREAMING_TASK
 #ifdef HISTREAMING_TASK
