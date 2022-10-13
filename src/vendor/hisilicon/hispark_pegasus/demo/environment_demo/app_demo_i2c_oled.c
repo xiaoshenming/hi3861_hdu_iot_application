@@ -50,7 +50,6 @@
 
 unsigned char g_oled_demo_task_id = 0;
 unsigned int g_mux_id = 0;
-static unsigned char hi3861_board_led_test = 0;
 
 /* 6*8的点阵 */
 static const unsigned char f6X8[][6] = {
@@ -302,6 +301,7 @@ static unsigned int WriteData(unsigned char i2cData)
     if (status != 0) {
         return -1;
     }
+    return 0;
 }
 
 static unsigned int SetOledAddress(void)
@@ -565,7 +565,7 @@ void OledShowChar(unsigned char x, unsigned char y, unsigned char chr, unsigned 
  * chr:write data
  * char_size:select typeface
  */
-void OledShowStr(unsigned char x, unsigned char y, unsigned char* chr, unsigned char charSize)
+void OledShowStr(unsigned char x, unsigned char y, char* chr, unsigned char charSize)
 {
     unsigned char j = 0;
     unsigned char xPosition = x;
@@ -602,7 +602,7 @@ unsigned char* FlaotToString(double d, unsigned char* str)
     int m;
 
     if (str == NULL) {
-        return;
+        return 0;
     }
     /* 浮点数的整数部分 The integer part of a floating point number */
     m = (int)data;

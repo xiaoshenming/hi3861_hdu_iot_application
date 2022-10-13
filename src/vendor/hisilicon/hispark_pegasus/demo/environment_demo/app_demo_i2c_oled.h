@@ -16,12 +16,15 @@
 #ifndef APP_DEMO_I2C_OLED_H
 #define APP_DEMO_I2C_OLED_H
 
+// static unsigned int I2cWriteByte(unsigned char regAddr, unsigned char cmd);
+// static unsigned int WriteCmd(unsigned char cmd);
+// static unsigned int WriteData(unsigned char i2cData);
 unsigned int OledInit(void);
 void OledSetPosition(unsigned char x, unsigned char y);
 void OledFillScreen(unsigned char fiiData);
 void OledPositionCleanScreen(unsigned char fillData, unsigned char line, unsigned char pos, unsigned char len);
 void OledShowChar(unsigned char x, unsigned char y, unsigned char chr, unsigned char charSize);
-void OledShowStr(unsigned char x, unsigned char y, unsigned char* chr, unsigned char charSize);
+void OledShowStr(unsigned char x, unsigned char y, char* chr, unsigned char charSize);
 unsigned char* FlaotToString(double d, unsigned char* str);
 void AllLedOff(void);
 #endif

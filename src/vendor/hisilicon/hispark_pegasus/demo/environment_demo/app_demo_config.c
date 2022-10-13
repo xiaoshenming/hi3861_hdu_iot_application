@@ -24,6 +24,7 @@
 #include "iot_i2c.h"
 #include "ohos_init.h"
 #include "app_demo_config.h"
+#include "app_demo_i2c_oled.h"
 
 static unsigned short g_hi3861BoardLedTest = 0;
 
@@ -46,10 +47,8 @@ void ReturnAllModeEnumSample(void)
 /* environment menu display */
 void ShowAllEnvironmentValue(void)
 {
-    unsigned short combustibleMainMenuGasValueStr[10] = { 0 };
-    unsigned short temperatureStr[6] = { 0 };
-    unsigned short humidityStr[6] = { 0 };
     static unsigned char currentMode = 0;
+    static char line[32] = {0};
 
     currentMode = GetKeyStatus(CURRENT_MODE);
     IoTI2cInit(0, HI_I2C_IDX_BAUDRATE); /* baudrate: 400000 */
@@ -57,20 +56,19 @@ void ShowAllEnvironmentValue(void)
     while (1) {
         (void)GetAht20SensorData();
         Mq2GetData();
-        (void*)FlaotToString(GetAhtSensorValue(AHT_TEMPERATURE), temperatureStr);
-        (void*)FlaotToString(GetAhtSensorValue(AHT_HUMIDITY), humidityStr);
-        (void*)FlaotToString(GetCombuSensorValue(), combustibleMainMenuGasValueStr);
-
-        OledShowStr(OLED_X_POSITION_18, OLED_Y_POSITION_5, temperatureStr,
+        snprintf(line, sizeof(line), "%.2f", GetAhtSensorValue(AHT_TEMPERATURE));
+        snprintf(line, sizeof(line), "%.2f", GetAhtSensorValue(AHT_HUMIDITY));
+        snprintf(line, sizeof(line), "%.2f", GetCombuSensorValue());
+        OledShowStr(OLED_X_POSITION_18, OLED_Y_POSITION_5, line,
                     OLED_DISPLAY_STRING_TYPE_1); /* 18, 5, xx, 1 */
 
-        OledShowStr(OLED_X_POSITION_81, OLED_Y_POSITION_5, humidityStr, OLED_DISPLAY_STRING_TYPE_1); /* 18, 5, xx, 1 */
+        OledShowStr(OLED_X_POSITION_81, OLED_Y_POSITION_5, line, OLED_DISPLAY_STRING_TYPE_1); /* 18, 5, xx, 1 */
 
         if (!GetCombuSensorValue()) {
             OledShowStr(OLED_X_POSITION_48, OLED_Y_POSITION_6, "0.00    ",
                         OLED_DISPLAY_STRING_TYPE_1); /* 48, 6, x.xx, 1 */
         } else {
-            OledShowStr(OLED_X_POSITION_48, OLED_Y_POSITION_6, combustibleMainMenuGasValueStr,
+            OledShowStr(OLED_X_POSITION_48, OLED_Y_POSITION_6, line,
                         OLED_DISPLAY_STRING_TYPE_1); /* 48, 6, x.xx, 1 */
         }
         if (currentMode != GetKeyStatus(CURRENT_MODE)) {
@@ -195,7 +193,7 @@ void EnvironmentReturnMode(void)
     ReturnAllModeEnumSample();
 }
 
-void EnvironmentDisplay(void)
+void EnvironmentDemoDisplay(void)
 {
     while (HI_ERR_SUCCESS != OledInit()) {
         if (g_hi3861BoardLedTest == FLAG_FAILSE) {

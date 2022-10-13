@@ -16,6 +16,7 @@
 #include <string.h>
 #include <hi_mux.h>
 #include <hi_time.h>
+#include "hi_stdlib.h"
 #include "app_demo_multi_sample.h"
 #include "cmsis_os2.h"
 #include "iot_errno.h"
@@ -95,10 +96,16 @@ static unsigned int Ath20CheckAndInit(unsigned char initCmd, unsigned char initH
 
     status = IoTI2cRead(IOT_I2C_IDX_0, (AHT_DEVICE_ADDR << IOT_BIT_1) | AHT_READ_COMMAND, aht20I2cData.receiveBuf,
                         aht20I2cData.receiveLen);
+    if (status != IOT_SUCCESS) {
+        return status;
+    }
     if (((recvDataInit[0] != AHT_DEVICE_CALIBRATION_ERR) && (recvDataInit[0] != AHT_DEVICE_CALIBRATION_ERR_R)) ||
         (recvDataInit[0] == AHT_DEVICE_CALIBRATION)) {
         status = IoTI2cWrite(IOT_I2C_IDX_0, (AHT_DEVICE_ADDR << IOT_BIT_1) | AHT_WRITE_COMMAND,
                              aht20I2cWriteCmdAddrInit.sendBuf, aht20I2cWriteCmdAddrInit.sendLen);
+        if (status != IOT_SUCCESS) {
+        return status;
+    }
         TaskMsleep(AHT_SLEEP_1S);
         return IOT_FAILURE;
     }
@@ -119,7 +126,9 @@ unsigned int Aht20Write(unsigned char triggerCmd, unsigned char highByteCmd, uns
 
     status = IoTI2cWrite(IOT_I2C_IDX_0, (AHT_DEVICE_ADDR << IOT_BIT_1) | AHT_WRITE_COMMAND,
                          aht20I2cWriteCmdAddr.sendBuf, aht20I2cWriteCmdAddr.sendLen);
-
+    if (status != IOT_SUCCESS) {
+        return status;
+    }
     return IOT_SUCCESS;
 }
 
@@ -142,6 +151,9 @@ unsigned int Aht20Read(unsigned int recvLen, unsigned char type)
 
     status = IoTI2cRead(IOT_I2C_IDX_0, (AHT_DEVICE_ADDR << IOT_BIT_1) | AHT_READ_COMMAND, aht20I2cData.receiveBuf,
                         aht20I2cData.receiveLen);
+    if (status != IOT_SUCCESS) {
+        return status;
+    }
     if (type == AHT_TEMPERATURE) {
         temper = (float)(((recvData[BUFF_BIT_3] & LOW_4_BIT) << IOT_BIT_16) | (recvData[BUFF_BIT_4] << IOT_BIT_8) |
                          recvData[BUFF_BIT_5]);                          // 温度拼接 Temperature splicing
@@ -156,9 +168,10 @@ unsigned int Aht20Read(unsigned int recvLen, unsigned char type)
         sensorV.g_ahtHumi = humiH;
         return IOT_SUCCESS;
     }
+    return IOT_SUCCESS;
 }
 
-void* AppDemoAht20(char* param)
+void* AppDemoAht20(void)
 {
     unsigned int status = 0;
     unsigned int ret = 0;
@@ -208,9 +221,15 @@ void GetAht20SensorData(void)
     /* on hold master mode */
     status = Aht20Write(AHT_DEVICE_TEST_CMD, AHT_DEVICE_PARAM_HIGH_BYTE,
                         AHT_DEVICE_PARAM_LOW_BYTE); // tempwerature
+    if (status != IOT_SUCCESS) {
+    }
     hi_udelay(AHT_DELAY_100MS);                     // wait 100ms
     status = Aht20Read(AHT_REG_ARRAY_LEN, AHT_TEMPERATURE);
+    if (status != IOT_SUCCESS) {
+    }
     status = Aht20Read(AHT_REG_ARRAY_LEN, AHT_HUMIDITY);
+    if (status != IOT_SUCCESS) {
+    }
 }
 
 static void StartAht20Task(void)

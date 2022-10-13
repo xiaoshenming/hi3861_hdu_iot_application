@@ -28,6 +28,7 @@
 #include "iot_gpio_ex.h"
 #include "iot_errno.h"
 
+
 #define KEY_INTERRUPT_PROTECT_TIME (40)
 #define KEY_DOWN_INTERRUPT          (1)
 #define GPIO_DEMO_TASK_STAK_SIZE    (1024*2)
@@ -50,8 +51,8 @@
 #define MAX_TRAFFIC_AUTO_TYPE       (2)
 #define MAX_TRAFFIC_HUMAN_TYPE      (1)
 
-#define OLED_FALG_ON                ((hi_u8)0x01)
-#define OLED_FALG_OFF               ((hi_u8)0x00)
+#define OLED_FALG_ON                (1)
+#define OLED_FALG_OFF               (0)
 
 #define  KEY_GPIO_5                 (1)
 #define  KEY_GPIO_7                 (2)
@@ -280,9 +281,10 @@ void LightDetectSample(void);
 void UnionDetectSample(void);
 void ReturnMainEnumSample(void);
 void Gpio9LedLightFunc(void);
-void Gpio8Interrupt(const char *param);
+void Gpio8Interrupt(char *arg);
 void AppMultiSampleDemo(void);
 unsigned char SetKeyStatus(HiColorfulLightMode setSta);
 unsigned char SetKeyType(HiColorfulLightMode setSta);
 unsigned char GetKeyStatus(GloableStatuDef staDef);
+void OledShowTrafficLightMenuSelect(void);
 #endif

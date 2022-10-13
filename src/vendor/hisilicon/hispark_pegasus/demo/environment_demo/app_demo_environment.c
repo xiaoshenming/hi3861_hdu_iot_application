@@ -30,18 +30,15 @@
 void ShowTemperatureValue(void)
 {
     static unsigned short currentMode = 0;
-    unsigned short temperatureStr[6] = { 0 };
+    static char* line = 0;
     IoTI2cInit(0, HI_I2C_IDX_BAUDRATE); /* baudrate: 400000 */
     IoTI2cSetBaudrate(0, HI_I2C_IDX_BAUDRATE);
-
     currentMode = GetKeyStatus(CURRENT_MODE);
-
     while (1) {
         hi_udelay(DELAY_10_MS); // delay 10ms
         GetAht20SensorData();
-        (void*)FlaotToString(GetAhtSensorValue(AHT_TEMPERATURE), temperatureStr);
-        OledShowStr(OLED_X_POSITION_40, OLED_Y_POSITION_5, temperatureStr,
-                    OLED_DISPLAY_STRING_TYPE_1); /* 40, 5, x.xx, 1 */
+        snprintf(line, sizeof(line), "%.2f", GetAhtSensorValue(AHT_TEMPERATURE));
+        OledShowStr(40, 5, line, 1); /* 40, 5, x.xx, 1 */
         if (currentMode != GetKeyStatus(CURRENT_MODE)) {
             currentMode = GetKeyStatus(CURRENT_MODE);
             break;
@@ -54,16 +51,15 @@ void ShowTemperatureValue(void)
 void ShowHumidityValue(void)
 {
     static unsigned short currentMode = 0;
-    unsigned short humidityStr[6] = { 0 };
+    static char line[32] = {0};
     IoTI2cInit(0, HI_I2C_IDX_BAUDRATE); /* baudrate: 400000 */
     IoTI2cSetBaudrate(0, HI_I2C_IDX_BAUDRATE);
-
     currentMode = GetKeyStatus(CURRENT_MODE);
     while (1) {
         hi_udelay(DELAY_10_MS); // delay 10ms
         GetAht20SensorData();
-        (void*)FlaotToString(GetAhtSensorValue(AHT_HUMIDITY), humidityStr);
-        OledShowStr(OLED_X_POSITION_56, OLED_Y_POSITION_5, humidityStr,
+        snprintf(line, sizeof(line), "%.2f", GetAhtSensorValue(AHT_HUMIDITY));
+        OledShowStr(OLED_X_POSITION_56, OLED_Y_POSITION_5, line,
                     OLED_DISPLAY_STRING_TYPE_1); /* 56, 5, x.xx, 1 */
         if (currentMode != GetKeyStatus(CURRENT_MODE)) {
             break;
@@ -75,21 +71,20 @@ void ShowHumidityValue(void)
 /* combustible gas value display */
 void ShowCombustibleGasValue(void)
 {
-    unsigned short combustibleGasValueStr[10] = { 0 };
     unsigned short currentMode = 0;
+    static char line[32] = {0};
     IoTI2cInit(0, HI_I2C_IDX_BAUDRATE); /* baudrate: 400000 */
     IoTI2cSetBaudrate(0, HI_I2C_IDX_BAUDRATE);
     currentMode = GetKeyStatus(CURRENT_MODE);
-
     while (1) {
         SetCombuSensorValue();
         Mq2GetData();
-        (void*)FlaotToString(GetCombuSensorValue(), combustibleGasValueStr);
+        snprintf(line, sizeof(line), "%.2f", GetCombuSensorValue());
         if (!GetCombuSensorValue()) {
             OledShowStr(OLED_X_POSITION_60, OLED_Y_POSITION_5, "0.00    ",
                         OLED_DISPLAY_STRING_TYPE_1); /* 60, 5, x.xx, 1 */
         } else {
-            OledShowStr(OLED_X_POSITION_60, OLED_Y_POSITION_5, combustibleGasValueStr,
+            OledShowStr(OLED_X_POSITION_60, OLED_Y_POSITION_5, line,
                         OLED_DISPLAY_STRING_TYPE_1); /* 60, 5, x.xx, 1 */
         }
         if (currentMode != GetKeyStatus(CURRENT_MODE)) {
@@ -111,5 +106,5 @@ void EnvironmentFunc(void)
     IoSetFunc(HI_GPIO_13, HI_I2C_SDA_SCL); /* GPIO13,  SDA */
     IoTGpioInit(HI_GPIO_14);               /* GPIO 14 */
     IoSetFunc(HI_GPIO_14, HI_I2C_SDA_SCL); /* GPIO14  SCL */
-    EnvironmentDisplay();
+    EnvironmentDemoDisplay();
 }

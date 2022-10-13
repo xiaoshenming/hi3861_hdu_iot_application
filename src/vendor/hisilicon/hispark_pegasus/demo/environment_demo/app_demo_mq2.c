@@ -87,15 +87,10 @@ float Mq2GetPpm(float voltage)
     static unsigned char flag = HI_TRUE;
     static unsigned char count = 0;
 
-    float VolDif = (VOILTAGE_5_V - vol);
-    float SeekModule = VolDif / vol;
-    float rS = SeekModule * RL; /* 计算RS值 Calculate RS value */
     (void)memset_s(&ppm, sizeof(ppm), 0x0, sizeof(ppm));
     if (flag) {
         flag = 0;
-        IoTPwmInit(0);
-        IoSetFunc(HI_GPIO_9, HI_PWM_OUT); // gpio9 pwm
-        IoTGpioSetDir(HI_GPIO_9, IOT_GPIO_DIR_OUT);
+        PwmInit(HI_GPIO_9, HI_PWM_OUT, HI_PWM0); // GPIO10 PWM port0,9
     }
     ppm = pow(X_CONSTANT_2 * vol / (VOILTAGE_5_V - vol), 1.0 / Y_CONSTANT_2); /* 计算ppm Calculate ppm */
     if (ppm < PPM_THRESHOLD_300) { /* 排除空气中其他气体的干扰 Eliminate the interference of other gases in the air */
@@ -134,7 +129,6 @@ void Mq2GetData(void)
     unsigned int ret = AdcRead(IOT_ADC_CHANNEL_5, &data, IOT_ADC_EQU_MODEL_4, IOT_ADC_CUR_BAIS_DEFAULT, SAMPLING_TIME);
     if (ret != HI_ERR_SUCCESS) {
         printf("ADC Read Fail\n");
-        return HI_NULL;
     }
     voltage = (float)(data * ADC_VOLTAGE_1_8_V * ADC_VOLTAGE_4_TIMES /
                       ADC_RANGE_MAX); /* vlt * 1.8* 4 / 4096.0 码字转换为电压 */

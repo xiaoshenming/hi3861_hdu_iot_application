@@ -24,11 +24,12 @@
 #include <hi_watchdog.h>
 #include "iot_adc.h"
 #include "ssd1306_oled.h"
+#include "app_demo_multi_sample.h"
 
 #define ADC_TEST_LENGTH (20)
 #define VLT_MIN         (100)
-#define OLED_FALG_ON    ((unsigned char)0x01)
-#define OLED_FALG_OFF   ((unsigned char)0x00)
+#define OLED_FALG_ON    (1)
+#define OLED_FALG_OFF   (0)
 
 #define VOLTAGE_1_8_V   ((float)1.8)
 #define VOLTAGE_4_TIMES (4)
@@ -52,7 +53,7 @@ unsigned char GetLightStatus(void)
     float voltage;
     float vltMax = 0;
     float vltMin = VLT_MIN;
-    memset_s(g_adcBuf, sizeof(g_adcBuf), 0x0, sizeof(g_adcBuf));
+    (void)memset_s(g_adcBuf, sizeof(g_adcBuf), 0x0, sizeof(g_adcBuf));
     for (int i = 0; i < ADC_TEST_LENGTH; i++) {
         /* ADC_Channal_6  自动识别模式  CNcomment:4次平均算法模式 CNend
          * ADC_ Channal_ 6 Automatic recognition mode CNcomment: 4 times average algorithm mode CNend
@@ -60,7 +61,7 @@ unsigned char GetLightStatus(void)
         unsigned int ret = AdcRead(IOT_ADC_CHANNEL_4, &data, HI_ADC_EQU_MODEL_4, HI_ADC_CUR_BAIS_DEFAULT, 0xF0);
         if (ret != HI_ERR_SUCCESS) {
             printf("ADC Read Fail\n");
-            return HI_NULL;
+            return ret;
         }
         g_adcBuf[i] = data;
     }
@@ -80,16 +81,16 @@ unsigned char GetLightStatus(void)
 }
 
 /* get gpio5 Voltage */
-void GetGpio5Voltage(const char* param)
+void GetGpio5Voltage(char *arg)
 {
+    (void) arg;
     unsigned short data = 0;
     unsigned short vlt = 0;
     float voltage;
     float vltMax = 0;
     float vltMin = VLT_MIN;
 
-    hi_unref_param(param);
-    memset_s(g_gpio5AdcBuf, sizeof(g_gpio5AdcBuf), 0x0, sizeof(g_gpio5AdcBuf));
+    (void)memset_s(g_gpio5AdcBuf, sizeof(g_gpio5AdcBuf), 0x0, sizeof(g_gpio5AdcBuf));
     for (int i = 0; i < ADC_TEST_LENGTH; i++) {
         /*
          * ADC_Channal_2  自动识别模式  CNcomment:4次平均算法模式 CNend
@@ -98,7 +99,7 @@ void GetGpio5Voltage(const char* param)
         unsigned int ret = AdcRead(IOT_ADC_CHANNEL_2, &data, IOT_ADC_EQU_MODEL_4, IOT_ADC_CUR_BAIS_DEFAULT, 0xF0);
         if (ret != HI_ERR_SUCCESS) {
             printf("ADC Read Fail\n");
-            return HI_NULL;
+            break;
         }
         g_gpio5AdcBuf[i] = data;
     }

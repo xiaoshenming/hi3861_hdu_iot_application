@@ -19,9 +19,10 @@
 #include "cmsis_os2.h"
 #include "iot_watchdog.h"
 #include "ohos_init.h"
+#include "app_demo_environment.h"
 
 #define ENVIRONMENT_TASK_STACK (1024)
-void EnvironmentDemo(const char* arg)
+void EnvironmentSampleDemo(const char* arg)
 {
     (void)arg;
     AppMultiSampleDemo();
@@ -42,7 +43,7 @@ static void StartTask(void)
     attr.stack_size = ENVIRONMENT_TASK_STACK;
     attr.priority = osPriorityNormal;
 
-    if (osThreadNew((osThreadFunc_t)EnvironmentDemo, NULL, &attr) == NULL) {
+    if (osThreadNew((osThreadFunc_t)EnvironmentSampleDemo, NULL, &attr) == NULL) {
         printf("[EnvironmentDemo] Falied to create EnvironmentDemo!\n");
     }
 }
