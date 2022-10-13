@@ -14,10 +14,10 @@
  */
 
 #include <memory.h>
+#include "hi_mem.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <hi_pwm.h>
-#include "hi_mem.h"
 #include <hi_time.h>
 /* Link Header Files */
 #include <link_platform.h>
@@ -94,7 +94,7 @@ unsigned char* GetUartReceiveMsg(void)
 static int GetStatusValue(struct LinkService* ar, const char* property, char* value, int len)
 {
     (void)(ar);
-    if (strcmp(property, "Status") == 0) { 
+    if (strcmp(property, "Status") == 0) {
         printf("Status: %s(value=%s, [%d])\n", property, value, len);
     }
     /*
