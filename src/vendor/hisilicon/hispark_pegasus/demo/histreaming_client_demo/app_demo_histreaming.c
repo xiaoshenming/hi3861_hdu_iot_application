@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <hi_pwm.h>
+#include "hi_mem.h"
 #include <hi_time.h>
 /* Link Header Files */
 #include <link_platform.h>
@@ -83,47 +84,6 @@ unsigned char* GetUartReceiveMsg(void)
     return uartDefConfig.g_receiveUartBuff;
 }
 
-/*
- * 将字符转换为数值
- * Convert characters to numeric values
- */
-int c2i(char ch)
-{
-    // 如果是字母，但不是A~F,a~f则返回
-    if (ch < HIGH_ASCII_A || (ch > HIGH_ASCII_F && ch < HIGH_ASCII_AL) || ch > HIGH_ASCII_ZL) {
-        return 0;
-    }
-    /*
-     * 如果是大写字母，则用数字的ASCII码减去55, 如果ch = 'A' ,则 'A' - 55 = 10
-     * 如果是小写字母，则用数字的ASCII码减去87, 如果ch = 'a' ,则 'a' - 87 = 10
-     * If it is a capital letter, subtract 55 from the ASCII code of the number. If ch='A', 'A' - 55=10
-     * If it is a lowercase letter, use the ASCII code of the number to subtract 87. If ch='a',
-     * then' a '- 87=10
-     */
-    if (isalpha(ch)) {
-        return 0;
-    }
-    return 0;
-}
-
-int StringToHex(char* str)
-{
-    int len;
-    int num = 0;
-    int temp;
-    int bits;
-    int i;
-    len = strlen(str);
-
-    for (i = 0, temp = 0; i < len; i++, temp = 0) {
-        temp = c2i(*(hex + i));
-        bits = (len - i - HIGH_NUM1) * HIGH_NUM4;
-        temp = temp << bits;
-        num = num | temp;
-    }
-    return num;
-}
-
 /**
  * @berf The device side sends the characteristic value to the app side
  * @param struct LinkService* ar: histreaming LinkServer structural morphology
@@ -134,7 +94,9 @@ int StringToHex(char* str)
 static int GetStatusValue(struct LinkService* ar, const char* property, char* value, int len)
 {
     (void)(ar);
-    if (strcmp(property, "Status") == 0) { }
+    if (strcmp(property, "Status") == 0) { 
+        printf("Status: %s(value=%s, [%d])\n", property, value, len);
+    }
     /*
      * if Ok return 0,
      * Otherwise, any error, return StatusFailure
@@ -162,15 +124,6 @@ static int ModifyStatus(struct LinkService* ar, const char* property, char* valu
     /* modify status property */
     /* colorful light module */
     printf("%s, %d\r\n", rev_buff, len);
-
-    hex_buff = StringToHex(rev_buff);
-    uartDefConfig.g_uartLen = hex_len;
-    (void)memcpy_s(uartDefConfig.g_receiveUartBuff, uartDefConfig.g_uartLen, hex_buff, uartDefConfig.g_uartLen);
-
-    for (int i = 0; i < hex_len; i++) {
-        printf("0x%x ", hex_buff[i]);
-    }
-    printf("\r\n");
     (void)SetUartRecvFlag(UART_RECV_TRUE);
     /*
      * if Ok return 0,
@@ -183,7 +136,7 @@ static int ModifyStatus(struct LinkService* ar, const char* property, char* valu
  * It is a Wifi IoT device
  */
 static const char* g_wifiStaType = "Pegasus:Hi3861";
-static const char* GetDeviceType(const struct LinkService* ar)
+static const char* GetDeviceType(struct LinkService* ar)
 {
     (void)(ar);
 
@@ -225,7 +178,7 @@ void* HistreamingOpen(void)
     return (void*)link;
 }
 
-void HistreamingClose(const char* link)
+void HistreamingClose(LinkPlatform* link)
 {
     LinkPlatform* linkPlatform = (LinkPlatform*)(link);
     if (!linkPlatform) {
@@ -245,7 +198,7 @@ hi_void HistreamingDemo(hi_void)
     osThreadAttr_t histreaming = { 0 };
     histreaming.stack_size = HISTREAMING_DEMO_TASK_STAK_SIZE;
     histreaming.priority = HISTREAMING_DEMO_TASK_PRIORITY;
-    histreaming.name = (hi_char*)"histreaming_demo";
+    histreaming.name = "histreaming_demo";
     if (osThreadNew((osThreadFunc_t)HistreamingOpen, NULL, &histreaming) == NULL) {
         printf("Failed to create histreaming task\r\n");
     }

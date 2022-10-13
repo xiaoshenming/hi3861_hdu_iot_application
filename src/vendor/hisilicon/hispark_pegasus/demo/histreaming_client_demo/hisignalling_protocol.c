@@ -154,7 +154,7 @@ HisignallingErrorType HisignallingMsgReceive(hi_u8* buf, hi_u32 len)
 
     /* 输出回显收到的数据 Output echo received data */
     if ((buf[0] == HISIGNALLING_MSG_FRAME_HEADER_1) && (buf[1] == HISIGNALLING_MSG_FRAME_HEADER_2)) {
-        for (int i = 0; i < len; i++) {
+        for (hi_u32 i = 0; i < len; i++) {
             HISIGNALLING_LOG_INFO("0x%x", buf[i]);
         }
     }
@@ -195,7 +195,7 @@ int SetUartReceiveFlag(void)
     return recConfig.g_uartReceiveFlag;
 }
 
-hi_void* HisignallingMsgHandle(char* param)
+hi_void HisignallingMsgHandle(void)
 {
     unsigned char* recBuff = NULL;
     while (1) {
@@ -208,12 +208,15 @@ hi_void* HisignallingMsgHandle(char* param)
             }
             (void)SetUartRecvFlag(UART_RECV_FALSE);
             ResetUartReceiveMsg();
+            if (recBuff == NULL) {
+                printf("recBuff failed\r\n");
+            }
         }
         hi_sleep(HISGNALLING_FREE_TASK_TIME);
     }
 }
 
-hi_u32 HisignalingMsgTask(hi_void)
+void HisignalingMsgTask(hi_void)
 {
     IoTGpioInit(LED_TEST_GPIO);
     IoTGpioSetDir(LED_TEST_GPIO, IOT_GPIO_DIR_OUT);
@@ -221,12 +224,10 @@ hi_u32 HisignalingMsgTask(hi_void)
 
     hisignallingAttr.stack_size = HISIGNALLING_MSG_TASK_STACK_SIZE;
     hisignallingAttr.priority = HISIGNALLING_MSG_TASK_PRIO;
-    hisignallingAttr.name = (hi_char*)"hisignal msg task";
+    hisignallingAttr.name = "hisignal msg task";
 
     if (osThreadNew((osThreadFunc_t)HisignallingMsgHandle, NULL, &hisignallingAttr) == NULL) {
         HISIGNALLING_LOG_ERROR("Failed to create hisignaling msg task\r\n");
-        return HI_ERR_FAILURE;
     }
-    return HI_ERR_SUCCESS;
 }
 SYS_RUN(HisignalingMsgTask);

@@ -16,6 +16,9 @@
 #ifndef APP_DEMO_HISTREAMING_H
 #define APP_DEMO_HISTREAMING_H
 
+#include <link_platform.h>
+#include <link_service.h>
+
 #define UART_BUFF_SIZE 32
 #define HIGH_NUM       2
 #define HIGH_NUM1       1
@@ -44,7 +47,7 @@ typedef struct {
 } UartDefConfig;
 
 void* HistreamingOpen(void);
-void HistreamingClose(const char* link);
+void HistreamingClose(LinkPlatform* link);
 int SetUartRecvFlag(UartRecvDef def);
 int GetUartConfig(UartDefType type);
 void ResetUartReceiveMsg(void);

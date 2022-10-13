@@ -22,8 +22,6 @@
 
 static void PrintLinkedInfo(WifiLinkedInfo* info)
 {
-    int ret = 0;
-
     if (!info) {
         return;
     }
