@@ -17,7 +17,6 @@
 #include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "hi_stdlib.h"
 #include <hi_pwm.h>
 #include <hi_time.h>
 /* Link Header Files */
@@ -27,11 +26,12 @@
 #include <hi_io.h>
 #include <hi_task.h>
 #include <hi_types_base.h>
-#include "ssd1306_oled.h"
-#include "app_demo_i2c_oled.h"
+#include "hi_stdlib.h"
 #include "hi_mem.h"
 #include <hi_gpio.h>
 #include "app_demo_multi_sample.h"
+#include "ssd1306_oled.h"
+#include "app_demo_i2c_oled.h"
 #include <histreaming.h>
 
 #define HISTREAMING_TASK
