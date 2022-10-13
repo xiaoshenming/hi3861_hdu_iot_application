@@ -56,9 +56,18 @@ void ShowAllEnvironmentValue(void)
     while (1) {
         (void)GetAht20SensorData();
         Mq2GetData();
-        snprintf(line, sizeof(line), "%.2f", GetAhtSensorValue(AHT_TEMPERATURE));
-        snprintf(line, sizeof(line), "%.2f", GetAhtSensorValue(AHT_HUMIDITY));
-        snprintf(line, sizeof(line), "%.2f", GetCombuSensorValue());
+        int ret = snprintf(line, sizeof(line), "%.2f", GetAhtSensorValue(AHT_TEMPERATURE));
+        if (ret != 0) {
+            printf("ret failed\r\n");
+        }
+        ret = snprintf(line, sizeof(line), "%.2f", GetAhtSensorValue(AHT_HUMIDITY));
+        if (ret != 0) {
+            printf("ret failed\r\n");
+        }
+        ret = snprintf(line, sizeof(line), "%.2f", GetCombuSensorValue());
+        if (ret != 0) {
+            printf("ret failed\r\n");
+        }
         OledShowStr(OLED_X_POSITION_18, OLED_Y_POSITION_5, line,
                     OLED_DISPLAY_STRING_TYPE_1); /* 18, 5, xx, 1 */
 

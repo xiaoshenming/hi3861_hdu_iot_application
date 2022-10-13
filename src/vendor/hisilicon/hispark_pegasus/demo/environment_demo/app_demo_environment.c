@@ -37,7 +37,10 @@ void ShowTemperatureValue(void)
     while (1) {
         hi_udelay(DELAY_10_MS); // delay 10ms
         GetAht20SensorData();
-        snprintf(line, sizeof(line), "%.2f", GetAhtSensorValue(AHT_TEMPERATURE));
+        int ret = snprintf(line, sizeof(line), "%.2f", GetAhtSensorValue(AHT_TEMPERATURE));
+        if (ret != 0) {
+            printf("ret failed\r\n");
+        }
         OledShowStr(40, 5, line, 1); /* 40, 5, x.xx, 1 */
         if (currentMode != GetKeyStatus(CURRENT_MODE)) {
             currentMode = GetKeyStatus(CURRENT_MODE);
@@ -58,7 +61,10 @@ void ShowHumidityValue(void)
     while (1) {
         hi_udelay(DELAY_10_MS); // delay 10ms
         GetAht20SensorData();
-        snprintf(line, sizeof(line), "%.2f", GetAhtSensorValue(AHT_HUMIDITY));
+        int ret = snprintf(line, sizeof(line), "%.2f", GetAhtSensorValue(AHT_HUMIDITY));
+        if (ret != 0) {
+            printf("ret failed\r\n");
+        }
         OledShowStr(OLED_X_POSITION_56, OLED_Y_POSITION_5, line,
                     OLED_DISPLAY_STRING_TYPE_1); /* 56, 5, x.xx, 1 */
         if (currentMode != GetKeyStatus(CURRENT_MODE)) {
@@ -79,7 +85,10 @@ void ShowCombustibleGasValue(void)
     while (1) {
         SetCombuSensorValue();
         Mq2GetData();
-        snprintf(line, sizeof(line), "%.2f", GetCombuSensorValue());
+        int ret = snprintf(line, sizeof(line), "%.2f", GetCombuSensorValue());
+        if (ret != 0) {
+            printf("ret failed\r\n");
+        }
         if (!GetCombuSensorValue()) {
             OledShowStr(OLED_X_POSITION_60, OLED_Y_POSITION_5, "0.00    ",
                         OLED_DISPLAY_STRING_TYPE_1); /* 60, 5, x.xx, 1 */
