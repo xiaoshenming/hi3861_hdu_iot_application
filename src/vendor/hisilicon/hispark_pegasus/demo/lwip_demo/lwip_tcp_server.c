@@ -16,6 +16,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
+#include "hi_task.h"
 #include "lwip/sockets.h"
 #include "net_demo.h"
 
@@ -67,9 +68,9 @@ void TcpServerTest(unsigned short port)
     retval = recv(connfd, g_request, sizeof(g_request), 0);
     if (retval < 0) {
         printf("recv g_request failed, %ld!\r\n", retval);
-        sleep(1);
+        hi_sleep(1);
         lwip_close(connfd);
-        sleep(1); // for debug
+        hi_sleep(1); // for debug
         lwip_close(sockfd);
     }
     printf("recv g_request{%s} from client done!\r\n", g_request);
@@ -77,9 +78,9 @@ void TcpServerTest(unsigned short port)
     retval = send(connfd, g_request, strlen(g_request), 0);
     if (retval <= 0) {
         printf("send response failed, %ld!\r\n", retval);
-        sleep(1);
+        hi_sleep(1);
         lwip_close(connfd);
-        sleep(1); // for debug
+        hi_sleep(1); // for debug
         lwip_close(sockfd);
     }
     printf("send response{%s} to client done!\r\n", g_request);

@@ -53,7 +53,7 @@ static void NetDemoEntry(void)
     attr.stack_size = 10240; /* 堆栈大小为10240 */
     attr.priority = osPriorityNormal;
 
-    if (osThreadNew(NetDemoTask, NULL, &attr) == NULL) {
+    if (osThreadNew((osThreadFunc_t)NetDemoTask, NULL, &attr) == NULL) {
         printf("[NetDemoEntry] Falied to create NetDemoTask!\n");
     }
 }
