@@ -23,8 +23,8 @@
 #include "cmsis_os2.h"
 #include "iot_i2c.h"
 #include "ohos_init.h"
-#include "app_demo_config.h"
 #include "app_demo_i2c_oled.h"
+#include "app_demo_config.h"
 
 static unsigned short g_hi3861BoardLedTest = 0;
 
