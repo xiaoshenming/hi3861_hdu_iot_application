@@ -16,7 +16,7 @@
 #ifndef IOT_MAIN_H
 #define IOT_MAIN_H
 
-typedef void (*fnMsgCallBack)(int qos, const char* topic, const char* payload);
+typedef void (*fnMsgCallBack)(int qos, char* topic, char* payload);
 
 /**
  * This is the iot main function. Please call this function first
