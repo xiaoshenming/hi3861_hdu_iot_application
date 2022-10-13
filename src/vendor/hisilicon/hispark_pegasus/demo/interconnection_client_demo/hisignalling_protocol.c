@@ -28,7 +28,7 @@
 #include "hisignalling_protocol.h"
 
 #define LED_TEST_GPIO        9
-#define LED_INTERVAL_TIME_US 300000
+#define LED_INTERVAL_TIME_US 300
 
 hi_u8 g_sendUartBuff[UART_BUFF_SIZE];
 
@@ -124,7 +124,6 @@ static hi_u32 HisignallingDataPackage(HisignallingProtocalType* buf, hi_u32 len,
 HisignallingErrorType HisignallingMsgReceive(hi_u8* buf, hi_u32 len)
 {
     hi_u32 crcCheckReceived = 0;
-    unsigned char testBuff[7] = { 0xaa, 0x55, 0x0, 0x2, 0x0, 0x8, 0xff };
     if (buf == HI_NULL && len > 0) {
         HISIGNALLING_LOG_FATAL("received buf is null");
         return HISGNALLING_RET_VAL_MAX;
@@ -145,19 +144,19 @@ HisignallingErrorType HisignallingMsgReceive(hi_u8* buf, hi_u32 len)
         }
     }
     IoTGpioSetOutputVal(LED_TEST_GPIO, 0);
-    usleep(LED_INTERVAL_TIME_US);
+    hi_sleep(LED_INTERVAL_TIME_US);
     IoTGpioSetOutputVal(LED_TEST_GPIO, 1);
-    usleep(LED_INTERVAL_TIME_US);
+    hi_sleep(LED_INTERVAL_TIME_US);
     /* 输出回显收到的数据 */
     if ((buf[0] == HISIGNALLING_MSG_FRAME_HEADER_1) && (buf[1] == HISIGNALLING_MSG_FRAME_HEADER_2)) {
-        for (int i = 0; i < len; i++) {
+        for (hi_u32 i = 0; i < len; i++) {
             HISIGNALLING_LOG_INFO("0x%x", buf[i]);
         }
     }
     return HISIGNALLING_RET_VAL_CORRECT;
 }
 /* hisignal Hi3861 message send */
-hi_u32 HisignallingMsgSend(char* buf, hi_u32 dataLen)
+hi_u32 HisignallingMsgSend(hi_u8* buf, hi_u32 dataLen)
 {
     HisignallingProtocalType hisignallingMsg = { 0 };
     hi_u8 hisignallingSendBuf[HISIGNALLING_MSG_BUFF_LEN] = { 0 };
@@ -191,10 +190,9 @@ int SetUartReceiveFlag(void)
     return recConfig.g_uartReceiveFlag;
 }
 
-hi_void* HisignallingMsgHandle(char* param)
+hi_void* HisignallingMsgHandle(void)
 {
     unsigned char* recBuff = NULL;
-
     while (1) {
         (void)memset_s(g_sendUartBuff, sizeof(g_sendUartBuff) / sizeof(g_sendUartBuff[0]), 0x0,
                        sizeof(g_sendUartBuff) / sizeof(g_sendUartBuff[0]));
@@ -221,9 +219,8 @@ hi_void* HisignallingMsgHandle(char* param)
     }
 }
 
-hi_u32 HisignalingMsgTask(hi_void)
+void HisignalingMsgTask(void)
 {
-    hi_u32 ret = 0;
     IoTGpioInit(LED_TEST_GPIO);
     IoTGpioSetDir(LED_TEST_GPIO, IOT_GPIO_DIR_OUT);
     osThreadAttr_t hisignallingAttr = { 0 };
@@ -234,8 +231,6 @@ hi_u32 HisignalingMsgTask(hi_void)
 
     if (osThreadNew((osThreadFunc_t)HisignallingMsgHandle, NULL, &hisignallingAttr) == NULL) {
         HISIGNALLING_LOG_ERROR("Failed to create hisignaling msg task\r\n");
-        return HI_ERR_FAILURE;
     }
-    return HI_ERR_SUCCESS;
 }
 SYS_RUN(HisignalingMsgTask);
