@@ -147,13 +147,13 @@ void WifiStaReadyWait(void)
     ConnectToHotspot();
 
     while (memcmp(&ipAddr, &ipAny, sizeof(ip4_addr_t)) == 0) {
-        IOT_LOG_DEBUG("Wait the DHCP READY");
+        printf("Wait the DHCP READY");
         hi_sleep(OS_SLEEP_1000MS);
         netifapi_netif_get_addr(gLwipNetif, &ipAddr, NULL, NULL);
     }
     wifi_first_connecting = WIFI_CONNECT_STATUS;
     printf("wifi first connecting status = %d\r\n", wifi_first_connecting);
-    IOT_LOG_DEBUG("wifi sta dhcp done");
+    printf("wifi sta dhcp done");
 
     return;
 }

@@ -16,7 +16,9 @@
 #include <cJSON.h>
 #include <string.h>
 #include <hi_mem.h>
+#include <hi_stdlib.h>
 #include "iot_log.h"
+#include "iot_main.h"
 #include "iot_profile.h"
 
 // format the report data to json string mode
@@ -237,8 +239,8 @@ static char* MakeProfileCmdResp(IoTCmdResp* payload)
 int IoTProfileCmdResp(char* deviceID, IoTCmdResp* payload)
 {
     int ret = -1;
-    const char* topic;
-    const char* msg;
+    char* topic;
+    char* msg;
 
     if ((deviceID == NULL) || (payload == NULL) || (payload->requestID == NULL)) {
         return ret;
@@ -246,7 +248,7 @@ int IoTProfileCmdResp(char* deviceID, IoTCmdResp* payload)
 
     topic = MakeTopic(CN_PROFILE_TOPICFMT_CMDRESP, deviceID, payload->requestID);
     if (topic == NULL) {
-        return;
+        return -1;
     }
     msg = MakeProfileCmdResp(payload);
     if ((topic != NULL) && (msg != NULL)) {
@@ -297,7 +299,7 @@ int IoTProfilePropertyReport(char* deviceID, IoTProfileService* payload)
     }
     topic = MakeTopic(CN_PROFILE_TOPICFMT_PROPERTYREPORT, deviceID, NULL);
     if (topic == NULL) {
-        return;
+        return -1;
     }
     msg = MakeProfilePropertyReport(payload);
     if ((topic != NULL) && (msg != NULL)) {

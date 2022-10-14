@@ -19,10 +19,13 @@
 #include "app_demo_multi_sample.h"
 #include "cmsis_os2.h"
 #include "iot_config.h"
+#include "hi_stdlib.h"
 #include "iot_log.h"
 #include "iot_main.h"
+#include "iot_watchdog.h"
 #include "iot_profile.h"
 #include "ohos_init.h"
+#include "app_demo_i2c_oled.h"
 #include "wifi_connecter.h"
 
 /* report traffic light count */
@@ -57,7 +60,6 @@ static int g_iState = 0;
 void TrafficLightAppOption(HiTrafficLightMode appOptionMode, HiControlModeType appOptionType)
 {
     unsigned char currentMode = 0;
-
     currentMode = SetKeyStatus(appOptionMode);
     switch (GetKeyStatus(CURRENT_MODE)) {
         case TRAFFIC_CONTROL_MODE:
@@ -72,13 +74,16 @@ void TrafficLightAppOption(HiTrafficLightMode appOptionMode, HiControlModeType a
         default:
             break;
     }
+    if (currentMode != 0 && appOptionMode != 0 && appOptionType != 0) {
+        printf("SetKeyStatus failed\r\n");
+    }
 }
 
 static void TrafficLightMsgRcvCallBack(char* payload)
 {
     unsigned char currentMode = 0;
     unsigned char currentType = 0;
-    IOT_LOG_DEBUG("PAYLOAD:%s\r\n", payload);
+    printf("PAYLOAD:%s\r\n", payload);
     if (strstr(payload, TRAFFIC_LIGHT_CMD_CONTROL_MODE) != NULL) {
         currentMode = SetKeyStatus(TRAFFIC_CONTROL_MODE);
         if (strstr(payload, TRAFFIC_LIGHT_YELLOW_ON_PAYLOAD) != NULL) { // YELLOW LED
@@ -120,12 +125,12 @@ static void TrafficLightMsgRcvCallBack(char* payload)
 
 // /< this is the callback function, set to the mqtt, and if any messages come, it will be called
 // /< The payload here is the json string
-static void DemoMsgRcvCallBack(int qos, const char* topic, char* payload)
+static void DemoMsgRcvCallBack(int qos, char* topic, char* payload)
 {
     const char* requesID;
     char* tmp;
     IoTCmdResp resp;
-    IOT_LOG_DEBUG("RCVMSG:QOS:%d TOPIC:%s PAYLOAD:%s\r\n", qos, topic, payload);
+    printf("RCVMSG:QOS:%d TOPIC:%s PAYLOAD:%s\r\n", qos, topic, payload);
     /* app 下发的操作 */
     TrafficLightMsgRcvCallBack(payload);
     tmp = strstr(topic, CN_COMMADN_INDEX);
@@ -180,15 +185,15 @@ void SetupTrflControlModule(HiTrafficLightMode currentMode, HiControlModeType cu
 {
     IoTProfileService service;
     IoTProfileKV property;
-    unsigned char status = 0;
 
     printf("traffic light:control module\r\n");
     if (currentMode != TRAFFIC_CONTROL_MODE && currentType != RED_ON) {
         printf("select current module is not the TRAFFIC_CONTROL_MODE\r\n");
-        return HI_NULL;
     }
-    status = SetKeyStatus(TRAFFIC_CONTROL_MODE);
-
+    unsigned char status = SetKeyStatus(TRAFFIC_CONTROL_MODE);
+    if (status != TRAFFIC_CONTROL_MODE) {
+        printf("SetKeyStatus failed");
+    }
     memset_s(&property, sizeof(property), 0, sizeof(property));
     property.type = EN_IOT_DATATYPE_STRING;
     property.key = "ControlModule";
@@ -255,15 +260,16 @@ void SetupTrflAutoModule(HiTrafficLightMode currentMode, HiControlModeType curre
 {
     IoTProfileService service;
     IoTProfileKV property;
-    unsigned char status = 0;
 
     printf("traffic light:auto module\r\n");
-    if (currentMode != TRAFFIC_AUTO_MODE) {
+    if (currentMode != TRAFFIC_AUTO_MODE && currentType != RED_ON) {
         printf("select current module is not the CONTROL_MODE\r\n");
-        return HI_NULL;
     }
     /* report beep status */
-    status = SetKeyStatus(TRAFFIC_AUTO_MODE);
+    unsigned char status = SetKeyStatus(TRAFFIC_AUTO_MODE);
+    if (status != TRAFFIC_AUTO_MODE) {
+        printf("SetKeyStatus failed");
+    }
     memset_s(&property, sizeof(property), 0, sizeof(property));
     property.type = EN_IOT_DATATYPE_STRING;
     property.key = "AutoModule";
@@ -285,14 +291,15 @@ void SetupTrflHumanModule(HiTrafficLightMode currentMode, HiControlModeType curr
 {
     IoTProfileService service;
     IoTProfileKV property;
-    unsigned char status = 0;
 
     printf("traffic light:human module\r\n");
-    if (currentMode != TRAFFIC_HUMAN_MODE) {
+    if (currentMode != TRAFFIC_HUMAN_MODE && currentType != RED_ON) {
         printf("select current module is not the CONTROL_MODE\r\n");
-        return HI_NULL;
     }
-    status = GetKeyStatus(TRAFFIC_HUMAN_MODE);
+    unsigned char status = GetKeyStatus(TRAFFIC_HUMAN_MODE);
+    if (status != TRAFFIC_HUMAN_MODE) {
+        printf("SetKeyStatus failed");
+    }
     memset_s(&property, sizeof(property), 0, sizeof(property));
     property.type = EN_IOT_DATATYPE_STRING;
     property.key = "HumanModule";
@@ -351,7 +358,6 @@ void TrafficLightStatusReport(HiTrafficLightMode currentMode, const TrflCallBack
         default:
             break;
     }
-    return HI_NULL;
 }
 
 static void ReportTrafficLightMsg(void)
@@ -372,14 +378,17 @@ static void ReportTrafficLightMsg(void)
 }
 ///< this is the demo main task entry,here we will set the wifi/cjson/mqtt ready ,and
 ///< wait if any work to do in the while
-static void* DemoEntry(const char* arg)
+static void DemoEntry(void)
 {
     hi_watchdog_disable();
     WifiStaReadyWait();
-    CJsonInit();
+    cJsonInit();
     printf("cJsonInit init \r\n");
     IoTMain();
-    IoTSetMsgCallback(DemoMsgRcvCallBack);
+    int ret = IoTSetMsgCallback(DemoMsgRcvCallBack);
+    if (ret != 0) {
+        printf("IoTSetMsgCallback failed\r\n");
+    }
 /* 主动上报 */
 #ifdef TAKE_THE_INITIATIVE_TO_REPORT
     while (1) {

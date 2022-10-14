@@ -16,29 +16,6 @@
 #ifndef APP_DEMO_CONFIG_H
 #define APP_DEMO_CONFIG_H
 
-#define SEND_OLED_FILL_SCRRENC_CMD ((unsigned char)0x0)
-#define SEND_CMD_LEN               (8)
-
-#define OLED_X_POSITION_0   (0)
-#define OLED_X_POSITION_15  (15)
-#define OLED_X_POSITION_16  (16)
-#define OLED_X_POSITION_18  (18)
-#define OLED_X_POSITION_40  (40)
-#define OLED_X_POSITION_48  (48)
-#define OLED_X_POSITION_56  (56)
-#define OLED_X_POSITION_60  (60)
-#define OLED_X_POSITION_81  (81)
-#define OLED_X_POSITION_120 (120)
-
-#define OLED_Y_POSITION_0 ((unsigned char)0x0)
-#define OLED_Y_POSITION_1 ((unsigned char)0x1)
-#define OLED_Y_POSITION_2 ((unsigned char)0x2)
-#define OLED_Y_POSITION_3 ((unsigned char)0x3)
-#define OLED_Y_POSITION_4 ((unsigned char)0x4)
-#define OLED_Y_POSITION_5 ((unsigned char)0x5)
-#define OLED_Y_POSITION_6 ((unsigned char)0x6)
-#define OLED_Y_POSITION_7 ((unsigned char)0x7)
-
 #define OLED_DISPLAY_STRING_TYPE_1  (1)
 #define OLED_DISPLAY_STRING_TYPE_16 (16)
 
@@ -109,8 +86,8 @@ void TrafficAutoModeSample(void);
 void TrafficNormalType(void);
 void TrafficHumanType(void);
 void TrafficHumanModeSample(void);
-void TrafficLightFunc(void);
 void SoftwareTimersTaskEntry(void);
 unsigned char GetLedStatus(TrafficLedStatusDef staDef);
 unsigned char SetTimeCount(unsigned char setTimeCount);
+void TrafficDisplay(void);
 #endif

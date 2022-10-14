@@ -13,20 +13,8 @@
  * limitations under the License.
  */
 
-#include <cJSON.h>
-#include <stdint.h>
-#include <hi_mem.h>
+#ifndef CJSON_INIT_H
+#define CJSON_INIT_H
 
-static void* cJsonMalloc(size_t sz)
-{
-    return hi_malloc(0, sz);
-}
-
-void cJsonInit(void)
-{
-    cJSON_Hooks hooks;
-    hooks.malloc_fn = cJsonMalloc;
-    cJSON_InitHooks(&hooks);
-
-    return;
-}
+void cJsonInit(void);
+#endif
