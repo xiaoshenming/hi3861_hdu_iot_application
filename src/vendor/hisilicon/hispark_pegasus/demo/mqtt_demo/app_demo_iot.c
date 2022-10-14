@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-#include "stdio.h"
+#include <stdio.h>
 #include <string.h>
 #include <hi_gpio.h>
 #include <hi_io.h>
@@ -44,7 +44,7 @@ typedef void (*FnMsgCallBack)(hi_gpio_value val);
 typedef struct FunctionCallback {
     hi_bool stop;
     hi_u32 conLost;
-    unsigned char * queueID;
+    unsigned char* queueID;
     hi_u32 iotTaskID;
     FnMsgCallBack msgCallBack;
 } FunctionCallback;

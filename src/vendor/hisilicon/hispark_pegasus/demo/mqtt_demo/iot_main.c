@@ -82,13 +82,13 @@ static const char* gDefaultSubscribeTopic[] = {
 };
 
 #define CN_TOPIC_SUBSCRIBE_NUM (sizeof(gDefaultSubscribeTopic) / sizeof(const char*))
-static int MsgRcvCallBack(void *context, char* topic, int topicLen, MQTTClient_message* message)
+static int MsgRcvCallBack(char *context, char* topic, int topicLen, MQTTClient_message* message)
 {
     (void) context;
     IoTMsg_t* msg;
     char* buf;
     unsigned int bufSize;
-    int topiLen = topicLen; 
+    int topiLen = topicLen;
     if (topiLen == 0) {
         topiLen = strlen(topic);
     }
@@ -121,7 +121,7 @@ static int MsgRcvCallBack(void *context, char* topic, int topicLen, MQTTClient_m
 }
 
 // < when the connect lost and this callback will be called
-static void ConnLostCallBack(void* context, char* cause)
+static void ConnLostCallBack(char* context, char* cause)
 {
     (void) context;
     printf("Connection lost:caused by:%s\r\n", cause == NULL ? "Unknown" : cause);
@@ -208,7 +208,7 @@ static void MainEntryProcess(void)
     connOpts.password = userPwd;
     connOpts.MQTTVersion = MQTTVERSION_3_1_1;
     printf("CLIENTID:%s USERID:%s USERPWD:%s, IOTSERVER:%s\r\n", clientID, userID,
-                  userPwd == NULL ? "NULL" : userPwd, CN_IOT_SERVER);
+           userPwd == NULL ? "NULL" : userPwd, CN_IOT_SERVER);
     rc = MQTTClient_create(&client, CN_IOT_SERVER, clientID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
     if (rc != MQTTCLIENT_SUCCESS) {
         if (userPwd != NULL) {
