@@ -37,6 +37,4 @@
 // #define CONFIG_MQTT_SSL_X509 which means use the x509 mode, and must enable the SSL;
 // if both disabled, it means use the tcp mode
 /* app_demo_iot entery function */
-
-static void AppDemoIot(void);
 #endif

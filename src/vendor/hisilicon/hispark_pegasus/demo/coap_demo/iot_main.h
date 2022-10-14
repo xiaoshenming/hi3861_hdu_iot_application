@@ -40,5 +40,4 @@ int IoTSetMsgCallback(FnMsgCallBack msgCallback);
  * not means communicate with the server success
  */
 int IotSendMsg(int qos, const char* topic, const char* payload);
-
 #endif /* IOT_MAIN_H_ */

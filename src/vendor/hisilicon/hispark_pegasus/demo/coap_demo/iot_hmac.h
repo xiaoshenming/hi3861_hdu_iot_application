@@ -33,4 +33,5 @@
  * @return:0 success while others failed
  */
 int HmacGeneratePwd(unsigned char* content, int contentLen, unsigned char* key, int keyLen, unsigned char* buf);
+
 #endif
