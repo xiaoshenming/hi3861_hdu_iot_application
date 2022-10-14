@@ -85,7 +85,7 @@ static const char* g_defaultSubscribeTopic[] = {
 
 #define CN_TOPIC_SUBSCRIBE_NUM (sizeof(g_defaultSubscribeTopic) / sizeof(const char*))
 
-static int MsgRcvCallBack(void* context, char* topic, int topicLen, MQTTClient_message* message)
+static int MsgRcvCallBack(void *context, char* topic, int topicLen, MQTTClient_message* message)
 {
     (void) context;
     IoTMsgT* msg;
@@ -125,7 +125,7 @@ static int MsgRcvCallBack(void* context, char* topic, int topicLen, MQTTClient_m
 }
 
 // when the connect lost and this callback will be called
-static void ConnLostCallBack(void* context, char* cause)
+static void ConnLostCallBack(void *context, char* cause)
 {
     (void) context;
     printf("Connection lost:caused by:%s\r\n", cause == NULL ? "Unknown" : cause);
@@ -273,7 +273,7 @@ static void MainEntry(void)
 
 int IoTMain(void)
 {
-   osThreadAttr_t attr;
+    osThreadAttr_t attr;
     g_ioTAppCb.queueID = osMessageQueueNew(CN_QUEUE_MSGNUM, CN_QUEUE_MSGSIZE, NULL);
     attr.name = CN_TASK_NAME;
     attr.attr_bits = 0U;
