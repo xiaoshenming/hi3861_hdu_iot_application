@@ -22,6 +22,7 @@
 #include "hi_io.h"
 #include "hi_time.h"
 #include "iot_gpio.h"
+#include "iot_watchdog.h"
 #include "ohos_init.h"
 
 #define TASK_STAK_SIZE (1024 * 10)
@@ -63,9 +64,8 @@ float GetDistance(void)
     return distance;
 }
 
-void RobotTask()
+void RobotTask(void)
 {
-    (void)parame;
     printf("start test hcsr04\r\n");
     unsigned int time = 200;
     while (1) {
@@ -87,7 +87,7 @@ static void RobotDemo(void)
     attr.stack_size = TASK_STAK_SIZE;
     attr.priority = osPriorityNormal;
 
-    if (osThreadNew(RobotTask, NULL, &attr) == NULL) {
+    if (osThreadNew((osThreadFunc_t)RobotTask, NULL, &attr) == NULL) {
         printf("[RobotDemo] Falied to create RobotTask!\n");
     }
 }
