@@ -27,12 +27,11 @@
 #include "udp_config.h"
 #include "wifi_device.h"
 #include "wifi_device_config.h"
+#include "wifi_sta_connect.h"
 
 #define APP_INIT_VAP_NUM 2
 #define APP_INIT_USR_NUM 2
 
-static struct netif* g_lwipNetif = NULL;
-static hi_bool g_scanDone = HI_FALSE;
 static struct netif* g_iface = NULL;
 void WifiStaStop(int netId);
 static int WifiStaStart(void);
@@ -45,10 +44,8 @@ int g_staConnect = 0;
  @param WifiLinkedInfo: wifi sta struct,include device's SSID,BSSID,IP address, and so on...
  @param info : wifi sta link information
 */
-static void PrintLinkedInfo(const WifiLinkedInfo* info)
+static void PrintLinkedInfo(WifiLinkedInfo* info)
 {
-    int ret = 0;
-
     if (!info) {
         return;
     }
@@ -66,7 +63,7 @@ static void PrintLinkedInfo(const WifiLinkedInfo* info)
  @param info : wifi sta link information
  @param state: wifi state
 */
-static void OnWifiConnectionChanged(int state, const WifiLinkedInfo* info)
+static void OnWifiConnectionChanged(int state, WifiLinkedInfo* info)
 {
     if (!info) {
         return;

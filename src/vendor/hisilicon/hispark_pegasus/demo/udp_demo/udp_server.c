@@ -13,20 +13,20 @@
  * limitations under the License.
  */
 
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "lwip/netifapi.h"
-
 #include <hi_gpio.h>
 #include <hi_io.h>
 #include <hi_task.h>
 #include <hi_watchdog.h>
 #include "cmsis_os2.h"
 #include "ohos_init.h"
+#include "wifi_sta_connect.h"
+#include "sockets.h"
 #include "udp_config.h"
-
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #define INVAILD_SOCKET     (-1)
 #define FREE_CPU_TIME_20MS (20)
@@ -78,7 +78,7 @@ int UdpTransportInit(struct sockaddr_in serAddr, struct sockaddr_in remoteAddr)
     int sServer = socket(AF_INET, SOCK_DGRAM, 0);
     if (sServer == INVAILD_SOCKET) {
         printf("create server socket failed\r\n");
-        close(sServer);
+        closesocket(sServer);
     }
     // 本地主机ip和端口号
     serAddr.sin_family = AF_INET;
@@ -86,17 +86,20 @@ int UdpTransportInit(struct sockaddr_in serAddr, struct sockaddr_in remoteAddr)
     serAddr.sin_addr.s_addr = inet_addr(NATIVE_IP_ADDRESS);
     if (bind(sServer, (struct sockaddr*)&serAddr, sizeof(serAddr)) == -1) {
         printf("bind socket failed\r\n");
-        close(sServer);
+        closesocket(sServer);
     }
     // 对方ip和端口号
     remoteAddr.sin_family = AF_INET;
     remoteAddr.sin_port = htons(DEVICE_PORT);
+    if (sizeof(remoteAddr) == 0) {
+        return -1;
+    }
     serAddr.sin_addr.s_addr = htons(INADDR_ANY);
 
     return sServer;
 }
 
-void* UdpServerDemo(const char* param)
+void UdpServerDemo(void)
 {
     struct sockaddr_in serAddr = { 0 };
     struct sockaddr_in remoteAddr = { 0 };
@@ -104,7 +107,6 @@ void* UdpServerDemo(const char* param)
     char* sendData = NULL;
     int sServer = 0;
 
-    (char*)(param);
     printf(" This Pegasus udp server demo\r\n");
     sServer = UdpTransportInit(serAddr, remoteAddr);
 
@@ -146,8 +148,7 @@ void* UdpServerDemo(const char* param)
         }
         hi_sleep(FREE_CPU_TIME_20MS);
     }
-    close(sServer);
-    return NULL;
+    closesocket(sServer);
 }
 
 #define UDP_TASK_STACKSIZE 0x1000

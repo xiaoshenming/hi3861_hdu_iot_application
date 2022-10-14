@@ -24,7 +24,7 @@
 static struct netif* g_lwipNetif = NULL;
 
 /* clear netif's ip, gateway and netmask */
-void HiSoftapResetAddr(const struct netif* pstLwipNetif)
+void HiSoftapResetAddr(struct netif* pstLwipNetif)
 {
     ip4_addr_t st_gw;
     ip4_addr_t st_ipaddr;
@@ -49,12 +49,9 @@ int HiWifiStartSoftap(void)
     char ifname[WIFI_IFNAME_MAX_SIZE + 1] = { 0 };
     int len = sizeof(ifname);
     hi_wifi_softap_config hapd_conf = { 0 };
-    const unsigned char wifiVapResNum = APP_INIT_VAP_NUM;
-    const unsigned char wifiUserResNum = APP_INIT_USR_NUM;
     ip4_addr_t st_gw;
     ip4_addr_t st_ipaddr;
     ip4_addr_t st_netmask;
-    ip4_addr_t st_port;
 
     rc = memcpy_s(hapd_conf.ssid, HI_WIFI_MAX_SSID_LEN + 1, "XXXXXXXX", 9); /* 9:ssid length */
     if (rc != EOK) {

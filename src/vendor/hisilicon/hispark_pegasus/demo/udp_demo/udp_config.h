@@ -53,5 +53,5 @@ please modify the DEVICE CA AND PRIVATE KEY IN iot_main.c
 /* Tencent iot Cloud user ID , password */
 #define CONFIG_USER_ID  "xxxxxxxx"
 #define CONFIG_USER_PWD "xxxxxxxx"
-
+void UdpServerDemo(void);
 #endif

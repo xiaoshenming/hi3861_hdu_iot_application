@@ -13,11 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef WIFI_SOFTAP_H
-#define WIFI_SOFTAP_H
+#ifndef WIFI_STA_CONNECT_H
+#define WIFI_STA_CONNECT_H
 
-int HiWifiStartSoftap(void);
-
-void HiWifiStopSoftap(void);
 void WifiStaModule(void);
 #endif /* __WIFI_STA_H__ */
