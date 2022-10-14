@@ -17,6 +17,6 @@
 #define APP_DEMO_GL5537_H
 
 unsigned char GetLightStatus(void);
-void GetGpio5Voltage(const char* param);
+void GetGpio5Voltage(char* arg);
 
 #endif

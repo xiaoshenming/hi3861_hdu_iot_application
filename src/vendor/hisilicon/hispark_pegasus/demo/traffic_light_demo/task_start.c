@@ -19,17 +19,17 @@
 #include "cmsis_os2.h"
 #include "iot_watchdog.h"
 #include "ohos_init.h"
+#include "app_demo_traffic_sample.h"
 
 #define TASK_STACK          (1024 * 4)
 #define INTERRUPT_TASK_PRIO (26)
 #define TRAFFIC_TASK_PRIO   (25)
-void KeyInterruptScan(const char* arg)
+void KeyInterruptScan(void)
 {
-    (void)arg;
     AppMultiSampleDemo();
 }
 
-void TrafficLightDemo(const char* arg)
+void TrafficLightDemo(void)
 {
     printf("traffic light open ok\r\n");
     TrafficLightFunc();

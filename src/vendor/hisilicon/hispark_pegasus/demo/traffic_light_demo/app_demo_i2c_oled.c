@@ -269,7 +269,6 @@ static unsigned int I2cWriteByte(unsigned char regAddr, unsigned char cmd)
             return status;
         }
     }
-
     return 0;
 }
 
@@ -282,6 +281,7 @@ static unsigned int WriteCmd(unsigned char cmd) // 写命令
     if (status != 0) {
         return -1;
     }
+    return 0;
 }
 /* 写数据操作 */
 static unsigned int WriteData(unsigned char i2cData) // 写数据
@@ -292,6 +292,7 @@ static unsigned int WriteData(unsigned char i2cData) // 写数据
     if (status != 0) {
         return -1;
     }
+    return 0;
 }
 static int SetOledAddress(void)
 {
@@ -549,7 +550,7 @@ void OledShowChar(unsigned char x, unsigned char y, unsigned char chr, unsigned 
  * chr:write data
  * char_size:select typeface
  */
-void OledShowStr(unsigned char x, unsigned char y, unsigned char* chr, unsigned char charSize)
+void OledShowStr(unsigned char x, unsigned char y, char* chr, unsigned char charSize)
 {
     unsigned char j = 0;
     unsigned char xPosition = x;
