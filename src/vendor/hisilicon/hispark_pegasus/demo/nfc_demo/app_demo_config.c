@@ -13,12 +13,14 @@
  * limitations under the License.
  */
 
+#include <stdio.h>
 #include <unistd.h>
-#include "c081_nfc.h"
+#include "app_demo_nfc.h"
 #include "cmsis_os2.h"
 #include "iot_gpio.h"
 #include "iot_gpio_ex.h"
 #include "iot_i2c.h"
+#include "hi_stdlib.h"
 #include "ohos_init.h"
 #include "ssd1306_oled.h"
 #include "app_demo_config.h"
@@ -126,7 +128,7 @@ void EepWritePage(unsigned char* pBuffer, unsigned short WriteAddr, unsigned cha
 {
     C08iNfcI2cWrite((unsigned char)((WriteAddr & 0xFF00) >> 8), /* 8: right move 8 bit */
                     (unsigned char)(WriteAddr & 0x00FF), pBuffer, dataLen);
-    hi_udelay(DELAY_10MS); // 必须延时10ms
+    TaskMsleep(DELAY_10MS); // 必须延时10ms
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO9, IOT_GPIO_VALUE1);
     printf("----- EepWritePage %d ! -----\r\n\n", __LINE__);
 }

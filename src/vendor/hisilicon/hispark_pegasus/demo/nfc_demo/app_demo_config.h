@@ -85,9 +85,6 @@ typedef enum { NONE, CC_FILE, NDEF_FILE } T4T_FILE;
 
 typedef enum { NFC_RECOVERY = 0, NFC_CLEAN } NFCCleanStopSignal;
 
-#define SEND_OLED_FILL_SCRRENC_CMD ((unsigned char)0x0)
-#define SEND_CMD_LEN               (8)
-
 #define OLED_X_POSITION_0   (0)
 #define OLED_X_POSITION_15  (15)
 #define OLED_X_POSITION_16  (16)
@@ -115,4 +112,5 @@ void SetNdefData(void);
 unsigned char GetNdefData(unsigned char* ndefFileData, unsigned int ndefLen);
 void NfcRead(void);
 hi_void OledNfcDisplay(hi_void);
+void Fm11WriteEep(unsigned short addr, unsigned int len, unsigned char* wbuf);
 #endif

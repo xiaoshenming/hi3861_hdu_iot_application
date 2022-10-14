@@ -13,14 +13,16 @@
  * limitations under the License.
  */
 
-#include "c081_nfc.h"
+#include <stdio.h>
 #include "cmsis_os2.h"
+#include "hi_stdlib.h"
 #include "iot_gpio.h"
 #include "iot_gpio_ex.h"
 #include "iot_i2c.h"
 #include "ohos_init.h"
 #include "ssd1306_oled.h"
 #include "app_demo_config.h"
+#include "app_demo_nfc.h"
 
 unsigned char readReg = 0;
 #define SEND_CMD_LEN       (2)
@@ -69,9 +71,8 @@ void NfcInit(void)
     Fm11WriteEep(EEPROM_CMD_2, SEND_EEPROM_CMD_LEN, &wBuf[SEND_EEPROM_DATA_2]); /* send EEPROM cmd */
 }
 
-void* NfcTask(const char* param)
+void NfcTask(void)
 {
-    (void)param;
     IoTGpioInit(IOT_IO_NAME_GPIO_13);
     IoSetFunc(IOT_IO_NAME_GPIO_13, IOT_IO_FUNC_GPIO_13_I2C0_SDA);
     IoTGpioInit(IOT_IO_NAME_GPIO_14);
@@ -104,7 +105,7 @@ void NfcExampleEntry(void)
 SYS_RUN(NfcExampleEntry);
 
 /* nfc display */
-void* AppNfcDisplay(char* param)
+void AppNfcDisplay(void)
 {
     for (;;) {
         OledNfcDisplay();

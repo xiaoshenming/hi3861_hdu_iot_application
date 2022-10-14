@@ -20,6 +20,7 @@
 #include <hi_watchdog.h>
 #include "iot_errno.h"
 #include "iot_gpio.h"
+#include "iot_pwm.h"
 #include "ssd1306_oled.h"
 #include "app_demo_i2c_oled.h"
 #include "iot_gpio_ex.h"
@@ -83,13 +84,6 @@ unsigned char GetKeyStatus(GloableStatuDef staDef)
     return status;
 }
 
-/* factory test HiSpark board */
-void HisparkBoardTest(IotGpioValue value)
-{
-    IoSetFunc(HI_GPIO_9, 0); // GPIO9
-    IoTGpioSetDir(HI_GPIO_9, IOT_GPIO_DIR_OUT); // GPIO9
-    IoTGpioSetOutputVal(HI_GPIO_9, value); // GPIO9
-}
 /* gpio init */
 void GpioControl(unsigned int gpio, unsigned int id, IotGpioDir dir, IotGpioValue  gpioVal,
                  unsigned char val)
@@ -180,7 +174,7 @@ void ControlModeSample(void)
             AllLightOut();
             break;
         }
-        hi_sleep(SLEEP_1_MS);
+        TaskMsleep(SLEEP_1_MS);
     }
 }
 
@@ -198,10 +192,10 @@ unsigned char DelayAndCheckKeyInterrupt(unsigned int delayTime)
         if ((currentMode != GetKeyStatus(CURRENT_MODE)) || (currentType != GetKeyStatus(CURRENT_TYPE))) {
             return KEY_DOWN_INTERRUPT;
         }
-        hi_udelay(DELAY_5_MS); // 10ms
-        hi_sleep(SLEEP_1_MS);
+        TaskMsleep(DELAY_5_MS); // 10ms
+        TaskMsleep(SLEEP_1_MS);
     }
-    return HI_NULL;
+    return 0;
 }
 
 /* 红、黄、绿每1秒轮流亮 */
@@ -230,7 +224,7 @@ void CycleForOneSecond(void)
             break;
         }
         IoTPwmStart(HI_PWM3, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 3 */
-        hi_sleep(SLEEP_1_MS);
+        TaskMsleep(SLEEP_1_MS);
     }
 }
 
@@ -259,7 +253,7 @@ void CycleForHalfSecond(void)
             break;
         }
         IoTPwmStart(HI_PWM3, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 3 */
-        hi_sleep(SLEEP_1_MS);
+        TaskMsleep(SLEEP_1_MS);
     }
 }
 
@@ -290,7 +284,7 @@ void CycleForQuarterSecond(void)
             break;
         }
         IoTPwmStart(HI_PWM3, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 3 */
-        hi_sleep(SLEEP_1_MS);
+        TaskMsleep(SLEEP_1_MS);
     }
 }
 
@@ -329,7 +323,7 @@ void ColorfulLightSample(void)
         if ((currentMode != GetKeyStatus(CURRENT_MODE)) || (currentType != GetKeyStatus(CURRENT_TYPE))) {
             break;
         }
-        hi_sleep(SLEEP_1_MS);
+        TaskMsleep(SLEEP_1_MS);
     }
 }
 
@@ -346,9 +340,9 @@ void RedLightDarkToBright(void)
         for (unsigned int i = 1; i < DELAY_TIMES_100; i++) { /* 计算延时100次 */
             IoTPwmStart(HI_PWM1, i, PWM_SMALL_DUTY); /* 1 */
             if ((currentMode != GetKeyStatus(CURRENT_MODE)) || (currentType != GetKeyStatus(CURRENT_TYPE))) {
-                return NULL;
+                break;
             }
-            hi_sleep((SLEEP_6_S - i + 1) / SLEEP_30_MS); /* 1 */
+            TaskMsleep((SLEEP_6_S - i + 1) / SLEEP_30_MS); /* 1 */
         }
     }
 }
@@ -366,9 +360,9 @@ void GreenLightDarkToBright(void)
         for (hi_s32 i = 1; i < DELAY_TIMES_100; i++) { /* 计算延时100次 */
             IoTPwmStart(HI_PWM2, i, PWM_SMALL_DUTY); /* PWM0 */
             if ((currentMode != GetKeyStatus(CURRENT_MODE)) || (currentType != GetKeyStatus(CURRENT_TYPE))) {
-                return NULL;
+                break;
             }
-            hi_sleep((SLEEP_6_S - i + 1) / SLEEP_30_MS); /* 1 */
+            TaskMsleep((SLEEP_6_S - i + 1) / SLEEP_30_MS); /* 1 */
         }
     }
 }
@@ -385,11 +379,11 @@ void BlueLightDarkToBright(void)
     while (1) {
         for (int i = 1; i < DELAY_TIMES_100; i++) { /* 计算延时100次 */
             if ((currentMode != GetKeyStatus(CURRENT_MODE)) || (currentType != GetKeyStatus(CURRENT_TYPE))) {
-                return NULL;
+                break;
             }
             IoTPwmStart(HI_PWM3, i, PWM_SMALL_DUTY); /* PWM3 */
 
-            hi_sleep((SLEEP_6_S - i + 1) / SLEEP_30_MS); /* 1 */
+            TaskMsleep((SLEEP_6_S - i + 1) / SLEEP_30_MS); /* 1 */
         }
     }
 }
@@ -409,9 +403,9 @@ void PurpleLightDarkToBright(void)
             IoTPwmStart(HI_PWM2, i, PWM_SMALL_DUTY); /* 2 */
             IoTPwmStart(HI_PWM3, PWM_FRQ_50 + (i * PWM_FRQ_10), PWM_SMALL_DUTY); /* 3 */
             if ((currentMode != GetKeyStatus(CURRENT_MODE)) || (currentType != GetKeyStatus(CURRENT_TYPE))) {
-                return NULL;
+                break;
             }
-            hi_sleep(SLEEP_50_MS);
+            TaskMsleep(SLEEP_50_MS);
         }
     }
 }
@@ -431,9 +425,9 @@ void AllLightDarkToBright(void)
             IoTPwmStart(HI_PWM2, i, PWM_SMALL_DUTY); /* 2 */
             IoTPwmStart(HI_PWM3, i, PWM_SMALL_DUTY); /* 3 */
             if ((currentMode != GetKeyStatus(CURRENT_MODE)) || (currentType != GetKeyStatus(CURRENT_TYPE))) {
-                return NULL;
+                break;
             }
-            hi_sleep((SLEEP_6_S - i + 1) / SLEEP_30_MS); /* 1 */
+            TaskMsleep((SLEEP_6_S - i + 1) / SLEEP_30_MS); /* 1 */
         }
     }
 }
@@ -482,7 +476,7 @@ void PwmControlSample(void)
         if ((currentMode != GetKeyStatus(CURRENT_MODE)) || (currentType != GetKeyStatus(CURRENT_TYPE))) {
             break;
         }
-        hi_sleep(SLEEP_20_MS);
+        TaskMsleep(SLEEP_20_MS);
     }
 }
 
@@ -519,7 +513,7 @@ void BrightnessControlSample(void)
         if ((currentMode != GetKeyStatus(CURRENT_MODE)) || (currentType != GetKeyStatus(CURRENT_TYPE))) {
             break;
         }
-        hi_sleep(SLEEP_10_MS);
+        TaskMsleep(SLEEP_10_MS);
     }
 }
 
@@ -564,7 +558,7 @@ void HumanDetectSample(void)
             IoTPwmStart(HI_PWM3, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 3,占空比百分之50 */
             break;
         }
-        hi_sleep(SLEEP_1_MS);
+        TaskMsleep(SLEEP_1_MS);
     }
 }
 
@@ -595,7 +589,7 @@ void LightDetectSample(void)
             IoTPwmStart(HI_PWM3, PWM_LOW_DUTY, PWM_SMALL_DUTY); /* 3,占空比百分之50 */
             break;
         }
-        hi_sleep(SLEEP_1_MS);
+        TaskMsleep(SLEEP_1_MS);
     }
 }
 
@@ -643,7 +637,7 @@ void UnionDetectSample(void)
             IoTPwmStart(HI_PWM1, PWM_LOW_DUTY, PWM_SMALL_DUTY);
             break;
         }
-        hi_sleep(SLEEP_1_MS);
+        TaskMsleep(SLEEP_1_MS);
     }
 }
 
@@ -672,7 +666,10 @@ void ReturnMainEnumSample(void)
         if (currentMode != GetKeyStatus(CURRENT_MODE)) {
             break;
         }
-        task_msleep(SLEEP_1_MS);
+        TaskMsleep(SLEEP_1_MS);
+    }
+    if (currentType == 0) {
+        printf("select fail\r\n");
     }
 }
 void Gpio9LedLightFunc(void)
@@ -680,10 +677,8 @@ void Gpio9LedLightFunc(void)
     globalStaType.g_gpio9Tick++;
     if (globalStaType.g_gpio9Tick % PAIR_2 == 0) { /* tick 时间 对2 求余， 余数为0则打开LED灯，否则关闭LED灯，即不断闪烁 */
         printf("led off\r\n");
-        HisparkBoardTest(IOT_GPIO_VALUE1);
     } else {
         printf("led on\r\n");
-        HisparkBoardTest(IOT_GPIO_VALUE1);
     }
 }
 
@@ -715,6 +710,9 @@ void OledShowMenuSelect(void)
         default:
             break;
     }
+    if (currentMode == 0) {
+        printf("select fail\r\n");
+    }
 }
 
 /*
@@ -727,7 +725,6 @@ void GpioKey1IsrFuncMode(void)
     unsigned int currentGpio5Tick = hi_get_tick();
     unsigned int tickInterval = currentGpio5Tick - globalStaType.g_gpio5Tick;
     if (tickInterval < KEY_INTERRUPT_PROTECT_TIME) {
-        return HI_NULL;
     }
     globalStaType.g_gpio5Tick = currentGpio5Tick;
     globalStaType.g_keyDownFlag = KEY_GPIO_5;
@@ -738,6 +735,9 @@ void GpioKey1IsrFuncMode(void)
         if (globalStaType.g_currentMode > NFC_RETURN_MODE) {
             globalStaType.g_currentMode = 0;
         }
+    }
+    if (currentType == 0) {
+        printf("select fail\r\n");
     }
 }
 
@@ -776,6 +776,9 @@ void OledShowColorfulLightMenuSelect(void)
         default:
             break;
     }
+    if (currentType == 0) {
+        printf("select fail\r\n");
+    }
 }
 void OledShowTrafficLightMenuSelect(void)
 {
@@ -804,6 +807,9 @@ void OledShowTrafficLightMenuSelect(void)
         default:
             break;
     }
+    if (currentType == 0) {
+        printf("select fail\r\n");
+    }
 }
 /*
  * 按键7每按下一次，就会产生中断并调用该函数
@@ -816,7 +822,6 @@ void GpioKey2IsrFuncType(void)
     unsigned int tickInterval = currentGpio7Tick - globalStaType.g_gpio7Tick;
 
     if (tickInterval < KEY_INTERRUPT_PROTECT_TIME) {
-        return HI_NULL;
     }
     globalStaType.g_gpio7Tick = currentGpio7Tick;
     globalStaType.g_keyDownFlag = KEY_GPIO_7;
@@ -825,16 +830,15 @@ void GpioKey2IsrFuncType(void)
     OledShowTrafficLightMenuSelect();
 }
 
-void Gpio8Interrupt(const char *param)
+void Gpio8Interrupt(char *arg)
 {
-    hi_unref_param(param);
+    (void) arg;
     unsigned int currentGpio8Tick = hi_get_tick();
     unsigned int tickInterval = currentGpio8Tick - globalStaType.g_gpio8Tick;
     printf("gpio8 interrupt \r\n");
 
     if (tickInterval < KEY_INTERRUPT_PROTECT_TIME) {
         printf("gpio8 interrupt return\r\n");
-        return HI_NULL;
     }
     globalStaType.g_gpio8CurrentType++;
     if (globalStaType.g_gpio8CurrentType % PAIR_2 == 0) {  /* tick 时间 对2 求余， 余数为0则打开蜂鸣器响，否则关闭L蜂鸣器 */

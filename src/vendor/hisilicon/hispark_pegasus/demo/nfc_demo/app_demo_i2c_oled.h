@@ -17,8 +17,8 @@
 #define APP_DEMO_I2C_OLED_H
 
 void AllLedOff(void);
-void OledShowStr(unsigned char x, unsigned char y, unsigned char* chr, unsigned char charSize);
 void OledPositionCleanScreen(unsigned char fillData, unsigned char line, unsigned char pos, unsigned char len);
+void OledShowStr(unsigned char x, unsigned char y, char* chr, unsigned char charSize);
 unsigned int OledInit(void);
 
 #endif

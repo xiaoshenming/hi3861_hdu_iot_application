@@ -20,8 +20,8 @@
 #include <stdlib.h>
 #include <memory.h>
 #include <hi_time.h>
-#include <hi_watchdog.h>
 #include <hi_io.h>
+#include "iot_gpio.h"
 #include "ssd1306_oled.h"
 #include "hi_gpio.h"
 #include "iot_gpio_ex.h"
@@ -49,8 +49,8 @@
 #define MAX_TRAFFIC_AUTO_TYPE       (2)
 #define MAX_TRAFFIC_HUMAN_TYPE      (1)
 
-#define OLED_FALG_ON                ((hi_u8)0x01)
-#define OLED_FALG_OFF               ((hi_u8)0x00)
+#define OLED_FALG_ON                1
+#define OLED_FALG_OFF               0
 
 #define  KEY_GPIO_5                 (1)
 #define  KEY_GPIO_7                 (2)
@@ -70,17 +70,6 @@
 #define TRAFFIC_HUMAN_MODE_TIME_CONUT           (3)
 
 #define COUNT_NUM (3)
-
-#define FACTORY_HISPARK_BOARD_TEST(fmt, ...) \
-do { \
-    printf(fmt, ##__VA_ARGS__); \
-    for (hi_s32 i = 0; i < COUNT_NUM; i++) { \
-        HisparkBoardTest(HI_GPIO_VALUE0); \
-        hi_udelay(DELAY_250_MS); \
-        HisparkBoardTest(HI_GPIO_VALUE1); \
-        hi_udelay(DELAY_250_MS); \
-    } \
-} while (0)
 
 typedef enum {
     HI_GPIO_0 = 0,
@@ -255,7 +244,6 @@ typedef struct {
 
 void GpioKey1IsrFuncMode(void);
 void GpioKey2IsrFuncType(void);
-void HisparkBoardTest(IotGpioValue value);
 void GpioControl(unsigned int gpio, unsigned int id, IotGpioDir dir, IotGpioValue gpioVal, unsigned char val);
 void PwmInit(unsigned int id, unsigned char val, unsigned int port);
 void HiSwitchInit(unsigned int id, unsigned char val, unsigned int idx, IotGpioDir dir, IotIoPull pval);
@@ -279,7 +267,7 @@ void LightDetectSample(void);
 void UnionDetectSample(void);
 void ReturnMainEnumSample(void);
 void Gpio9LedLightFunc(void);
-void Gpio8Interrupt(const char *param);
+void Gpio8Interrupt(char *arg);
 void AppMultiSampleDemo(void);
 unsigned char SetKeyStatus(HiColorfulLightMode setSta);
 unsigned char SetKeyType(HiColorfulLightMode setSta);

@@ -103,12 +103,7 @@ typedef enum {
     TOT_I2C_IDX_1,
 } IotI2cIdx;
 
-static unsigned int I2cWriteByte(unsigned char regAddr, unsigned char cmd);
-static unsigned int WriteCmd(unsigned char cmd);
-static unsigned int WriteData(unsigned char i2cData);
 unsigned int OledInit(void);
 void OledSetPosition(unsigned char x, unsigned char y);
 void OledFillScreen(unsigned char fiiData);
-void OledShowChar(unsigned char x, unsigned char y, unsigned char chr, unsigned char charSize);
-void OledShowStr(unsigned char x, unsigned char y, unsigned char* chr, unsigned char charSize);
 #endif

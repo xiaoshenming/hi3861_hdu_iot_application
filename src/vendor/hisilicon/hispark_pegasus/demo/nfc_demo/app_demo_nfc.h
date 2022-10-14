@@ -13,10 +13,11 @@
  * limitations under the License.
  */
 
-#ifndef APP_DEMO_GL5537_H
-#define APP_DEMO_GL5537_H
+#ifndef APP_DEMO_NFC_H
+#define APP_DEMO_NFC_H
 
-unsigned char GetLightStatus(void);
-void GetGpio5Voltage(char* arg);
+void NfcInit(void);
+unsigned int WriteRead(unsigned char regHigh8bitCmd, unsigned char regLow8bitCmd, unsigned char* recvData,
+                       unsigned char sendLen, unsigned char readLen);
 
 #endif

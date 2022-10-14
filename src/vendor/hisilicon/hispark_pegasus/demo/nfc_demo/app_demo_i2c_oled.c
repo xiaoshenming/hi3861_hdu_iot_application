@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include "app_demo_config.h"
 #include "app_demo_multi_sample.h"
-#include "c081_nfc.h"
+#include "app_demo_nfc.h"
 #include "cmsis_os2.h"
 #include "hi_time.h"
 #include "iot_gpio.h"
@@ -314,6 +314,7 @@ static unsigned int WriteCmd(unsigned char cmd) // 写命令
     if (status != 0) {
         return -1;
     }
+    return 0;
 }
 
 /* 写数据操作 */
@@ -325,6 +326,7 @@ static unsigned int WriteData(unsigned char i2cData)
     if (status != 0) {
         return -1;
     }
+    return 0;
 }
 
 static int SetOledAddress(void)
@@ -474,7 +476,7 @@ static int SetOledVcomhChargePumpCmd(void)
 unsigned int OledInit(void)
 {
     unsigned int status;
-    hi_udelay(DELAY_100_MS); // 100ms  这里的延时很重要
+    TaskMsleep(DELAY_100_MS); // 100ms  这里的延时很重要
 
     status = SetOledAddress();
     if (status != 0) {
@@ -585,7 +587,7 @@ void OledShowChar(unsigned char x, unsigned char y, unsigned char chr, unsigned 
  *  char_size:select typeface
  */
 
-void OledShowStr(unsigned char x, unsigned char y, unsigned char* chr, unsigned char charSize)
+void OledShowStr(unsigned char x, unsigned char y, char* chr, unsigned char charSize)
 {
     unsigned char j = 0;
     unsigned char xPosition = x;
@@ -672,7 +674,7 @@ static void OledScreenInitConfig(void)
         if (Hi3861BoardLedTest == 0) {
             Hi3861BoardLedTest = 1;
             /* test HiSpark board */
-            FACTORY_HISPARK_BOARD_TEST("-----------HiSpark board test----------");
+            printf("-----------HiSpark board test----------");
         }
         TaskMsleep(SLEEP_1S);
     }
