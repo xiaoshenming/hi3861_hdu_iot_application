@@ -17,13 +17,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lwip/netifapi.h"
 #include <hi_gpio.h>
 #include <hi_io.h>
 #include <hi_task.h>
 #include <hi_watchdog.h>
 #include "cmsis_os2.h"
 #include "ohos_init.h"
+#include "lwip/netifapi.h"
 #include "wifi_sta_connect.h"
 #include "sockets.h"
 #include "udp_config.h"
