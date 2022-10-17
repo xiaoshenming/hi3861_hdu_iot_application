@@ -60,7 +60,7 @@ static void LeftBCounterHandler(char *arg)
 
 void EncoderInit(void)
 {
-    // 左侧电机编码器A相的GPIO初始化
+    // 左侧电机编码器B相的GPIO初始化
     IoTGpioInit(IOT_IO_NAME_GPIO_0);
     // 设置GPIO0的管脚复用关系为GPIO
     IoSetFunc(IOT_IO_NAME_GPIO_0, IOT_IO_FUNC_GPIO_0_GPIO);
@@ -72,11 +72,11 @@ void EncoderInit(void)
     IoTGpioRegisterIsrFunc(IOT_IO_NAME_GPIO_0, IOT_INT_TYPE_EDGE,
                            IOT_GPIO_EDGE_RISE_LEVEL_HIGH, LeftBCounterHandler, NULL);
 
-    // 左侧电机编码器B相的GPIO初始化
+    // 左侧电机编码器A相的GPIO初始化
     IoSetFunc(IOT_IO_NAME_GPIO_12, IOT_IO_FUNC_GPIO_12_GPIO);
     // 设置GPIO1的管脚复用关系为GPIO
     IoTGpioSetDir(IOT_IO_NAME_GPIO_12, IOT_GPIO_DIR_IN);
-    // 设置GPIO1为上拉功能
+    // 设置GPIO12为上拉功能
     IoSetPull(IOT_IO_NAME_GPIO_12, IOT_IO_PULL_UP);
     // 使能GPIO1的中断功能, 上升沿触发中断，rightBCounterHandler 为中断的回调函数
     IoTGpioRegisterIsrFunc(IOT_IO_NAME_GPIO_12, IOT_INT_TYPE_EDGE,
