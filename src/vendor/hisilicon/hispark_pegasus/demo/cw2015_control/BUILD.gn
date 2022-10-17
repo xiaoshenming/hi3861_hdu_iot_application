@@ -1,0 +1,13 @@
+static_library("cw2015_control") {
+  sources = [
+    "hal_iot_gpio_ex.c",
+    "cw2015_control.c",
+    "oled_ssd1306.c",
+  ]
+
+  include_dirs = [
+    "//utils/native/lite/include",
+    "//kernel/liteos_m/kal/cmsis",
+    "//base/iot_hardware/peripheral/interfaces/kits",
+  ]
+}
