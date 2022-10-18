@@ -19,7 +19,6 @@
 #include <unistd.h>
 #include "ohos_init.h"
 #include "cmsis_os2.h"
-
 #include "iot_gpio.h"
 #include "iot_errno.h"
 #include "hi_errno.h"
@@ -95,16 +94,16 @@ uint8_t ins5902_read(uint8_t rtc_reg, uint32_t recv_len, uint8_t *rct_buf)
             rct_buf[0] = recv_data[0];
             break;
         case RTC_HOUR:
-            rct_buf[0]  =  recv_data[0];
+            rct_buf[0] = recv_data[0];
             break;
         case RTC_DAY :
             rct_buf[0] = recv_data[0];
             break;
         case RTC_DATE:
-            rct_buf[0]  =  recv_data[0];
-            break; 
+            rct_buf[0] = recv_data[0];
+            break;
         case RTC_MONTH:
-            rct_buf[0]  =  recv_data[0];
+            rct_buf[0] = recv_data[0];
             break;
         case RTC_YEAR:
             rct_buf[0] = recv_data[0];
@@ -191,7 +190,7 @@ uint8_t GetWeek(uint8_t weekdata)
     return res;
 }
 
-void GetSecond(int temp_second)
+void GetSecond(int second)
 {
     uint8_t rct_read_data[RTC_REG_TIME_BUF] = { 0 };
     ins5902_rtc_type rtc_data = { 0 };
@@ -200,12 +199,12 @@ void GetSecond(int temp_second)
     ins5902_read(RTC_SECOND, SEND_READ_DATA_LEN, rct_read_data);
     if (rtc_data.rtc_second[0] != rct_read_data[0]) {
         rtc_data.rtc_second[0] = rct_read_data[0];
-        temp_second = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
-        int ret = snprintf(line, sizeof(line), "%d", temp_second);
+        second = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
+        int ret = snprintf(line, sizeof(line), "%d", second);
         if (ret != 2 && ret != 1) { // 需要显示的字符串长度为2和1
             printf("failed\r\n");
         }
-        if (temp_second >= 10) {
+        if (second >= 10) {
             OledShowString(48, 6, line, 1); // 在OLED屏幕的第48列6行显示1行
         } else {
             OledShowString(48, 6, "0", 1); // 在OLED屏幕的第48列6行显示1行
@@ -216,7 +215,7 @@ void GetSecond(int temp_second)
     TaskMsleep(DELAY_TIME); // 1s刷新一次
 }
 
-void GetMinute(int temp_minute)
+void GetMinute(int minute)
 {
     uint8_t rct_read_data[RTC_REG_TIME_BUF] = { 0 };
     ins5902_rtc_type rtc_data = { 0 };
@@ -225,12 +224,12 @@ void GetMinute(int temp_minute)
     ins5902_read(RTC_MINUTE, SEND_READ_DATA_LEN, rct_read_data);
     if (rtc_data.rtc_minue[0] != rct_read_data[0]) {
         rtc_data.rtc_minue[0] = rct_read_data[0];
-        temp_minute = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
-        int ret = snprintf(line, sizeof(line), "%d", temp_minute);
+        minute = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
+        int ret = snprintf(line, sizeof(line), "%d", minute);
         if (ret != 1 && ret != 2) { // 分钟需要显示的字符串长度为1或者2
             printf("failed\r\n");
         }
-        if (temp_minute >= 10) {
+        if (minute >= 10) {
             OledShowString(24, 6, line, 1); // 在OLED屏幕的第24列6行显示1行
             OledShowString(40, 6, ":", 1); // 在OLED屏幕的第40列6行显示1行
         } else {
@@ -242,21 +241,21 @@ void GetMinute(int temp_minute)
     }
 }
 
-void GetHour(int temp_hour)
+void GetHour(int hour)
 {
     uint8_t rct_read_data[RTC_REG_TIME_BUF] = { 0 };
     ins5902_rtc_type rtc_data = { 0 };
     static char line[SSD1306_LEN] = { 0 };
-    ins5902_i2c_write(RTC_HOUR_REGISTER, NULL, NULL, SEND_READ_DATA_LEN);  
+    ins5902_i2c_write(RTC_HOUR_REGISTER, NULL, NULL, SEND_READ_DATA_LEN);
     ins5902_read(RTC_HOUR, SEND_READ_DATA_LEN, rct_read_data);
     if (rtc_data.rtc_hour[0] != rct_read_data[0]) {
         rtc_data.rtc_hour[0] = rct_read_data[0];
-        temp_hour = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
-        int ret = snprintf(line, sizeof(line), "%d", temp_hour);
+        hour = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
+        int ret = snprintf(line, sizeof(line), "%d", hour);
         if (ret != 2) { // 需要显示的字符串长度为2
             printf("failed\r\n");
         }
-        if (temp_hour >= 10) {
+        if (hour >= 10) {
             OledShowString(0, 6, line, 1); // 在OLED屏幕的第0列6行显示1行
             OledShowString(16, 6, ":", 1); // 在OLED屏幕的第16列6行显示1行
         } else {
@@ -268,7 +267,7 @@ void GetHour(int temp_hour)
     }
 }
 
-void GetDay(int temp_day)
+void GetDay(int day)
 {
     uint8_t rct_read_data[RTC_REG_TIME_BUF] = { 0 };
     ins5902_rtc_type rtc_data = { 0 };
@@ -277,9 +276,10 @@ void GetDay(int temp_day)
     ins5902_read(RTC_DAY, SEND_READ_DATA_LEN, rct_read_data);
     if (rtc_data.rtc_day[0] != rct_read_data[0]) {
         rtc_data.rtc_day[0] = rct_read_data[0];
-        temp_day = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
-        temp_day = GetWeek(temp_day);
-        int ret = snprintf(line, sizeof(line), "%d", temp_day);
+        day = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
+        printf("day = %d\r\n", day);
+        day = GetWeek(day);
+        int ret = snprintf(line, sizeof(line), "%d", day);
         if (ret != 1) { // 需要显示的字符串长度为2
             printf("failed\r\n");
         }
@@ -288,7 +288,7 @@ void GetDay(int temp_day)
     }
 }
 
-void GetDate(int temp_date)
+void GetDate(int date)
 {
     uint8_t rct_read_data[RTC_REG_TIME_BUF] = { 0 };
     ins5902_rtc_type rtc_data = { 0 };
@@ -297,12 +297,12 @@ void GetDate(int temp_date)
     ins5902_read(RTC_DATE, SEND_READ_DATA_LEN, rct_read_data);
     if (rtc_data.rtc_date[0] != rct_read_data[0]) {
         rtc_data.rtc_date[0] = rct_read_data[0];
-        temp_date = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
-        int ret = snprintf(line, sizeof(line), "%d", temp_date);
+        date = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
+        int ret = snprintf(line, sizeof(line), "%d", date);
         if (ret != 2) { // 需要显示的字符串长度为2
             printf("failed\r\n");
         }
-        if (temp_date >= 10) {
+        if (date >= 10) {
             OledShowString(89, 4, line, 1); // 在OLED屏幕的第89列4行显示1行
         } else {
             OledShowString(89, 4, "0", 1); // 在OLED屏幕的第89列4行显示1行
@@ -312,7 +312,7 @@ void GetDate(int temp_date)
     }
 }
 
-void GetMonth(int temp_month)
+void GetMonth(int month)
 {
     uint8_t rct_read_data[RTC_REG_TIME_BUF] = { 0 };
     ins5902_rtc_type rtc_data = { 0 };
@@ -321,12 +321,12 @@ void GetMonth(int temp_month)
     ins5902_read(RTC_MONTH, SEND_READ_DATA_LEN, rct_read_data);
     if (rtc_data.rtc_month[0] != rct_read_data[0]) {
         rtc_data.rtc_month[0] = rct_read_data[0];
-        temp_month = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
-        int ret = snprintf(line, sizeof(line), "%d", temp_month);
+        month = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
+        int ret = snprintf(line, sizeof(line), "%d", month);
         if (ret != 2) { // 需要显示的字符串长度为2
             printf("failed\r\n");
         }
-        if (temp_month >= 10) {
+        if (month >= 10) {
             OledShowString(65, 4, line, 1); // 在OLED屏幕的第65列4行显示1行
             OledShowString(81, 4, "-", 1); // 在OLED屏幕的第81列4行显示1行
         } else {
@@ -337,7 +337,7 @@ void GetMonth(int temp_month)
     }
 }
 
-void GetYear(int temp_year)
+void GetYear(int year)
 {
     uint8_t rct_read_data[RTC_REG_TIME_BUF] = { 0 };
     ins5902_rtc_type rtc_data = { 0 };
@@ -346,8 +346,8 @@ void GetYear(int temp_year)
     ins5902_read(RTC_YEAR, SEND_READ_DATA_LEN, rct_read_data);
     if (rtc_data.rtc_year[0] != rct_read_data[0]) {
         rtc_data.rtc_year[0] = rct_read_data[0];
-        temp_year = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
-        int ret = snprintf(line, sizeof(line), "%d", temp_year);
+        year = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
+        int ret = snprintf(line, sizeof(line), "%d", year);
         if (ret != 2) { // 需要显示的字符串长度为2
             printf("failed\r\n");
         }

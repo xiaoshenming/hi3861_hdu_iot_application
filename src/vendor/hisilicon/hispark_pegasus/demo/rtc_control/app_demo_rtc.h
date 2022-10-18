@@ -29,6 +29,7 @@
 #define INS5902_TASK_PRIORITY    25
 #define DELAY_TIME               1000
 #define SSD1306_LEN              32
+#define SSD1306_
 
 #define BATTERY_REGISTER         0x21
 #define BATTERY_SWITCH           0x80
