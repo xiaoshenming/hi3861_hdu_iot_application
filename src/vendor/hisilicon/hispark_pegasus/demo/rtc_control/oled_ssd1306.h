@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef OLED_SSD1306_H
-#define OLED_SSD1306_H
+#ifndef OLED_SSD1306_I2C_H
+#define OLED_SSD1306_I2C_H
 
 #include <stdint.h>
 

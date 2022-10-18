@@ -23,16 +23,24 @@
 #include "iot_errno.h"
 #include "hi_errno.h"
 #include "hi_time.h"
-#include <app_demo_rtc.h>
-#include "oled_fonts.h"
+#include "ssd1306_fonts.h"
 #include "oled_ssd1306.h"
 #include "iot_gpio_ex.h"
 #include "iot_i2c.h"
+#include "app_demo_rtc.h"
 
 #define IOT_I2C_IDX_BAUDRATE (400 * 1000)
 #define INS5902_I2C_IDX      0
 #define DECIMA               10
 #define HEX                  16
+
+int second = 0;
+int minute = 0;
+int hour = 0;
+int day = 0;
+int date = 0;
+int month = 0;
+int year = 0;
 
 /* gpio init */
 void gpio_init(void)
@@ -121,7 +129,7 @@ void rct_set_init(void)
     rct_time_set.rtc_second[0] = 30; // 30代表秒
     rct_time_set.rtc_minue[0] = 05; // 05代表分钟
     rct_time_set.rtc_hour[0] = 17; // 17代表小时
-    rct_time_set.rtc_day[0] = 6; // 6代表周几
+    rct_time_set.rtc_day[0] = 5; // 5代表周6
     rct_time_set.rtc_date[0] = 4; // 4代表号
     rct_time_set.rtc_month[0] = 6; // 6代表月
     rct_time_set.rtc_year[0] = 22; // 22代表年
@@ -190,7 +198,7 @@ uint8_t GetWeek(uint8_t weekdata)
     return res;
 }
 
-void GetSecond(int second)
+void GetSecond(void)
 {
     uint8_t rct_read_data[RTC_REG_TIME_BUF] = { 0 };
     ins5902_rtc_type rtc_data = { 0 };
@@ -204,7 +212,7 @@ void GetSecond(int second)
         if (ret != 2 && ret != 1) { // 需要显示的字符串长度为2和1
             printf("failed\r\n");
         }
-        if (second >= 10) {
+        if (second >= RTC_OLED_DATA) {
             OledShowString(48, 6, line, 1); // 在OLED屏幕的第48列6行显示1行
         } else {
             OledShowString(48, 6, "0", 1); // 在OLED屏幕的第48列6行显示1行
@@ -215,7 +223,7 @@ void GetSecond(int second)
     TaskMsleep(DELAY_TIME); // 1s刷新一次
 }
 
-void GetMinute(int minute)
+void GetMinute(void)
 {
     uint8_t rct_read_data[RTC_REG_TIME_BUF] = { 0 };
     ins5902_rtc_type rtc_data = { 0 };
@@ -229,7 +237,7 @@ void GetMinute(int minute)
         if (ret != 1 && ret != 2) { // 分钟需要显示的字符串长度为1或者2
             printf("failed\r\n");
         }
-        if (minute >= 10) {
+        if (minute >= RTC_OLED_DATA) {
             OledShowString(24, 6, line, 1); // 在OLED屏幕的第24列6行显示1行
             OledShowString(40, 6, ":", 1); // 在OLED屏幕的第40列6行显示1行
         } else {
@@ -241,7 +249,7 @@ void GetMinute(int minute)
     }
 }
 
-void GetHour(int hour)
+void GetHour(void)
 {
     uint8_t rct_read_data[RTC_REG_TIME_BUF] = { 0 };
     ins5902_rtc_type rtc_data = { 0 };
@@ -252,10 +260,10 @@ void GetHour(int hour)
         rtc_data.rtc_hour[0] = rct_read_data[0];
         hour = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
         int ret = snprintf(line, sizeof(line), "%d", hour);
-        if (ret != 2) { // 需要显示的字符串长度为2
+        if (ret != 2 && ret != 1) { // 需要显示的字符串长度为2
             printf("failed\r\n");
         }
-        if (hour >= 10) {
+        if (hour >= RTC_OLED_DATA) {
             OledShowString(0, 6, line, 1); // 在OLED屏幕的第0列6行显示1行
             OledShowString(16, 6, ":", 1); // 在OLED屏幕的第16列6行显示1行
         } else {
@@ -263,11 +271,11 @@ void GetHour(int hour)
             OledShowString(8, 6, line, 1); // 在OLED屏幕的第8列6行显示1行
             OledShowString(16, 6, ":", 1); // 在OLED屏幕的第16列6行显示1行
         }
-        OledShowString(64, 6, " ", 1);
+        OledShowString(64, 6, " ", 1); // 在OLED屏幕的第64列6行显示1行
     }
 }
 
-void GetDay(int day)
+void GetDay(void)
 {
     uint8_t rct_read_data[RTC_REG_TIME_BUF] = { 0 };
     ins5902_rtc_type rtc_data = { 0 };
@@ -277,10 +285,9 @@ void GetDay(int day)
     if (rtc_data.rtc_day[0] != rct_read_data[0]) {
         rtc_data.rtc_day[0] = rct_read_data[0];
         day = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
-        printf("day = %d\r\n", day);
         day = GetWeek(day);
         int ret = snprintf(line, sizeof(line), "%d", day);
-        if (ret != 1) { // 需要显示的字符串长度为2
+        if (ret != 2 && ret != 1) { // 需要显示的字符串长度为2
             printf("failed\r\n");
         }
         OledShowString(72, 6, "week:", 1); // 在OLED屏幕的第72列6行显示1行
@@ -288,7 +295,7 @@ void GetDay(int day)
     }
 }
 
-void GetDate(int date)
+void GetDate(void)
 {
     uint8_t rct_read_data[RTC_REG_TIME_BUF] = { 0 };
     ins5902_rtc_type rtc_data = { 0 };
@@ -299,10 +306,10 @@ void GetDate(int date)
         rtc_data.rtc_date[0] = rct_read_data[0];
         date = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
         int ret = snprintf(line, sizeof(line), "%d", date);
-        if (ret != 2) { // 需要显示的字符串长度为2
+        if (ret != 2 && ret != 1) { // 需要显示的字符串长度为2
             printf("failed\r\n");
         }
-        if (date >= 10) {
+        if (date >= RTC_OLED_DATA) {
             OledShowString(89, 4, line, 1); // 在OLED屏幕的第89列4行显示1行
         } else {
             OledShowString(89, 4, "0", 1); // 在OLED屏幕的第89列4行显示1行
@@ -312,7 +319,7 @@ void GetDate(int date)
     }
 }
 
-void GetMonth(int month)
+void GetMonth(void)
 {
     uint8_t rct_read_data[RTC_REG_TIME_BUF] = { 0 };
     ins5902_rtc_type rtc_data = { 0 };
@@ -337,7 +344,7 @@ void GetMonth(int month)
     }
 }
 
-void GetYear(int year)
+void GetYear(void)
 {
     uint8_t rct_read_data[RTC_REG_TIME_BUF] = { 0 };
     ins5902_rtc_type rtc_data = { 0 };
@@ -361,13 +368,6 @@ void GetYear(int year)
 /* read rtc time */
 void rtc_timer(void)
 {
-    int temp_second = 0;
-    int temp_minute = 0;
-    int temp_hour = 0;
-    int temp_day = 0;
-    int temp_date = 0;
-    int temp_month = 0;
-    int temp_year = 0;
     // 设置GPIO13的管脚复用关系为I2C0_SDA
     IoSetFunc(IOT_IO_NAME_GPIO_13, IOT_IO_FUNC_GPIO_13_I2C0_SDA);
     // 设置GPIO14的管脚复用关系为I2C0_SCL
@@ -383,19 +383,19 @@ void rtc_timer(void)
     ins5902_write(BATTERY_REGISTER, BATTERY_SWITCH); // 开启电池
     while (1) {
         /*----------------------second--------------*/
-        GetSecond(temp_second);
+        GetSecond();
         // /*----------------------minute--------------*/
-        GetMinute(temp_minute);
+        GetMinute();
         /*----------------------hour--------------*/
-        GetHour(temp_hour);
+        GetHour();
         /*----------------------day-------------*/
-        GetDay(temp_day);
+        GetDay();
         /*----------------------date--------------*/
-        GetDate(temp_date);
+        GetDate();
         /*----------------------month--------------*/
-        GetMonth(temp_month);
+        GetMonth();
         /*----------------------year--------------*/
-        GetYear(temp_year);
+        GetYear();
     }
 }
 

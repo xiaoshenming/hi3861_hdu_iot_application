@@ -40,6 +40,7 @@
 #define RTC_DATE_REGISTER        0x04
 #define RTC_MONTH_REGISTER       0x05
 #define RTC_YEAR_REGISTER        0x06
+#define RTC_OLED_DATA            10
 
 /* INS5902 reg */
 typedef enum {
