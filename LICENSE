@@ -67,6 +67,7 @@
 
 (4) The directories below are licensed under MIT License
 ./src/third_party/cJSON
+./src/third_party/ssd1306
 
 (a)
                               Apache License
