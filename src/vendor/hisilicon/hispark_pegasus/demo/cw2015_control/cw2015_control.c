@@ -32,12 +32,12 @@
 #define IOT_I2C_IDX_BAUDRATE (400 * 1000)
 #define CW2015_I2C_IDX 0
 #define IOT_PWM_PORT_PWM3   3
-#define CW2015_READ_ADDR     (0XC5)
-#define CW2015_WRITE_ADDR    (0XC4)
+#define CW2015_READ_ADDR     (0xC5)
+#define CW2015_WRITE_ADDR    (0xC4)
 #define WRITELEN  2
-#define CW2015_HIGHT_REGISTER 0X02
-#define CW2015_LOW_REGISTER   0X03
-#define CW2015_WAKE_REGISTER  0X0A
+#define CW2015_HIGHT_REGISTER 0x02
+#define CW2015_LOW_REGISTER   0x03
+#define CW2015_WAKE_REGISTER  0x0A
 #define DELYA_US20            20
 
 /**
@@ -93,8 +93,8 @@ void CW2015Init(void)
     IoSetFunc(IOT_IO_NAME_GPIO_13, IOT_IO_FUNC_GPIO_13_I2C0_SDA);
     // 设置GPIO14的管脚复用关系为I2C0_SCL
     IoSetFunc(IOT_IO_NAME_GPIO_14, IOT_IO_FUNC_GPIO_14_I2C0_SCL);
-    // 使电量检测模块从sleep mode变为wake up mode,0x00代表唤醒，0x11代表沉睡
-    Cw20_Write(CW2015_WAKE_REGISTER, 0x00, 1);
+    // 使电量检测模块从sleep mode变为wake up mode,0x00代表唤醒,0x11代表沉睡,2bit控制
+    Cw20_Write(CW2015_WAKE_REGISTER, 0x00, 2);
 }
 
 float GetVoltage(void)

@@ -333,7 +333,7 @@ void GetMonth(void)
         if (ret != 2) { // 需要显示的字符串长度为2
             printf("failed\r\n");
         }
-        if (month >= 10) {
+        if (month >= RTC_OLED_DATA) {
             OledShowString(65, 4, line, 1); // 在OLED屏幕的第65列4行显示1行
             OledShowString(81, 4, "-", 1); // 在OLED屏幕的第81列4行显示1行
         } else {

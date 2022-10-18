@@ -20,7 +20,7 @@
 #include "iot_gpio.h"
 #include "iot_i2c.h"
 #include "iot_gpio_ex.h"
-#include "oled_fonts.h"
+#include "ssd1306_fonts.h"
 #include "oled_ssd1306.h"
 
 #define OLED_I2C_IDX 0
