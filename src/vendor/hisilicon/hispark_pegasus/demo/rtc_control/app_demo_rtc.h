@@ -25,7 +25,7 @@
 #define SEND_BUF_LEN             3
 #define SEND_SET_REG_LEN         2
 #define SEND_READ_DATA_LEN       1
-#define INS5902_TASK_STAK_SIZE   1024*2
+#define INS5902_TASK_STAK_SIZE   (1024*2)
 #define INS5902_TASK_PRIORITY    25
 #define DELAY_TIME               1000
 #define SSD1306_LEN              32
@@ -40,7 +40,7 @@
 #define RTC_MONTH_REGISTER       0x05
 #define RTC_YEAR_REGISTER        0x06
 
-/*INS5902 reg*/
+/* INS5902 reg */
 typedef enum {
     RTC_SECOND = 0,
     RTC_MINUTE,

@@ -20,7 +20,6 @@
 #include "ohos_init.h"
 #include "cmsis_os2.h"
 
-#include "iot_i2c.h"
 #include "iot_gpio.h"
 #include "iot_errno.h"
 #include "hi_errno.h"
@@ -29,6 +28,7 @@
 #include "oled_fonts.h"
 #include "oled_ssd1306.h"
 #include "iot_gpio_ex.h"
+#include "iot_i2c.h"
 
 #define IOT_I2C_IDX_BAUDRATE (400 * 1000)
 #define INS5902_I2C_IDX      0
@@ -98,16 +98,16 @@ uint8_t ins5902_read(uint8_t rtc_reg, uint32_t recv_len, uint8_t *rct_buf)
             rct_buf[0]  =  recv_data[0];
             break;
         case RTC_DAY :
-            rct_buf[0] =  recv_data[0]; 
+            rct_buf[0] = recv_data[0];
             break;
         case RTC_DATE:
             rct_buf[0]  =  recv_data[0];
             break; 
         case RTC_MONTH:
-            rct_buf[0]  =  recv_data[0]; 
+            rct_buf[0]  =  recv_data[0];
             break;
         case RTC_YEAR:
-            rct_buf[0] = recv_data[0]; 
+            rct_buf[0] = recv_data[0];
             break;
         default:
             break;
@@ -119,13 +119,13 @@ void rct_set_init(void)
 {
     uint32_t ret;
     ins5902_rtc_type rct_time_set = { 0 };
-    rct_time_set.rtc_second[0] = 30; /* 30代表秒 */
-    rct_time_set.rtc_minue[0] = 05; /* 04代表分钟 */
-    rct_time_set.rtc_hour[0] = 20; /* 17代表小时 */
-    rct_time_set.rtc_day[0] = 1; /* 6代表周几 */
-    rct_time_set.rtc_date[0] = 17; /* 4代表号 */
-    rct_time_set.rtc_month[0] = 10; /* 6代表月 */
-    rct_time_set.rtc_year[0] = 22; /* 22代表年 */
+    rct_time_set.rtc_second[0] = 30; // 30代表秒
+    rct_time_set.rtc_minue[0] = 05; // 05代表分钟
+    rct_time_set.rtc_hour[0] = 17; // 17代表小时
+    rct_time_set.rtc_day[0] = 6; // 6代表周几
+    rct_time_set.rtc_date[0] = 4; // 4代表号
+    rct_time_set.rtc_month[0] = 6; // 6代表月
+    rct_time_set.rtc_year[0] = 22; // 22代表年
     // set second
     ret = ins5902_i2c_write(RTC_SECOND, rct_time_set.rtc_second[0], NULL, SEND_SET_REG_LEN);
     if (ret != HI_ERR_SUCCESS) {
