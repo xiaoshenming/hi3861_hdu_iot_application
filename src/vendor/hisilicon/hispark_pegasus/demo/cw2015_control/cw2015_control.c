@@ -106,7 +106,7 @@ void CW2015Init(void)
      */
     IoSetFunc(IOT_IO_NAME_GPIO_14, IOT_IO_FUNC_GPIO_14_I2C0_SCL);
     /*
-     * 使电量检测模块从sleep mode变为wake up mode,0x00代表唤醒,0x11代表沉睡,2bit控制
+     * 使电量检测模块从sleep mode变为wake up mode,0x00代表唤醒,0x11代表沉睡,2代表2bit控制
      * Change the power detection module from sleep mode to wake up mode.
      * 0x00 represents wake-up, 0x11 represents deep sleep, and 2 bit control
      */
@@ -122,18 +122,14 @@ float GetVoltage(void)
     buff[0] = Cw20_WriteRead(CW2015_HIGHT_REGISTER, 1, 1);
     // 读取电压的后8位 Read the last 8 bits of voltage
     buff[1] = Cw20_WriteRead(CW2015_LOW_REGISTER, 1, 1);
-    /*
-     * 通过位运算最后得到14位的A/D测量值
-     * The final 14 bit A/D measurement value is obtained through bit operation
-     * 将buf[0]左移8位与buf[1]组成最终电压值
-     * Move buf [0] to the left by 8 bits to form the final voltage value with buf [1]
-     */
+    /* 通过位运算最后得到14位的A/D测量值 */
+    /* The final 14 bit A/D measurement value is obtained through bit operation */
+    /* 将buf[0]左移8位与buf[1]组成最终电压值 */
+    /* Move buf [0] to the left by 8 bits to form the final voltage value with buf [1] */
     temp = (buff[0] << 8) | buff[1];
-    /*
-     * 通过计算得到最终的电压值 （CW2015的电压分辨率为305.0uV,转换1uv = 1 / 1000000）
-     * The final voltage value is obtained through calculation
-     * (the voltage resolution of CW2015 is 305.0uV, and the conversion 1uv=1/1000000)
-     */
+    /* 通过计算得到最终的电压值 （CW2015的电压分辨率为305.0uV,转换1uv = 1 / 1000000） */
+    /* The final voltage value is obtained through calculation */
+    /* the voltage resolution of CW2015 is 305.0uV, and the conversion 1uv=1/1000000) */
     voltage = temp * 305.0 / 1000000;
     return voltage;
 }
@@ -152,10 +148,8 @@ static void CW2015Task(void)
         if (ret != 13) { // 需要显示的字符串长度为13，The length of the string to be displayed is 13
             printf("GetVoltage failed\r\n");
         }
-        /*
-         * 在OLED屏幕的第20列5行显示1行
-         * Display 1 row in the 20th column and 5 rows of OLED screen
-         */
+        /* 在OLED屏幕的第20列5行显示1行 */
+        /* Display 1 row in the 20th column and 5 rows of OLED screen */
         OledShowString(20, 5, line, 1);
         usleep(DELYA_US20);
     }
