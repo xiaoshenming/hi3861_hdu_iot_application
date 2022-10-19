@@ -52,7 +52,7 @@ void Uart1Config(void)
     };
     ret = IoTUartInit(HI_UART_IDX_1, &uart_attr);
     if (ret != IOT_SUCCESS) {
-        printf("Init Uart1 Falied Error No : %d\n",ret);
+        printf("Init Uart1 Falied Error No : %d\n", ret);
         return;
     }
 }
@@ -69,14 +69,14 @@ static void UartTask(void)
     // 对UART1参数的一些配置 Some configurations of UART1 parameters
     Uart1Config();
 
-    while(1) {
+    while (1) {
         // 通过UART1 发送数据 Send data through UART1
         IoTUartWrite(HI_UART_IDX_1, (unsigned char*)data, strlen(data));
         // 通过UART1 接收数据 Receive data through UART1
         len = IoTUartRead(HI_UART_IDX_1, uartReadBuff, UART_BUFF_SIZE);
         if (len > 0) {
             // 把接收到的数据打印出来 Print the received data
-            printf("Uart Read Data is: [ %d ] %s \r\n",count, uartReadBuff);
+            printf("Uart Read Data is: [ %d ] %s \r\n", count, uartReadBuff);
         }
         usleep(U_SLEEP_TIME);
         count++;
