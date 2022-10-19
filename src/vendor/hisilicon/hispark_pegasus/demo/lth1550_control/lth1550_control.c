@@ -51,9 +51,9 @@ void GetInfraredData(IotAdcChannelIndex idx)
         printf("hi_adc_read failed\n");
     }
     if (IOT_ADC_CHANNEL_0 == idx) {
-        printf("Left ADC value is %d \r\n",data);
+        printf("Left ADC value is %d \r\n", data);
     } else if (IOT_ADC_CHANNEL_3 == idx) {
-        printf("Right ADC value is %d \r\n",data);
+        printf("Right ADC value is %d \r\n", data);
     }
 }
 
