@@ -1,13 +1,8 @@
-static_library("i2c_bus_demo") {
+static_library("lth1550_control") {
   sources = [
     "hal_iot_gpio_ex.c",
-    "i2c_bus_demo.c",
-    "ssd1306_fonts.c",
-    "cw2015.c",
-    "fm11nt081.c",
-    "lsm6ds.c",
-    "pca9555.c",
-    "ssd1306.c",
+    "hal_iot_adc.c",
+    "lth1550_control.c",
   ]
 
   include_dirs = [
@@ -16,5 +11,5 @@ static_library("i2c_bus_demo") {
     "//kernel/liteos_m/kal/cmsis",
     "//base/iot_hardware/peripheral/interfaces/kits",
     "//device/soc/hisilicon/hi3861v100/sdk_liteos/include/base",
-  ]
+    ]
 }
