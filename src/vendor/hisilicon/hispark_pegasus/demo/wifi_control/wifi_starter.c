@@ -37,8 +37,11 @@ static void PrintStationInfo(StationInfo* info)
     if (!info) return;
     static char macAddress[32] = {0};
     unsigned char* mac = info->macAddress;
-    snprintf(macAddress, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X",
+    int ret = snprintf(macAddress, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X",
         mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]); /* mac address 0,1,2,3,4,5 */
+    if (ret != 17) { /* mac len 17 */
+        printf("ret failed = %d\r\n", ret);
+    }
     printf(" PrintStationInfo: mac=%s, reason=%d.\r\n", macAddress, info->disconnectedReason);
 }
 
@@ -79,7 +82,7 @@ int StartHotspot(const HotspotConfig* config)
     printf("EnableHotspot: %d\r\n", errCode);
 
     while (!g_hotspotStarted) {
-        osDelay(10);
+        osDelay(10); /* 10=100ms */
     }
     printf("g_hotspotStarted = %d.\r\n", g_hotspotStarted);
 
