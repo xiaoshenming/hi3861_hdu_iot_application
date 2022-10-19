@@ -113,9 +113,8 @@ void EepWritePage(unsigned char *pBuffer, unsigned short WriteAddr, unsigned cha
         printf("eepWritePage buffer is null\r\n");
     }
     PullDownCsn();
-    /* ReadAddr & 0xFF00)>>8), (unsigned char)(ReadAddr & 0x00FF)代表地址高8位和低8位，2代表发送的数据长度 /*
-    /* ReadAddr&0xFF00)>>8), (unsigned char) (ReadAddr&0x00FF) represents the high and low 8 bits of the address, */
-    /* and 2 represents the length of the data sent */
+    /* 代表地址高8位和低8位，2代表发送的数据长度 */
+    /* represents the high and low 8 bits of the address, and 2 represents the length of the data sent */
     status = C081NfcI2cWrite((unsigned char)((WriteAddr & 0xFF00) >> 8),
                              (unsigned char)(WriteAddr & 0x00FF), pBuffer, datalen);
     if (status != IOT_SUCCESS) {
@@ -207,9 +206,8 @@ unsigned int WriteRead(unsigned char regHigh8bitCmd, unsigned char regLow8bitCmd
 unsigned int Fm11nt081ReadEep(unsigned short ReadAddr, unsigned short len)
 {
     unsigned int status;
-    /* ReadAddr & 0xFF00)>>8), (unsigned char)(ReadAddr & 0x00FF)左移8位代表地址高8位和低8位，2代表发送的数据长度 */
-    /* ReadAddr&0xFF00)>>8), (unsigned char) (ReadAddr&0x00FF) represents the high and low 8 bits of the address, */
-    /* and 2 represents the length of the data sent */
+    /* 左移8位代表地址高8位和低8位，2代表发送的数据长度 */
+    /* represents the high and low 8 bits of the address, and 2 represents the length of the data sent */
     status = WriteRead((unsigned char)((ReadAddr & 0xFF00) >> 8), (unsigned char)(ReadAddr & 0x00FF), 2, len);
     if (status != IOT_SUCCESS) {
         return status;
@@ -247,7 +245,7 @@ void GetFunKeyState(void)
         if (g_buttonState == 1) {
             uint8_t diff;
             status = PCA9555I2CReadByte(&ext_io_state);
-            if status != IOT_SUCCESS) {
+            if (status != IOT_SUCCESS) {
                 printf("i2c error!\r\n");
                 ext_io_state = 0;
                 ext_io_state_d = 0;

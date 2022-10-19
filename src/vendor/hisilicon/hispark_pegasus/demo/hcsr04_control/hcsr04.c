@@ -107,8 +107,8 @@ float GetDistance(void)
         }
     }
     /* 计算距离障碍物距离（340米/秒 转换为 0.034厘米/微秒, 2代表去来，两倍距离） */
-    /* Calculate the distance from the obstacle (340 m/s is converted to 0.034 cm/microsecond */
-    /* 2 represents going and coming, twice the distance) */
+    /* Calculate the distance from the obstacle */
+    /* (340 m/s is converted to 0.034 cm/microsecond 2 represents going and coming, twice the distance) */
     distance = time * 0.034 / 2;
     printf("distance is %0.2f cm\r\n", distance);
     return distance;
