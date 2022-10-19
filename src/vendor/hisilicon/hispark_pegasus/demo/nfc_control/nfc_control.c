@@ -114,11 +114,11 @@ void EepWritePage(unsigned char *pBuffer, unsigned short WriteAddr, unsigned cha
     }
     PullDownCsn();
     /* ReadAddr & 0xFF00)>>8), (unsigned char)(ReadAddr & 0x00FF)代表地址高8位和低8位，2代表发送的数据长度
-    * ReadAddr&0xFF00)>>8), (unsigned char) (ReadAddr&0x00FF) represents the high and low 8 bits of the address,
-    * and 2 represents the length of the data sent
-    */
+     * ReadAddr&0xFF00)>>8), (unsigned char) (ReadAddr&0x00FF) represents the high and low 8 bits of the address,
+     * and 2 represents the length of the data sent
+     */
     status = C081NfcI2cWrite((unsigned char)((WriteAddr & 0xFF00) >> 8),
-        (unsigned char)(WriteAddr & 0x00FF), pBuffer, datalen);
+                             (unsigned char)(WriteAddr & 0x00FF), pBuffer, datalen);
     if (status != IOT_SUCCESS) {
         printf("write failed\r\n");
     }
@@ -134,7 +134,7 @@ void EepWritePage(unsigned char *pBuffer, unsigned short WriteAddr, unsigned cha
  */
 void Fm11nt081dWriteEeprom(unsigned short baseAddr, unsigned int len, unsigned char *wbuf)
 {
-	unsigned char offset = 0;
+    unsigned char offset = 0;
     unsigned char *writeBuff = wbuf;
     unsigned int writeLen = len;
     unsigned short addr = baseAddr;
@@ -209,11 +209,11 @@ unsigned int Fm11nt081ReadEep(unsigned short ReadAddr, unsigned short len)
 {
     unsigned int status;
     /*
-     * ReadAddr & 0xFF00)>>8), (unsigned char)(ReadAddr & 0x00FF)代表地址高8位和低8位，2代表发送的数据长度
+     * ReadAddr & 0xFF00)>>8), (unsigned char)(ReadAddr & 0x00FF)左移8位代表地址高8位和低8位，2代表发送的数据长度
      * ReadAddr&0xFF00)>>8), (unsigned char) (ReadAddr&0x00FF) represents the high and low 8 bits of the address,
      * and 2 represents the length of the data sent
      */
-    status = WriteRead((unsigned char)((ReadAddr & 0xFF00)>>8), (unsigned char)(ReadAddr & 0x00FF), 2, len);
+    status = WriteRead((unsigned char)((ReadAddr & 0xFF00) >> 8), (unsigned char)(ReadAddr & 0x00FF), 2, len);
     if (status != IOT_SUCCESS) {
         return status;
     }
@@ -223,11 +223,12 @@ unsigned int Fm11nt081ReadEep(unsigned short ReadAddr, unsigned short len)
 /* NFC chip configuration, usually do not call NFC init */
 void NFCInit(void)
 {
-    unsigned char wbuf[5] = {NFC_REGISTER1, NFC_REGISTER2, NFC_REGISTER3, NFC_REGISTER4, NFC_REGISTER5}; // Chip default configuration
+    // Chip default configuration，wbuf len 5
+    unsigned char wbuf[5] = {NFC_REGISTER1, NFC_REGISTER2, NFC_REGISTER3, NFC_REGISTER4, NFC_REGISTER5};
     /* The CSN pin is masked when the byte is read and turned on when the EEP is written */
     hi_udelay(100); // 延时100us读写数据,wait 100us read write data
     Fm11nt081dWriteEeprom(NFC_EERROM_ONE_ADDR, 1, &wbuf[1]);
-    Fm11nt081dWriteEeprom(NFC_EERROM_TWO_ADDR, 1, &wbuf[3]);
+    Fm11nt081dWriteEeprom(NFC_EERROM_TWO_ADDR, 1, &wbuf[3]); // wbuf第三位
     Fm11nt081dWriteEeprom(NFC_EERROM_BASE_ADD, NFC_TOUTIAO_NDEF_LEN, ndefFile);
     PullDownCsn();
     Fm11nt081ReadEep(NFC_EERROM_BASE_ADD, READ_NFC_TOUTIAO_NDEF_LEN);
@@ -237,7 +238,6 @@ void OnNFCRead(char* arg)
 {
     (void) arg;
     g_buttonState = 1;
-    
 }
 
 void GetFunKeyState(void)
@@ -246,11 +246,11 @@ void GetFunKeyState(void)
     uint8_t ext_io_state_d = 0;
     uint8_t status;
 
-    while(1) {
+    while (1) {
         if (g_buttonState == 1) {
             uint8_t diff;
             status = PCA9555I2CReadByte(&ext_io_state);
-            if(status != IOT_SUCCESS) {
+            if status != IOT_SUCCESS) {
                 printf("i2c error!\r\n");
                 ext_io_state = 0;
                 ext_io_state_d = 0;
@@ -289,17 +289,17 @@ void NFCDemoTask(void)
      * Configure all pins of part1 of IO expansion chip as output, and 0x00 as output
      */
     SetPCA9555GpioValue(PCA9555_PART1_IODIR, 0x00);
-    /* 
+    /*
      * 配置左右三色车灯全灭
      * Configured with left and right tricolor lights all off
      */
     SetPCA9555GpioValue(PCA9555_PART1_OUTPUT, LED_OFF);
-    /* 
+    /*
      * 0x40代表配置IO0_6方向设置为输入，1为输入，0为输出
      * 0x40 represents IO0 configuration_ 6 direction is set as input, 1 is input, 0 is output
      */
     SetPCA9555GpioValue(PCA9555_PART0_IODIR, 0x40);
-    /* 
+    /*
      * 使能GPIO11的中断功能, OnNFCRead 为中断的回调函数
      * Enable the interrupt function of GPIO11. OnNFCRead is the interrupt callback function
      */
@@ -317,7 +317,7 @@ void C081NFCExampleEntry(void)
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 5 * 1024; // 堆栈大小为5*1024
+    attr.stack_size = 5 * 1024; // 堆栈大小为5*1024，stack size 5*1024
     attr.priority = osPriorityNormal;
 
     if (osThreadNew((osThreadFunc_t)NFCDemoTask, NULL, &attr) == NULL) {

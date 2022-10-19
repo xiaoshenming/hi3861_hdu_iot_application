@@ -13,9 +13,6 @@
  * limitations under the License.
  */
 
-/*
-    PCA9555IO扩展芯片的相关API接口
-*/
 #include "pca9555.h"
 #include <stdio.h>
 #include <unistd.h>
@@ -29,33 +26,61 @@
 #include "hi_i2c.h"
 
 #define PCA9555_I2C_IDX              0
-#define IOT_I2C_IDX_BAUDRATE         400000 // 400k
+#define IOT_I2C_IDX_BAUDRATE         400000
 #define DATA_LEN                     2
 
-// 初始化指定地址的PCA9555器件
+/*
+ * 初始化指定地址的PCA9555器件
+ * Initialize the PCA9555 device at the specified address
+ */
 void PCA9555Init(void)
 {
-    // 初始化I2C设备0，并指定波特率为400k
+    /*
+     * 初始化I2C设备0，并指定波特率为400k
+     * Initialize I2C device 0 and specify the baud rate as 400k
+     */
     IoTI2cInit(PCA9555_I2C_IDX, IOT_I2C_IDX_BAUDRATE);
-    // 设置I2C设备0的波特率为400k
+    /*
+     * 设置I2C设备0的波特率为400k
+     * Set the baud rate of I2C device 0 to 400k
+     */
     IoTI2cSetBaudrate(PCA9555_I2C_IDX, IOT_I2C_IDX_BAUDRATE);
-    // 设置GPIO13的管脚复用关系为I2C0_SDA
+    /*
+     * 设置GPIO13的管脚复用关系为I2C0_SDA
+     * Set the pin reuse relationship of GPIO13 to I2C0_ SDA
+     */
     IoSetFunc(IOT_IO_NAME_GPIO_13, IOT_IO_FUNC_GPIO_13_I2C0_SDA);
-    // 设置GPIO14的管脚复用关系为I2C0_SCL
+    /*
+     * 设置GPIO14的管脚复用关系为I2C0_SCL
+     * Set the pin reuse relationship of GPIO14 to I2C0_ SCL
+     */
     IoSetFunc(IOT_IO_NAME_GPIO_14, IOT_IO_FUNC_GPIO_14_I2C0_SCL);
-
-    // PCA555扩展IO的中断脚为GPIO11
-    // 初始化GPIO11
+    /*
+     * PCA555扩展IO的中断脚为GPIO11，初始化GPIO11
+     * The interrupt pin of the PCA555 extended IO is GPIO11. Initialize GPIO11
+     */
     IoTGpioInit(IOT_IO_NAME_GPIO_11);
-    // 初始化GPIO11管脚复用为GPIO
+    /*
+     * 初始化GPIO11管脚复用为GPIO
+     * Initialize GPIO11 pin reuse to GPIO
+     */
     IoSetFunc(IOT_IO_NAME_GPIO_11, IOT_IO_FUNC_GPIO_11_GPIO);
-    // 初始化GPIO11管脚方向为输入
+    /*
+     * 初始化GPIO11管脚方向为输入
+     * Initialize GPIO11 pin direction as input
+     */
     IoTGpioSetDir(IOT_IO_NAME_GPIO_11, IOT_GPIO_DIR_IN);
-    // 设置GPIO11为上拉功能
+    /*
+     * 设置GPIO11为上拉功能
+     * Set GPIO11 as pull-up function
+     */
     IoSetPull(IOT_IO_NAME_GPIO_11, IOT_IO_PULL_UP);
 }
 
-// 从指定地址的PCA9555器件的指定寄存器读一字节数据
+/*
+ * 从指定地址的PCA9555器件的指定寄存器读一字节数据
+ * Write one byte of data to the specified register of the PCA9555 device with the specified address
+ */
 uint32_t PCA9555I2CReadByte(uint8_t *rec_byte)
 {
     uint32_t retval;
@@ -68,7 +93,10 @@ uint32_t PCA9555I2CReadByte(uint8_t *rec_byte)
     return retval;
 }
 
-// 向指定地址的PCA9555器件的指定寄存器写一字节数据
+/*
+ * 向指定地址的PCA9555器件的指定寄存器写一字节数据
+ * Write one byte of data to the specified register of the PCA9555 device with the specified address
+ */s
 uint32_t PCA9555I2CWriteByte(uint8_t* buffer, uint32_t buffLen)
 {
     uint32_t retval = IoTI2cWrite(PCA9555_I2C_IDX, PCA9555_WRITE, buffer, buffLen);

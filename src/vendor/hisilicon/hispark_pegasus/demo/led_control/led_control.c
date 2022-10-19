@@ -26,22 +26,25 @@
 
 static void LedExampleEntry(void)
 {
-    // LED3的GPIO初始化
+    // LED3的GPIO初始化 GPIO initialization of LED3
     IoTGpioInit(IOT_IO_NAME_GPIO_9);
-    // 设置GPIO9的管脚复用关系为GPIO
+    // 设置GPIO9的管脚复用关系为GPIO Set the pin reuse relationship of GPIO9 to GPIO
     IoSetFunc(IOT_IO_NAME_GPIO_9, IOT_IO_FUNC_GPIO_9_GPIO);
-    // GPIO方向设置为输出
+    // GPIO方向设置为输出 GPIO direction set to output
     IoTGpioSetDir(IOT_IO_NAME_GPIO_9, IOT_GPIO_DIR_OUT);
 
     for (int i = 0; i < LED_LOOP; i++) {
-        // 设置GPIO09输出高电平点亮红色交通灯LED3
+        /*
+         * 设置GPIO09输出高电平点亮红色交通灯LED3
+         * Set GPIO09 output high level to turn on red traffic light LED 3
+         */
         IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_9, IOT_GPIO_VALUE1);
-        
-        // 延时函数毫秒（设置高电平持续时间）
         TaskMsleep(DELYA_MS);
-        // 设置GPIO09输出低电平熄灭红色交通灯LED3
+        /*
+         * 设置GPIO09输出低电平熄灭红色交通灯LED3
+         * Set GPIO09 output low level to turn off red traffic light LED 3
+         */
         IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_9, IOT_GPIO_VALUE0);
-        // 延时函数毫秒（设置低电平持续时间）
         TaskMsleep(DELYA_MS);
     }
 }
@@ -55,9 +58,8 @@ static void LedControlTask(void)
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 1024; /* 堆栈大小为1024 */
+    attr.stack_size = 1024; // 堆栈大小为1024 stack size 1024
     attr.priority = osPriorityNormal;
-    // 报错
     if (osThreadNew((osThreadFunc_t)LedExampleEntry, NULL, &attr) == NULL) {
         printf("[LedExample] Failed to create LedTask!\n");
     }

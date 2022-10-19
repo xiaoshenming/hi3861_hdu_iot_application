@@ -14,8 +14,9 @@
  */
 
 /*
-    电机编码器的相关API接口
-*/
+ * 电机编码器的相关API接口
+ * Relevant API interface of motor encoder
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,7 +33,10 @@ static int encoderLeftBCounter = 0;
 static int rc = 0;
 #define FLAG_BIT    2
 
-/* 左电机中断处理函数 */
+/*
+ * 左电机中断处理函数
+ * Left motor interrupt processing function
+ */
 static void LeftACounterHandler(char *arg)
 {
     (void) arg;
@@ -45,7 +49,10 @@ static void LeftACounterHandler(char *arg)
     }
 }
 
-/* 左电机中断处理函数 */
+/*
+ * 左电机中断处理函数
+ * Left motor interrupt processing function
+ */
 static void LeftBCounterHandler(char *arg)
 {
     (void) arg;
@@ -60,27 +67,55 @@ static void LeftBCounterHandler(char *arg)
 
 void EncoderInit(void)
 {
-    // 左侧电机编码器B相的GPIO初始化
+    /*
+     * 左侧电机编码器B相的GPIO初始化
+     * GPIO initialization of left motor encoder phase B
+     */
     IoTGpioInit(IOT_IO_NAME_GPIO_0);
-    // 设置GPIO0的管脚复用关系为GPIO
+    /*
+     * 设置GPIO0的管脚复用关系为GPIO
+     * Set the pin reuse relationship of GPIO0 to GPIO
+     */
     IoSetFunc(IOT_IO_NAME_GPIO_0, IOT_IO_FUNC_GPIO_0_GPIO);
-    // GPIO0方向设置为输入
+    /*
+     * GPIO0方向设置为输入
+     * GPIO0 direction is set as input
+     */
     IoTGpioSetDir(IOT_IO_NAME_GPIO_0, IOT_GPIO_DIR_IN);
-    // 设置GPIO0为上拉功能
+    /*
+     * 设置GPIO0为上拉功能
+     * Set GPIO0 as pull-up function
+     */
     IoSetPull(IOT_IO_NAME_GPIO_0, IOT_IO_PULL_UP);
-    // 使能GPIO0的中断功能, 上升沿触发中断，rightACounterHandler为中断的回调函数
+    /*
+     * 使能GPIO0的中断功能, 上升沿触发中断，rightACounterHandler为中断的回调函数
+     * Enable the interrupt function of GPIO0, the rising edge triggers
+     * the interrupt, and rightACounterHandler is the interrupt callback function
+     */
     IoTGpioRegisterIsrFunc(IOT_IO_NAME_GPIO_0, IOT_INT_TYPE_EDGE,
                            IOT_GPIO_EDGE_RISE_LEVEL_HIGH, LeftBCounterHandler, NULL);
-
-    // 左侧电机编码器A相的GPIO初始化
+    /*
+     * 左侧电机编码器A相的GPIO初始化
+     * GPIO initialization of left motor encoder phase A
+     */
     IoSetFunc(IOT_IO_NAME_GPIO_12, IOT_IO_FUNC_GPIO_12_GPIO);
-    // 设置GPIO1的管脚复用关系为GPIO
+    /*
+     * 设置GPIO12的管脚复用关系为GPIO
+     * Set the pin reuse relationship of GPIO12 to GPIO
+     */
     IoTGpioSetDir(IOT_IO_NAME_GPIO_12, IOT_GPIO_DIR_IN);
-    // 设置GPIO12为上拉功能
+    /*
+     * 设置GPIO12为上拉功能
+     * Set GPIO12 as pull-up function
+     */
     IoSetPull(IOT_IO_NAME_GPIO_12, IOT_IO_PULL_UP);
-    // 使能GPIO1的中断功能, 上升沿触发中断，rightBCounterHandler 为中断的回调函数
+    /*
+     * 使能GPIO1的中断功能, 上升沿触发中断，rightBCounterHandler 为中断的回调函数
+     * Enable the interrupt function of GPIO1, the rising edge triggers the interrupt,
+     * and rightBCounterHandler is the interrupt callback function
+     */
     IoTGpioRegisterIsrFunc(IOT_IO_NAME_GPIO_12, IOT_INT_TYPE_EDGE,
-                           IOT_GPIO_EDGE_RISE_LEVEL_HIGH, LeftACounterHandler, NULL); // 上升沿触发中断
+                           IOT_GPIO_EDGE_RISE_LEVEL_HIGH, LeftACounterHandler, NULL);
 }
 
 void EncoderEntry(void)
@@ -98,9 +133,8 @@ static void EncoderControlTask(void)
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 1024; /* 堆栈大小为1024 */
+    attr.stack_size = 1024; // 堆栈大小为1024，stack size 1024
     attr.priority = osPriorityNormal;
-    // 报错
     if (osThreadNew((osThreadFunc_t)EncoderEntry, NULL, &attr) == NULL) {
         printf("[LedExample] Failed to create LedTask!\n");
     }

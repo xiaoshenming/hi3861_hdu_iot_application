@@ -82,7 +82,7 @@ void PCA9555Init(void)
     IoSetPull(IOT_IO_NAME_GPIO_11, IOT_IO_PULL_UP);
 }
 
-/* 
+/*
  * 从指定地址的PCA9555器件的指定寄存器读一字节数据
  * Write one byte of data to the specified register of the PCA9555 device with the specified address
  */
@@ -98,7 +98,7 @@ uint32_t PCA9555I2CReadByte(uint8_t *rec_byte)
     return retval;
 }
 
-/* 
+/*
  * 向指定地址的PCA9555器件的指定寄存器写一字节数据
  * Write one byte of data to the specified register of the PCA9555 device with the specified address
  */

@@ -26,21 +26,21 @@
 #define OLED_I2C_IDX 0
 
 #define OLED_WIDTH    (128)
-#define OLED_I2C_ADDR 0x78 // 默认地址为 0x78
-#define OLED_I2C_CMD 0x00 // 0000 0000       写命令
-#define OLED_I2C_DATA 0x40 // 0100 0000(0x40) 写数据
-#define OLED_I2C_BAUDRATE (400 * 1000) // 400k
+#define OLED_I2C_ADDR 0x78
+#define OLED_I2C_CMD 0x00
+#define OLED_I2C_DATA 0x40
+#define OLED_I2C_BAUDRATE (400 * 1000)
 
 #define DELAY_100_MS (100 * 1000)
 
 typedef struct {
-    /** Pointer to the buffer storing data to send */
+    /* Pointer to the buffer storing data to send */
     unsigned char *sendBuf;
-    /** Length of data to send */
+    /* Length of data to send */
     unsigned int  sendLen;
-    /** Pointer to the buffer for storing data to receive */
+    /* Pointer to the buffer for storing data to receive */
     unsigned char *receiveBuf;
-    /** Length of data received */
+    /* Length of data received */
     unsigned int  receiveLen;
 } IotI2cData;
 
@@ -56,9 +56,8 @@ static uint32_t I2cWiteByte(uint8_t regAddr, uint8_t byte)
     return IoTI2cWrite(id, OLED_I2C_ADDR, i2cData.sendBuf, i2cData.sendLen);
 }
 
-/**
+/*
  * @brief Write a command byte to OLED device.
- *
  * @param cmd the commnad byte to be writen.
  * @return Returns {@link IOT_SUCCESS} if the operation is successful;
  * returns an error code defined in {@link wifiiot_errno.h} otherwise.
@@ -68,9 +67,8 @@ static uint32_t WriteCmd(uint8_t cmd)
     return I2cWiteByte(OLED_I2C_CMD, cmd);
 }
 
-/**
+/*
  * @brief Write a data byte to OLED device.
- *
  * @param cmd the data byte to be writen.
  * @return Returns {@link IOT_SUCCESS} if the operation is successful;
  * returns an error code defined in {@link wifiiot_errno.h} otherwise.
@@ -80,7 +78,7 @@ static uint32_t WriteData(uint8_t data)
     return I2cWiteByte(OLED_I2C_DATA, data);
 }
 
-/**
+/*
  * @brief ssd1306 OLED Initialize.
  */
 uint32_t OledInit(void)
@@ -127,25 +125,39 @@ uint32_t OledInit(void)
 void OledSetPosition(uint8_t x, uint8_t y)
 {
     WriteCmd(0xb0 + y);
-    WriteCmd(((x & 0xf0) >> 4) | 0x10); /* 在0xf0右移4位，与0x10或，实现了写数据 */
+    /*
+     * 在0xf0右移4位，与0x10或，实现了写数据
+     * Shift 4 bits to the right at 0xf0, and 0x10 or, to write data
+     */
+    WriteCmd(((x & 0xf0) >> 4) | 0x10); 
     WriteCmd(x & 0x0f);
 }
 
-/* 全屏填充 */
+/*
+ * 全屏填充
+ * Full Screen Fill
+ */
 void OledFillScreen(uint8_t fillData)
 {
-    for (uint8_t m = 0; m < 8; m++) { /* 循环8次实现横屏填充 */
+    /*
+     * 循环8次实现横屏填充
+     * Cycle 8 times to achieve horizontal screen filling
+     */
+    for (uint8_t m = 0; m < 8; m++) {
         WriteCmd(0xb0 + m);
         WriteCmd(0x00);
         WriteCmd(0x10);
-
-        for (uint8_t n = 0; n < 128; n++) { /* 循环128次实现竖屏填充 */
+        /*
+         * 循环128次实现竖屏填充
+         * Loop 128 times to achieve vertical screen filling
+         */
+        for (uint8_t n = 0; n < 128; n++) {
             WriteData(fillData);
         }
     }
 }
 
-/**
+/*
  * @brief 8*16 typeface
  * @param x: write positon start from x axis
  * @param y: write positon start from y axis
@@ -154,27 +166,27 @@ void OledFillScreen(uint8_t fillData)
  */
 void OledShowChar(uint8_t x, uint8_t y, uint8_t ch, Font font)
 {
-    uint8_t c = ch - ' '; // 得到偏移后的值
+    uint8_t c = ch - ' '; // 得到偏移后的值，Get the offset value
     uint8_t b = x;
     uint8_t d = y;
     if (b > OLED_WIDTH - 1) {
         b = 0;
-        d = d + 2; /* 得到偏移后的值2 */
+        d = d + 2; /* 得到偏移后的值2 Get the offset value 2 */
     }
 
     if (font == FONT8_X16) {
         OledSetPosition(b, d);
-        for (uint8_t i = 0; i < 8; i++) { /* 循环8次实现横屏填充 */
-            WriteData(g_f8X16[c * 16 + i]); /* 循环16次实现横屏填充 */
+        for (uint8_t i = 0; i < 8; i++) { /* 循环8次实现横屏填充 Cycle 8 times to achieve horizontal screen filling */
+            WriteData(g_f8X16[c * 16 + i]); /* 循环16次实现横屏填充 Cycle 16 times to realize horizontal screen filling */
         }
 
         OledSetPosition(b, d + 1);
-        for (uint8_t i = 0; i < 8; i++) { /* 循环8次实现横屏填充 */
-            WriteData(g_f8X16[c * 16 + i + 8]); /* 循环16次实现横屏填充8列 */
+        for (uint8_t i = 0; i < 8; i++) { /* 循环8次实现横屏填充 Cycle 8 times to achieve horizontal screen filling */
+            WriteData(g_f8X16[c * 16 + i + 8]); /* 循环16次实现横屏填充8列 Cycle 16 times to fill 8 columns in horizontal screen */
         }
     } else {
         OledSetPosition(b, d);
-        for (uint8_t i = 0; i < 6; i++) { /* 循环6次实现横屏填充 */
+        for (uint8_t i = 0; i < 6; i++) { /* 循环6次实现横屏填充 Cycle 6 times to achieve horizontal screen filling */
             WriteData(g_f6X8[c][i]);
         }
     }
@@ -192,10 +204,10 @@ void OledShowString(uint8_t x, uint8_t y, const char* str, Font font)
 
     while (str[j]) {
         OledShowChar(b, d, str[j], font);
-        b += 8; /* 循环8次实现横屏填充 */
-        if (b > 120) { /* 循环120次实现横屏填充 */
+        b += 8; /* 循环8次实现横屏填充 Cycle 8 times to achieve horizontal screen filling */
+        if (b > 120) { /* 循环120次实现横屏填充 Cycle 120 times to achieve horizontal screen filling */
             b = 0;
-            d += 2; /* 循环2次实现横屏填充 */
+            d += 2; /* 循环2次实现横屏填充 Cycle twice to realize horizontal screen filling */
         }
         j++;
     }

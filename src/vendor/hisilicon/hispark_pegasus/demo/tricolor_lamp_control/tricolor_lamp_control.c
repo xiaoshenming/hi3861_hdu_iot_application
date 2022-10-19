@@ -24,36 +24,58 @@
 
 static void TraColorLampControl(void)
 {
-    // IO扩展芯片初始化
     PCA9555Init();
-    // 配置IO扩展芯片的part1的所有管脚为输出
     SetPCA9555GpioValue(PCA9555_PART1_IODIR, PCA9555_OUTPUT);
-    // 配置左右三色车灯全灭
     SetPCA9555GpioValue(PCA9555_PART1_OUTPUT, LED_OFF);
 
     /*
-        控制左三色车灯跑马灯，绿、蓝、红、白：每隔一秒一次亮
-        绿灯：IO1_3 ==> 0000 1000 ==> 0x08
-        蓝灯：IO1_4 ==> 0001 0000 ==> 0x10
-        红灯：IO1_5 ==>  0010 0000 ==> 0x20
-        白灯：三灯全亮 ==>  0011 1000 ==> 0x38
-    */
+     * 控制左三色车灯跑马灯，绿、蓝、红、白：每隔一秒一次亮
+     * 绿灯：IO1_3 ==> 0000 1000 ==> 0x08
+     * 蓝灯：IO1_4 ==> 0001 0000 ==> 0x10
+     * 红灯：IO1_5 ==>  0010 0000 ==> 0x20
+     * 白灯：三灯全亮 ==>  0011 1000 ==> 0x38
+     * Control the left tricolor running lights, green, blue, red and white: light up once every second
+     * Green light: IO1_ 3 ==> 0000 1000 ==> 0x08
+     * Blue light: IO1_4 ==> 0001 0000 ==> 0x10
+     * Red light: IO1_5 ==>  0010 0000 ==> 0x20
+     * White light: all three lights are on==>0011 1000==>0x38
+     */
     while (1) {
-        // 设置红灯：IO1_3 输出高电平点亮左车绿灯
+        /*
+         * 设置绿灯：IO1_3 输出高电平点亮左车绿灯
+         * Set green light: IO1_ 3 Output high level to turn on the left green light
+         */
         SetPCA9555GpioValue(PCA9555_PART1_OUTPUT, GREEN_LED);
-        // 延时函数毫秒（设置高电平持续时间）
+        /*
+         * 延时函数毫秒（设置高电平持续时间）
+         * Delay function milliseconds (set high level duration)
+         */
         TaskMsleep(DELAY_MS);
-        // 设置 绿灯：IO1_4 输出高电平点亮左车蓝灯
+        /*
+         * 设置 蓝灯：IO1_4 输出高电平点亮左车蓝灯
+         * Set blue light: IO1_ 4 Output high to turn on the left car blue light
+         */
         SetPCA9555GpioValue(PCA9555_PART1_OUTPUT, BLUE_LED);
-        // 延时函数毫秒（设置低电平持续时间）
+        /*
+         * 延时函数毫秒（设置高电平持续时间）
+         * Delay function milliseconds (set high level duration)
+         */
         TaskMsleep(DELAY_MS);
-        // 蓝灯：IO1_5 输出高电平点亮左车红灯
+        /*
+         * 设置红灯：IO1_3 输出高电平点亮左车红灯
+         * Set red light: IO1_ 3 Output high level to turn on the left vehicle red light
+         */
         SetPCA9555GpioValue(PCA9555_PART1_OUTPUT, RED_LED);
-        // 延时函数毫秒（设置高电平持续时间）
+        /*
+         * 延时函数毫秒（设置高电平持续时间）
+         * Delay function milliseconds (set high level duration)
+         */
         TaskMsleep(DELAY_MS);
-        // 设置 IO1_3 IO1_4 IO1_5 都输出高电平，左车亮白灯
+        /*
+         * 设置 IO1_3 IO1_4 IO1_5 都输出高电平，左车亮白灯
+         * Set IO1_ 3 IO1_ 4 IO1_ 5 output high level, left vehicle white light
+         */
         SetPCA9555GpioValue(PCA9555_PART1_OUTPUT, WHITE_LED);
-        // 延时函数毫秒（设置低电平持续时间）
         TaskMsleep(DELAY_MS);
     }
 }
@@ -66,9 +88,8 @@ static void TraColorLampControlEntry(void)
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 1024; /* 堆栈大小为1024 */
+    attr.stack_size = 1024; /* 堆栈大小为1024 stack size 1024 */
     attr.priority = osPriorityNormal;
-    // 报错
     if (osThreadNew((osThreadFunc_t)TraColorLampControl, NULL, &attr) == NULL) {
         printf("[LedExample] Failed to create LedTask!\n");
     }

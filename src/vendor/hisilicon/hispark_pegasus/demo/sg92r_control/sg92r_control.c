@@ -13,10 +13,6 @@
  * limitations under the License.
  */
 
-/*
-    SG92R舵机的相关API接口
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -81,39 +77,40 @@ void EngineTurnLeft(void)
 
 void S92RInit(void)
 {
-    // PWM舵机对应的GPIO是GPIO02
-    // 初始化 GPIO02
     IoTGpioInit(IOT_IO_NAME_GPIO_2);
-    // 设置GPIO02的管脚复用关系为GPIO
     IoSetFunc(IOT_IO_NAME_GPIO_2, IOT_IO_FUNC_GPIO_2_GPIO);
-    // 设置GPIO02的方向为输出
     IoTGpioSetDir(IOT_IO_NAME_GPIO_2, IOT_GPIO_DIR_OUT);
 }
 
 void Sg92RTask(void)
 {
-    unsigned int time = 200; /* 延时200ms */
-    // 初始化PWM舵机
+    unsigned int time = 200;
     S92RInit();
 
     while (1) {
-        /* 舵机归中 */
+        /* 舵机归中 Steering gear centering */
         RegressMiddle();
         TaskMsleep(time);
 
-        /* 舵机左转90度 */
+        /*
+         * 舵机左转90度
+         * Steering gear turns 90 degrees to the left
+         */
         EngineTurnLeft();
         TaskMsleep(time);
 
-        /* 舵机归中 */
+        /* 舵机归中 Steering gear centering */
         RegressMiddle();
         TaskMsleep(time);
 
-        /* 舵机右转90度 */
+        /*
+         * 舵机右转90度
+         * Steering gear turns right 90 degrees
+         */
         EngineTurnRight();
         TaskMsleep(time);
 
-        /* 舵机归中 */
+        /* 舵机归中 Steering gear centering */
         RegressMiddle();
         TaskMsleep(time);
     }
@@ -128,7 +125,7 @@ void Sg92rSampleEntry(void)
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 1024 * 5; /* 堆栈大小为1024*5 */
+    attr.stack_size = 1024 * 5; // 堆栈大小为1024*5 stack size 5*1024
     attr.priority = osPriorityNormal;
 
     if (osThreadNew((osThreadFunc_t)Sg92RTask, NULL, &attr) == NULL) {

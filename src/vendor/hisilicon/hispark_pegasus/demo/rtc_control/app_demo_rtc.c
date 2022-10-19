@@ -45,9 +45,9 @@ int year = 0;
 /* gpio init */
 void gpio_init(void)
 {
-    // 设置GPIO13的管脚复用关系为I2C0_SDA
+    // 设置GPIO13的管脚复用关系为I2C0_SDA Set the pin reuse relationship of GPIO13 to I2C0_ SDA
     IoSetFunc(IOT_IO_NAME_GPIO_13, IOT_IO_FUNC_GPIO_13_I2C0_SDA);
-    // 设置GPIO14的管脚复用关系为I2C0_SCL
+    // 设置GPIO14的管脚复用关系为I2C0_SCL Set the pin reuse relationship of GPIO14 to I2C0_ SCL
     IoSetFunc(IOT_IO_NAME_GPIO_14, IOT_IO_FUNC_GPIO_14_I2C0_SCL);
 }
 
@@ -126,13 +126,13 @@ void rct_set_init(void)
 {
     uint32_t ret;
     ins5902_rtc_type rct_time_set = { 0 };
-    rct_time_set.rtc_second[0] = 30; // 30代表秒
-    rct_time_set.rtc_minue[0] = 05; // 05代表分钟
-    rct_time_set.rtc_hour[0] = 17; // 17代表小时
-    rct_time_set.rtc_day[0] = 5; // 5代表周6
-    rct_time_set.rtc_date[0] = 4; // 4代表号
-    rct_time_set.rtc_month[0] = 6; // 6代表月
-    rct_time_set.rtc_year[0] = 22; // 22代表年
+    rct_time_set.rtc_second[0] = 30; // 30代表秒 30 represents seconds
+    rct_time_set.rtc_minue[0] = 05; // 05代表分钟 05 for minutes
+    rct_time_set.rtc_hour[0] = 17; // 17代表小时 17 represents hours
+    rct_time_set.rtc_day[0] = 5; // 5代表周6 5 represents week 6
+    rct_time_set.rtc_date[0] = 4; // 4代表号 4 Representative No
+    rct_time_set.rtc_month[0] = 6; // 6代表月 6 representative months
+    rct_time_set.rtc_year[0] = 22; // 22代表年 22 Representative year
     // set second
     ret = ins5902_i2c_write(RTC_SECOND, rct_time_set.rtc_second[0], NULL, SEND_SET_REG_LEN);
     if (ret != HI_ERR_SUCCESS) {
@@ -180,19 +180,19 @@ void rct_set_init(void)
 uint8_t GetWeek(uint8_t weekdata)
 {
     uint8_t res = 0;
-    if (weekdata == 40) { // 读出来寄存器值为40，代表周6
+    if (weekdata == 40) { // The read register value is 40, representing week 6
         res = 6;
-    } else if (weekdata == 20) { // 读出来寄存器值为20，代表周5
+    } else if (weekdata == 20) { // The read register value is 20, representing week 5
         res = 5;
-    } else if (weekdata == 10) { // 读出来寄存器值为10，代表周4
+    } else if (weekdata == 10) { // The read register value is 10, representing week 4
         res = 4;
-    } else if (weekdata == 8) { // 读出来寄存器值为8，代表周3
+    } else if (weekdata == 8) { // The read register value is 8, representing week 3
         res = 3;
-    } else if (weekdata == 4) { // 读出来寄存器值为4，代表周2
+    } else if (weekdata == 4) { // The read register value is 4, representing week 2
         res = 2;
-    } else if (weekdata == 2) { // 读出来寄存器值为2，代表周1
+    } else if (weekdata == 2) { // The read register value is 2, representing week 1
         res = 1;
-    } else if (weekdata == 1) { // 读出来寄存器值为1，代表周7
+    } else if (weekdata == 1) { // The read register value is 1, representing week 7
         res = 7;
     }
     return res;
@@ -209,18 +209,26 @@ void GetSecond(void)
         rtc_data.rtc_second[0] = rct_read_data[0];
         second = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
         int ret = snprintf(line, sizeof(line), "%d", second);
-        if (ret != 2 && ret != 1) { // 需要显示的字符串长度为2和1
+        /*
+         * 需要显示的字符串长度为2和1
+         * The length of the string to be displayed is 2 and 1
+         */
+        if (ret != 2 && ret != 1) {
             printf("failed\r\n");
         }
         if (second >= RTC_OLED_DATA) {
-            OledShowString(48, 6, line, 1); // 在OLED屏幕的第48列6行显示1行
+            /*
+             * 在OLED屏幕的第48列6行显示1行
+             * Display 1 row in the 48th column and 6 rows of the OLED screen
+             */
+            OledShowString(48, 6, line, 1);
         } else {
-            OledShowString(48, 6, "0", 1); // 在OLED屏幕的第48列6行显示1行
-            OledShowString(56, 6, line, 1); // 在OLED屏幕的第56列6行显示1行
+            OledShowString(48, 6, "0", 1); // Display 1 row in the 48th column and 6 rows of the OLED screen
+            OledShowString(56, 6, line, 1); // Display 1 row in the 56th column and 6 rows of the OLED screen
         }
-        OledShowString(64, 6, " ", 1); // 在OLED屏幕的第64列6行显示1行
+        OledShowString(64, 6, " ", 1); // Display 1 row in the 64th column and 6 rows of the OLED screen
     }
-    TaskMsleep(DELAY_TIME); // 1s刷新一次
+    TaskMsleep(DELAY_TIME);
 }
 
 void GetMinute(void)
@@ -234,18 +242,18 @@ void GetMinute(void)
         rtc_data.rtc_minue[0] = rct_read_data[0];
         minute = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
         int ret = snprintf(line, sizeof(line), "%d", minute);
-        if (ret != 1 && ret != 2) { // 分钟需要显示的字符串长度为1或者2
+        if (ret != 1 && ret != 2) { // The length of the string to be displayed is 2 and 1
             printf("failed\r\n");
         }
         if (minute >= RTC_OLED_DATA) {
-            OledShowString(24, 6, line, 1); // 在OLED屏幕的第24列6行显示1行
-            OledShowString(40, 6, ":", 1); // 在OLED屏幕的第40列6行显示1行
+            OledShowString(24, 6, line, 1); // Display 1 row in the 24th column and 6 rows of the OLED screen
+            OledShowString(40, 6, ":", 1); // Display 1 row in the 40th column and 6 rows of the OLED screen
         } else {
-            OledShowString(24, 6, "0", 1); // 在OLED屏幕的第24列6行显示1行
-            OledShowString(32, 6, line, 1); // 在OLED屏幕的第32列6行显示1行
-            OledShowString(40, 6, ":", 1); // 在OLED屏幕的第40列6行显示1行
+            OledShowString(24, 6, "0", 1); // Display 1 row in the 24th column and 6 rows of the OLED screen
+            OledShowString(32, 6, line, 1); // Display 1 row in the 32th column and 6 rows of the OLED screen
+            OledShowString(40, 6, ":", 1); // Display 1 row in the 40th column and 6 rows of the OLED screen
         }
-        OledShowString(56, 6, "0", 1); // 在OLED屏幕的第56列6行显示1行
+        OledShowString(56, 6, "0", 1); // Display 1 row in the 56th column and 6 rows of the OLED screen
     }
 }
 
@@ -260,18 +268,18 @@ void GetHour(void)
         rtc_data.rtc_hour[0] = rct_read_data[0];
         hour = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
         int ret = snprintf(line, sizeof(line), "%d", hour);
-        if (ret != 2 && ret != 1) { // 需要显示的字符串长度为2
+        if (ret != 2 && ret != 1) { // The length of the string to be displayed is 2 and 1
             printf("failed\r\n");
         }
         if (hour >= RTC_OLED_DATA) {
-            OledShowString(0, 6, line, 1); // 在OLED屏幕的第0列6行显示1行
-            OledShowString(16, 6, ":", 1); // 在OLED屏幕的第16列6行显示1行
+            OledShowString(0, 6, line, 1); // Display 1 row in the 0th column and 6 rows of the OLED screen
+            OledShowString(16, 6, ":", 1); // Display 1 row in the 16th column and 6 rows of the OLED screen
         } else {
-            OledShowString(0, 6, "0", 1); // 在OLED屏幕的第0列6行显示1行
-            OledShowString(8, 6, line, 1); // 在OLED屏幕的第8列6行显示1行
-            OledShowString(16, 6, ":", 1); // 在OLED屏幕的第16列6行显示1行
+            OledShowString(0, 6, "0", 1); // Display 1 row in the 0th column and 6 rows of the OLED screen
+            OledShowString(8, 6, line, 1); // Display 1 row in the 8th column and 6 rows of the OLED screen
+            OledShowString(16, 6, ":", 1); // Display 1 row in the 6th column and 6 rows of the OLED screen
         }
-        OledShowString(64, 6, " ", 1); // 在OLED屏幕的第64列6行显示1行
+        OledShowString(64, 6, " ", 1); // Display 1 row in the 64th column and 6 rows of the OLED screen
     }
 }
 
@@ -287,11 +295,11 @@ void GetDay(void)
         day = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
         day = GetWeek(day);
         int ret = snprintf(line, sizeof(line), "%d", day);
-        if (ret != 2 && ret != 1) { // 需要显示的字符串长度为2
+        if (ret != 2 && ret != 1) { // The length of the string to be displayed is 2 and 1
             printf("failed\r\n");
         }
-        OledShowString(72, 6, "week:", 1); // 在OLED屏幕的第72列6行显示1行
-        OledShowString(112, 6, line, 1); // 在OLED屏幕的第112列6行显示1行
+        OledShowString(72, 6, "week:", 1); // Display 1 row in the 72th column and 6 rows of the OLED screen
+        OledShowString(112, 6, line, 1); // Display 1 row in the 112th column and 6 rows of the OLED screen
     }
 }
 
@@ -306,16 +314,16 @@ void GetDate(void)
         rtc_data.rtc_date[0] = rct_read_data[0];
         date = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
         int ret = snprintf(line, sizeof(line), "%d", date);
-        if (ret != 2 && ret != 1) { // 需要显示的字符串长度为2
+        if (ret != 2 && ret != 1) { // The length of the string to be displayed is 2 and 1
             printf("failed\r\n");
         }
         if (date >= RTC_OLED_DATA) {
-            OledShowString(89, 4, line, 1); // 在OLED屏幕的第89列4行显示1行
+            OledShowString(89, 4, line, 1); // Display 1 row in the 89th column and 6 rows of the OLED screen
         } else {
-            OledShowString(89, 4, "0", 1); // 在OLED屏幕的第89列4行显示1行
-            OledShowString(97, 4, line, 1); // 在OLED屏幕的第97列4行显示1行
+            OledShowString(89, 4, "0", 1); // Display 1 row in the 89th column and 6 rows of the OLED screen
+            OledShowString(97, 4, line, 1); // Display 1 row in the 97th column and 6 rows of the OLED screen
         }
-            OledShowString(105, 4, " ", 1); // 在OLED屏幕的第105列4行显示1行
+            OledShowString(105, 4, " ", 1); // Display 1 row in the 105th column and 6 rows of the OLED screen
     }
 }
 
@@ -334,12 +342,12 @@ void GetMonth(void)
             printf("failed\r\n");
         }
         if (month >= RTC_OLED_DATA) {
-            OledShowString(65, 4, line, 1); // 在OLED屏幕的第65列4行显示1行
-            OledShowString(81, 4, "-", 1); // 在OLED屏幕的第81列4行显示1行
+            OledShowString(65, 4, line, 1); // Display 1 row in the 65th column and 6 rows of the OLED screen
+            OledShowString(81, 4, "-", 1); // Display 1 row in the 81th column and 6 rows of the OLED screen
         } else {
-            OledShowString(65, 4, "0", 1); // 在OLED屏幕的第65列4行显示1行
-            OledShowString(73, 4, line, 1); // 在OLED屏幕的第73列4行显示1行
-            OledShowString(81, 4, "-", 1); // 在OLED屏幕的第81列4行显示1行
+            OledShowString(65, 4, "0", 1); // Display 1 row in the 65th column and 6 rows of the OLED screen
+            OledShowString(73, 4, line, 1); // Display 1 row in the 73th column and 6 rows of the OLED screen
+            OledShowString(81, 4, "-", 1); // Display 1 row in the 81th column and 6 rows of the OLED screen
         }
     }
 }
@@ -358,23 +366,19 @@ void GetYear(void)
         if (ret != 2) { // 需要显示的字符串长度为2
             printf("failed\r\n");
         }
-        OledShowString(25, 4, "20", 1); // 在OLED屏幕的第25列4行显示1行
-        OledShowString(41, 4, line, 1); // 在OLED屏幕的第41列4行显示1行
-        OledShowString(57, 4, "-", 1); // 在OLED屏幕的第57列4行显示1行
-        OledShowString(104, 4, " ", 1); // 在OLED屏幕的第104列4行显示1行
+        OledShowString(25, 4, "20", 1); // Display 1 row in the 25th column and 6 rows of the OLED screen
+        OledShowString(41, 4, line, 1); // Display 1 row in the 41th column and 6 rows of the OLED screen
+        OledShowString(57, 4, "-", 1); // Display 1 row in the 57th column and 6 rows of the OLED screen
+        OledShowString(104, 4, " ", 1); // Display 1 row in the 104th column and 6 rows of the OLED screen
     }
 }
 
 /* read rtc time */
 void rtc_timer(void)
 {
-    // 设置GPIO13的管脚复用关系为I2C0_SDA
     IoSetFunc(IOT_IO_NAME_GPIO_13, IOT_IO_FUNC_GPIO_13_I2C0_SDA);
-    // 设置GPIO14的管脚复用关系为I2C0_SCL
     IoSetFunc(IOT_IO_NAME_GPIO_14, IOT_IO_FUNC_GPIO_14_I2C0_SCL);
-    // 初始化I2C设备0，并指定波特率为400k
     IoTI2cInit(INS5902_I2C_IDX, IOT_I2C_IDX_BAUDRATE);
-    // 设置I2C设备0的波特率为400k
     IoTI2cSetBaudrate(INS5902_I2C_IDX, IOT_I2C_IDX_BAUDRATE);
     /* ssd1306 config init */
     OledInit();
