@@ -1,9 +1,9 @@
 static_library("wifi_control") {
     sources = [
-        "wifi_connecter.c",
-        #"wifi_starter.c",
-        "wifi_connect_demo.c",
-        #"wifi_hotspot_demo.c",
+        #"wifi_connecter.c",
+        "wifi_starter.c",
+        #"wifi_connect_demo.c",
+        "wifi_hotspot_demo.c",
     ]
 
     include_dirs = [

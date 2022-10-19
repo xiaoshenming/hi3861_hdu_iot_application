@@ -20,23 +20,21 @@
 
 #include "wifi_connecter.h"
 
-static void WifiConnectTask(void *arg)
+static void WifiConnectTask(void)
 {
-    (void)arg;
-
-    osDelay(10);
-
+    osDelay(10); /* 10 = 100ms */
     // setup your AP params
-    WifiDeviceConfig apConfig = {0};
+    WifiDeviceConfig apConfig = { 0 };
     strcpy(apConfig.ssid, "H"); // 设置wifi ssid "h" Set wifi ssid
     strcpy(apConfig.preSharedKey, "12345678"); // 设置wifi 密码 "12345678" Set wifi password
     apConfig.securityType = WIFI_SEC_TYPE_PSK;
 
     int netId = ConnectToHotspot(&apConfig);
-
     int timeout = 60;
     while (timeout--) {
         printf("After %d seconds I will disconnect with AP!\r\n", timeout);
+        /* 100相当于1s,60后WiFi断开 */
+        /* 100 is equivalent to 1s, and the WiFi will be disconnected after 60 */
         osDelay(100);
     }
 
@@ -52,10 +50,10 @@ static void WifiConnectDemo(void)
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 1024; // 任务栈1024 stack size 1024
+    attr.stack_size = 10240; // 任务栈10240, stack size 10240
     attr.priority = osPriorityNormal;
 
-    if (osThreadNew(WifiConnectTask, NULL, &attr) == NULL) {
+    if (osThreadNew((osThreadFunc_t)WifiConnectTask, NULL, &attr) == NULL) {
         printf("[WifiConnectDemo] Falied to create WifiConnectTask!\n");
     }
 }

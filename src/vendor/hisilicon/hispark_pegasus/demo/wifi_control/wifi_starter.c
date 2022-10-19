@@ -38,7 +38,7 @@ static void PrintStationInfo(StationInfo* info)
     static char macAddress[32] = {0};
     unsigned char* mac = info->macAddress;
     snprintf(macAddress, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X",
-        mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+        mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]); /* mac address 0,1,2,3,4,5 */
     printf(" PrintStationInfo: mac=%s, reason=%d.\r\n", macAddress, info->disconnectedReason);
 }
 

@@ -20,35 +20,34 @@
 
 #include "wifi_starter.h"
 
-static void WifiHotspotTask(void *arg)
+static void WifiHotspotTask(void)
 {
-    (void)arg;
     WifiErrorCode errCode;
-    HotspotConfig config = {0};
+    HotspotConfig config = { 0 };
 
     // 设置AP的配置参数 set configuration parameters for AP
-    strcpy(config.ssid, "HiSpark-AP");
-    strcpy(config.preSharedKey, "12345678");
+    strcpy(config.ssid, "HiSpark-AP"); // AP :HiSpark-AP
+    strcpy(config.preSharedKey, "12345678"); // Password：12345678
     config.securityType = WIFI_SEC_TYPE_PSK;
     config.band = HOTSPOT_BAND_TYPE_2G;
     config.channelNum = 7; /* 通道7 Channel 7 */
 
-    osDelay(10);
+    osDelay(10); /* 10 = 100ms */
 
     printf("starting AP ...\r\n");
     errCode = StartHotspot(&config);
     printf("StartHotspot: %d\r\n", errCode);
 
-    int timeout = 60;
+    int timeout = 60; /* 60 = 1 minute */
     while (timeout--) {
         printf("After %d seconds Ap will turn off!\r\n", timeout);
-        osDelay(100); /* 延时1s关闭AP Close AP after 1s delay */
+        osDelay(100); /* 100 = 1s */
     }
 
     printf("stop AP ...\r\n");
     StopHotspot();
     printf("stop AP ...\r\n");
-    osDelay(10); /* 延时100ms wait 100 ms */
+    osDelay(10); /* 10 = 100ms */
 }
 
 static void WifiHotspotDemo(void)
@@ -60,10 +59,10 @@ static void WifiHotspotDemo(void)
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 1024;  // 任务栈1024 stack size 1024
+    attr.stack_size = 10240; // 任务栈10240, stack size 10240
     attr.priority = osPriorityNormal;
 
-    if (osThreadNew(WifiHotspotTask, NULL, &attr) == NULL) {
+    if (osThreadNew((osThreadFunc_t)WifiHotspotTask, NULL, &attr) == NULL) {
         printf("[WifiHotspotDemo] Falied to create WifiHotspotTask!\n");
     }
 }

@@ -26,7 +26,7 @@ static void PrintLinkedInfo(WifiLinkedInfo* info)
     static char macAddress[32] = {0};
     unsigned char* mac = info->bssid;
     snprintf(macAddress, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X",
-        mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+        mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]); /* mac address 0,1,2,3,4,5 */
     printf("bssid: %s, rssi: %d, connState: %d, reason: %d, ssid: %s\r\n",
         macAddress, info->rssi, info->connState, info->disconnectedReason, info->ssid);
 }
@@ -77,8 +77,8 @@ int ConnectToHotspot(WifiDeviceConfig* apConfig)
     errCode = ConnectTo(netId);
     printf("ConnectTo(%d): %d\r\n", netId, errCode);
 
-    while (!g_connected) { // wait until connect to AP
-        osDelay(10);
+    while (!g_connected) {
+        osDelay(10); // wait 10=100ms  until connect to AP
     }
     printf("g_connected: %d\r\n", g_connected);
 
@@ -87,7 +87,7 @@ int ConnectToHotspot(WifiDeviceConfig* apConfig)
         err_t ret = netifapi_dhcp_start(g_iface);
         printf("netifapi_dhcp_start: %d\r\n", ret);
 
-        osDelay(100); // wait DHCP server give me IP
+        osDelay(100); // wait 100=1s DHCP server give me IP
         ret = netifapi_netif_common(g_iface, dhcp_clients_info_show, NULL);
         printf("netifapi_netif_common: %d\r\n", ret);
     }
