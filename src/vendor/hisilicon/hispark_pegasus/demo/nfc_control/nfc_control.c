@@ -113,10 +113,9 @@ void EepWritePage(unsigned char *pBuffer, unsigned short WriteAddr, unsigned cha
         printf("eepWritePage buffer is null\r\n");
     }
     PullDownCsn();
-    /* ReadAddr & 0xFF00)>>8), (unsigned char)(ReadAddr & 0x00FF)代表地址高8位和低8位，2代表发送的数据长度
-     * ReadAddr&0xFF00)>>8), (unsigned char) (ReadAddr&0x00FF) represents the high and low 8 bits of the address,
-     * and 2 represents the length of the data sent
-     */
+    /* ReadAddr & 0xFF00)>>8), (unsigned char)(ReadAddr & 0x00FF)代表地址高8位和低8位，2代表发送的数据长度 /*
+    /* ReadAddr&0xFF00)>>8), (unsigned char) (ReadAddr&0x00FF) represents the high and low 8 bits of the address, */
+    /* and 2 represents the length of the data sent */
     status = C081NfcI2cWrite((unsigned char)((WriteAddr & 0xFF00) >> 8),
                              (unsigned char)(WriteAddr & 0x00FF), pBuffer, datalen);
     if (status != IOT_SUCCESS) {
@@ -208,11 +207,9 @@ unsigned int WriteRead(unsigned char regHigh8bitCmd, unsigned char regLow8bitCmd
 unsigned int Fm11nt081ReadEep(unsigned short ReadAddr, unsigned short len)
 {
     unsigned int status;
-    /*
-     * ReadAddr & 0xFF00)>>8), (unsigned char)(ReadAddr & 0x00FF)左移8位代表地址高8位和低8位，2代表发送的数据长度
-     * ReadAddr&0xFF00)>>8), (unsigned char) (ReadAddr&0x00FF) represents the high and low 8 bits of the address,
-     * and 2 represents the length of the data sent
-     */
+    /* ReadAddr & 0xFF00)>>8), (unsigned char)(ReadAddr & 0x00FF)左移8位代表地址高8位和低8位，2代表发送的数据长度 */
+    /* ReadAddr&0xFF00)>>8), (unsigned char) (ReadAddr&0x00FF) represents the high and low 8 bits of the address, */
+    /* and 2 represents the length of the data sent */
     status = WriteRead((unsigned char)((ReadAddr & 0xFF00) >> 8), (unsigned char)(ReadAddr & 0x00FF), 2, len);
     if (status != IOT_SUCCESS) {
         return status;
@@ -228,7 +225,7 @@ void NFCInit(void)
     /* The CSN pin is masked when the byte is read and turned on when the EEP is written */
     hi_udelay(100); // 延时100us读写数据,wait 100us read write data
     Fm11nt081dWriteEeprom(NFC_EERROM_ONE_ADDR, 1, &wbuf[1]);
-    Fm11nt081dWriteEeprom(NFC_EERROM_TWO_ADDR, 1, &wbuf[3]); // wbuf第三位
+    Fm11nt081dWriteEeprom(NFC_EERROM_TWO_ADDR, 1, &wbuf[3]); // wbuf第3个
     Fm11nt081dWriteEeprom(NFC_EERROM_BASE_ADD, NFC_TOUTIAO_NDEF_LEN, ndefFile);
     PullDownCsn();
     Fm11nt081ReadEep(NFC_EERROM_BASE_ADD, READ_NFC_TOUTIAO_NDEF_LEN);

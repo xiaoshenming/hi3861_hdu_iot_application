@@ -209,18 +209,14 @@ void GetSecond(void)
         rtc_data.rtc_second[0] = rct_read_data[0];
         second = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
         int ret = snprintf(line, sizeof(line), "%d", second);
-        /*
-         * 需要显示的字符串长度为2和1
-         * The length of the string to be displayed is 2 and 1
-         */
+        /* 需要显示的字符串长度为2和1 */
+        /* The length of the string to be displayed is 2 and 1 */
         if (ret != 2 && ret != 1) {
             printf("failed\r\n");
         }
         if (second >= RTC_OLED_DATA) {
-            /*
-             * 在OLED屏幕的第48列6行显示1行
-             * Display 1 row in the 48th column and 6 rows of the OLED screen
-             */
+            /* 在OLED屏幕的第48列6行显示1行 */
+            /* Display 1 row in the 48th column and 6 rows of the OLED screen */
             OledShowString(48, 6, line, 1);
         } else {
             OledShowString(48, 6, "0", 1); // Display 1 row in the 48th column and 6 rows of the OLED screen
@@ -242,7 +238,9 @@ void GetMinute(void)
         rtc_data.rtc_minue[0] = rct_read_data[0];
         minute = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
         int ret = snprintf(line, sizeof(line), "%d", minute);
-        if (ret != 1 && ret != 2) { // The length of the string to be displayed is 2 and 1
+        /* 需要显示的字符串长度为2和1 */
+        /* The length of the string to be displayed is 2 and 1 */
+        if (ret != 1 && ret != 2) {
             printf("failed\r\n");
         }
         if (minute >= RTC_OLED_DATA) {
@@ -268,7 +266,9 @@ void GetHour(void)
         rtc_data.rtc_hour[0] = rct_read_data[0];
         hour = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
         int ret = snprintf(line, sizeof(line), "%d", hour);
-        if (ret != 2 && ret != 1) { // The length of the string to be displayed is 2 and 1
+        /* 需要显示的字符串长度为2和1 */
+        /* The length of the string to be displayed is 2 and 1 */
+        if (ret != 2 && ret != 1) {
             printf("failed\r\n");
         }
         if (hour >= RTC_OLED_DATA) {
@@ -277,7 +277,7 @@ void GetHour(void)
         } else {
             OledShowString(0, 6, "0", 1); // Display 1 row in the 0th column and 6 rows of the OLED screen
             OledShowString(8, 6, line, 1); // Display 1 row in the 8th column and 6 rows of the OLED screen
-            OledShowString(16, 6, ":", 1); // Display 1 row in the 6th column and 6 rows of the OLED screen
+            OledShowString(16, 6, ":", 1); // Display 1 row in the 16th column and 6 rows of the OLED screen
         }
         OledShowString(64, 6, " ", 1); // Display 1 row in the 64th column and 6 rows of the OLED screen
     }
@@ -295,7 +295,9 @@ void GetDay(void)
         day = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
         day = GetWeek(day);
         int ret = snprintf(line, sizeof(line), "%d", day);
-        if (ret != 2 && ret != 1) { // The length of the string to be displayed is 2 and 1
+        /* 需要显示的字符串长度为2和1 */
+        /* The length of the string to be displayed is 2 and 1 */
+        if (ret != 2 && ret != 1) {
             printf("failed\r\n");
         }
         OledShowString(72, 6, "week:", 1); // Display 1 row in the 72th column and 6 rows of the OLED screen
@@ -314,16 +316,18 @@ void GetDate(void)
         rtc_data.rtc_date[0] = rct_read_data[0];
         date = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
         int ret = snprintf(line, sizeof(line), "%d", date);
-        if (ret != 2 && ret != 1) { // The length of the string to be displayed is 2 and 1
+        /* 需要显示的字符串长度为2和1 */
+        /* The length of the string to be displayed is 2 and 1 */
+        if (ret != 2 && ret != 1) {
             printf("failed\r\n");
         }
         if (date >= RTC_OLED_DATA) {
-            OledShowString(89, 4, line, 1); // Display 1 row in the 89th column and 6 rows of the OLED screen
+            OledShowString(89, 4, line, 1); // Display 1 row in the 89th column and 4 rows of the OLED screen
         } else {
-            OledShowString(89, 4, "0", 1); // Display 1 row in the 89th column and 6 rows of the OLED screen
-            OledShowString(97, 4, line, 1); // Display 1 row in the 97th column and 6 rows of the OLED screen
+            OledShowString(89, 4, "0", 1); // Display 1 row in the 89th column and 4 rows of the OLED screen
+            OledShowString(97, 4, line, 1); // Display 1 row in the 97th column and 4 rows of the OLED screen
         }
-            OledShowString(105, 4, " ", 1); // Display 1 row in the 105th column and 6 rows of the OLED screen
+            OledShowString(105, 4, " ", 1); // Display 1 row in the 105th column and 4 rows of the OLED screen
     }
 }
 
@@ -338,16 +342,18 @@ void GetMonth(void)
         rtc_data.rtc_month[0] = rct_read_data[0];
         month = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
         int ret = snprintf(line, sizeof(line), "%d", month);
-        if (ret != 2) { // 需要显示的字符串长度为2
+        /* 需要显示的字符串长度为2和1 */
+        /* The length of the string to be displayed is 2 and 1 */
+        if (ret != 2) {
             printf("failed\r\n");
         }
         if (month >= RTC_OLED_DATA) {
-            OledShowString(65, 4, line, 1); // Display 1 row in the 65th column and 6 rows of the OLED screen
-            OledShowString(81, 4, "-", 1); // Display 1 row in the 81th column and 6 rows of the OLED screen
+            OledShowString(65, 4, line, 1); // Display 1 row in the 65th column and 4 rows of the OLED screen
+            OledShowString(81, 4, "-", 1); // Display 1 row in the 81th column and 4 rows of the OLED screen
         } else {
-            OledShowString(65, 4, "0", 1); // Display 1 row in the 65th column and 6 rows of the OLED screen
-            OledShowString(73, 4, line, 1); // Display 1 row in the 73th column and 6 rows of the OLED screen
-            OledShowString(81, 4, "-", 1); // Display 1 row in the 81th column and 6 rows of the OLED screen
+            OledShowString(65, 4, "0", 1); // Display 1 row in the 65th column and 4 rows of the OLED screen
+            OledShowString(73, 4, line, 1); // Display 1 row in the 73th column and 4 rows of the OLED screen
+            OledShowString(81, 4, "-", 1); // Display 1 row in the 81th column and 4 rows of the OLED screen
         }
     }
 }
@@ -366,10 +372,10 @@ void GetYear(void)
         if (ret != 2) { // 需要显示的字符串长度为2
             printf("failed\r\n");
         }
-        OledShowString(25, 4, "20", 1); // Display 1 row in the 25th column and 6 rows of the OLED screen
-        OledShowString(41, 4, line, 1); // Display 1 row in the 41th column and 6 rows of the OLED screen
-        OledShowString(57, 4, "-", 1); // Display 1 row in the 57th column and 6 rows of the OLED screen
-        OledShowString(104, 4, " ", 1); // Display 1 row in the 104th column and 6 rows of the OLED screen
+        OledShowString(25, 4, "20", 1); // Display 1 row in the 25th column and 4 rows of the OLED screen
+        OledShowString(41, 4, line, 1); // Display 1 row in the 41th column and 4 rows of the OLED screen
+        OledShowString(57, 4, "-", 1); // Display 1 row in the 57th column and 4 rows of the OLED screen
+        OledShowString(104, 4, " ", 1); // Display 1 row in the 104th column and 4 rows of the OLED screen
     }
 }
 

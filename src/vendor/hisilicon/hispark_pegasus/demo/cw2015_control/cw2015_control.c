@@ -105,11 +105,9 @@ void CW2015Init(void)
      * Set the pin reuse relationship of GPIO14 to I2C0_ SCL
      */
     IoSetFunc(IOT_IO_NAME_GPIO_14, IOT_IO_FUNC_GPIO_14_I2C0_SCL);
-    /*
-     * 使电量检测模块从sleep mode变为wake up mode,0x00代表唤醒,0x11代表沉睡,2代表2bit控制
-     * Change the power detection module from sleep mode to wake up mode.
-     * 0x00 represents wake-up, 0x11 represents deep sleep, and 2 bit control
-     */
+    /* 使电量检测模块从sleep mode变为wake up mode,0x00代表唤醒,0x11代表沉睡,2代表2bit控制 */
+    /* Change the power detection module from sleep mode to wake up mode. */
+    /* 0x00 represents wake-up, 0x11 represents deep sleep, and 2 bit control */
     Cw20_Write(CW2015_WAKE_REGISTER, 0x00, 2);
 }
 

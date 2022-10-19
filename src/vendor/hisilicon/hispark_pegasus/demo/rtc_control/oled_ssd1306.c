@@ -125,11 +125,9 @@ uint32_t OledInit(void)
 void OledSetPosition(uint8_t x, uint8_t y)
 {
     WriteCmd(0xb0 + y);
-    /*
-     * 在0xf0右移4位，与0x10或，实现了写数据
-     * Shift 4 bits to the right at 0xf0, and 0x10 or, to write data
-     */
-    WriteCmd(((x & 0xf0) >> 4) | 0x10); 
+    /* 在0xf0右移4位，与0x10或，实现了写数据 */
+    /* Shift 4 bits to the right at 0xf0, and 0x10 or, to write data */
+    WriteCmd(((x & 0xf0) >> 4) | 0x10);
     WriteCmd(x & 0x0f);
 }
 
@@ -139,18 +137,14 @@ void OledSetPosition(uint8_t x, uint8_t y)
  */
 void OledFillScreen(uint8_t fillData)
 {
-    /*
-     * 循环8次实现横屏填充
-     * Cycle 8 times to achieve horizontal screen filling
-     */
+    /* 循环8次实现横屏填充 */
+    /* Cycle 8 times to achieve horizontal screen filling */
     for (uint8_t m = 0; m < 8; m++) {
         WriteCmd(0xb0 + m);
         WriteCmd(0x00);
         WriteCmd(0x10);
-        /*
-         * 循环128次实现竖屏填充
-         * Loop 128 times to achieve vertical screen filling
-         */
+        /* 循环128次实现竖屏填充 */
+        /* Loop 128 times to achieve vertical screen filling */
         for (uint8_t n = 0; n < 128; n++) {
             WriteData(fillData);
         }
@@ -182,7 +176,8 @@ void OledShowChar(uint8_t x, uint8_t y, uint8_t ch, Font font)
 
         OledSetPosition(b, d + 1);
         for (uint8_t i = 0; i < 8; i++) { /* 循环8次实现横屏填充 Cycle 8 times to achieve horizontal screen filling */
-            WriteData(g_f8X16[c * 16 + i + 8]); /* 循环16次实现横屏填充8列 Cycle 16 times to fill 8 columns in horizontal screen */
+            /* 循环16次实现横屏填充8列 Cycle 16 times to fill 8 columns in horizontal screen */
+            WriteData(g_f8X16[c * 16 + i + 8]);
         }
     } else {
         OledSetPosition(b, d);
