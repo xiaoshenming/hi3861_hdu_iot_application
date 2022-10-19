@@ -67,12 +67,6 @@ unsigned char ndefFile[NFC_NDEF_MAX_LEN] = {
     0x6b, 0x67, 0x63, 0x6f, 0x6d, 0x2e, 0x74, 0x61,
     0x6f, 0x62, 0x61, 0x6f, 0x2e, 0x74, 0x61, 0x6f,
     0x62, 0x61, 0x6f,
-    // 微信 WeChat
-    /*0x03,0x20,
-    0xd4, 0x0f,0x0e, 0x61, 0x6e, 0x64, 0x72, 0x6f,
-    0x69, 0x64,0x2e, 0x63, 0x6f, 0x6d, 0x3a, 0x70,
-    0x6b, 0x67,0x63, 0x6f, 0x6d, 0x2e, 0x74, 0x65,
-    0x6e, 0x63,0x65, 0x6e, 0x74, 0x2e, 0x6d, 0x6d,*/
 };
 
 static void PullUpCsn(void)
@@ -89,16 +83,16 @@ static unsigned int C081NfcI2cWrite(unsigned char regHigh8bitCmd,
     unsigned char regLow8bitCmd, unsigned char* recvData, unsigned char sendLen)
 {
     unsigned int status = 0;
-    IotI2cData c081NfcI2cWriteCmdAddr ={ 0 };
+    IotI2cData c081NfcI2cWriteCmdAddr = { 0 };
     unsigned char sendUserCmd[64] = {regHigh8bitCmd, regLow8bitCmd};
 
     c081NfcI2cWriteCmdAddr.sendBuf = sendUserCmd;
     c081NfcI2cWriteCmdAddr.sendLen = 2 + sendLen; // 2代表两位地址长度，2 represents the two bit address length
-    for (unsigned int i=0; i < sendLen; i++) {
+    for (unsigned int i = 0; i < sendLen; i++) {
         sendUserCmd[ 2 + i] = *(recvData + i); // 2代表两位地址长度，2 represents the two bit address length
     }
     status = IoTI2cWrite(PCA9555_I2C_IDX, C081_NFC_WRITE_ADDR,
-        c081NfcI2cWriteCmdAddr.sendBuf, c081NfcI2cWriteCmdAddr.sendLen);
+                         c081NfcI2cWriteCmdAddr.sendBuf, c081NfcI2cWriteCmdAddr.sendLen);
     if (status != IOT_SUCCESS) {
         printf("I2cWrite(%02X) failed, %0X!\n", sendUserCmd[0], status);
         return status;

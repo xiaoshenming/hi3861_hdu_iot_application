@@ -13,19 +13,22 @@
  * limitations under the License.
  */
 
-/*
-    PCA9555IO扩展芯片的相关API接口
-*/
 #ifndef PCA9555_H
 #define PCA9555_H
 
 #include <stdint.h>
 
-// 定义Part0、Part1引脚的输出类型
-#define PCA9555_READ                  (0X4B)      // 读指令代码
-#define PCA9555_WRITE                 (0X4A)      // 写指令代码
+/*
+ * 定义Part0、Part1引脚的输出类型
+ * Define the output type of Part0 and Part1 pins
+ */
+#define PCA9555_READ                  (0X4B) // 读指令代码，Read instruction code
+#define PCA9555_WRITE                 (0X4A) // 写指令代码，Write instruction code
 
-// 定义PCA9555内部寄存器地址
+/*
+ * 定义PCA9555内部寄存器地址
+ * Define PCA9555 internal register address
+ */
 #define PCA9555_PART0_INPUT           0x00
 #define PCA9555_PART1_INPUT           0x01
 #define PCA9555_PART0_OUTPUT          0x02
@@ -35,23 +38,17 @@
 #define PCA9555_PART0_IODIR           0x06
 #define PCA9555_PART1_IODIR           0x07
 
-#define GREEN_LED                     0x09 // 右绿灯：OUT0_EXTIO,左绿灯：OUT3_EXTIO ==>  0000 1001 ==> 0x09
-#define BLUE_LED                      0x12 // 右蓝灯：OUT1_EXTIO,左蓝灯：OUT4_EXTIO ==>  0001 0010 ==> 0x12
-#define RED_LED                       0x24 // 右红灯：OUT2_EXTIO,左红灯：OUT5_EXTIO == > 0010 0100 ==> 0x24
-#define WHITE_LED                     0xff // 三灯全亮 ==>  0011 1111 ==> 0x3f
-#define LED_OFF                       0x00 // 三灯全灭 ==> 0000 0000  ==> 0x00
+#define GREEN_LED                     0x09
+#define BLUE_LED                      0x12
+#define RED_LED                       0x24
+#define WHITE_LED                     0xff
+#define LED_OFF                       0x00
 #define PCA9555_OUTPUT                0x00
 
-// 初始化指定地址的PCA9555器件
+
 void PCA9555Init(void);
-
-// 从指定地址的PCA9555器件的指定寄存器读一字节数据
 uint32_t PCA9555I2CReadByte(uint8_t *rec_byte);
-
-// 向指定地址的PCA9555器件的指定寄存器写一字节数据
 uint32_t PCA9555I2CWriteByte(uint8_t* buffer, uint32_t buffLen);
-
-// 获取三个功能按键 S3、S4、S5的状态
 void GetFunKeyState(void);
 uint32_t SetPCA9555GpioValue(uint8_t addr, uint8_t buffer);
 

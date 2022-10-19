@@ -36,11 +36,17 @@ void OnFuncKeyPressed(char *arg)
 
 void FuncKeyInit(void)
 {
-    // 使能GPIO11的中断功能, OnFuncKeyPressed 为中断的回调函数
+    /*
+     * 使能GPIO11的中断功能, OnFuncKeyPressed 为中断的回调函数
+     * Enable the interrupt function of GPIO11. OnFuncKeyPressed is the interrupt callback function
+     */
     IoTGpioRegisterIsrFunc(IOT_IO_NAME_GPIO_11, IOT_INT_TYPE_EDGE,
                            IOT_GPIO_EDGE_FALL_LEVEL_LOW, OnFuncKeyPressed, NULL);
-
-    // S3:IO0_2,S4:IO0_3,S5:IO0_4 0001 1100 => 0x1c 将IO0_2,IO0_3,IO0_4方向设置为输入，1为输入，0位输出
+    /*
+     * S3:IO0_2,S4:IO0_3,S5:IO0_4 0001 1100 => 0x1c 将IO0_2,IO0_3,IO0_4方向设置为输入，1为输入，0位输出
+     * S3:IO0_ 2,S4:IO0_ 3,S5:IO0_ 4 0001 1100=>0x1c Change IO0_ 2,IO0_ 3,IO0_ 4 direction is set as
+     * input, 1 is input, and 0 bit is output
+     */
     SetPCA9555GpioValue(PCA9555_PART0_IODIR, 0x1c);
 }
 
@@ -84,17 +90,30 @@ void GetFunKeyState(void)
 static void ButtonControl(void)
 {
     printf("ButtonControl\r\n");
-    // IO扩展芯片初始化
+    /*
+     * IO扩展芯片初始化
+     * IO expansion chip initialization
+     */
     PCA9555Init();
-    // 配置IO扩展芯片的part1的所有管脚为输出
+    /*
+     * 配置IO扩展芯片的part1的所有管脚为输出
+     * Configure all pins of part1 of IO expansion chip as output
+     */
     SetPCA9555GpioValue(PCA9555_PART1_IODIR, PCA9555_OUTPUT);
-    // 配置左右三色车灯全灭
+    /*
+     * 配置左右三色车灯全灭
+     * Configured with left and right tricolor lights all off
+     */
     SetPCA9555GpioValue(PCA9555_PART1_OUTPUT, LED_OFF);
-
-    // 按键中断初始化
+    /*
+     * 按键中断初始化
+     * Key interrupt initialization
+     */
     FuncKeyInit();
-
-    // 获取实时的按键状态
+    /*
+     * 获取实时的按键状态
+     * Get real-time key status
+     */
     GetFunKeyState();
 }
 
@@ -106,9 +125,8 @@ static void ButtonControlEntry(void)
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 1024; /* 堆栈大小为1024 */
+    attr.stack_size = 1024; // 堆栈大小为1024,Stack size is 1024
     attr.priority = osPriorityNormal;
-    // 报错
     if (osThreadNew((osThreadFunc_t)ButtonControl, NULL, &attr) == NULL) {
         printf("[LedExample] Failed to create LedTask!\n");
     }

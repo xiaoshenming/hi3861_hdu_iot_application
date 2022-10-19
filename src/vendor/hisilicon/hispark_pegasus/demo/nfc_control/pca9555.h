@@ -13,10 +13,9 @@
  * limitations under the License.
  */
 
-#ifndef __PCA9555_H__
-#define __PCA9555_H__
+#ifndef PCA9555_H
+#define PCA9555_H
 
-#include <stddef.h>
 #include <stdint.h>
 
 /*
