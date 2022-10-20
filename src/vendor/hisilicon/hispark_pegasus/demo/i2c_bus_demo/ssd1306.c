@@ -128,7 +128,7 @@ void ssd1306_Init(void)
     ssd1306_Reset();
 
     // Wait for the screen to boot
-     hi_udelay(10000); // 10000us  The delay here is very important
+    hi_udelay(10000); // 10000us  The delay here is very important
 
     // Init OLED
     ssd1306_SetDisplayOn(0); // display off
@@ -159,7 +159,7 @@ void ssd1306_Init(void)
 #endif
 
 #ifdef SSD1306_INVERSE_COLOR
-    ssd1306_WriteCommand(0xA7); //--set inverse color
+    ssd1306_WriteCommand(0xA7); // --set inverse color
 #else
     ssd1306_WriteCommand(0xA6); // --set normal color
 #endif
@@ -201,7 +201,7 @@ void ssd1306_Fill(SSD1306_COLOR color)
     /* Set memory */
     uint32_t i;
 
-    for(i = 0; i < sizeof(SSD1306_Buffer); i++) {
+    for (i = 0; i < sizeof(SSD1306_Buffer); i++) {
         SSD1306_Buffer[i] = (color == Black) ? 0x00 : 0xFF;
     }
 }
@@ -225,10 +225,10 @@ void ssd1306_UpdateScreen(void)
         0X07,   // 页终止地址 7
     };
     uint32_t count = 0;
-    uint8_t data[sizeof(cmd)*DOUBLE + SSD1306_BUFFER_SIZE + 1] = {};
+    uint8_t data[sizeof(cmd) * DOUBLE + SSD1306_BUFFER_SIZE + 1] = {};
 
     // copy cmd
-    for (uint32_t i = 0; i < sizeof(cmd)/sizeof(cmd[0]); i++) {
+    for (uint32_t i = 0; i < sizeof(cmd) / sizeof(cmd[0]); i++) {
         data[count++] = SSD1306_CTRL_CMD | SSD1306_MASK_CONT;
         data[count++] = cmd[i];
     }
@@ -263,7 +263,7 @@ void ssd1306_DrawPixel(uint8_t x, uint8_t y, SSD1306_COLOR color)
 
     // Draw in the right color
     uint32_t c = 8; // 8
-    if(color == White) {
+    if (color == White) {
         SSD1306_Buffer[x + (y / c) * SSD1306_WIDTH] |= 1 << (y % c);
     } else {
         SSD1306_Buffer[x + (y / c) * SSD1306_WIDTH] &= ~(1 << (y % c));
@@ -286,17 +286,16 @@ char ssd1306_DrawChar(char ch, FontDef Font, SSD1306_COLOR color)
 
     // Check remaining space on current line
     if (SSD1306_WIDTH < (SSD1306.CurrentX + Font.FontWidth) ||
-        SSD1306_HEIGHT < (SSD1306.CurrentY + Font.FontHeight))
-    {
+        SSD1306_HEIGHT < (SSD1306.CurrentY + Font.FontHeight)) {
         // Not enough space on current line
         return 0;
     }
 
     // Use the font to write
-    for(i = 0; i < Font.FontHeight; i++) {
+    for (i = 0; i < Font.FontHeight; i++) {
         b = Font.data[(ch - ch_min) * Font.FontHeight + i];
         for(j = 0; j < Font.FontWidth; j++) {
-            if((b << j) & 0x8000)  {
+            if ((b << j) & 0x8000) {
                 ssd1306_DrawPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i), (SSD1306_COLOR) color);
             } else {
                 ssd1306_DrawPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i), (SSD1306_COLOR)!color);
@@ -351,17 +350,17 @@ void ssd1306_DrawLine(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, SSD1306_CO
         while ((x1 != x2) || (y1 != y2)) {
         ssd1306_DrawPixel(x1, y1, color);
         error2 = error * DOUBLE;
-        if(error2 > -deltaY) {
+        if (error2 > -deltaY) {
             error -= deltaY;
             x += signX;
         } else {
-            /*nothing to do*/
+            /* nothing to do */
         }
         if (error2 < deltaX) {
             error += deltaX;
             y += signY;
         } else {
-            /*nothing to do*/
+            /* nothing to do */
         }
     }
     return;
@@ -372,17 +371,17 @@ void ssd1306_DrawPolyline(const SSD1306_VERTEX *par_vertex, uint16_t par_size, S
 {
     uint16_t i;
     if (par_vertex != 0) {
-        for(i = 1; i < par_size; i++) {
+        for (i = 1; i < par_size; i++) {
             ssd1306_DrawLine(par_vertex[i - 1].x, par_vertex[i - 1].y, par_vertex[i].x, par_vertex[i].y, color);
         }
     } else {
-        /*nothing to do*/
+        /* nothing to do */
     }
     return;
 }
 
 // Draw circle by Bresenhem's algorithm
-void ssd1306_DrawCircle(uint8_t par_x,uint8_t par_y,uint8_t par_r,SSD1306_COLOR par_color)
+void ssd1306_DrawCircle(uint8_t par_x, uint8_t par_y, uint8_t par_r, SSD1306_COLOR par_color)
 {
     int32_t x = -par_r;
     int32_t y = 0;
@@ -404,21 +403,20 @@ void ssd1306_DrawCircle(uint8_t par_x,uint8_t par_y,uint8_t par_r,SSD1306_COLOR 
             y++;
             err = err + (y * b + 1);
             if (-x == y && e2 <= x) {
-              e2 = 0;
-            }
-            else {
+                e2 = 0;
+            } else {
               /* nothing to do */
             }
         } else {
           /* nothing to do */
         }
         if (e2 > x) {
-          x++;
-          err = err + (x * b + 1);
+            x++;
+            err = err + (x * b + 1);
         } else {
           /* nothing to do */
         }
-    } while(x <= 0);
+    } while (x <= 0);
 
     return;
 }
@@ -426,10 +424,10 @@ void ssd1306_DrawCircle(uint8_t par_x,uint8_t par_y,uint8_t par_r,SSD1306_COLOR 
 // Draw rectangle
 void ssd1306_DrawRectangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, SSD1306_COLOR color)
 {
-  ssd1306_DrawLine(x1,y1,x2,y1,color);
-  ssd1306_DrawLine(x2,y1,x2,y2,color);
-  ssd1306_DrawLine(x2,y2,x1,y2,color);
-  ssd1306_DrawLine(x1,y2,x1,y1,color);
+    ssd1306_DrawLine(x1, y1, x2, y1, color);
+    ssd1306_DrawLine(x2, y1, x2, y2, color);
+    ssd1306_DrawLine(x2, y2, x1, y2, color);
+    ssd1306_DrawLine(x1, y2, x1, y1, color);
 
   return;
 }

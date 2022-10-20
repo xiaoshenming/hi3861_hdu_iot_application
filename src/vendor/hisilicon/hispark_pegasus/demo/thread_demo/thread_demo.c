@@ -73,11 +73,11 @@ void LedGpioInit(void)
     IoTGpioSetDir(IOT_IO_NAME_GPIO_9, IOT_GPIO_DIR_OUT);            // GPIO9方向设置为输出
                                                                     // GPIO9 direction set to output
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_9, IOT_GPIO_VALUE0);       // 设置GPIO09输出低电平,熄灭红色交通灯LED
-                                                                    // Set GPIO09 output low level and turn off the red traffic light LED
+    // Set GPIO09 output low level and turn off the red traffic light LED
     IoTGpioInit(IOT_IO_NAME_GPIO_5);                                // 初始化GPIO5管脚
                                                                     // Initialize GPIO5 pin
     IoSetFunc(IOT_IO_NAME_GPIO_5, IOT_IO_FUNC_GPIO_5_PWM2_OUT);     // 设置GPIO5的管脚复用关系为PWM
-                                                                    // Set the pin multiplexing relationship of GPIO5 to PWM
+    // Set the pin multiplexing relationship of GPIO5 to PWM
     IoTGpioSetDir(IOT_IO_NAME_GPIO_5, IOT_GPIO_DIR_OUT);            // 设置GPIO5的管脚方向为输出
                                                                     // Set the pin direction of GPIO5 as output
     IoTPwmInit(IOT_PWM_PORT_PWM2);                                  // 初始化GPIO5为PWM2
@@ -100,13 +100,15 @@ void ThreadExampleEntry(void)
     attr.priority = osPriorityNormal;
 
     // 创建一个线程，并注册一个回调函数RedLedControl，控制红色LED灯每隔1秒钟闪烁一次
-    // Create a thread and register a callback function RedLedControl to control the red LED to flash once every 1 second
+    // Create a thread and register a callback function RedLedControl to
+    // control the red LED to flash once every 1 second
     if (osThreadNew((osThreadFunc_t)RedLedControl, NULL, &attr) == NULL) {
         printf("[RedLedControl] osThreadNew Falied to create RedLedControl!\n");
     }
 
     // 创建第二个线程，注册回调函数为GreenLedControl,控制绿色LED灯，实现呼吸灯效果
-    // Create the second thread, register the callback function as GreenLedControl, control the green LED light, and achieve the effect of breathing light
+    // Create the second thread, register the callback function as GreenLedControl,
+    // control the green LED light, and achieve the effect of breathing light
     attr.name = "YellowLedControl";
     attr.priority = osPriorityNormal;
     if (osThreadNew((osThreadFunc_t)YellowLedControl, NULL, &attr) == NULL) {

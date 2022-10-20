@@ -66,7 +66,6 @@ void timer2_isr_trigger(unsigned char id, unsigned int period)
      * 时钟模式: 32bit [bit 1 设置为 1]
      * 时钟滴答 1/1 时钟频率 [bit 3 设置为 0, bit 2 设置为 0]
      * 时钟循环 [bit 1 设置为 1]
-     * 
      * Clock mode: 32bit [bit 1 is set to 1]
      * Clock ticks 1/1 clock frequency [bit 3 is set to 0, bit 2 is set to 0]
      * Clock cycle [bit 1 is set to 1]
@@ -131,8 +130,9 @@ void TimerIrqTask(void)
                                                 // Trigger the interrupt 1 s after starting the timer
     uvIntSave = hi_int_lock();                  // 关闭所有中断
                                                 // Turn off all interrupts
-    unsigned int ret = hi_irq_request(TIMER_2_IRQ, HI_IRQ_FLAG_PRI1, timer2_irq_handle, 0); // 注册中断函数
-                                                                                            // Register interrupt function
+    // 注册中断函数
+    // Register interrupt function
+    unsigned int ret = hi_irq_request(TIMER_2_IRQ, HI_IRQ_FLAG_PRI1, timer2_irq_handle, 0);
     if (ret != HI_ERR_SUCCESS) {
         printf("request example irq fail:%x\n", ret);
         return;
@@ -156,7 +156,6 @@ void TimerIrqTask(void)
     hi_sleep(TIMER_INTERVAL);       // 进入3s的中断函数
                                     // Interrupt function entering 3s
 
-    
     if (g_timer_cnt_cb > tmp) {
         dprintf("[timer2_irq_handle]success, timer cnt cb=%d\r\n", g_timer_cnt_cb);
     } else {

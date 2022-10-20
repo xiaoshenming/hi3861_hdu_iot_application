@@ -159,7 +159,7 @@ void IMU_YAW_CAL(float gyroZ)
     }
     #endif
 
-    if (fabs(gyroZ) < 0.04) {
+    if (fabs(gyroZ) < 0.04) { // 0.04
         temp = 0;
     } else {
         temp = gyroZ * dt;
@@ -248,13 +248,12 @@ void IMU_Attitude_cal(float gx, float gy, float gz, float accx, float accy, floa
     printf("Pitch:%.02f, Roll:%.02f\n", Pitch, Roll);
     static char line[32] = {0};  // 32
     ssd1306_SetCursor(0, 30); // 30行0列
-    snprintf(line, sizeof(line), "Pitch:%.2f", Pitch, Roll);
+    snprintf(line, sizeof(line), "Pitch:%.2f", Pitch);
     ssd1306_DrawString(line, Font_7x10, White);
 }
 
 void Lsm_Get_RawAcc(void)
 {
-    // float angle_x,angle_y,angle_z;
     uint8_t buf[12] = {0};
     int16_t acc_x = 0, acc_y = 0, acc_z = 0;
     float acc_x_conv = 0, acc_y_conv = 0, acc_z_conv = 0;

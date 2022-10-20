@@ -20,7 +20,7 @@
 #include "cmsis_os2.h"
 
 #define SIDE_WOLK_DELAY         5   // 人行道持续工作5秒
-                                    // The sidewalk works continuously for 5 seconds           
+// The sidewalk works continuously for 5 seconds
 #define MOTOR_WAY_DELAY         10  // 机动车道持续工作10秒
                                     // The motorway works continuously for 10 seconds
 #define NUM                     1
@@ -91,13 +91,15 @@ static void SemaphoreDemoEntry(void)
     }
 
     // 创建另一个线程，回调函数是MotorWayThread，用来执行机动车道线程的工作
-    // Create another thread. The callback function is MotorWayThread, which is used to execute the work of the motorway thread
+    // Create another thread. The callback function is MotorWayThread,
+    // which is used to execute the work of the motorway thread
     if (osThreadNew((osThreadFunc_t)MotorWayThread, NULL, &attr) == NULL) {
         printf("[MotorWayThread] Failed to create MotorWayThread!\n");
     }
 
     // 创建一个交通灯的信号量，可用令牌的最大数量为1，可用令牌的初始化数量为0
-    // Create a traffic light semaphore. The maximum number of available tokens is 1, and the initialization number of available tokens is 0
+    // Create a traffic light semaphore. The maximum number of available tokens is 1,
+    // and the initialization number of available tokens is 0
     traffic_light = osSemaphoreNew(1, 0, NULL);
     if (traffic_light == NULL) {
         printf("Falied to create Semaphore!\n");

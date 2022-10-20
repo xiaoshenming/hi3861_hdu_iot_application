@@ -22,7 +22,7 @@
  *
  * @since 1.0
  * @version 1.0
- * 
+ *
  * @file iot_gpio_ex.h
  *
  * @brief 描述拓展GPIO接口函数.
@@ -38,7 +38,7 @@
 
 /**
  * @brief Enumerates GPIO pull-up or pull-down settings.
- * 
+ *
  * 枚举GPIO上下拉设定.
  */
 typedef enum {
