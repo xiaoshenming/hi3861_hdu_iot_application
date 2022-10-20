@@ -178,13 +178,16 @@ void IMU_YAW_CAL(float gyroZ)
     printf("yaw_conv:%.02f\n", yaw_conv);
 }
 
-void IMU_Attitude_cal(float gx, float gy, float gz, float ax, float ay, float az)
+void IMU_Attitude_cal(float gx, float gy, float gz, float accx, float accy, float accz)
 {
     float norm;
     float vx, vy, vz;
     float ex, ey, ez;
     float atan2_x, atan2_y;
-
+    float ax, ay, az;
+    ax = accx;
+    ay = accy;
+    az = accz;
     norm = (float)sqrt((float)(ax * ax + ay * ay + az * az));
     ax = ax / norm; // ax normalize
     ay = ay / norm; // ay normalize
