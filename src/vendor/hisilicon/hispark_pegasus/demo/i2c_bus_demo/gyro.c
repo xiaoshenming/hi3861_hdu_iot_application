@@ -185,79 +185,6 @@ void IMU_YAW_CAL(float gyroZ)
     ssd1306_DrawString(line, Font_7x10, White);
 }
 
-// void IMU_Attitude_cal(float gx, float gy, float gz, float ax, float ay, float az)
-// {
-//     float norm;
-//     float vx, vy, vz;
-//     float ex, ey, ez;
-//     float atan2_x, atan2_y;
-//     float atan2_x_yaw, atan2_y_yaw;
-
-//     norm = (float)sqrt((float)(ax*ax + ay*ay + az*az));
-//     ax = ax / norm; // ax normalize
-//     ay = ay / norm; // ay normalize
-//     az = az / norm; // az normalize
-
-//     // 估计方向的重力
-//     vx = 2*(q1*q3 - q0*q2);
-//     vy = 2*(q0*q1 + q2*q3);
-//     vz = q0*q0 - q1*q1 - q2*q2 + q3*q3;
-
-//     // 经叉积并求出误差
-//     ex = (ay*vz - az*vy);
-//     ey = (az*vx - ax*vz);
-//     ez = (ax*vy - ay*vx);
-
-//     // 积分误差比例积分增益
-//     exInt = exInt + ex*Ki;
-//     eyInt = eyInt + ey*Ki;
-//     ezInt = ezInt + ez*Ki;
-
-//     // 调整后的陀螺仪测量
-//     gx = gx + Kp*ex + exInt;
-//     gy = gy + Kp*ey + eyInt;
-//     gz = gz + Kp*ez + ezInt;
-
-//     // 整合四元数率和正常化   
-//     q0 = q0 + (-q1*gx - q2*gy - q3*gz)*halfT;
-//     q1 = q1 + (q0*gx + q2*gz - q3*gy)*halfT;
-//     q2 = q2 + (q0*gy - q1*gz + q3*gx)*halfT;
-//     q3 = q3 + (q0*gz + q1*gy - q2*gx)*halfT;
-
-//     // 正常化四元
-//     norm = sqrt(q0*q0 + q1*q1 + q2*q2 + q3*q3);
-//     q0 = q0 / norm;
-//     q1 = q1 / norm;
-//     q2 = q2 / norm;
-//     q3 = q3 / norm;
-    
-//     // 俯仰角
-//     Pitch = asin(-2 * q1 * q3 + 2 * q0* q2) * 180 / 3.14;
-//     // 横滚角
-//     // printf("forward:%.02f, backward:%.02f\n", 
-//      fabs(2 * q2 * q3 + 2 * q0 * q1), fabs(-2 * q1 * q1 - 2 * q2* q2 + 1));
-//     atan2_x = -2 * q1 * q1 - 2 * q2* q2 + 1;
-//     atan2_y = 2 * q2 * q3 + 2 * q0 * q1;
-//     if (atan2_x > 0) {
-//         Roll = atan(atan2_y / atan2_x) * 180 / 3.14;
-//     } else if (atan2_x < 0 && atan2_y >= 0) {
-//         Roll = atan(atan2_y / atan2_x) * 180 / 3.14 + 180;
-//     } else if (atan2_x < 0 && atan2_y < 0) {
-//         Roll = atan(atan2_y / atan2_x) * 180 / 3.14 - 180;
-//     } else if (atan2_y > 0 && atan2_x == 0) {
-//         Roll = 90;
-//     } else if (atan2_y <  0 && atan2_x == 0) {
-//         Roll = -90;
-//     } else {
-//         printf("undefined\n");
-//     }
-//     printf("Pitch:%.02f, Roll:%.02f\n", Pitch, Roll);
-//     static char line[32] = {0};
-//     ssd1306_SetCursor(0, 30);
-//     snprintf(line, sizeof(line), "Pitch:%.2f", Pitch, Roll);
-//     ssd1306_DrawString(line, Font_7x10, White);
-// }
-
 void Lsm_Get_RawAcc(void)
 {
     uint8_t buf[12] = { 0 };
@@ -287,9 +214,8 @@ void Lsm_Get_RawAcc(void)
             acc_y_conv = acc_y / 4098.36; // 4098.36量程
             acc_z_conv = acc_z / 4098.36; // 4098.36量程
             printf("lsm trans acc: %.2f, %.2f, %.2f \n ang: %.2f, %.2f, %.2f, ang_cal: %.2f, %.2f, %.2f\n ",
-                    acc_x_conv, acc_y_conv, acc_z_conv, ang_rate_x_conv,
-                    ang_rate_y_conv, ang_rate_z_conv, ang_rate_x_cal, ang_rate_y_cal, ang_rate_z_cal);
-            // IMU_Attitude_cal(ang_rate_x_conv, ang_rate_y_conv, ang_rate_z_conv, acc_x_conv, acc_y_conv, acc_z_conv);
+                   acc_x_conv, acc_y_conv, acc_z_conv, ang_rate_x_conv, ang_rate_y_conv, ang_rate_z_conv,
+                   ang_rate_x_cal, ang_rate_y_cal, ang_rate_z_cal);
             IMU_YAW_CAL(ang_rate_z_cal);
         }
     }

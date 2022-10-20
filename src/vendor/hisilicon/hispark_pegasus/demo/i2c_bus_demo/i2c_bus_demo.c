@@ -62,9 +62,6 @@ void PressToRestore(void)
         } else {
             if ((hi_get_milli_seconds() - cTick) > 2) { // 2ms
                 status = PCA9555I2CReadByte(&ext_io_state);
-                if (status != IOT_SUCCESS) {
-                    printf("failed\r\n");
-                }
                 intLowFlag = 0;
             }
         }
