@@ -29,9 +29,8 @@
 static int count = 0;   // 定义一个count变量，用于控制投喂的次数
                         // Define a count variable to control the feeding times
 
-void FeedSomeFood(void *arg)
+void FeedSomeFood(void)
 {
-    (void)arg;
     count++;
     printf("[Timer_demo] Start feeding count is %d \r\n", count);
 }

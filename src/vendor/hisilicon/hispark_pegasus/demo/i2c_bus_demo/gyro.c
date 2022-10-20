@@ -21,6 +21,8 @@
 
 #include <stdio.h>
 #include <unistd.h>
+
+#include "gyro.h"
 #include "iot_gpio_ex.h"
 
 #include "ohos_init.h"
@@ -33,7 +35,6 @@
 #include "iot_gpio.h"
 #include "ssd1306_fonts.h"
 #include "ssd1306.h"
-#include "gyro.h"
 
 #define LSM6DS_I2C_IDX 0
 #define IOT_I2C_IDX_BAUDRATE         400000 // 400k
@@ -65,7 +66,7 @@ uint32_t LSM6DS_WriteRead(uint8_t reg_high_8bit_cmd, uint8_t send_len, uint8_t r
     uint32_t status = 0;
     uint8_t recvData[888] = { 0 };
     uint32_t ret = 0;
-    hi_i2c_data c081nfc_i2c_write_cmd_addr = { 0 };
+    hi_i2c_data c081nfc_i2c_write_cmd_addr ={0};
     uint8_t send_user_cmd[1] = {reg_high_8bit_cmd};
 
     memset(recvData, 0x0, sizeof(recvData));
@@ -96,7 +97,7 @@ uint32_t LSM6DS_ReadCont(uint8_t reg_addr, uint8_t* buffer, uint16_t read_len)
 
     status = hi_i2c_writeread(LSM6DS_I2C_IDX, LSM6DS_READ_ADDR, &i2c_attr);
     for (int i = 0; i < read_len; i++) {
-        printf("0x%x\r\n", buffer[i]);
+         printf("0x%x ", buffer[i]);
     }
     printf("\r\n");
     return status;
@@ -126,23 +127,24 @@ void LSM6DS_Init(void)
 {
     /* 0x34 2初始化陀螺仪 0x34 2 Initialize gyroscope */
     LSM6DS_Write(LSM6DSL_CTRL3_C, 0x34, 2);
-    /* 0X4C 2 配置陀螺仪 角速度陀螺仪配置2000dps ,104Hz 0X4C 2 Configure gyroscope */
-    LSM6DS_Write(LSM6DSL_CTRL2_G, 0X4C, 2);
+    /* 0X4C 2 配置陀螺仪 0X4C 2 Configure gyroscope */
+    LSM6DS_Write(LSM6DSL_CTRL2_G , 0X4C, 2); // 角速度陀螺仪配置2000dps ,104Hz
     /* 0x38 2  timer en, pedo en, tilt en */
     LSM6DS_Write(LSM6DSL_CTRL10_C, 0x38, 2);
     /* 0x4F 2 加速度配置量程为8g,104Hz, lpf1_bw_sel=1, bw0_xl=1; */
     /* 0x4F 2 The acceleration configuration range is 8g, 104Hz, lpf1_ bw_ sel=1, bw0_ xl=1; */
-    LSM6DS_Write(LSM6DSL_CTRL1_XL, 0x4F, 2);
-    /* 0x10 2 */
+    LSM6DS_Write(LSM6DSL_CTRL1_XL, 0x4F, 2); // 
+    /* 0x10 2  */
     LSM6DS_Write(LSM6DSL_TAP_CFG, 0x10, 2);
-    /* 0x00 2 */
+    /* 0x00 2  */
     LSM6DS_Write(LSM6DSL_WAKE_UP_DUR, 0x00, 2);
-    /* 0x02 2 */
+    /* 0x02 2  */
     LSM6DS_Write(LSM6DSL_WAKE_UP_THS, 0x02, 2);
-    /* 0x40 2 */
+    /* 0x40 2  */
     LSM6DS_Write(LSM6DSL_TAP_THS_6D, 0x40, 2);
-    /* 0x01 2 */
+    /* 0x01 2  */
     LSM6DS_Write(LSM6DSL_CTRL8_XL, 0x01, 2);
+    return IOT_SUCCESS;
 }
 
 void IMU_YAW_CAL(float gyroZ)
@@ -159,7 +161,7 @@ void IMU_YAW_CAL(float gyroZ)
     }
     #endif
 
-    if (fabs(gyroZ) < 0.04) { // 0.04
+    if (fabs(gyroZ) < 0.04) {
         temp = 0;
     } else {
         temp = gyroZ * dt;
@@ -176,81 +178,83 @@ void IMU_YAW_CAL(float gyroZ)
         }
     }
     printf("yaw_conv:%.02f\n", yaw_conv);
-}
-
-void IMU_Attitude_cal(float gx, float gy, float gz, float accx, float accy, float accz)
-{
-    float norm;
-    float vx, vy, vz;
-    float ex, ey, ez;
-    float atan2_x, atan2_y;
-    float ax, ay, az;
-    ax = accx;
-    ay = accy;
-    az = accz;
-    norm = (float)sqrt((float)(ax * ax + ay * ay + az * az));
-    ax = ax / norm; // ax normalize
-    ay = ay / norm; // ay normalize
-    az = az / norm; // az normalize
-
-    // 估计方向的重力
-    vx = 2 * (q1 * q3 - q0 * q2);
-    vy = 2*(q0 * q1 + q2 * q3);
-    vz = q0 * q0 - q1 * q1 - q2 * q2 + q3 * q3;
-
-    // 经叉积并求出误差
-    ex = (ay * vz - az * vy);
-    ey = (az * vx - ax * vz);
-    ez = (ax * vy - ay * vx);
-
-    // 积分误差比例积分增益
-    exInt = exInt + ex * Ki;
-    eyInt = eyInt + ey * Ki;
-    ezInt = ezInt + ez * Ki;
-
-    // 调整后的陀螺仪测量
-    gx = gx + Kp * ex + exInt;
-    gy = gy + Kp * ey + eyInt;
-    gz = gz + Kp * ez + ezInt;
-
-    // 整合四元数率和正常化   
-    q0 = q0 + (-q1 * gx - q2 * gy - q3 * gz) * halfT;
-    q1 = q1 + (q0 * gx + q2 * gz - q3 * gy) * halfT;
-    q2 = q2 + (q0 * gy - q1 * gz + q3 * gx) * halfT;
-    q3 = q3 + (q0 * gz + q1 * gy - q2 * gx) * halfT;
-
-    // 正常化四元
-    norm = sqrt(q0 * q0 + q1 * q1 + q2 * q2 + q3 * q3);
-    q0 = q0 / norm;
-    q1 = q1 / norm;
-    q2 = q2 / norm;
-    q3 = q3 / norm;
-    
-    // 俯仰角
-    Pitch = asin(-2 * q1 * q3 + 2 * q0* q2) * 180 / 3.14; // 180 3.14
-    // 横滚角
-    // printf("forward:%.02f, backward:%.02f\n", fabs(2 * q2 * q3 + 2 * q0 * q1), fabs(-2 * q1 * q1 - 2 * q2* q2 + 1));
-    atan2_x = -2 * q1 * q1 - 2 * q2 * q2 + 1;
-    atan2_y = 2 * q2 * q3 + 2 * q0 * q1;
-    if (atan2_x > 0) {
-        Roll = atan(atan2_y / atan2_x) * 180 / 3.14; // 180 3.14
-    } else if (atan2_x < 0 && atan2_y >= 0) {
-        Roll = atan(atan2_y / atan2_x) * 180 / 3.14 + 180; // 180 3.14
-    } else if (atan2_x < 0 && atan2_y < 0) {
-        Roll = atan(atan2_y / atan2_x) * 180 / 3.14 - 180; // 180 3.14
-    } else if (atan2_y > 0 && atan2_x == 0) {
-        Roll = 90; // 90
-    } else if (atan2_y <  0 && atan2_x == 0) {
-        Roll = -90; // 90
-    } else {
-        printf("undefined\n");
-    }
-    printf("Pitch:%.02f, Roll:%.02f\n", Pitch, Roll);
-    static char line[32] = {0};  // 32
-    ssd1306_SetCursor(0, 30); // 30行0列
-    snprintf(line, sizeof(line), "Pitch:%.2f", Pitch);
+    static char line[32] = {0};
+    ssd1306_SetCursor(0, 30);
+    snprintf(line, sizeof(line), "yaw_conv:%.2f", yaw_conv);
     ssd1306_DrawString(line, Font_7x10, White);
 }
+
+// void IMU_Attitude_cal(float gx, float gy, float gz, float ax, float ay, float az)
+// {
+//     float norm;
+//     float vx, vy, vz;
+//     float ex, ey, ez;
+//     float atan2_x, atan2_y;
+//     float atan2_x_yaw, atan2_y_yaw;
+
+//     norm = (float)sqrt((float)(ax*ax + ay*ay + az*az));
+//     ax = ax / norm; // ax normalize
+//     ay = ay / norm; // ay normalize
+//     az = az / norm; // az normalize
+
+//     // 估计方向的重力
+//     vx = 2*(q1*q3 - q0*q2);
+//     vy = 2*(q0*q1 + q2*q3);
+//     vz = q0*q0 - q1*q1 - q2*q2 + q3*q3;
+
+//     // 经叉积并求出误差
+//     ex = (ay*vz - az*vy);
+//     ey = (az*vx - ax*vz);
+//     ez = (ax*vy - ay*vx);
+
+//     // 积分误差比例积分增益
+//     exInt = exInt + ex*Ki;
+//     eyInt = eyInt + ey*Ki;
+//     ezInt = ezInt + ez*Ki;
+
+//     // 调整后的陀螺仪测量
+//     gx = gx + Kp*ex + exInt;
+//     gy = gy + Kp*ey + eyInt;
+//     gz = gz + Kp*ez + ezInt;
+
+//     // 整合四元数率和正常化   
+//     q0 = q0 + (-q1*gx - q2*gy - q3*gz)*halfT;
+//     q1 = q1 + (q0*gx + q2*gz - q3*gy)*halfT;
+//     q2 = q2 + (q0*gy - q1*gz + q3*gx)*halfT;
+//     q3 = q3 + (q0*gz + q1*gy - q2*gx)*halfT;
+
+//     // 正常化四元
+//     norm = sqrt(q0*q0 + q1*q1 + q2*q2 + q3*q3);
+//     q0 = q0 / norm;
+//     q1 = q1 / norm;
+//     q2 = q2 / norm;
+//     q3 = q3 / norm;
+    
+//     // 俯仰角
+//     Pitch = asin(-2 * q1 * q3 + 2 * q0* q2) * 180 / 3.14;
+//     // 横滚角
+//     // printf("forward:%.02f, backward:%.02f\n", fabs(2 * q2 * q3 + 2 * q0 * q1), fabs(-2 * q1 * q1 - 2 * q2* q2 + 1));
+//     atan2_x = -2 * q1 * q1 - 2 * q2* q2 + 1;
+//     atan2_y = 2 * q2 * q3 + 2 * q0 * q1;
+//     if (atan2_x > 0) {
+//         Roll = atan(atan2_y / atan2_x) * 180 / 3.14;
+//     } else if (atan2_x < 0 && atan2_y >= 0) {
+//         Roll = atan(atan2_y / atan2_x) * 180 / 3.14 + 180;
+//     } else if (atan2_x < 0 && atan2_y < 0) {
+//         Roll = atan(atan2_y / atan2_x) * 180 / 3.14 - 180;
+//     } else if (atan2_y > 0 && atan2_x == 0) {
+//         Roll = 90;
+//     } else if (atan2_y <  0 && atan2_x == 0) {
+//         Roll = -90;
+//     } else {
+//         printf("undefined\n");
+//     }
+//     printf("Pitch:%.02f, Roll:%.02f\n", Pitch, Roll);
+//     static char line[32] = {0};
+//     ssd1306_SetCursor(0, 30);
+//     snprintf(line, sizeof(line), "Pitch:%.2f", Pitch, Roll);
+//     ssd1306_DrawString(line, Font_7x10, White);
+// }
 
 void Lsm_Get_RawAcc(void)
 {
@@ -263,29 +267,29 @@ void Lsm_Get_RawAcc(void)
 
     if ((LSM6DS_WriteRead(LSM6DSL_STATUS_REG, 1, 1) & 0x03)!=0) {
 
-        if (IOT_SUCCESS != LSM6DS_ReadCont(LSM6DSL_OUTX_L_G, buf, 12)) {
+        if (IOT_SUCCESS != LSM6DS_ReadCont(LSM6DSL_OUTX_L_G, buf, 12)) { // 12buf长度
             printf("i2c read error!\n");
         }
         else {
-            ang_rate_x = (buf[1] << 8) + buf[0];
-            ang_rate_y = (buf[3] << 8) + buf[2];
-            ang_rate_z = (buf[5] << 8) + buf[4];
-            acc_x = (buf[7] << 8) + buf[6];
-            acc_y = (buf[9] << 8) + buf[8];
-            acc_z = (buf[11] << 8) + buf[10];
+            ang_rate_x = (buf[1] << 8) + buf[0]; // buf第1位左移8位与buff第0位
+            ang_rate_y = (buf[3] << 8) + buf[2]; // buf第3位左移8位与buff第2位
+            ang_rate_z = (buf[5] << 8) + buf[4]; // buf第5位左移8位与buff第4位
+            acc_x = (buf[7] << 8) + buf[6]; // buf第7位左移8位与buff第6位
+            acc_y = (buf[9] << 8) + buf[8]; // buf第9位左移8位与buff第8位
+            acc_z = (buf[11] << 8) + buf[10]; // buf第11位左移8位与buff第10位
 
-            ang_rate_x_conv = (3.14 * ang_rate_x) / 180; // 3.14 180
-            ang_rate_y_conv = (3.14 * ang_rate_y) / 180; // 3.14 180
-            ang_rate_z_conv = (3.14 * ang_rate_z) / 180; // 3.14 180
-            ang_rate_x_cal = ang_rate_x_conv / 14.29; // 14.29
-            ang_rate_y_cal = ang_rate_y_conv / 14.29; // 14.29
-            ang_rate_z_cal = ang_rate_z_conv / 14.29; // 14.29
-            acc_x_conv = acc_x / 4098.36; // 4098.36
-            acc_y_conv = acc_y / 4098.36; // 4098.36
-            acc_z_conv = acc_z / 4098.36; // 4098.36
-            printf("lsm trans acc: %.2f, %.2f, %.2f \n ang: %.2f, %.2f, %.2f, ang_cal: %.2f, %.2f, %.2f\n ",
-                acc_x_conv, acc_y_conv, acc_z_conv, ang_rate_x_conv, ang_rate_y_conv, ang_rate_z_conv, ang_rate_x_cal, ang_rate_y_cal, ang_rate_z_cal);
-            IMU_Attitude_cal(ang_rate_x_conv, ang_rate_y_conv, ang_rate_z_conv, acc_x_conv, acc_y_conv, acc_z_conv);
+            ang_rate_x_conv = (3.14 * ang_rate_x) / 180; // 3.14= π 180 °
+            ang_rate_y_conv = (3.14 * ang_rate_y) / 180; // 3.14= π 180 °
+            ang_rate_z_conv = (3.14 * ang_rate_z) / 180; // 3.14= π 180 °
+            ang_rate_x_cal = ang_rate_x_conv / 14.29; // 14.29量程
+            ang_rate_y_cal = ang_rate_y_conv / 14.29; // 14.29量程
+            ang_rate_z_cal = ang_rate_z_conv / 14.29; // 14.29量程
+            acc_x_conv = acc_x / 4098.36; // 4098.36量程
+            acc_y_conv = acc_y / 4098.36; // 4098.36量程
+            acc_z_conv = acc_z / 4098.36; // 4098.36量程
+            // printf("lsm trans acc: %.2f, %.2f, %.2f \n ang: %.2f, %.2f, %.2f, ang_cal: %.2f, %.2f, %.2f\n ",
+            //     acc_x_conv, acc_y_conv, acc_z_conv, ang_rate_x_conv, ang_rate_y_conv, ang_rate_z_conv, ang_rate_x_cal, ang_rate_y_cal, ang_rate_z_cal);
+            // IMU_Attitude_cal(ang_rate_x_conv, ang_rate_y_conv, ang_rate_z_conv, acc_x_conv, acc_y_conv, acc_z_conv);
             IMU_YAW_CAL(ang_rate_z_cal);
         }
     }

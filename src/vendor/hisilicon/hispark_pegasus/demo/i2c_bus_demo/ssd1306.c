@@ -280,9 +280,10 @@ char ssd1306_DrawChar(char ch, FontDef Font, SSD1306_COLOR color)
 
     // Check if character is valid
     uint32_t ch_min = 32; // 32
-    uint32_t ch_max = 126; //126
-    if ((uint32_t)ch < ch_min || (uint32_t)ch > ch_max)
+    uint32_t ch_max = 126; // 126
+    if ((uint32_t)ch < ch_min || (uint32_t)ch > ch_max) {
         return 0;
+    }
 
     // Check remaining space on current line
     if (SSD1306_WIDTH < (SSD1306.CurrentX + Font.FontWidth) ||
@@ -294,7 +295,7 @@ char ssd1306_DrawChar(char ch, FontDef Font, SSD1306_COLOR color)
     // Use the font to write
     for (i = 0; i < Font.FontHeight; i++) {
         b = Font.data[(ch - ch_min) * Font.FontHeight + i];
-        for(j = 0; j < Font.FontWidth; j++) {
+        for (j = 0; j < Font.FontWidth; j++) {
             if ((b << j) & 0x8000) {
                 ssd1306_DrawPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i), (SSD1306_COLOR) color);
             } else {
@@ -363,7 +364,6 @@ void ssd1306_DrawLine(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, SSD1306_CO
             /* nothing to do */
         }
     }
-    return;
 }
 
 // Draw polyline

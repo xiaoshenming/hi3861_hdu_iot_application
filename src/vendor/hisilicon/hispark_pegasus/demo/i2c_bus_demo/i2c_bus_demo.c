@@ -42,15 +42,38 @@ void OnFuncKeyPressed(char *arg)
     g_buttonState = 1;
 }
 
+void PressToRestore(void)
+{
+    uint8_t ext_io_state = 0;
+    IotGpioValue value = 0;
+    uint8_t intLowFlag = 0;
+    uint32_t cTick = 0;
+    uint8_t status;
+    if (IoTGpioGetInputVal(IOT_IO_NAME_GPIO_11, &value) == IOT_SUCCESS) {
+        if (value == 1) {
+            intLowFlag = 0;
+        } else {
+            if (intLowFlag == 0) {
+                cTick = hi_get_milli_seconds();
+                intLowFlag = 1;
+            } else {
+                if ((hi_get_milli_seconds() - cTick) > 2) { // 2
+                    status = PCA9555I2CReadByte(&ext_io_state);
+                    if (status != IOT_SUCCESS) {
+                        printf("failed\r\n");
+                    }
+                    intLowFlag = 0;
+                }
+            }
+        }
+    }
+}
+
 void GetFunKeyState(void)
 {
     uint8_t ext_io_state = 0;
     uint8_t ext_io_state_d = 0;
     uint8_t status;
-    uint8_t intLowFlag = 0;
-    uint32_t cTick = 0;
-    IotGpioValue value = 0;
-
     while (1) {
         if (g_buttonState == 1) {
             uint8_t diff;
@@ -77,22 +100,8 @@ void GetFunKeyState(void)
             }
             ext_io_state_d = ext_io_state;
             g_buttonState = 0;
-        } else  {
-            if (IoTGpioGetInputVal(IOT_IO_NAME_GPIO_11, &value) == IOT_SUCCESS) {
-                if (value == 1) {
-                    intLowFlag = 0;
-                } else {
-                    if (intLowFlag == 0) {
-                        cTick = hi_get_milli_seconds();
-                        intLowFlag = 1;
-                    } else {
-                        if ((hi_get_milli_seconds() - cTick) > 2) { // 2
-                            status = PCA9555I2CReadByte(&ext_io_state);
-                            intLowFlag = 0;
-                        }
-                    }
-                }
-            }
+        } else {
+            PressToRestore();
         }
     }
 }
