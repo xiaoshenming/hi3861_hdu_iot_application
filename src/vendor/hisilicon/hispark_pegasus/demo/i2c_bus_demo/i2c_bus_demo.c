@@ -177,7 +177,8 @@ void I2CBusInit(void)
     TrafficLightInit(); // 交通灯初始化
 
     // 使能GPIO11的中断功能, OnFuncKeyPressed 为中断的回调函数
-    IoTGpioRegisterIsrFunc(IOT_IO_NAME_GPIO_11, IOT_INT_TYPE_EDGE, IOT_GPIO_EDGE_FALL_LEVEL_LOW, OnFuncKeyPressed, NULL);
+    IoTGpioRegisterIsrFunc(IOT_IO_NAME_GPIO_11, IOT_INT_TYPE_EDGE,
+                           IOT_GPIO_EDGE_FALL_LEVEL_LOW, OnFuncKeyPressed, NULL);
 
     // S3:IO0_2,S4:IO0_3,S5:IO0_4 0001 1100 => 0x1c 将IO0_2,IO0_3,IO0_4方向设置为输入，1为输入，0位输出
     SetPCA9555GpioValue(PCA9555_PART0_IODIR, 0x1c);

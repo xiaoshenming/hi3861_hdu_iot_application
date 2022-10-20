@@ -255,10 +255,10 @@ void ssd1306_DrawPixel(uint8_t x, uint8_t y, SSD1306_COLOR color)
         // Don't write outside the buffer
         return;
     }
-
+    SSD1306_COLOR color1 = color;
     // Check if pixel should be inverted
     if (SSD1306.Inverted) {
-        color = (SSD1306_COLOR)!color;
+        color1 = (SSD1306_COLOR)!color1;
     }
 
     // Draw in the right color
@@ -314,18 +314,19 @@ char ssd1306_DrawChar(char ch, FontDef Font, SSD1306_COLOR color)
 // Write full string to screenbuffer
 char ssd1306_DrawString(char* str, FontDef Font, SSD1306_COLOR color)
 {
+    char* str1 = str;
     // Write until null-byte
-    while (*str) {
-        if (ssd1306_DrawChar(*str, Font, color) != *str) {
+    while (*str1) {
+        if (ssd1306_DrawChar(*str1, Font, color) != *str1) {
             // Char could not be written
-            return *str;
+            return *str1;
         }
 
         // Next char
-        str++;
+        str1++;
     }
     // Everything ok
-    return *str;
+    return *str1;
 }
 
 // Position the cursor
@@ -338,26 +339,27 @@ void ssd1306_SetCursor(uint8_t x, uint8_t y)
 // Draw line by Bresenhem's algorithm
 void ssd1306_DrawLine(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, SSD1306_COLOR color)
 {
+    uint8_t x = x1;
+    uint8_t y = y1;
     int32_t deltaX = abs(x2 - x1);
     int32_t deltaY = abs(y2 - y1);
     int32_t signX = ((x1 < x2) ? 1 : -1);
     int32_t signY = ((y1 < y2) ? 1 : -1);
     int32_t error = deltaX - deltaY;
     int32_t error2;
-
     ssd1306_DrawPixel(x2, y2, color);
         while ((x1 != x2) || (y1 != y2)) {
         ssd1306_DrawPixel(x1, y1, color);
         error2 = error * DOUBLE;
         if(error2 > -deltaY) {
             error -= deltaY;
-            x1 += signX;
+            x += signX;
         } else {
             /*nothing to do*/
         }
         if (error2 < deltaX) {
             error += deltaX;
-            y1 += signY;
+            y += signY;
         } else {
             /*nothing to do*/
         }

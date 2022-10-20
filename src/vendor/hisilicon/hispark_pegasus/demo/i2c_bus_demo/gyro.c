@@ -96,7 +96,7 @@ uint32_t LSM6DS_ReadCont(uint8_t reg_addr, uint8_t* buffer, uint16_t read_len)
 
     status = hi_i2c_writeread(LSM6DS_I2C_IDX, LSM6DS_READ_ADDR, &i2c_attr);
     for (int i = 0; i < read_len; i++) {
-         printf("0x%x\r\n", buffer[i]);
+        printf("0x%x\r\n", buffer[i]);
     }
     printf("\r\n");
     return status;
@@ -127,21 +127,21 @@ void LSM6DS_Init(void)
     /* 0x34 2初始化陀螺仪 0x34 2 Initialize gyroscope */
     LSM6DS_Write(LSM6DSL_CTRL3_C, 0x34, 2);
     /* 0X4C 2 配置陀螺仪 角速度陀螺仪配置2000dps ,104Hz 0X4C 2 Configure gyroscope */
-    LSM6DS_Write(LSM6DSL_CTRL2_G , 0X4C, 2);
+    LSM6DS_Write(LSM6DSL_CTRL2_G, 0X4C, 2);
     /* 0x38 2  timer en, pedo en, tilt en */
     LSM6DS_Write(LSM6DSL_CTRL10_C, 0x38, 2);
     /* 0x4F 2 加速度配置量程为8g,104Hz, lpf1_bw_sel=1, bw0_xl=1; */
     /* 0x4F 2 The acceleration configuration range is 8g, 104Hz, lpf1_ bw_ sel=1, bw0_ xl=1; */
     LSM6DS_Write(LSM6DSL_CTRL1_XL, 0x4F, 2);
-    /* 0x10 2  */
+    /* 0x10 2 */
     LSM6DS_Write(LSM6DSL_TAP_CFG, 0x10, 2);
-    /* 0x00 2  */
+    /* 0x00 2 */
     LSM6DS_Write(LSM6DSL_WAKE_UP_DUR, 0x00, 2);
-    /* 0x02 2  */
+    /* 0x02 2 */
     LSM6DS_Write(LSM6DSL_WAKE_UP_THS, 0x02, 2);
-    /* 0x40 2  */
+    /* 0x40 2 */
     LSM6DS_Write(LSM6DSL_TAP_THS_6D, 0x40, 2);
-    /* 0x01 2  */
+    /* 0x01 2 */
     LSM6DS_Write(LSM6DSL_CTRL8_XL, 0x01, 2);
 }
 
@@ -275,15 +275,15 @@ void Lsm_Get_RawAcc(void)
             acc_y = (buf[9] << 8) + buf[8];
             acc_z = (buf[11] << 8) + buf[10];
 
-            ang_rate_x_conv = (3.14 * ang_rate_x) / 180 ;
-            ang_rate_y_conv = (3.14 * ang_rate_y) / 180;
-            ang_rate_z_conv = (3.14 * ang_rate_z) / 180;
-            ang_rate_x_cal = ang_rate_x_conv / 14.29;
-            ang_rate_y_cal = ang_rate_y_conv / 14.29;
-            ang_rate_z_cal = ang_rate_z_conv / 14.29;
-            acc_x_conv = acc_x / 4098.36;
-            acc_y_conv = acc_y / 4098.36;
-            acc_z_conv = acc_z / 4098.36;
+            ang_rate_x_conv = (3.14 * ang_rate_x) / 180; // 3.14 180
+            ang_rate_y_conv = (3.14 * ang_rate_y) / 180; // 3.14 180
+            ang_rate_z_conv = (3.14 * ang_rate_z) / 180; // 3.14 180
+            ang_rate_x_cal = ang_rate_x_conv / 14.29; // 14.29
+            ang_rate_y_cal = ang_rate_y_conv / 14.29; // 14.29
+            ang_rate_z_cal = ang_rate_z_conv / 14.29; // 14.29
+            acc_x_conv = acc_x / 4098.36; // 4098.36
+            acc_y_conv = acc_y / 4098.36; // 4098.36
+            acc_z_conv = acc_z / 4098.36; // 4098.36
             printf("lsm trans acc: %.2f, %.2f, %.2f \n ang: %.2f, %.2f, %.2f, ang_cal: %.2f, %.2f, %.2f\n ",
                 acc_x_conv, acc_y_conv, acc_z_conv, ang_rate_x_conv, ang_rate_y_conv, ang_rate_z_conv, ang_rate_x_cal, ang_rate_y_cal, ang_rate_z_cal);
             IMU_Attitude_cal(ang_rate_x_conv, ang_rate_y_conv, ang_rate_z_conv, acc_x_conv, acc_y_conv, acc_z_conv);
