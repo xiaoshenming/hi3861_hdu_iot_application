@@ -21,8 +21,6 @@
 
 #include <stdio.h>
 #include <unistd.h>
-
-#include "gyro.h"
 #include "iot_gpio_ex.h"
 
 #include "ohos_init.h"
@@ -35,6 +33,7 @@
 #include "iot_gpio.h"
 #include "ssd1306_fonts.h"
 #include "ssd1306.h"
+#include "gyro.h"
 
 #define LSM6DS_I2C_IDX 0
 #define IOT_I2C_IDX_BAUDRATE         400000 // 400k
@@ -66,7 +65,7 @@ uint32_t LSM6DS_WriteRead(uint8_t reg_high_8bit_cmd, uint8_t send_len, uint8_t r
     uint32_t status = 0;
     uint8_t recvData[888] = { 0 };
     uint32_t ret = 0;
-    hi_i2c_data c081nfc_i2c_write_cmd_addr ={0};
+    hi_i2c_data c081nfc_i2c_write_cmd_addr = { 0 };
     uint8_t send_user_cmd[1] = {reg_high_8bit_cmd};
 
     memset(recvData, 0x0, sizeof(recvData));
@@ -97,7 +96,7 @@ uint32_t LSM6DS_ReadCont(uint8_t reg_addr, uint8_t* buffer, uint16_t read_len)
 
     status = hi_i2c_writeread(LSM6DS_I2C_IDX, LSM6DS_READ_ADDR, &i2c_attr);
     for (int i = 0; i < read_len; i++) {
-         printf("0x%x ", buffer[i]);
+        printf("0x%x ", buffer[i]);
     }
     printf("\r\n");
     return status;
@@ -128,12 +127,12 @@ void LSM6DS_Init(void)
     /* 0x34 2初始化陀螺仪 0x34 2 Initialize gyroscope */
     LSM6DS_Write(LSM6DSL_CTRL3_C, 0x34, 2);
     /* 0X4C 2 配置陀螺仪 0X4C 2 Configure gyroscope */
-    LSM6DS_Write(LSM6DSL_CTRL2_G , 0X4C, 2); // 角速度陀螺仪配置2000dps ,104Hz
+    LSM6DS_Write(LSM6DSL_CTRL2_G, 0X4C, 2); // 角速度陀螺仪配置2000dps ,104Hz
     /* 0x38 2  timer en, pedo en, tilt en */
     LSM6DS_Write(LSM6DSL_CTRL10_C, 0x38, 2);
     /* 0x4F 2 加速度配置量程为8g,104Hz, lpf1_bw_sel=1, bw0_xl=1; */
     /* 0x4F 2 The acceleration configuration range is 8g, 104Hz, lpf1_ bw_ sel=1, bw0_ xl=1; */
-    LSM6DS_Write(LSM6DSL_CTRL1_XL, 0x4F, 2); // 
+    LSM6DS_Write(LSM6DSL_CTRL1_XL, 0x4F, 2);
     /* 0x10 2  */
     LSM6DS_Write(LSM6DSL_TAP_CFG, 0x10, 2);
     /* 0x00 2  */
@@ -144,7 +143,6 @@ void LSM6DS_Init(void)
     LSM6DS_Write(LSM6DSL_TAP_THS_6D, 0x40, 2);
     /* 0x01 2  */
     LSM6DS_Write(LSM6DSL_CTRL8_XL, 0x01, 2);
-    return IOT_SUCCESS;
 }
 
 void IMU_YAW_CAL(float gyroZ)
@@ -156,12 +154,12 @@ void IMU_YAW_CAL(float gyroZ)
     #if 0
     static int a = 0;
     a++;
-    if (hi_get_seconds() <= 5) {
+    if (hi_get_seconds() <= 5) { // 5s
         printf("---------times-----------:%d\n", a);
     }
     #endif
 
-    if (fabs(gyroZ) < 0.04) {
+    if (fabs(gyroZ) < 0.04) { // 0.04初始值
         temp = 0;
     } else {
         temp = gyroZ * dt;
@@ -179,8 +177,11 @@ void IMU_YAW_CAL(float gyroZ)
     }
     printf("yaw_conv:%.02f\n", yaw_conv);
     static char line[32] = {0};
-    ssd1306_SetCursor(0, 30);
-    snprintf(line, sizeof(line), "yaw_conv:%.2f", yaw_conv);
+    ssd1306_SetCursor(0, 30); // 30行0列开始
+    int ret = snprintf(line, sizeof(line), "yaw_conv:%.2f", yaw_conv);
+    if (ret != 14) { // 字符串长度为14
+        printf("ret = %d\r\n", ret);
+    }
     ssd1306_DrawString(line, Font_7x10, White);
 }
 
@@ -233,7 +234,8 @@ void IMU_YAW_CAL(float gyroZ)
 //     // 俯仰角
 //     Pitch = asin(-2 * q1 * q3 + 2 * q0* q2) * 180 / 3.14;
 //     // 横滚角
-//     // printf("forward:%.02f, backward:%.02f\n", fabs(2 * q2 * q3 + 2 * q0 * q1), fabs(-2 * q1 * q1 - 2 * q2* q2 + 1));
+//     // printf("forward:%.02f, backward:%.02f\n", 
+//      fabs(2 * q2 * q3 + 2 * q0 * q1), fabs(-2 * q1 * q1 - 2 * q2* q2 + 1));
 //     atan2_x = -2 * q1 * q1 - 2 * q2* q2 + 1;
 //     atan2_y = 2 * q2 * q3 + 2 * q0 * q1;
 //     if (atan2_x > 0) {
@@ -258,19 +260,16 @@ void IMU_YAW_CAL(float gyroZ)
 
 void Lsm_Get_RawAcc(void)
 {
-    uint8_t buf[12] = {0};
+    uint8_t buf[12] = { 0 };
     int16_t acc_x = 0, acc_y = 0, acc_z = 0;
     float acc_x_conv = 0, acc_y_conv = 0, acc_z_conv = 0;
     int16_t ang_rate_x = 0, ang_rate_y = 0, ang_rate_z = 0;
     float ang_rate_x_conv = 0, ang_rate_y_conv = 0, ang_rate_z_conv = 0;
     float ang_rate_x_cal = 0, ang_rate_y_cal = 0, ang_rate_z_cal = 0;
-
-    if ((LSM6DS_WriteRead(LSM6DSL_STATUS_REG, 1, 1) & 0x03)!=0) {
-
+    if ((LSM6DS_WriteRead(LSM6DSL_STATUS_REG, 1, 1) & 0x03) != 0) {
         if (IOT_SUCCESS != LSM6DS_ReadCont(LSM6DSL_OUTX_L_G, buf, 12)) { // 12buf长度
             printf("i2c read error!\n");
-        }
-        else {
+        } else {
             ang_rate_x = (buf[1] << 8) + buf[0]; // buf第1位左移8位与buff第0位
             ang_rate_y = (buf[3] << 8) + buf[2]; // buf第3位左移8位与buff第2位
             ang_rate_z = (buf[5] << 8) + buf[4]; // buf第5位左移8位与buff第4位
@@ -287,8 +286,9 @@ void Lsm_Get_RawAcc(void)
             acc_x_conv = acc_x / 4098.36; // 4098.36量程
             acc_y_conv = acc_y / 4098.36; // 4098.36量程
             acc_z_conv = acc_z / 4098.36; // 4098.36量程
-            // printf("lsm trans acc: %.2f, %.2f, %.2f \n ang: %.2f, %.2f, %.2f, ang_cal: %.2f, %.2f, %.2f\n ",
-            //     acc_x_conv, acc_y_conv, acc_z_conv, ang_rate_x_conv, ang_rate_y_conv, ang_rate_z_conv, ang_rate_x_cal, ang_rate_y_cal, ang_rate_z_cal);
+            printf("lsm trans acc: %.2f, %.2f, %.2f \n ang: %.2f, %.2f, %.2f, ang_cal: %.2f, %.2f, %.2f\n ",
+                    acc_x_conv, acc_y_conv, acc_z_conv, ang_rate_x_conv,
+                    ang_rate_y_conv, ang_rate_z_conv, ang_rate_x_cal, ang_rate_y_cal, ang_rate_z_cal);
             // IMU_Attitude_cal(ang_rate_x_conv, ang_rate_y_conv, ang_rate_z_conv, acc_x_conv, acc_y_conv, acc_z_conv);
             IMU_YAW_CAL(ang_rate_z_cal);
         }

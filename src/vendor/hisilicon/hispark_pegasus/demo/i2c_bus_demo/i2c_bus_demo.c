@@ -49,21 +49,23 @@ void PressToRestore(void)
     uint8_t intLowFlag = 0;
     uint32_t cTick = 0;
     uint8_t status;
-    if (IoTGpioGetInputVal(IOT_IO_NAME_GPIO_11, &value) == IOT_SUCCESS) {
-        if (value == 1) {
-            intLowFlag = 0;
+    status = IoTGpioGetInputVal(IOT_IO_NAME_GPIO_11, &value);
+    if (status != IOT_SUCCESS) {
+        printf("status = %d\r\n", status);
+    }
+    if (value == 1) {
+        intLowFlag = 0;
+    } else {
+        if (intLowFlag == 0) {
+            cTick = hi_get_milli_seconds();
+            intLowFlag = 1;
         } else {
-            if (intLowFlag == 0) {
-                cTick = hi_get_milli_seconds();
-                intLowFlag = 1;
-            } else {
-                if ((hi_get_milli_seconds() - cTick) > 2) { // 2
-                    status = PCA9555I2CReadByte(&ext_io_state);
-                    if (status != IOT_SUCCESS) {
-                        printf("failed\r\n");
-                    }
-                    intLowFlag = 0;
+            if ((hi_get_milli_seconds() - cTick) > 2) { // 2ms
+                status = PCA9555I2CReadByte(&ext_io_state);
+                if (status != IOT_SUCCESS) {
+                    printf("failed\r\n");
                 }
+                intLowFlag = 0;
             }
         }
     }

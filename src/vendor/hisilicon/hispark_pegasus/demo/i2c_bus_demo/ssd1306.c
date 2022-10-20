@@ -428,8 +428,6 @@ void ssd1306_DrawRectangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, SSD13
     ssd1306_DrawLine(x2, y1, x2, y2, color);
     ssd1306_DrawLine(x2, y2, x1, y2, color);
     ssd1306_DrawLine(x1, y2, x1, y1, color);
-
-  return;
 }
 
 void ssd1306_DrawBitmap(const uint8_t* bitmap, uint32_t size)
