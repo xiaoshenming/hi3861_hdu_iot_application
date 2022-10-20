@@ -16,8 +16,6 @@
 #ifndef GYRO_H
 #define GYRO_H
 
-#include <stdint.h>
-
 #define LSM6DS_WRITE_ADDR     (0XD4)
 #define LSM6DS_READ_ADDR    (0XD5)
 #define WRITELEN  2

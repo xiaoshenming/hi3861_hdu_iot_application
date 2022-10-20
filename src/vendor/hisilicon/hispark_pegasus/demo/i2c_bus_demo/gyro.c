@@ -21,8 +21,6 @@
 
 #include <stdio.h>
 #include <unistd.h>
-
-#include "gyro.h"
 #include "iot_gpio_ex.h"
 
 #include "ohos_init.h"
@@ -35,6 +33,7 @@
 #include "iot_gpio.h"
 #include "ssd1306_fonts.h"
 #include "ssd1306.h"
+#include "gyro.h"
 
 #define LSM6DS_I2C_IDX 0
 #define IOT_I2C_IDX_BAUDRATE         400000 // 400k
@@ -66,7 +65,7 @@ uint32_t LSM6DS_WriteRead(uint8_t reg_high_8bit_cmd, uint8_t send_len, uint8_t r
     uint32_t status = 0;
     uint8_t recvData[888] = { 0 };
     uint32_t ret = 0;
-    hi_i2c_data c081nfc_i2c_write_cmd_addr ={0};
+    hi_i2c_data c081nfc_i2c_write_cmd_addr = { 0 };
     uint8_t send_user_cmd[1] = {reg_high_8bit_cmd};
 
     memset(recvData, 0x0, sizeof(recvData));
@@ -97,7 +96,7 @@ uint32_t LSM6DS_ReadCont(uint8_t reg_addr, uint8_t* buffer, uint16_t read_len)
 
     status = hi_i2c_writeread(LSM6DS_I2C_IDX, LSM6DS_READ_ADDR, &i2c_attr);
     for (int i = 0; i < read_len; i++) {
-         printf("0x%x ", buffer[i]);
+         printf("0x%x\r\n", buffer[i]);
     }
     printf("\r\n");
     return status;
@@ -127,13 +126,13 @@ void LSM6DS_Init(void)
 {
     /* 0x34 2初始化陀螺仪 0x34 2 Initialize gyroscope */
     LSM6DS_Write(LSM6DSL_CTRL3_C, 0x34, 2);
-    /* 0X4C 2 配置陀螺仪 0X4C 2 Configure gyroscope */
-    LSM6DS_Write(LSM6DSL_CTRL2_G , 0X4C, 2); // 角速度陀螺仪配置2000dps ,104Hz
+    /* 0X4C 2 配置陀螺仪 角速度陀螺仪配置2000dps ,104Hz 0X4C 2 Configure gyroscope */
+    LSM6DS_Write(LSM6DSL_CTRL2_G , 0X4C, 2);
     /* 0x38 2  timer en, pedo en, tilt en */
     LSM6DS_Write(LSM6DSL_CTRL10_C, 0x38, 2);
     /* 0x4F 2 加速度配置量程为8g,104Hz, lpf1_bw_sel=1, bw0_xl=1; */
     /* 0x4F 2 The acceleration configuration range is 8g, 104Hz, lpf1_ bw_ sel=1, bw0_ xl=1; */
-    LSM6DS_Write(LSM6DSL_CTRL1_XL, 0x4F, 2); // 
+    LSM6DS_Write(LSM6DSL_CTRL1_XL, 0x4F, 2);
     /* 0x10 2  */
     LSM6DS_Write(LSM6DSL_TAP_CFG, 0x10, 2);
     /* 0x00 2  */
@@ -186,39 +185,39 @@ void IMU_Attitude_cal(float gx, float gy, float gz, float ax, float ay, float az
     float ex, ey, ez;
     float atan2_x, atan2_y;
 
-    norm = (float)sqrt((float)(ax*ax + ay*ay + az*az));
+    norm = (float)sqrt((float)(ax * ax + ay * ay + az * az));
     ax = ax / norm; // ax normalize
     ay = ay / norm; // ay normalize
     az = az / norm; // az normalize
 
     // 估计方向的重力
-    vx = 2*(q1*q3 - q0*q2);
-    vy = 2*(q0*q1 + q2*q3);
-    vz = q0*q0 - q1*q1 - q2*q2 + q3*q3;
+    vx = 2 * (q1 * q3 - q0 * q2);
+    vy = 2*(q0 * q1 + q2 * q3);
+    vz = q0 * q0 - q1 * q1 - q2 * q2 + q3 * q3;
 
     // 经叉积并求出误差
-    ex = (ay*vz - az*vy);
-    ey = (az*vx - ax*vz);
-    ez = (ax*vy - ay*vx);
+    ex = (ay * vz - az * vy);
+    ey = (az * vx - ax * vz);
+    ez = (ax * vy - ay * vx);
 
     // 积分误差比例积分增益
-    exInt = exInt + ex*Ki;
-    eyInt = eyInt + ey*Ki;
-    ezInt = ezInt + ez*Ki;
+    exInt = exInt + ex * Ki;
+    eyInt = eyInt + ey * Ki;
+    ezInt = ezInt + ez * Ki;
 
     // 调整后的陀螺仪测量
-    gx = gx + Kp*ex + exInt;
-    gy = gy + Kp*ey + eyInt;
-    gz = gz + Kp*ez + ezInt;
+    gx = gx + Kp * ex + exInt;
+    gy = gy + Kp * ey + eyInt;
+    gz = gz + Kp * ez + ezInt;
 
     // 整合四元数率和正常化   
-    q0 = q0 + (-q1*gx - q2*gy - q3*gz)*halfT;
-    q1 = q1 + (q0*gx + q2*gz - q3*gy)*halfT;
-    q2 = q2 + (q0*gy - q1*gz + q3*gx)*halfT;
-    q3 = q3 + (q0*gz + q1*gy - q2*gx)*halfT;
+    q0 = q0 + (-q1 * gx - q2 * gy - q3 * gz) * halfT;
+    q1 = q1 + (q0 * gx + q2 * gz - q3 * gy) * halfT;
+    q2 = q2 + (q0 * gy - q1 * gz + q3 * gx) * halfT;
+    q3 = q3 + (q0 * gz + q1 * gy - q2 * gx) * halfT;
 
     // 正常化四元
-    norm = sqrt(q0*q0 + q1*q1 + q2*q2 + q3*q3);
+    norm = sqrt(q0 * q0 + q1 * q1 + q2 * q2 + q3 * q3);
     q0 = q0 / norm;
     q1 = q1 / norm;
     q2 = q2 / norm;
@@ -228,7 +227,7 @@ void IMU_Attitude_cal(float gx, float gy, float gz, float ax, float ay, float az
     Pitch = asin(-2 * q1 * q3 + 2 * q0* q2) * 180 / 3.14; // 180 3.14
     // 横滚角
     // printf("forward:%.02f, backward:%.02f\n", fabs(2 * q2 * q3 + 2 * q0 * q1), fabs(-2 * q1 * q1 - 2 * q2* q2 + 1));
-    atan2_x = -2 * q1 * q1 - 2 * q2* q2 + 1;
+    atan2_x = -2 * q1 * q1 - 2 * q2 * q2 + 1;
     atan2_y = 2 * q2 * q3 + 2 * q0 * q1;
     if (atan2_x > 0) {
         Roll = atan(atan2_y / atan2_x) * 180 / 3.14; // 180 3.14

@@ -51,7 +51,7 @@ void GetFunKeyState(void)
     uint32_t cTick = 0;
     IotGpioValue value = 0;
 
-    while(1) {
+    while (1) {
         if (g_buttonState == 1) {
             uint8_t diff;
             status = PCA9555I2CReadByte(&ext_io_state);
@@ -86,7 +86,7 @@ void GetFunKeyState(void)
                         cTick = hi_get_milli_seconds();
                         intLowFlag = 1;
                     } else {
-                        if ((hi_get_milli_seconds() - cTick) > 2) {
+                        if ((hi_get_milli_seconds() - cTick) > 2) { // 2
                             status = PCA9555I2CReadByte(&ext_io_state);
                             intLowFlag = 0;
                         }
@@ -106,11 +106,14 @@ void CW2015Task(void)
     while (1) {
         voltage = GetVoltage();
         // 将获取到的电源格式化为字符串
-        ssd1306_SetCursor(0, 15);
-        snprintf(line, sizeof(line), "voltage: %.2f", voltage);
+        ssd1306_SetCursor(0, 15); // 15
+        int ret = snprintf(line, sizeof(line), "voltage: %.2f", voltage);
+        if (ret != 13) { // 13
+            printf("failed\r\n");
+        }
         ssd1306_DrawString(line, Font_7x10, White);
         ssd1306_UpdateScreen();
-        usleep(10000);
+        TaskMsleep(10); // 10ms
     }
 }
 

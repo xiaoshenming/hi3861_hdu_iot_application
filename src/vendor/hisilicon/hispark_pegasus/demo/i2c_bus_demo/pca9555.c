@@ -31,7 +31,7 @@ uint32_t PCA9555I2CReadByte(uint8_t *rec_byte)
     uint32_t retval;
     uint8_t cmd = 0x00;
     retval = IoTI2cWrite(PCA9555_I2C_IDX, PCA9555_WRITE, &cmd, 1);
-    if(retval != IOT_SUCCESS) {
+    if (retval != IOT_SUCCESS) {
         return retval;
     }
     retval = IoTI2cRead(PCA9555_I2C_IDX, PCA9555_READ, rec_byte, 1);
@@ -52,12 +52,12 @@ uint32_t PCA9555I2CWriteByte(uint8_t* buffer, uint32_t buffLen)
 uint32_t SetPCA9555GpioValue(uint8_t addr, uint8_t buffer)
 {
     uint8_t write[2] = {addr, buffer};
-    PCA9555I2CWriteByte(write, 2);
+    PCA9555I2CWriteByte(write, 2); // 2长度
     return IOT_SUCCESS;
 }
 
 
-//初始化指定地址的PCA9555器件
+// 初始化指定地址的PCA9555器件
 void PCA9555Init(void)
 {
     /*
