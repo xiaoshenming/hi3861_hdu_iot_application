@@ -21,6 +21,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "hi_errno.h"
+#include "iot_i2c.h"
+#include "hi_time.h"
 
 #define SSD1306_I2C_IDX 0
 
@@ -270,7 +272,7 @@ char ssd1306_DrawChar(char ch, FontDef Font, SSD1306_COLOR color) {
     // Check if character is valid
     uint32_t ch_min = 32;
     uint32_t ch_max = 126;
-    if (ch < ch_min || ch > ch_max)
+    if ((uint32_t)ch < ch_min || (uint32_t)ch > ch_max)
         return 0;
 
     // Check remaining space on current line
@@ -372,27 +374,6 @@ void ssd1306_DrawPolyline(const SSD1306_VERTEX *par_vertex, uint16_t par_size, S
     /*nothing to do*/
   }
   return;
-}
-/* Convert Degrees to Radians */
-static float ssd1306_DegToRad(float par_deg) {
-    float pi = 3.14;
-    float angle = 180;
-    return par_deg * pi / angle;
-}
-/* Normalize degree to [0;360] */
-static uint16_t ssd1306_NormalizeTo0_360(uint16_t par_deg) {
-    unsigned int angle = 360;
-    uint16_t loc_angle;
-    if(par_deg <= angle)
-    {
-        loc_angle = par_deg;
-    }
-    else
-    {
-        loc_angle = par_deg % angle;
-        loc_angle = ((par_deg != 0)?par_deg:angle);
-    }
-    return loc_angle;
 }
 
 //Draw circle by Bresenhem's algorithm

@@ -53,6 +53,7 @@ uint32_t SetPCA9555GpioValue(uint8_t addr, uint8_t buffer)
 {
     uint8_t write[2] = {addr, buffer};
     PCA9555I2CWriteByte(write, 2);
+    return IOT_SUCCESS;
 }
 
 

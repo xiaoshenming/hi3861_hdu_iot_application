@@ -144,7 +144,6 @@ void LSM6DS_Init(void)
     LSM6DS_Write(LSM6DSL_TAP_THS_6D, 0x40, 2);
     /* 0x01 2  */
     LSM6DS_Write(LSM6DSL_CTRL8_XL, 0x01, 2);
-    return IOT_SUCCESS;
 }
 
 void IMU_YAW_CAL(float gyroZ)
@@ -186,7 +185,6 @@ void IMU_Attitude_cal(float gx, float gy, float gz, float ax, float ay, float az
     float vx, vy, vz;
     float ex, ey, ez;
     float atan2_x, atan2_y;
-    float atan2_x_yaw, atan2_y_yaw;
 
     norm = (float)sqrt((float)(ax*ax + ay*ay + az*az));
     ax = ax / norm; // ax normalize
@@ -261,9 +259,7 @@ void Lsm_Get_RawAcc(void)
     int16_t ang_rate_x = 0, ang_rate_y = 0, ang_rate_z = 0;
     float ang_rate_x_conv = 0, ang_rate_y_conv = 0, ang_rate_z_conv = 0;
     float ang_rate_x_cal = 0, ang_rate_y_cal = 0, ang_rate_z_cal = 0;
-    float ang_rate_z_yaw = 0;
 
-    static char line[32] = {0}; // 32
     if ((LSM6DS_WriteRead(LSM6DSL_STATUS_REG, 1, 1) & 0x03)!=0) {
 
         if (IOT_SUCCESS != LSM6DS_ReadCont(LSM6DSL_OUTX_L_G, buf, 12)) {

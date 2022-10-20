@@ -22,6 +22,7 @@
 #include "cw2015_control.h"
 #include "gyro.h"
 #include "hi_time.h"
+#include "iot_watchdog.h"
 #include "pca9555.h"
 #include "nfc_control.h"
 
