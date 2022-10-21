@@ -136,7 +136,7 @@ static void car_direction_control(char* value)
         g_car_direction_control_module = CAR_KEEP_TURN_LEFT_TYPE;
     } else if (strcmp(value, "righting") == 0) {
         g_car_direction_control_module = CAR_KEEP_TURN_RIGHT_TYPE;
-    } else if (strcmp(value,"stop") == 0) {
+    } else if (strcmp(value, "stop") == 0) {
         g_car_direction_control_module = CAR_STOP_TYPE;
     }
 }
