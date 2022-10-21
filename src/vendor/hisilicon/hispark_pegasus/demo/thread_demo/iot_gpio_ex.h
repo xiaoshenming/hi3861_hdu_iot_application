@@ -22,6 +22,15 @@
  *
  * @since 1.0
  * @version 1.0
+ *
+ * @file iot_gpio_ex.h
+ *
+ * @brief 描述拓展GPIO接口函数.
+ *
+ * 这些函数使用来设置GPIO引脚相关特性的. \n
+ *
+ * @since 1.0
+ * @version 1.0
  */
 
 #ifndef IOT_GPIO_EX_H
@@ -29,6 +38,8 @@
 
 /**
  * @brief Enumerates GPIO pull-up or pull-down settings.
+ *
+ * 枚举GPIO上下拉设定.
  */
 typedef enum {
     /** No pull */
@@ -370,9 +381,11 @@ typedef enum {
 * I/O drive capability.CNcomment:IO驱动能力。CNend
 * Note: The HI_IO_NAME_GPIO_0~HI_IO_NAME_GPIO_11 and HI_IO_NAME_GPIO_13~HI_IO_NAME_GPIO_14 driver capabilities are
 *       optional.The value range is HI_IO_DRIVER_STRENGTH_0~HI_IO_DRIVER_STRENGTH_3, and the other I/O ranges are
-*       HI_IO_DRIVER_STRENGTH_0~HI_IO_DRIVER_STRENGTH_7.CNcomment:注意:HI_IO_NAME_GPIO_0~HI_IO_NAME_GPIO_11、
+*       HI_IO_DRIVER_STRENGTH_0~HI_IO_DRIVER_STRENGTH_7.
+*
+* 注意:HI_IO_NAME_GPIO_0~HI_IO_NAME_GPIO_11、
 *       HI_IO_NAME_GPIO_13~HI_IO_NAME_GPIO_14驱动能力可选范围是HI_IO_DRIVER_STRENGTH_0~HI_IO_DRIVER_STRENGTH_3，
-*       其余IO范围是HI_IO_DRIVER_STRENGTH_0~HI_IO_DRIVER_STRENGTH_7。CNend
+*       其余IO范围是HI_IO_DRIVER_STRENGTH_0~HI_IO_DRIVER_STRENGTH_7。
 */
 typedef enum {
     IOT_IO_DRIVER_STRENGTH_0 = 0,   /* <Drive strength level 0 (highest).CNcomment:驱动能力0级，驱动能力最高CNend */

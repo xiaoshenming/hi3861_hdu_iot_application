@@ -11,10 +11,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-static_library("led_control") {
+static_library("thread_demo") {
   sources = [
     "hal_iot_gpio_ex.c",
-    "led_control.c",
+    "thread_demo.c",
   ]
 
   include_dirs = [
@@ -22,5 +22,6 @@ static_library("led_control") {
     "//utils/native/lite/include",
     "//kernel/liteos_m/kal/cmsis",
     "//base/iot_hardware/peripheral/interfaces/kits",
+    "//device/soc/hisilicon/hi3861v100/sdk_liteos/include/base",
     ]
 }

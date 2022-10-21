@@ -13,33 +13,16 @@
  * limitations under the License.
  */
 
-#include "iot_errno.h"
-#include "iot_gpio_ex.h"
-#include "hi_gpio.h"
-#include "hi_io.h"
-#include "hi_task.h"
-#include "hi_types_base.h"
+#ifndef HAL_IOT_ADC_H
+#define HAL_IOT_ADC_H
 
-unsigned int IoSetPull(unsigned int id, IotIoPull val)
-{
-    if (id >= HI_GPIO_IDX_MAX) {
-        return IOT_FAILURE;
-    }
-    return hi_io_set_pull((hi_io_name)id, (hi_io_pull)val);
-}
+#include "hi_adc.h"
+#include "iot_adc.h"
 
-unsigned int IoSetFunc(unsigned int id, unsigned char val)
+unsigned int AdcRead(IotAdcChannelIndex channel, unsigned const short *data, IotAdcEquModelSel equModel,
+                     IotAdcCurBais curBais, unsigned const short rstCnt)
 {
-    if (id >= HI_GPIO_IDX_MAX) {
-        return IOT_FAILURE;
-    }
-    return hi_io_set_func((hi_io_name)id, val);
+    return hi_adc_read((hi_adc_channel_index)channel, (hi_u16*)data, (hi_adc_equ_model_sel)equModel,
+                       (hi_adc_cur_bais)curBais, (hi_u16)rstCnt);
 }
-
-unsigned int TaskMsleep(unsigned int ms)
-{
-    if (ms <= 0) {
-        return IOT_FAILURE;
-    }
-    return hi_sleep((hi_u32)ms);
-}
+#endif

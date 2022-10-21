@@ -1,8 +1,8 @@
-static_library("nfc_control") {
+static_library("TraColorLampControl") {
   sources = [
     "hal_iot_gpio_ex.c",
-    "nfc_control.c",
     "pca9555.c",
+    "tricolor_lamp_control.c",
   ]
 
   include_dirs = [

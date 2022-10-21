@@ -11,10 +11,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-static_library("led_control") {
+static_library("interrupt_demo") {
   sources = [
-    "hal_iot_gpio_ex.c",
-    "led_control.c",
+    "interrupt_demo.c",
   ]
 
   include_dirs = [

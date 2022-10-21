@@ -13,33 +13,13 @@
  * limitations under the License.
  */
 
-#include "iot_errno.h"
-#include "iot_gpio_ex.h"
-#include "hi_gpio.h"
-#include "hi_io.h"
-#include "hi_task.h"
-#include "hi_types_base.h"
+#ifndef WIFI_CONNECTER_H
+#define WIFI_CONNECTER_H
 
-unsigned int IoSetPull(unsigned int id, IotIoPull val)
-{
-    if (id >= HI_GPIO_IDX_MAX) {
-        return IOT_FAILURE;
-    }
-    return hi_io_set_pull((hi_io_name)id, (hi_io_pull)val);
-}
+#include "wifi_device.h"
 
-unsigned int IoSetFunc(unsigned int id, unsigned char val)
-{
-    if (id >= HI_GPIO_IDX_MAX) {
-        return IOT_FAILURE;
-    }
-    return hi_io_set_func((hi_io_name)id, val);
-}
+int ConnectToHotspot(WifiDeviceConfig* apConfig);
 
-unsigned int TaskMsleep(unsigned int ms)
-{
-    if (ms <= 0) {
-        return IOT_FAILURE;
-    }
-    return hi_sleep((hi_u32)ms);
-}
+void DisconnectWithHotspot(int netId);
+
+#endif  // WIFI_CONNECTER_H

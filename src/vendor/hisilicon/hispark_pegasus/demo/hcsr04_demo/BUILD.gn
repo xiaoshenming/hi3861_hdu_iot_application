@@ -1,8 +1,7 @@
-static_library("nfc_control") {
+static_library("hcsr04_control") {
   sources = [
     "hal_iot_gpio_ex.c",
-    "nfc_control.c",
-    "pca9555.c",
+    "hcsr04.c",
   ]
 
   include_dirs = [

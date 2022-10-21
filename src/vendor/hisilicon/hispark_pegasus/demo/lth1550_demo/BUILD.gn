@@ -1,8 +1,8 @@
-static_library("nfc_control") {
+static_library("lth1550_control") {
   sources = [
     "hal_iot_gpio_ex.c",
-    "nfc_control.c",
-    "pca9555.c",
+    "hal_iot_adc.c",
+    "lth1550_control.c",
   ]
 
   include_dirs = [
