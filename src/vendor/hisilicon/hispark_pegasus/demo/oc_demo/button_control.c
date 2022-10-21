@@ -1,4 +1,18 @@
-#include "pca9555.h"
+/*
+ * Copyright (c) 2022 HiSilicon (Shanghai) Technologies CO., LIMITED.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #include <stdio.h>
 #include <unistd.h>
 #include "hi_timer.h"
@@ -9,6 +23,7 @@
 #include "iot_gpio.h"
 #include "iot_errno.h"
 #include "hi_errno.h"
+#include "pca9555.h"
 #include "app_demo_iot.h"
 
 static volatile int g_buttonState = 0;
@@ -21,9 +36,9 @@ void OnFuncKeyPressed(char *arg)
 
 void FuncKeyInit(void)
 {
-
     // 使能GPIO11的中断功能, OnFuncKeyPressed 为中断的回调函数
-    IoTGpioRegisterIsrFunc(IOT_IO_NAME_GPIO_11, IOT_INT_TYPE_EDGE, IOT_GPIO_EDGE_FALL_LEVEL_LOW, OnFuncKeyPressed, NULL);
+    IoTGpioRegisterIsrFunc(IOT_IO_NAME_GPIO_11, IOT_INT_TYPE_EDGE,
+                           IOT_GPIO_EDGE_FALL_LEVEL_LOW, OnFuncKeyPressed, NULL);
 
     // S3:IO0_2,S4:IO0_3,S5:IO0_4 0001 1100 => 0x1c 将IO0_2,IO0_3,IO0_4方向设置为输入，1为输入，0位输出
     SetPCA9555GpioValue(PCA9555_PART0_IODIR, 0x1c);
@@ -35,11 +50,11 @@ void GetFunKeyState(void)
     uint8_t ext_io_state_d = 0;
     uint8_t status;
 
-    while(1) {
+    while (1) {
         if (g_buttonState == 1) {
             uint8_t diff;
             status = PCA9555I2CReadByte(&ext_io_state);
-            if(status != IOT_SUCCESS) {
+            if (status != IOT_SUCCESS) {
                 printf("i2c error!\r\n");
                 ext_io_state = 0;
                 ext_io_state_d = 0;
@@ -64,7 +79,7 @@ void GetFunKeyState(void)
             ext_io_state_d = ext_io_state;
             g_buttonState = 0;
         }
-        usleep(20);
+        usleep(20); // 20us
     }
 }
 
@@ -86,7 +101,7 @@ static void ButtonControl(void)
 }
 
 static void ButtonControlEntry(void)
-{    
+{
     osThreadAttr_t attr;
     attr.name = "LedCntrolDemo";
     attr.attr_bits = 0U;

@@ -125,7 +125,7 @@ static void DemoEntry(void)
     CJsonInit();
     IoTMain();
     IoTSetMsgCallback(DemoMsgRcvCallBack);
-    TaskMsleep(30000);
+    TaskMsleep(30000); // 3s连接华为云
 /* 主动上报 */
     while (1) {
         // here you could add your own works here--we report the data to the IoTplatform

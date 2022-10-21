@@ -29,6 +29,7 @@
 /* Please modify the device id and pwd for your own */
 // 设备ID名称，请参考华为物联网云文档获取该设备的ID。例如:60790e01ba4b2702c053ff03_helloMQTT
 #define CONFIG_DEVICE_ID  "63296b2daf8e4678a15fd833_147852369"
-#define CONFIG_DEVICE_PWD "5bb9129f00848e701e262957e09e31f906c66e95bec52982567ac8d189698e12" // 设备密码，请参考华为物联网云文档设置该设备密码。例如：hispark2021
-#define CONFIG_CLIENTID "63296b2daf8e4678a15fd833_147852369_0_0_2022092403" 
+// 设备密码，请参考华为物联网云文档设置该设备密码。例如：hispark2021
+#define CONFIG_DEVICE_PWD "5bb9129f00848e701e262957e09e31f906c66e95bec52982567ac8d189698e12"
+#define CONFIG_CLIENTID "63296b2daf8e4678a15fd833_147852369_0_0_2022092403"
 #endif

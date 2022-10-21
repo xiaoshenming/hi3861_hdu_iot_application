@@ -40,10 +40,13 @@ static void PrintLinkedInfo(WifiLinkedInfo* info)
 
     static char macAddress[32] = {0};
     unsigned char* mac = info->bssid;
-    snprintf(macAddress, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X",
-        mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+    int ret = snprintf(macAddress, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X",
+        mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]); /* mac address 0,1,2,3,4,5 */
+    if (ret != 17) {  /* mac len 17 */
+        printf("ret failed = %d\r\n", ret);
+    }
     printf("bssid: %s, rssi: %d, connState: %d, reason: %d, ssid: %s\r\n",
-        macAddress, info->rssi, info->connState, info->disconnectedReason, info->ssid);
+           macAddress, info->rssi, info->connState, info->disconnectedReason, info->ssid);
 }
 
 static volatile int g_connected = 0;
@@ -97,7 +100,7 @@ int ConnectToHotspot(void)
     printf("ConnectTo(%d): %d\r\n", netId, errCode);
 
     while (!g_connected) { // wait until connect to AP
-        osDelay(10);
+        osDelay(10); // 10 = 100ms
     }
     printf("g_connected: %d\r\n", g_connected);
 
@@ -106,7 +109,7 @@ int ConnectToHotspot(void)
         err_t ret = netifapi_dhcp_start(g_iface);
         printf("netifapi_dhcp_start: %d\r\n", ret);
 
-        osDelay(100); // wait DHCP server give me IP
+        osDelay(100); // wait 100 = 1s DHCP server give me IP
         ret = netifapi_netif_common(g_iface, dhcp_clients_info_show, NULL);
         printf("netifapi_netif_common: %d\r\n", ret);
     }
