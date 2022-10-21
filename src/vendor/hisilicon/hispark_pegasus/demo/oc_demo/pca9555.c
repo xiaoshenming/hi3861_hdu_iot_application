@@ -58,7 +58,7 @@ uint32_t PCA9555I2CReadByte(uint8_t *rec_byte)
     uint32_t retval;
     uint8_t cmd = 0x00;
     retval = IoTI2cWrite(PCA9555_I2C_IDX, PCA9555_WRITE, &cmd, 1);
-    if(retval != IOT_SUCCESS) {
+    if (retval != IOT_SUCCESS) {
         return retval;
     }
     retval = IoTI2cRead(PCA9555_I2C_IDX, PCA9555_READ, rec_byte, 1);
