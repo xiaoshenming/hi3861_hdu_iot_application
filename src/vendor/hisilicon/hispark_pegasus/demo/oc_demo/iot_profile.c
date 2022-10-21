@@ -19,6 +19,7 @@
 #include "hi_stdlib.h"
 #include "stdio.h"
 #include "hi_mem.h"
+#include "iot_main.h"
 #include "iot_profile.h"
 
 // format the report data to json string mode
@@ -239,8 +240,8 @@ static char *MakeProfileCmdResp(IoTCmdResp *payload)
 int IoTProfileCmdResp(char *deviceID, IoTCmdResp *payload)
 {
     int ret = -1;
-    const char *topic;
-    const char *msg;
+    char *topic;
+    char *msg;
 
     if ((deviceID == NULL) || (payload == NULL) || (payload->requestID == NULL)) {
         return ret;

@@ -57,14 +57,14 @@ typedef enum {
 typedef struct {
     EnIotMsgT type;
     int qos;
-    const char *topic;
-    const char *payload;
+    char *topic;
+    char *payload;
 }IoTMsgT;
 
 typedef struct {
     hi_bool  stop;
     hi_u32 conLost;
-    hi_u32 queueID;
+    void * queueID;
     hi_u32 iotTaskID;
     FnMsgCallBack msgCallBack;
     MQTTClient_deliveryToken tocken;
@@ -82,8 +82,9 @@ static const char *g_defaultSubscribeTopic[] = {
 
 #define CN_TOPIC_SUBSCRIBE_NUM    (sizeof(g_defaultSubscribeTopic) / sizeof(const char *))
 
-static int MsgRcvCallBack(unsigned char *context, char *topic, int topicLen, MQTTClient_message *message)
+static int MsgRcvCallBack(void *context, char *topic, int topicLen, MQTTClient_message *message)
 {
+    (void) context;
     IoTMsgT *msg;
     char *buf;
     hi_u32 bufSize;
@@ -121,8 +122,9 @@ static int MsgRcvCallBack(unsigned char *context, char *topic, int topicLen, MQT
 }
 
 // when the connect lost and this callback will be called
-static void ConnLostCallBack(unsigned char *context, char *cause)
+static void ConnLostCallBack(void *context, char *cause)
 {
+    (void) context;
     printf("Connection lost:caused by:%s\r\n", cause == NULL ? "Unknown" : cause);
     return;
 }
@@ -159,7 +161,7 @@ static int ProcessQueueMsg(MQTTClient client)
 {
     printf("ProcessQueueMsg\r\n");
     hi_u32     ret;
-    hi_u32     msgSize;
+    uint8_t     msgSize;
     IoTMsgT    *msg;
     hi_u32     timeout;
     MQTTClient_message pubmsg = MQTTClient_message_initializer;
@@ -248,7 +250,6 @@ static void MainEntryProcess(void)
     // wait for the wifi connect ok
     printf("IOTSERVER:%s\r\n", CN_IOT_SERVER);
     MqttProcess(client, clientID, userPwd, conn_opts, subQos);
-    return;
 }
 
 void MainEntry(void)
@@ -258,7 +259,6 @@ void MainEntry(void)
         printf("The connection lost and we will try another connect\r\n");
         hi_sleep(1000*5); /* 延时5*1000ms */
     }
-    return NULL;
 }
 
 void IoTMain(void)
@@ -284,7 +284,7 @@ int IoTSetMsgCallback(FnMsgCallBack msgCallback)
     return 0;
 }
 
-int IotSendMsg(int qos, const char *topic, const char *payload)
+int IotSendMsg(int qos, char *topic, char *payload)
 {
     int rc = -1;
     IoTMsgT *msg;

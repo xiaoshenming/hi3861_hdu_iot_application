@@ -75,7 +75,7 @@ static void TrafficLightMsgRcvCallBack(char *payload)
 
 // /< this is the callback function, set to the mqtt, and if any messages come, it will be called
 // /< The payload here is the json string
-static void DemoMsgRcvCallBack(int qos, const char *topic, char *payload)
+static void DemoMsgRcvCallBack(int qos, char *topic, char *payload)
 {
     const char *requesID;
     char *tmp;
@@ -125,7 +125,7 @@ static void DemoEntry(void)
     CJsonInit();
     IoTMain();
     IoTSetMsgCallback(DemoMsgRcvCallBack);
-    TaskMsleep(30000); // 3s连接华为云
+    TaskMsleep(30000);
 /* 主动上报 */
     while (1) {
         // here you could add your own works here--we report the data to the IoTplatform
