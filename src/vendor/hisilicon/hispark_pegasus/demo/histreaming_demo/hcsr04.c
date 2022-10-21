@@ -23,8 +23,8 @@
 #include "hi_time.h"
 #include "iot_gpio_ex.h"
 #include "sg92r_control.h"
-#include "hcsr04.h"
 #include "motor_control.h"
+#include "hcsr04.h"
 
 #define CAR_TURN_LEFT                     (0)
 #define CAR_TURN_RIGHT                    (1)
@@ -55,7 +55,7 @@ float GetDistance(void)
     // 设置GPIO7输出低电平
     /* 给trig发送至少10us的高电平脉冲，以触发传感器测距 */
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_7, IOT_GPIO_VALUE1);
-    // 延时函数（设置高电平持续时间）
+    // 延时函数20us（设置高电平持续时间）
     hi_udelay(20);
     // 设置GPIO7输出高电平
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_7, IOT_GPIO_VALUE0);
@@ -63,47 +63,47 @@ float GetDistance(void)
     while (1) {
         // 获取GPIO8的输入电平状态
         IoTGpioGetInputVal(IOT_IO_NAME_GPIO_8, &value);
-        //判断GPIO8的输入电平是否为高电平并且flag为0
-        if ( value == IOT_GPIO_VALUE1 && flag == 0) {
+        // 判断GPIO8的输入电平是否为高电平并且flag为0
+        if (value == IOT_GPIO_VALUE1 && flag == 0) {
             // 获取系统时间
             start_time = hi_get_us();
             // 将flag设置为1
             flag = 1;
         }
-        //判断GPIO8的输入电平是否为低电平并且flag为1
+        // 判断GPIO8的输入电平是否为低电平并且flag为1
         if (value == IOT_GPIO_VALUE0 && flag == 1) {
             // 获取高电平持续时间
             time = hi_get_us() - start_time;
             break;
         }
     }
-    // 计算距离障碍物距离（340米/秒 转换为 0.034厘米/微秒）
+    // 计算距离障碍物距离（340米/秒 转换为 0.034厘米/微秒,一去一回2倍距离）
     distance = time * 0.034 / 2;
     printf("distance is %0.2f cm\r\n", distance);
     return distance;
 }
 
-/*Judge steering gear*/
+/* Judge steering gear */
 unsigned int engine_go_where(void)
 {
     float left_distance = 0.0;
     float right_distance = 0.0;
-    /*舵机往左转动测量左边障碍物的距离*/
+    /* 舵机往左转动测量左边障碍物的距离 */
 
     EngineTurnLeft();
-    TaskMsleep(200);
+    TaskMsleep(200); // 200ms
     left_distance = GetDistance();
-    TaskMsleep(200);
-    /*归中*/
+    TaskMsleep(200); // 200ms
+    /* 归中 */
     RegressMiddle();
-    TaskMsleep(200);
+    TaskMsleep(200); // 200ms
 
-    /*舵机往右转动测量右边障碍物的距离*/
+    /* 舵机往右转动测量右边障碍物的距离 */
     EngineTurnRight();
-    TaskMsleep(200);
+    TaskMsleep(200); // 200ms
     right_distance = GetDistance();
-    TaskMsleep(200);
-    /*归中*/
+    TaskMsleep(200); // 200ms
+    /* 归中 */
     RegressMiddle();
 
     if (left_distance > right_distance) {
@@ -113,25 +113,26 @@ unsigned int engine_go_where(void)
     }
 }
 
-/*根据障碍物的距离来判断小车的行走方向
-1、距离大于等于15cm继续前进
-2、距离小于15cm，先停止再后退0.1s,继续进行测距,再进行判断
-*/
-/*Judge the direction of the car*/
+/*
+ * 根据障碍物的距离来判断小车的行走方向
+ * 1、距离大于等于15cm继续前进
+ * 2、距离小于15cm，先停止再后退0.1s,继续进行测距,再进行判断
+ */
+/* Judge the direction of the car */
 unsigned int car_where_to_go(float distance)
 {
     if (distance < DISTANCE_BETWEEN_CAR_AND_OBSTACLE) {
         car_stop();
         car_backward();
-        TaskMsleep(100);
+        TaskMsleep(100);  // 100ms
         car_stop();
         unsigned int ret = engine_go_where();
         if (ret == CAR_TURN_LEFT) {
             car_left();
-            TaskMsleep(500);
+            TaskMsleep(500); // 500ms
         } else if (ret == CAR_TURN_RIGHT) {
             car_right();
-            TaskMsleep(500);
+            TaskMsleep(500); // 500ms
         }
         car_stop();
     } else {
@@ -148,5 +149,5 @@ void ultrasonic_demo(void)
     /* 获取前方物体的距离 */
     m_distance = GetDistance();
     car_where_to_go(m_distance);
-    TaskMsleep(20);
+    TaskMsleep(20); // 20ms
 }

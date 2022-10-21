@@ -21,14 +21,14 @@
 
 typedef enum {
     CAR_STOP_STATUS = 0,
-    CAR_RUNNING_STATUS, 
+    CAR_RUNNING_STATUS,
     CAR_TRACE_STATUS
 } hi_car_status;
 
 typedef enum {
-    CAR_DIRECTION_CONTROL_MODE = 1, //控制小车方向
-    CAR_MODULE_CONTROL_MODE,   //控制小车的扩展模块
-    CAR_SPEED_CONTROL_MODE     //速度控制
+    CAR_DIRECTION_CONTROL_MODE = 1, // 控制小车方向
+    CAR_MODULE_CONTROL_MODE, // 控制小车的扩展模块
+    CAR_SPEED_CONTROL_MODE // 速度控制
 } hi_car_control_mode;
 
 typedef enum {
@@ -48,7 +48,7 @@ typedef enum {
     CAT_TURN_BACK_TYPE,
 } hi_car_direction_control_type;
 
-/*小车扩展模块的几种类型*/
+/* 小车扩展模块的几种类型 */
 typedef enum {
     CAR_CONTROL_ENGINE_LEFT_TYPE = 1,
     CAR_CONTROL_ENGINE_RIGHT_TYPE,

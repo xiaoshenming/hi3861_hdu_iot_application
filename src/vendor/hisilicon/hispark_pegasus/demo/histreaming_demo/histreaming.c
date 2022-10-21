@@ -64,7 +64,7 @@ static void car_direction_control_func(void)
     g_car_direction_control_module = 0;
 }
 
-/*car mode control func*/
+/* car mode control func */
 void car_mode_control_func(void)
 {
     unsigned short current_car_modular_control_module = g_car_modular_control_module;
@@ -73,8 +73,8 @@ void car_mode_control_func(void)
     switch (g_car_modular_control_module) {
         case CAR_CONTROL_STEER_ENGINE_TYPE: // 有舵机
             while (1) {
-                if ((current_car_modular_control_module != g_car_modular_control_module) 
-                    || (current_car_control_mode != g_car_control_mode)) {
+                if ((current_car_modular_control_module != g_car_modular_control_module) ||
+                    (current_car_control_mode != g_car_control_mode)) {
                     printf("car_mode_control_func 1 module changed\n");
                     RegressMiddle();
                     break;
@@ -130,11 +130,11 @@ static void car_direction_control(char* value)
     printf("car_direction_control\n");
     if (strcmp(value, "going") == 0) {
         g_car_direction_control_module = CAR_KEEP_GOING_TYPE;
-    } else if(strcmp(value, "backing") == 0) {
+    } else if (strcmp(value, "backing") == 0) {
         g_car_direction_control_module = CAR_KEEP_GOING_BACK_TYPE;
-    } else if(strcmp(value, "lefting") == 0) {
+    } else if (strcmp(value, "lefting") == 0) {
         g_car_direction_control_module = CAR_KEEP_TURN_LEFT_TYPE;
-    } else if(strcmp(value, "righting") == 0) {
+    } else if (strcmp(value, "righting") == 0) {
         g_car_direction_control_module = CAR_KEEP_TURN_RIGHT_TYPE;
     } else if (strcmp(value,"stop") == 0) {
         g_car_direction_control_module = CAR_STOP_TYPE;
@@ -164,8 +164,8 @@ static int ModifyStatus(struct LinkService* ar, const char* property, char* valu
         return -1;
     }
 
-    printf("Receive property: %s(value=%s[%d])\n", property, value,len);
-    if (strcmp(property,"CarControl") == 0) {
+    printf("Receive property: %s(value=%s[%d])\r\n", property, value, len);
+    if (strcmp(property, "CarControl") == 0) {
         g_car_control_mode = CAR_DIRECTION_CONTROL_MODE;
         car_direction_control(value);
     } else if (strcmp(property, "ModularControl") == 0) {
@@ -255,7 +255,7 @@ void WifiRobotTask(void)
             default:
                 break;
         }
-        TaskMsleep(200);
+        TaskMsleep(200); // 200ms
     }
 }
 
@@ -268,7 +268,7 @@ static void StartWifiRobotSampleEntry(void)
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 1024 * 5; /* 堆栈大小为1024 */
+    attr.stack_size = 1024 * 5; /* 堆栈大小为1024*5 */
     attr.priority = osPriorityNormal;
 
     if (osThreadNew((osThreadFunc_t)WifiRobotTask, NULL, &attr) == NULL) {
