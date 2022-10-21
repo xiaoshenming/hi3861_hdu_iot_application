@@ -64,7 +64,7 @@ typedef struct {
 typedef struct {
     hi_bool  stop;
     hi_u32 conLost;
-    void * queueID;
+    void* queueID;
     hi_u32 iotTaskID;
     FnMsgCallBack msgCallBack;
     MQTTClient_deliveryToken tocken;
