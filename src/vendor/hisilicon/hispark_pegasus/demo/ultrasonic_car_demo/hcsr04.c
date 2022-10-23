@@ -83,10 +83,10 @@ void ButtonDesplay(ENUM_MODE mode)
             ssd1306_printf("Set RForward=%d", car_drive.RightForward);
             break;
         case MODE_SET_TURN_LEFT:
-            ssd1306_printf("Set TurnLeft=%d", car_drive.TurnLeft);
+            ssd1306_printf("Set TurnLeft=%d", car_drive.TurnRight);
             break;
         case MODE_SET_TURN_RIGHT:
-            ssd1306_printf("Set TurnRight=%d", car_drive.TurnRight);
+            ssd1306_printf("Set TurnRight=%d", car_drive.TurnLeft);
             break;
         case MODE_SET_YAW:
             ssd1306_printf("Set yaw = %.2f", car_drive.yaw);
@@ -128,12 +128,12 @@ void ButtonSet(ENUM_MODE mode, bool button_pressed)
             ssd1306_printf("RightForward=%d", car_drive.RightForward);
             break;
         case MODE_SET_TURN_LEFT:
-            car_drive.TurnLeft += ((button_pressed) ? -1 : 1);
-            ssd1306_printf("TurnLeft=%d", car_drive.TurnLeft);
+            car_drive.TurnRight += ((button_pressed) ? -1 : 1);
+            ssd1306_printf("TurnLeft=%d", car_drive.TurnRight);
             break;
         case MODE_SET_TURN_RIGHT:
-            car_drive.TurnRight += ((button_pressed) ? -1 : 1);
-            ssd1306_printf("TurnRight=%d", car_drive.TurnRight);
+            car_drive.TurnLeft += ((button_pressed) ? -1 : 1);
+            ssd1306_printf("TurnRight=%d", car_drive.TurnLeft);
             break;
         case MODE_SET_YAW:
             car_drive.yaw += ((button_pressed) ? -0.1 : 0.1); // 航向角每次增加或者减少0.1

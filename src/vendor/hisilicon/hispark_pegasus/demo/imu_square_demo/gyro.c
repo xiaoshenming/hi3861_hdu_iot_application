@@ -68,7 +68,7 @@ void init_ctrl_algo(void)
     car_drive.yaw1 = YAW;
     car_drive.yaw2 = 180.0; // 航向角180.0
     car_drive.yaw3 = 270.0; // 航向角270.0
-    car_drive.yaw4 = 360.0; // 航向角300.0
+    car_drive.yaw4 = 360.0; // 航向角360.0
     car_drive.time = 3000; // 行驶时间3000ms
 }
 
