@@ -66,9 +66,9 @@ void init_ctrl_algo(void)
     car_drive.RightForward = 10; // 10 右轮前进速度
     car_drive.TurnRight = 30; // 30 右转弯左轮速度
     car_drive.yaw1 = YAW;
-    car_drive.yaw2 = 180.0; // 航向角180度
-    car_drive.yaw3 = 270.0; // 航向角270度
-    car_drive.yaw4 = 360.0; // 航向角300度
+    car_drive.yaw2 = 180.0; // 航向角180.0
+    car_drive.yaw3 = 270.0; // 航向角270.0
+    car_drive.yaw4 = 360.0; // 航向角300.0
     car_drive.time = 3000; // 行驶时间3000ms
 }
 
@@ -370,7 +370,7 @@ void IMUSquarSampleEntry(void)
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 1024 * 5;
+    attr.stack_size = 1024 * 5; // 堆栈大小5*1024
     attr.priority = osPriorityNormal;
 
     if (osThreadNew(IMUSquarTask, NULL, &attr) == NULL) {
