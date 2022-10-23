@@ -111,10 +111,12 @@ void ButtonDesplay(ENUM_MODE mode)
 
 void ButtonSet(ENUM_MODE mode, bool button_pressed)
 {
+    printf("mode = %d\r\n", mode);
     switch (mode) {
         case MODE_ON_OFF:
             g_CarStarted = !g_CarStarted;
             ssd1306_ClearOLED();
+            printf("g_CarStarted = %d\r\n", g_CarStarted);
             ssd1306_printf(g_CarStarted ? "start" : "stop");
             break;
         case MODE_SET_LEFT_FORWARD:
@@ -163,7 +165,6 @@ void ButtonPressProc(uint8_t ext_io_val)
     static uint8_t ext_io_val_d = 0xFF;
     uint8_t diff;
     bool button1_pressed, button2_pressed, button3_pressed;
-    
     diff = ext_io_val ^ ext_io_val_d;
     button1_pressed = ((diff & MASK_BUTTON1) && ((ext_io_val & MASK_BUTTON1) == 0)) ? true : false;
     button2_pressed = ((diff & MASK_BUTTON2) && ((ext_io_val & MASK_BUTTON2) == 0)) ? true : false;
@@ -299,6 +300,7 @@ void ultrasonic_demo(void)
     /* 获取前方物体的距离 */
     m_distance = GetDistance();
     car_where_to_go(m_distance);
+    TaskMsleep(20); // 20ms执行一次
 }
 
 void UltrasonicDemoTask(void)

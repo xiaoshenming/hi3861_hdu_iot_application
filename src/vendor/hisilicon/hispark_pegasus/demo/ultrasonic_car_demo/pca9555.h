@@ -41,7 +41,7 @@
 #define WHITE_LED 0xff
 #define LED_OFF 0x00
 
-typedef void (*PCA_EventProcFunc)(unsigned char);
+typedef void (*PCA_EventProcFunc)(unsigned int);
 
 void InitPCA9555(void);
 void PCA_MainProc(void);
