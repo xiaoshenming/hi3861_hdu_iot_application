@@ -1,8 +1,18 @@
 /*
-    GA12-N20 直流减速电机的相关API接口
-	左轮：IB:GPIO5, IA: GPIO6
-    右轮：IB:GPIO9, IA: GPIO10
-*/
+ * Copyright (c) 2022 HiSilicon (Shanghai) Technologies CO., LIMITED.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #include <stdio.h>
 #include <unistd.h>
 
@@ -10,6 +20,8 @@
 #include "ohos_init.h"
 #include "cmsis_os2.h"
 #include "iot_gpio.h"
+#include "iot_pwm.h"
+#include "motor_control.h"
 
 #define IOT_PWM_PORT_PWM0   0
 #define IOT_PWM_PORT_PWM1   1

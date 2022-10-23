@@ -13,35 +13,12 @@
  * limitations under the License.
  */
 
-#ifndef HCSR04_H
-#define HCSR04_H
+#ifndef SG92R_H
+#define SG92R_H
 
-#include <stdint.h>
-
-typedef enum {
-    MODE_ON_OFF = 0,
-    MODE_SET_LEFT_FORWARD,
-    MODE_SET_RIGHT_FORWARD,
-    MODE_SET_TURN_LEFT,
-    MODE_SET_TURN_RIGHT,
-    MODE_SET_YAW,
-    MODE_SET_DISTANCE,
-    MODE_SET_LEFTSG92R,
-    MODE_SET_MIDDERSG92R,
-    MODE_SET_RIGHTSG92R,
-    MODE_END,
-} ENUM_MODE;
-
-typedef struct {
-    uint32_t LeftForward;
-    uint32_t RightForward;
-    uint32_t TurnLeft;
-    uint32_t TurnRight;
-    float yaw;
-    float distance;
-    unsigned int leftangle;
-    unsigned int middangle;
-    unsigned int rightangle;
-} CAR_DRIVE;
+void RegressMiddle(unsigned int a);
+void EngineTurnRight(unsigned int a);
+void EngineTurnLeft(unsigned int a);
+void S92RInit(void);
 
 #endif  // AHT20_H

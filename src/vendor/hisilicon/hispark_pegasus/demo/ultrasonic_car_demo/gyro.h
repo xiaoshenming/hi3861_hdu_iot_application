@@ -57,5 +57,7 @@
 #define LSM6DSL_MD1_CFG    0X5E
 
 float GetYaw(void);
+void Lsm_Get_RawAcc(void);
+void LSM6DS_Init(void);
 
 #endif  // AHT20_H

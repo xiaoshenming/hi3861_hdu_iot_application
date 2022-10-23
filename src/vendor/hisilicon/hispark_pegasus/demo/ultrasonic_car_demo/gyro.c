@@ -22,7 +22,6 @@
 #include <hi_time.h>
 #include <hi_timer.h>
 
-#include "gyro.h"
 #include "iot_gpio_ex.h"
 #include "ssd1306.h"
 #include <ssd1306_fonts.h>
@@ -35,6 +34,7 @@
 #include "hi_errno.h"
 #include "hi_i2c.h"
 #include "iot_gpio.h"
+#include "gyro.h"
 
 float q0 = 1, q1 = 0, q2 = 0, q3 = 0;   // 四元数的元素，代表估计方向
 float exInt = 0, eyInt = 0, ezInt = 0;  // 按比例缩小积分误差
@@ -57,8 +57,8 @@ float Yaw;                 // 偏航角，俯仰角，翻滚角
 */
 static uint32_t LSM6DS_WriteRead(uint8_t reg_high_8bit_cmd, uint8_t send_len, uint8_t read_len)
 {
-    uint32_t status =0;
-    uint8_t recvData[888] = {0};
+    uint32_t status = 0;
+    uint8_t recvData[888] = { 0 }; // 888长度
     uint32_t ret = 0;
     hi_i2c_data c081nfc_i2c_write_cmd_addr ={0};
     uint8_t send_user_cmd[1] = {reg_high_8bit_cmd};
@@ -96,7 +96,7 @@ static uint32_t LSM6DS_ReadCont(uint8_t reg_addr, uint8_t* buffer, uint16_t read
 
 static uint32_t LSM6DS_Write(uint8_t addr, uint8_t writedata, uint32_t buffLen)
 {
-    uint8_t buffer[2] = {addr, writedata};
+    uint8_t buffer[2] = {addr, writedata}; // 2长度
     uint32_t retval = IoTI2cWrite(LSM6DS_I2C_IDX, LSM6DS_WRITE_ADDR, buffer, buffLen);
     if (retval != IOT_SUCCESS) {
         printf("IoTI2cWrite(%02X) failed, %0X!\n", buffer[0], retval);
@@ -106,37 +106,23 @@ static uint32_t LSM6DS_Write(uint8_t addr, uint8_t writedata, uint32_t buffLen)
     return IOT_SUCCESS;
 }
 
-void LSM6DS_Init()
+void LSM6DS_Init(void)
 {
-    LSM6DS_Write(LSM6DSL_CTRL3_C, 0x34, 2);
-    LSM6DS_Write(LSM6DSL_CTRL2_G , 0X4C, 2); // 角速度陀螺仪配置2000dps ,104Hz
-    LSM6DS_Write(LSM6DSL_CTRL10_C, 0x38, 2); // timer en, pedo en, tilt en ??
-    LSM6DS_Write(LSM6DSL_CTRL1_XL, 0x4F, 2); // 加速度配置量程为8g,104Hz, lpf1_bw_sel=1, bw0_xl=1;
+    LSM6DS_Write(LSM6DSL_CTRL3_C, 0x34, 2); // 0x34 2 角速度陀螺仪配置2000dps ,104Hz
+    LSM6DS_Write(LSM6DSL_CTRL2_G , 0X4C, 2); // 0x4c 2 角速度陀螺仪配置2000dps ,104Hz
+    LSM6DS_Write(LSM6DSL_CTRL10_C, 0x38, 2); // 0x38 2 timer en, pedo en, tilt en ??
+    LSM6DS_Write(LSM6DSL_CTRL1_XL, 0x4F, 2); // 0x4F 2 加速度配置量程为8g,104Hz, lpf1_bw_sel=1, bw0_xl=1;
     
-    LSM6DS_Write(LSM6DSL_TAP_CFG, 0x10, 2);
-    LSM6DS_Write(LSM6DSL_WAKE_UP_DUR, 0x00, 2);
-    LSM6DS_Write(LSM6DSL_WAKE_UP_THS, 0x02, 2);
-    LSM6DS_Write(LSM6DSL_TAP_THS_6D, 0x40, 2);
-    LSM6DS_Write(LSM6DSL_CTRL8_XL, 0x01, 2);
-
-    return IOT_SUCCESS;
-}
-
-static void LSM6DSTask(int* arg)
-{
-    (void) arg;
-    uint32_t ret;
-    int pwm_mid;
-    ret = LSM6DS_WriteRead(LSM6DSL_WHO_AM_I, 1, 1);
-    printf("who am i: %X\n", ret);
-    printf("last compile:%s, %s\n", __DATE__, __TIME__);
-    LSM6DS_Init();
-
+    LSM6DS_Write(LSM6DSL_TAP_CFG, 0x10, 2); //0x10 2长度 LSM6DSL_TAP_CFG
+    LSM6DS_Write(LSM6DSL_WAKE_UP_DUR, 0x00, 2); //0x00 2长度 LSM6DSL_WAKE_UP_DUR
+    LSM6DS_Write(LSM6DSL_WAKE_UP_THS, 0x02, 2); //0x02 2长度 LSM6DSL_WAKE_UP_THS
+    LSM6DS_Write(LSM6DSL_TAP_THS_6D, 0x40, 2); //0x40 2长度 LSM6DSL_TAP_THS_6D
+    LSM6DS_Write(LSM6DSL_CTRL8_XL, 0x01, 2); //0x01 2长度 LSM6DSL_CTRL8_XL
 }
 
 void IMU_YAW_CAL(float gyroZ)
 {
-    static float dt = 0.03;
+    static float dt = 0.01; // 0.01代表100ms读取一次陀螺仪数据
     static float yaw_conv = 0.0f, temp = 0.0f;
 
     // 除去零偏
@@ -148,13 +134,13 @@ void IMU_YAW_CAL(float gyroZ)
     }
 #endif
 
-    if (fabs(gyroZ) < 0.04) {
+    if (fabs(gyroZ) < 0.04) { // 0.04 gyroZ标准值
         temp = 0;
     } else {
         temp = gyroZ * dt;
     }
     yaw_conv += temp;
-    Yaw = yaw_conv * 57.32;
+    Yaw = yaw_conv * 57.32; // 57.32标准值
     // 360°一个循环
     if (fabs(Yaw) > 360.0f) {
         if ((Yaw) < 0) {
@@ -166,39 +152,24 @@ void IMU_YAW_CAL(float gyroZ)
 }
 
 
-void Lsm_Get_RawAcc()
+void Lsm_Get_RawAcc(void)
 {
-    uint8_t buf[12] = {0};
-    int16_t acc_x = 0, acc_y = 0, acc_z = 0;
-    float acc_x_conv = 0, acc_y_conv = 0, acc_z_conv = 0;
-    int16_t ang_rate_x = 0, ang_rate_y = 0, ang_rate_z = 0;
-    float ang_rate_x_conv = 0, ang_rate_y_conv = 0, ang_rate_z_conv = 0;
+    uint8_t buf[12] = {0}; // 12位陀螺仪数据
+    int16_t ang_rate_z = 0;
+    float ang_rate_z_conv = 0;
 
-    static char line[32] = {0};
-    if ((LSM6DS_WriteRead(LSM6DSL_STATUS_REG, 1, 1) & 0x03)!=0) {
-
+    if ((LSM6DS_WriteRead(LSM6DSL_STATUS_REG, 1, 1) & 0x03) != 0) {
         if (IOT_SUCCESS != LSM6DS_ReadCont(LSM6DSL_OUTX_L_G, buf, 12)) {
             printf("i2c read error!\n");
         } else {
-            ang_rate_x = (buf[1] << 8) + buf[0];
-            ang_rate_y = (buf[3] << 8) + buf[2];
-            ang_rate_z = (buf[5] << 8) + buf[4];
-            acc_x = (buf[7] << 8) + buf[6];
-            acc_y = (buf[9] << 8) + buf[8];
-            acc_z = (buf[11] << 8) + buf[10];
-
-            ang_rate_x_conv = 3.14 / 180.0 * ang_rate_x / 14.29;
-            ang_rate_y_conv = 3.14 / 180.0 * ang_rate_y / 14.29;
-            ang_rate_z_conv = 3.14 / 180.0 * ang_rate_z / 14.29;
-
-            acc_x_conv = acc_x / 4098.36;
-            acc_y_conv = acc_y / 4098.36;
-            acc_z_conv = acc_z / 4098.36;
+            ang_rate_z = (buf[5] << 8) + buf[4]; // 将buff5 右移8位在与上buff 4
+            ang_rate_z_conv = 3.14 / 180.0 * ang_rate_z / 14.29; // 3.14= π， 180.0° 14.29为陀螺仪量程
             IMU_YAW_CAL(ang_rate_z_conv);
         }
     }
 }
 
-float GetYaw(void) {
+float GetYaw(void)
+{
     return Yaw;
 }

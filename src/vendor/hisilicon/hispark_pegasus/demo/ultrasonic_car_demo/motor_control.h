@@ -13,35 +13,16 @@
  * limitations under the License.
  */
 
-#ifndef HCSR04_H
-#define HCSR04_H
+#ifndef MOTOR_CONTROL_H
+#define MOTOR_CONTROL_H
 
-#include <stdint.h>
+#include <unistd.h>
 
-typedef enum {
-    MODE_ON_OFF = 0,
-    MODE_SET_LEFT_FORWARD,
-    MODE_SET_RIGHT_FORWARD,
-    MODE_SET_TURN_LEFT,
-    MODE_SET_TURN_RIGHT,
-    MODE_SET_YAW,
-    MODE_SET_DISTANCE,
-    MODE_SET_LEFTSG92R,
-    MODE_SET_MIDDERSG92R,
-    MODE_SET_RIGHTSG92R,
-    MODE_END,
-} ENUM_MODE;
-
-typedef struct {
-    uint32_t LeftForward;
-    uint32_t RightForward;
-    uint32_t TurnLeft;
-    uint32_t TurnRight;
-    float yaw;
-    float distance;
-    unsigned int leftangle;
-    unsigned int middangle;
-    unsigned int rightangle;
-} CAR_DRIVE;
+void GA12N20Init(void);
+void car_backward(uint32_t left_pwm_value, uint32_t right_pwm_value);
+void car_forward(uint32_t left_pwm_value, uint32_t right_pwm_value);
+void car_left(uint32_t right_pwm_value);
+void car_right(uint32_t left_pwm_value);
+void car_stop(void);
 
 #endif  // AHT20_H

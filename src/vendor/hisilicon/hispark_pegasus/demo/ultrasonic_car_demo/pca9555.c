@@ -1,24 +1,37 @@
-#include "pca9555.h"
-#include "iot_gpio_ex.h"
-#include "gyro.h"
-#include "ssd1306.h"
-#include <ssd1306_fonts.h>
-#include "iot_pwm.h"
-#include "hi_pwm.h"
+/*
+ * Copyright (c) 2022 HiSilicon (Shanghai) Technologies CO., LIMITED.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <memory.h>
-
+#include "iot_gpio_ex.h"
+#include "gyro.h"
+#include "ssd1306.h"
+#include "ssd1306_fonts.h"
+#include "iot_pwm.h"
+#include "hi_pwm.h"
 #include "ohos_init.h"
 #include "cmsis_os2.h"
-
 #include "iot_i2c.h"
 #include "iot_errno.h"
 #include "hi_errno.h"
+#include "iot_watchdog.h"
 #include "hi_i2c.h"
 #include "hi_time.h"
 #include "iot_gpio.h"
+#include "pca9555.h"
 
 #define PCA5555_I2C_IDX 0
 #define IOT_I2C_IDX_BAUDRATE         400000 // 400k
@@ -27,9 +40,6 @@
 #define PCA9555_INT_PIN_NAME    (IOT_IO_NAME_GPIO_11)
 #define PCA9555_INT_PIN_FUNC    (IOT_IO_FUNC_GPIO_11_GPIO)
 #define PCA_REG_IO0_STATE       (0x00)
-
-
-void ExtIoIntSvr(const char *arg);
 
 volatile int g_extIoIntValid = 0;
 PCA_EventProcFunc g_PCAEventProcFunc = NULL;
@@ -55,15 +65,13 @@ uint32_t PCA_ReadReg(uint8_t reg_addr, uint8_t *reg_val)
     uint32_t status;
 
     status = IoTI2cWrite(PCA5555_I2C_IDX, PCA9555_WRITE_ADDR, &reg_addr, 1);
-    if(status != IOT_SUCCESS)
-    {
+    if(status != IOT_SUCCESS) {
         printf("IOTI2cRead phase1 failed\n");
         return 0;
     }
 
     status = IoTI2cRead(PCA5555_I2C_IDX, PCA9555_READ_ADDR, reg_val, 1);
-    if(status != IOT_SUCCESS)
-    {
+    if(status != IOT_SUCCESS) {
         printf("IOTI2cRead phase2 failed\n");
         return 0;
     }
@@ -75,6 +83,11 @@ uint32_t PCA_ReadExtIO0(uint8_t *reg_val)
     return PCA_ReadReg(PCA_REG_IO0_STATE, reg_val);
 }
 
+void ExtIoIntSvr(char *arg)
+{
+    (void) arg;
+    g_extIoIntValid = 1;
+}
 
 void InitPCA9555(void)
 {
@@ -94,10 +107,6 @@ void InitPCA9555(void)
     ssd1306_Init(); // 初始化 SSD1306 OLED模块
     ssd1306_Fill(Black);
 
-    /* register ???  */
-//    IoSetFunc(IOT_IO_NAME_GPIO_0, IOT_IO_FUNC_GPIO_0_GPIO);
-//    IoTGpioSetDir(IOT_IO_NAME_GPIO_0, IOT_GPIO_DIR_OUT);
-
     /* IO0_X全为可选输入 */
     /* 输入为1，输出为0，IO0 234输入,0x60代表只用编码器，0x7c代表按键编码器同时使用，0x1c代表只用按键 */
     PCA_WriteReg(PCA9555_REG_CFG0, 0x1c); 
@@ -106,13 +115,6 @@ void InitPCA9555(void)
     PCA_WriteReg(PCA9555_REG_CFG1, 0x00); /*IO1 012345输出 */
     PCA_WriteReg(PCA9555_REG_OUT1, LED_OFF); /*IO1 012345低电平 */
 }
-
-void ExtIoIntSvr(const char *arg)
-{
-    (void) arg;
-    g_extIoIntValid = 1;
-}
-
 
 void PCA_RegisterEventProcFunc(PCA_EventProcFunc func)
 {
@@ -124,51 +126,53 @@ void PCA_UnregisterEventProcFunc(void)
     g_PCAEventProcFunc = NULL;
 }
 
+void PressToRestore(void)
+{
+    uint8_t ext_io_state = 0;
+    IotGpioValue value = 0;
+    uint8_t intLowFlag = 0;
+    uint32_t cTick = 0;
+    uint8_t status;
+    status = IoTGpioGetInputVal(PCA9555_INT_PIN_NAME, &value);
+    if (status != IOT_SUCCESS) {
+        printf("status = %d\r\n", status);
+    }
+    if (value == 1) {
+        intLowFlag = 0;
+    } else {
+        if (intLowFlag == 0) {
+            cTick = hi_get_milli_seconds();
+            intLowFlag = 1;
+        } else {
+            if ((hi_get_milli_seconds() - cTick) > 2) { // 2ms
+                status = PCA_ReadExtIO0(&ext_io_state);
+                intLowFlag = 0;
+            }
+        }
+    }
+}
 
-void PCA_MainThread(int* arg)
+void PCA_MainThread(void)
 {
     uint8_t ext_io0_state;
     uint8_t status;
-    IotGpioValue value;
-    int intLowFlag = 0;
-    uint32_t cTick = 0;  
     InitPCA9555();
-    IoTWatchDogDisable();
     while (1) {
         /* check button pressed interval */
-        hi_sleep(50);
-        if (g_extIoIntValid == 1) 
-        {
+        TaskMsleep(50); // 50ms
+        if (g_extIoIntValid == 1) {
             status = PCA_ReadExtIO0(&ext_io0_state);
-            if(status != IOT_SUCCESS)
-            {
+            if(status != IOT_SUCCESS) {
                 printf("i2c error!\r\n");
                 g_extIoIntValid = 0;
                 return;
-            }
-            else if(g_PCAEventProcFunc != NULL)
-            {
+            } else if(g_PCAEventProcFunc != NULL) {
                 g_PCAEventProcFunc(ext_io0_state);
             }
             g_extIoIntValid = 0;
-        
         } else {
             /* PCA9555 error state recovery */
-            if (IoTGpioGetInputVal(PCA9555_INT_PIN_NAME, &value) == IOT_SUCCESS) {
-                if (value == 1) {
-                    intLowFlag = 0;
-                } else {
-                    if (intLowFlag == 0) {
-                        cTick = hi_get_milli_seconds();
-                        intLowFlag = 1;
-                    } else {
-                        if ((hi_get_milli_seconds() - cTick) > 2) {
-                            status = PCA_ReadExtIO0(&ext_io0_state);
-                            intLowFlag = 0;
-                        }
-                    }
-                }
-            }
+            PressToRestore();
         }
     }
 }
@@ -176,16 +180,16 @@ void PCA_MainThread(int* arg)
 void PCA_CreateThread(void)
 {
     osThreadAttr_t attr;
-
+    IoTWatchDogDisable();
     attr.name = "PCA95555Task";
     attr.attr_bits = 0U;
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 5 * 1024;
+    attr.stack_size = 5 * 1024; // 堆栈大小5*1024
     attr.priority = osPriorityNormal;
 
-    if (osThreadNew(PCA_MainThread, NULL, &attr) == NULL) {
+    if (osThreadNew((osThreadFunc_t)PCA_MainThread, NULL, &attr) == NULL) {
         printf("Failed to create Pca9555Task!\n");
     }
 }

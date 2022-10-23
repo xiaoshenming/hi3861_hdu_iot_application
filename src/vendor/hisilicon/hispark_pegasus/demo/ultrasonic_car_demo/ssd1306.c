@@ -315,17 +315,18 @@ char ssd1306_DrawChar(char ch, FontDef Font, SSD1306_COLOR color)
 // Write full string to screenbuffer
 char ssd1306_DrawString(char* str, FontDef Font, SSD1306_COLOR color) {
     // Write until null-byte
-    while (*str) {
-        if (ssd1306_DrawChar(*str, Font, color) != *str) {
+    char* str1 = str;
+    while (*str1) {
+        if (ssd1306_DrawChar(*str1, Font, color) != *str1) {
             // Char could not be written
-            return *str;
+            return *str1;
         }
         // Next char
-        str++;
+        str1++;
     }
 
     // Everything ok
-    return *str;
+    return *str1;
 }
 
 // Position the cursor

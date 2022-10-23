@@ -1,6 +1,17 @@
 /*
-    SG92R舵机的相关API接口
-*/
+ * Copyright (c) 2022 HiSilicon (Shanghai) Technologies CO., LIMITED.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,6 +22,7 @@
 #include "hi_io.h"
 #include "iot_gpio_ex.h"
 #include "hi_time.h"
+#include "sg92r_control.h"
 
 #define  COUNT   10
 
@@ -28,9 +40,9 @@ void SetAngle(unsigned int duty)
 1、依据角度与脉冲的关系，设置高电平时间为1500微秒
 2、不断地发送信号，控制舵机居中
 */
-void RegressMiddle(void)
+void RegressMiddle(unsigned int a)
 {
-    unsigned int angle = 1300;
+    unsigned int angle = a;
     for (int i = 0; i < COUNT; i++) {
         SetAngle(angle);
     }
@@ -41,9 +53,9 @@ void RegressMiddle(void)
 2、不断地发送信号，控制舵机向右旋转90度
 */
 /*  Steering gear turn right */
-void EngineTurnRight(void)
+void EngineTurnRight(unsigned int a)
 {
-    unsigned int angle = 500;
+    unsigned int angle = a;
     for (int i = 0; i < COUNT; i++) {
         SetAngle(angle);
     }
@@ -54,9 +66,9 @@ void EngineTurnRight(void)
 2、不断地发送信号，控制舵机向左旋转90度
 */
 /* Steering gear turn left */
-void EngineTurnLeft(void)
+void EngineTurnLeft(unsigned int a)
 {
-    unsigned int angle = 2500;
+    unsigned int angle = a;
     for (int i = 0; i < COUNT; i++) {
         SetAngle(angle);
     }

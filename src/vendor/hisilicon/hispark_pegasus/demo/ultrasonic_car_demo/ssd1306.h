@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 HiHope Open Source Organization .
+ * Copyright (c) 2022 HiSilicon (Shanghai) Technologies CO., LIMITED.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -10,18 +10,11 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- *
  * limitations under the License.
  */
-/**
- * This Library was originally written by Olivier Van den Eede (4ilo) in 2016.
- * Some refactoring was done and SPI support was added by Aleksander Alekseev (afiskon) in 2018.
- *
- * https://github.com/afiskon/stm32-ssd1306
- */
 
-#ifndef __SSD1306_H__
-#define __SSD1306_H__
+#ifndef SSD1306_H
+#define SSD1306_H
 
 #include <stddef.h>
 #include <stddef.h>
