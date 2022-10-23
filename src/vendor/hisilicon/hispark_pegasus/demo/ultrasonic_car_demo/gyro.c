@@ -24,7 +24,7 @@
 
 #include "iot_gpio_ex.h"
 #include "ssd1306.h"
-#include <ssd1306_fonts.h>
+#include "ssd1306_fonts.h"
 
 #include "ohos_init.h"
 #include "cmsis_os2.h"
@@ -60,7 +60,7 @@ static uint32_t LSM6DS_WriteRead(uint8_t reg_high_8bit_cmd, uint8_t send_len, ui
     uint32_t status = 0;
     uint8_t recvData[888] = { 0 }; // 888长度
     uint32_t ret = 0;
-    hi_i2c_data c081nfc_i2c_write_cmd_addr ={0};
+    hi_i2c_data c081nfc_i2c_write_cmd_addr = { 0 };
     uint8_t send_user_cmd[1] = {reg_high_8bit_cmd};
 
     memset(recvData, 0x0, sizeof(recvData));
@@ -108,16 +108,16 @@ static uint32_t LSM6DS_Write(uint8_t addr, uint8_t writedata, uint32_t buffLen)
 
 void LSM6DS_Init(void)
 {
-    LSM6DS_Write(LSM6DSL_CTRL3_C, 0x34, 2); // 0x34 2 角速度陀螺仪配置2000dps ,104Hz
-    LSM6DS_Write(LSM6DSL_CTRL2_G , 0X4C, 2); // 0x4c 2 角速度陀螺仪配置2000dps ,104Hz
+    LSM6DS_Write(LSM6DSL_CTRL3_C, 0x34, 2); // 0x34 2 初始化陀螺仪
+    LSM6DS_Write(LSM6DSL_CTRL2_G, 0X4C, 2); // 0x4c 2 角速度陀螺仪配置2000dps,104Hz
     LSM6DS_Write(LSM6DSL_CTRL10_C, 0x38, 2); // 0x38 2 timer en, pedo en, tilt en ??
     LSM6DS_Write(LSM6DSL_CTRL1_XL, 0x4F, 2); // 0x4F 2 加速度配置量程为8g,104Hz, lpf1_bw_sel=1, bw0_xl=1;
     
-    LSM6DS_Write(LSM6DSL_TAP_CFG, 0x10, 2); //0x10 2长度 LSM6DSL_TAP_CFG
-    LSM6DS_Write(LSM6DSL_WAKE_UP_DUR, 0x00, 2); //0x00 2长度 LSM6DSL_WAKE_UP_DUR
-    LSM6DS_Write(LSM6DSL_WAKE_UP_THS, 0x02, 2); //0x02 2长度 LSM6DSL_WAKE_UP_THS
-    LSM6DS_Write(LSM6DSL_TAP_THS_6D, 0x40, 2); //0x40 2长度 LSM6DSL_TAP_THS_6D
-    LSM6DS_Write(LSM6DSL_CTRL8_XL, 0x01, 2); //0x01 2长度 LSM6DSL_CTRL8_XL
+    LSM6DS_Write(LSM6DSL_TAP_CFG, 0x10, 2); // 0x10 2长度 LSM6DSL_TAP_CFG
+    LSM6DS_Write(LSM6DSL_WAKE_UP_DUR, 0x00, 2); // 0x00 2长度 LSM6DSL_WAKE_UP_DUR
+    LSM6DS_Write(LSM6DSL_WAKE_UP_THS, 0x02, 2); // 0x02 2长度 LSM6DSL_WAKE_UP_THS
+    LSM6DS_Write(LSM6DSL_TAP_THS_6D, 0x40, 2); // 0x40 2长度 LSM6DSL_TAP_THS_6D
+    LSM6DS_Write(LSM6DSL_CTRL8_XL, 0x01, 2); // 0x01 2长度 LSM6DSL_CTRL8_XL
 }
 
 void IMU_YAW_CAL(float gyroZ)
@@ -129,7 +129,7 @@ void IMU_YAW_CAL(float gyroZ)
 #if 0
     static int a = 0;
     a++;
-    if (hi_get_seconds() <= 5) {
+    if (hi_get_seconds() <= 5) { // 5ms
         printf("---------times-----------:%d\n", a);
     }
 #endif
@@ -159,7 +159,7 @@ void Lsm_Get_RawAcc(void)
     float ang_rate_z_conv = 0;
 
     if ((LSM6DS_WriteRead(LSM6DSL_STATUS_REG, 1, 1) & 0x03) != 0) {
-        if (IOT_SUCCESS != LSM6DS_ReadCont(LSM6DSL_OUTX_L_G, buf, 12)) {
+        if (IOT_SUCCESS != LSM6DS_ReadCont(LSM6DSL_OUTX_L_G, buf, 12)) { // 12个buff长度
             printf("i2c read error!\n");
         } else {
             ang_rate_z = (buf[5] << 8) + buf[4]; // 将buff5 右移8位在与上buff 4

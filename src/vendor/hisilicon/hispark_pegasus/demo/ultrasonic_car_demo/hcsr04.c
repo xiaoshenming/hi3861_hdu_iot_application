@@ -46,15 +46,15 @@ float yaw_data = 0.0f;
 void init_ctrl_algo(void)
 {
     (void)memset(car_drive, 0, sizeof(CAR_DRIVE));
-    car_drive.LeftForward = 10;
-    car_drive.RightForward = 10;
-    car_drive.TurnLeft = 30;
-    car_drive.TurnRight = 30;
+    car_drive.LeftForward = 10; // 10 左轮前进速度
+    car_drive.RightForward = 10; // 10 右轮前进速度
+    car_drive.TurnLeft = 30; // 30 左转弯右轮速度
+    car_drive.TurnRight = 30; // 30 右转弯左轮速度
     car_drive.yaw = YAW;
     car_drive.distance = DISTANCE;
-    car_drive.leftangle = 2500;
-    car_drive.middangle = 1500;
-    car_drive.rightangle = 500;
+    car_drive.leftangle = 2500; // 2500 舵机左转90度
+    car_drive.middangle = 1500; // 1500 舵机居中
+    car_drive.rightangle = 500; // 舵机右转90度
 }
 
 void init_oled_mode(void)
@@ -67,7 +67,8 @@ void init_oled_mode(void)
     ssd1306_printf("distance:%.2f", car_drive.distance);
 }
 
-void ButtonDesplay(ENUM_MODE mode) {
+void ButtonDesplay(ENUM_MODE mode)
+{
     switch (mode) {
         case MODE_ON_OFF:
             ssd1306_printf("LF:%d, RF:%d", car_drive.LeftForward, car_drive.RightForward);
@@ -108,7 +109,8 @@ void ButtonDesplay(ENUM_MODE mode) {
     }
 }
 
-void ButtonSet(ENUM_MODE mode, bool button_pressed) {
+void ButtonSet(ENUM_MODE mode, bool button_pressed)
+{
     switch (mode) {
         case MODE_ON_OFF:
             g_CarStarted = !g_CarStarted;
@@ -125,30 +127,30 @@ void ButtonSet(ENUM_MODE mode, bool button_pressed) {
             break;
         case MODE_SET_TURN_LEFT:
             car_drive.TurnLeft += ((button_pressed) ? -1 : 1);
-            ssd1306_printf("TurnLeft=%d", car_drive.TurnLeft); 
+            ssd1306_printf("TurnLeft=%d", car_drive.TurnLeft);
             break;
         case MODE_SET_TURN_RIGHT:
             car_drive.TurnRight += ((button_pressed) ? -1 : 1);
-            ssd1306_printf("TurnRight=%d", car_drive.TurnRight); 
+            ssd1306_printf("TurnRight=%d", car_drive.TurnRight);
             break;
         case MODE_SET_YAW:
-            car_drive.yaw += ((button_pressed) ? -0.1 : 0.1);
+            car_drive.yaw += ((button_pressed) ? -0.1 : 0.1); // 航向角每次增加或者减少0.1
             ssd1306_printf("yaw =%.2f", car_drive.yaw);
             break;
         case MODE_SET_DISTANCE:
-            car_drive.distance += (button_pressed ? -0.1 : 0.1);
+            car_drive.distance += (button_pressed ? -0.1 : 0.1); // 距离每次增加或者减少0.1
             ssd1306_printf("distance=%.2f", car_drive.distance);
             break;
         case MODE_SET_LEFTSG92R:
-            car_drive.leftangle += (button_pressed ? -100 : 100);
+            car_drive.leftangle += (button_pressed ? -100 : 100); // 舵机左转每次增加或者减少100
             ssd1306_printf("MidderSg92r = %u", car_drive.leftangle);
             break;
         case MODE_SET_MIDDERSG92R:
-            car_drive.middangle += (button_pressed ? -100 : 100);
+            car_drive.middangle += (button_pressed ? -100 : 100); // 舵机居中每次增加或者减少100
             ssd1306_printf("MidderSg92r = %u", car_drive.middangle);
             break;
         case MODE_SET_RIGHTSG92R:
-            car_drive.rightangle += (button_pressed ? -100 : 100);
+            car_drive.rightangle += (button_pressed ? -100 : 100); // 舵机右转每次增加或者减少100
             ssd1306_printf("MidderSg92r = %u", car_drive.rightangle);
             break;
         default:
@@ -210,7 +212,7 @@ float GetDistance(void)
         // 获取GPIO8的输入电平状态
         IoTGpioGetInputVal(IOT_IO_NAME_GPIO_8, &value);
         // 判断GPIO8的输入电平是否为高电平并且flag为0
-        if ( value == IOT_GPIO_VALUE1 && flag == 0) {
+        if (value == IOT_GPIO_VALUE1 && flag == 0) {
             // 获取系统时间
             start_time = hi_get_us();
             // 将flag设置为1
@@ -223,7 +225,7 @@ float GetDistance(void)
             break;
         }
     }
-    // 计算距离障碍物距离（340米/秒 转换为 0.034厘米/微秒）
+    // 计算距离障碍物距离（340米/秒 转换为 0.034厘米/微秒），一去一来2倍距离
     distance = time * 0.034 / 2;
     return distance;
 }
@@ -270,7 +272,7 @@ void car_where_to_go(float distance)
 {
     if (distance < car_drive.distance) {
         car_backward(car_drive.LeftForward, car_drive.RightForward);
-        TaskMsleep(500);
+        TaskMsleep(500); // 后退500ms
         car_stop();
         unsigned int ret = engine_go_where();
         if (ret == CAR_TURN_LEFT) {
@@ -291,13 +293,12 @@ void car_where_to_go(float distance)
 }
 
 /* 超声波避障 */
-void ultrasonic_demo()
+void ultrasonic_demo(void)
 {
     float m_distance = 0.0;
     /* 获取前方物体的距离 */
     m_distance = GetDistance();
     car_where_to_go(m_distance);
-    TaskMsleep(20);
 }
 
 void UltrasonicDemoTask(void)
@@ -307,7 +308,7 @@ void UltrasonicDemoTask(void)
     GA12N20Init();
     Hcsr04Init();
     LSM6DS_Init();
-    TaskMsleep(100);
+    TaskMsleep(100); // 等待100ms初始化完成
     init_ctrl_algo();
     init_oled_mode();
     PCA_RegisterEventProcFunc(ButtonPressProc);

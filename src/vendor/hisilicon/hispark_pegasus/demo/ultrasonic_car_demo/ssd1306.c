@@ -16,13 +16,12 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>  // For memcpy
-
+#include <stdarg.h>
 #include <stdio.h>
 #include <unistd.h>
 #include "hi_errno.h"
 #include "iot_i2c.h"
 #include "hi_time.h"
-#include <stdarg.h>
 #include "ssd1306.h"
 
 #define SSD1306_I2C_IDX 0
@@ -313,7 +312,8 @@ char ssd1306_DrawChar(char ch, FontDef Font, SSD1306_COLOR color)
 }
 
 // Write full string to screenbuffer
-char ssd1306_DrawString(char* str, FontDef Font, SSD1306_COLOR color) {
+char ssd1306_DrawString(char* str, FontDef Font, SSD1306_COLOR color)
+{
     // Write until null-byte
     char* str1 = str;
     while (*str1) {
@@ -475,7 +475,7 @@ int g_ssd1306_current_loc_v = 0;
 #define SSD1306_INTERVAL_V    (15)
 
 void ssd1306_ClearOLED(void)
-{   
+{
     ssd1306_Fill(Black);
     g_ssd1306_current_loc_v = 0;
 }
@@ -483,8 +483,7 @@ void ssd1306_ClearOLED(void)
 void ssd1306_printf(char *fmt, ...)
 {
     char buffer[20];
-    if(fmt)
-    {
+    if (fmt) {
         va_list argList;
         va_start(argList, fmt);
         vsnprintf(buffer, sizeof(buffer), fmt, argList);

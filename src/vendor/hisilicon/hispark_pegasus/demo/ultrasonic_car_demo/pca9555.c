@@ -35,7 +35,6 @@
 
 #define PCA5555_I2C_IDX 0
 #define IOT_I2C_IDX_BAUDRATE         400000 // 400k
-#define	GET_BIT(x, bit)	((x & (1 << bit)) >> bit)
 
 #define PCA9555_INT_PIN_NAME    (IOT_IO_NAME_GPIO_11)
 #define PCA9555_INT_PIN_FUNC    (IOT_IO_FUNC_GPIO_11_GPIO)
@@ -65,13 +64,13 @@ uint32_t PCA_ReadReg(uint8_t reg_addr, uint8_t *reg_val)
     uint32_t status;
 
     status = IoTI2cWrite(PCA5555_I2C_IDX, PCA9555_WRITE_ADDR, &reg_addr, 1);
-    if(status != IOT_SUCCESS) {
+    if (status != IOT_SUCCESS) {
         printf("IOTI2cRead phase1 failed\n");
         return 0;
     }
 
     status = IoTI2cRead(PCA5555_I2C_IDX, PCA9555_READ_ADDR, reg_val, 1);
-    if(status != IOT_SUCCESS) {
+    if (status != IOT_SUCCESS) {
         printf("IOTI2cRead phase2 failed\n");
         return 0;
     }
@@ -103,17 +102,17 @@ void InitPCA9555(void)
     IoSetFunc(PCA9555_INT_PIN_NAME, PCA9555_INT_PIN_FUNC);
     IoTGpioSetDir(PCA9555_INT_PIN_NAME, IOT_GPIO_DIR_IN);
     IoSetPull(PCA9555_INT_PIN_NAME, IOT_IO_PULL_UP);
-    IoTGpioRegisterIsrFunc(PCA9555_INT_PIN_NAME, IOT_INT_TYPE_EDGE, IOT_GPIO_EDGE_FALL_LEVEL_LOW, ExtIoIntSvr, NULL);   
+    IoTGpioRegisterIsrFunc(PCA9555_INT_PIN_NAME, IOT_INT_TYPE_EDGE, IOT_GPIO_EDGE_FALL_LEVEL_LOW, ExtIoIntSvr, NULL);
     ssd1306_Init(); // 初始化 SSD1306 OLED模块
     ssd1306_Fill(Black);
 
     /* IO0_X全为可选输入 */
     /* 输入为1，输出为0，IO0 234输入,0x60代表只用编码器，0x7c代表按键编码器同时使用，0x1c代表只用按键 */
-    PCA_WriteReg(PCA9555_REG_CFG0, 0x1c); 
+    PCA_WriteReg(PCA9555_REG_CFG0, 0x1c);
 
-    /* IO1_X全为输出*/
-    PCA_WriteReg(PCA9555_REG_CFG1, 0x00); /*IO1 012345输出 */
-    PCA_WriteReg(PCA9555_REG_OUT1, LED_OFF); /*IO1 012345低电平 */
+    /* IO1_X全为输出 */
+    PCA_WriteReg(PCA9555_REG_CFG1, 0x00); /* IO1 012345输出 */
+    PCA_WriteReg(PCA9555_REG_OUT1, LED_OFF); /* IO1 012345低电平 */
 }
 
 void PCA_RegisterEventProcFunc(PCA_EventProcFunc func)
@@ -162,11 +161,11 @@ void PCA_MainThread(void)
         TaskMsleep(50); // 50ms
         if (g_extIoIntValid == 1) {
             status = PCA_ReadExtIO0(&ext_io0_state);
-            if(status != IOT_SUCCESS) {
+            if (status != IOT_SUCCESS) {
                 printf("i2c error!\r\n");
                 g_extIoIntValid = 0;
                 return;
-            } else if(g_PCAEventProcFunc != NULL) {
+            } else if (g_PCAEventProcFunc != NULL) {
                 g_PCAEventProcFunc(ext_io0_state);
             }
             g_extIoIntValid = 0;
@@ -195,4 +194,3 @@ void PCA_CreateThread(void)
 }
 
 APP_FEATURE_INIT(PCA_CreateThread);
-
