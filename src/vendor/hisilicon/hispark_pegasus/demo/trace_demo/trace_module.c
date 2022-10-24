@@ -253,7 +253,7 @@ void TraceExampleTask(void)
     }
 }
 
-void cb_timeout_periodic(char *arg)
+void cb_timeout_periodic(void *arg)
 {
     (void)arg;
     g_State = 1;
