@@ -49,5 +49,6 @@ void InitPCA9555(void);
 void PCA_MainProc(void);
 void PCA_RegisterEventProcFunc(PCA_EventProcFunc func);
 void PCA_UnregisterEventProcFunc(void);
+uint32_t PCA_WriteReg(uint8_t reg_addr, uint8_t reg_val);
 
 #endif  // AHT20_H
