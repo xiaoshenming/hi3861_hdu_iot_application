@@ -71,6 +71,9 @@ typedef enum {
 #define MASK_BUTTON3        (0x04)
 #define DEAD_ZONE           (1)   // pwm valid range: [-99, -DEAD_ZONE], [DEAD_ZONE, 99]
 
+CTRL_PID_STRUCT ctrl_pid_velocity2 = {0};
+CTRL_PID_STRUCT ctrl_pid_stand2 = {0};
+
 ENUM_MODE g_mode = MODE_ON_OFF;
 int g_car_started = 0;
 static int g_TimerFlag = 0;
@@ -83,8 +86,10 @@ void print_oled_mode(void)
 {
     g_mode = MODE_ON_OFF;
     ssd1306_ClearOLED();
-    ssd1306_printf("kp:%.2f, kd:%.2f", ctrl_pid_stand.kp, ctrl_pid_stand.kd);
-    ssd1306_printf("kp:%.2f, ki:%.4f", ctrl_pid_velocity.kp, ctrl_pid_velocity.ki);
+    ctrl_pid_velocity2 = GetVelocity();
+    ctrl_pid_stand2 = GetStand();
+    ssd1306_printf("kp:%.2f, kd:%.2f", ctrl_pid_stand2.kp, ctrl_pid_stand2.kd);
+    ssd1306_printf("kp:%.2f, ki:%.4f", ctrl_pid_velocity2.kp, ctrl_pid_velocity2.ki);
     ssd1306_printf("press S1 to switch\n");
     ssd1306_printf("press S3 to start\n");
 }
@@ -106,7 +111,7 @@ void init_gyro_timer(void)
     } else {
         printf("create timer success\n");
     }
-    ret = hi_timer_start(g_timer_handle, HI_TIMER_TYPE_PERIOD, 10, timer_svr, 188); // 10ms
+    ret = hi_timer_start(g_timer_handle, HI_TIMER_TYPE_PERIOD, 10, timer_svr, 188); // 10ms, 188
 }
 
 void ButtonDesplay(ENUM_MODE mode)
@@ -114,7 +119,7 @@ void ButtonDesplay(ENUM_MODE mode)
     switch (mode) {
         case MODE_ON_OFF:
             ssd1306_printf("stand loop");
-            ssd1306_printf("kp:%.2f, kd:%.2f", ctrl_pid_stand.kp, ctrl_pid_stand.kd);
+            ssd1306_printf("kp:%.2f, kd:%.2f", ctrl_pid_stand2.kp, ctrl_pid_stand2.kd);
             ssd1306_printf("target angle:%.2f", g_target_angle);
             ssd1306_printf("press btn2/3 to start");
             break;
@@ -122,16 +127,16 @@ void ButtonDesplay(ENUM_MODE mode)
             ssd1306_printf("target angle=%.1f", g_target_angle);
             break;
         case MODE_STAND_KP:
-            ssd1306_printf("stand kp=%.2f", ctrl_pid_stand.kp);
+            ssd1306_printf("stand kp=%.2f", ctrl_pid_stand2.kp);
             break;
         case MODE_STAND_KD:
-            ssd1306_printf("stand kd=%.2f", ctrl_pid_stand.kd);
+            ssd1306_printf("stand kd=%.2f", ctrl_pid_stand2.kd);
             break;
         case MODE_VELO_KP:
-            ssd1306_printf("velocity kp=%.2f", ctrl_pid_velocity.kp);
+            ssd1306_printf("velocity kp=%.2f", ctrl_pid_velocity2.kp);
             break;
         case MODE_VELO_KI:
-            ssd1306_printf("velocity ki=%.4f", ctrl_pid_velocity.ki);
+            ssd1306_printf("velocity ki=%.4f", ctrl_pid_velocity2.ki);
             break;
         case MODE_VELO_TARGET:
             ssd1306_printf("velocity target=%d", g_target_velo);
@@ -167,20 +172,20 @@ void ButtonSet(ENUM_MODE mode, bool button_pressed, bool button4_pressed)
             }
             break;
         case MODE_STAND_KP:
-            ctrl_pid_stand.kp += ((button_pressed) ? -0.1 : 0.1); // 0.1 kp系数
-            ssd1306_printf("stand kp=%.2f", ctrl_pid_stand.kp);
+            ctrl_pid_stand2.kp += ((button_pressed) ? -0.1 : 0.1); // 0.1 kp系数
+            ssd1306_printf("stand kp=%.2f", ctrl_pid_stand2.kp);
             break;
         case MODE_STAND_KD:
-            ctrl_pid_stand.kd += (button_pressed ? -0.1 : 0.1); // 0.1 kd系数
-            ssd1306_printf("stand kd=%.2f",  ctrl_pid_stand.kd);
+            ctrl_pid_stand2.kd += (button_pressed ? -0.1 : 0.1); // 0.1 kd系数
+            ssd1306_printf("stand kd=%.2f",  ctrl_pid_stand2.kd);
             break;
         case MODE_VELO_KP:
-            ctrl_pid_velocity.kp += ((button_pressed) ? -0.01 : 0.01); // 0.1 kp系数
-            ssd1306_printf("velocity kp=%.2f", ctrl_pid_velocity.kp);
+            ctrl_pid_velocity2.kp += ((button_pressed) ? -0.01 : 0.01); // 0.01 kp系数
+            ssd1306_printf("velocity kp=%.2f", ctrl_pid_velocity2.kp);
             break;
         case MODE_VELO_KI:
-            ctrl_pid_velocity.ki += ((button_pressed) ? -0.001 : 0.001); // 0.001速度环系数
-            ssd1306_printf("velocity ki=%.4f", ctrl_pid_velocity.ki);
+            ctrl_pid_velocity2.ki += ((button_pressed) ? -0.001 : 0.001); // 0.001速度环系数
+            ssd1306_printf("velocity ki=%.4f", ctrl_pid_velocity2.ki);
             break;
         case MODE_VELO_TARGET:
             g_target_velo += ((button_pressed) ? -1 : 1);
@@ -211,7 +216,7 @@ void ButtonPressProc(uint8_t ext_io_val)
     button3_pressed = ((diff & MASK_BUTTON3) && ((ext_io_val & MASK_BUTTON3) == 0)) ? true : false;
 
     ssd1306_ClearOLED();
-    if(button1_pressed) {
+    if (button1_pressed) {
         g_mode = (g_mode >= (MODE_END - 1)) ? 0 : (g_mode + 1);
         ButtonDesplay(g_mode);
     } else if (button2_pressed || button3_pressed) {
@@ -272,14 +277,15 @@ void BalanceTask(void)
             pos_left_d = pos_left;
             pos_right_d = pos_right;
             velo = velo_left + velo_right;
-            bias = ctrl_pid_algo(g_target_velo, velo, &ctrl_pid_velocity);
-            exec = ctrl_pid_algo(g_target_angle + bias, g_gyro_pitch, &ctrl_pid_stand);
+            bias = ctrl_pid_algo(g_target_velo, velo, &ctrl_pid_velocity2);
+            float pitch = GetPitchValue();
+            exec = ctrl_pid_algo(g_target_angle + bias, pitch, &ctrl_pid_stand2);
             pwm_mid = (int)(exec);
             /* dfx */
             append_debug_point(velo_left);
             append_debug_point(velo_right);
             append_debug_point((int16_t)(bias * 100)); // 100
-            append_debug_point((int16_t)((g_target_angle + bias - g_gyro_pitch) * 100)); // 100
+            append_debug_point((int16_t)((g_target_angle + bias - pitch) * 100)); // 100
             append_debug_point(pwm_mid);
             car_state(pwm_mid);
         }
@@ -305,4 +311,3 @@ void BalanceDemo(void)
 }
 
 APP_FEATURE_INIT(BalanceDemo);
-

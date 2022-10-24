@@ -73,26 +73,28 @@ void init_ctrl_algo(void)
 
 float LIMIT_ABS(float val, float lim)
 {
-
-    val = ((val) > (lim)) ? (lim) : (((val) < -(lim)) ? (-(lim)) : (val));
-    return val;
+    float ret;
+    ret = ((val) > (lim)) ? (lim) : (((val) < -(lim)) ? (-(lim)) : (val));
+    return ret;
 }
 
 float ctrl_pid_algo(float target, float feedback, CTRL_PID_STRUCT *param)
 {
     float err;
     float exec;
+    float ret;
 
     err = target - feedback;
-    LIMIT_ABS(err, param->limit_err);
-
+    ret = LIMIT_ABS(err, param->limit_err);
+    err = ret;
     /* p */
     exec = err * param->kp;
 
     /* i */
     if (param->type | CTRL_PID_TYPE_MASK_I) {
         param->err_sum += err;
-        LIMIT_ABS(param->err_sum, LIM_ERR_SUM);
+        ret = LIMIT_ABS(param->err_sum, LIM_ERR_SUM);
+        param->err_sum = ret;
         exec += param->ki * param->err_sum;
     }
 
@@ -101,7 +103,17 @@ float ctrl_pid_algo(float target, float feedback, CTRL_PID_STRUCT *param)
         exec += param->kd * (err - param->err_last);
         param->err_last = err;
     }
-    LIMIT_ABS(exec, param->limit_exec); 
+    ret = LIMIT_ABS(exec, param->limit_exec);
+    exec = ret;
     return exec;
 }
 
+CTRL_PID_STRUCT GetVelocity()
+{
+    return ctrl_pid_velocity;
+}
+
+CTRL_PID_STRUCT GetStand()
+{
+    return ctrl_pid_stand;
+}

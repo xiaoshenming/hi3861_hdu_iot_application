@@ -26,11 +26,12 @@
  * The AB pulse counting of up and down jump continuous detection is realized
  */
 
-#include "compile_define.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <hi_stdlib.h>
 #include "wheel_codec.h"
+#include "compile_define.h"
+#include "iot_gpio_ex.h"
 #include "debug_util.h"
 
 /*
@@ -61,15 +62,15 @@ typedef struct {
 #define COUNT_NEGTITVE      (-1)
 #endif
 
-#define INIT_GPIO_IN(NAME, FUNC) do {                                       \
-                                    IoTGpioInit(NAME);                      \
-                                    IoSetFunc(NAME, FUNC);                  \
-                                    IoTGpioSetDir(NAME, IOT_GPIO_DIR_IN);   \
-                                    IoSetPull(NAME, IOT_IO_PULL_UP);        \
-                                } while (0);
-
 WHEEL_CODEC_STRUCT g_wheel_left;
 WHEEL_CODEC_STRUCT g_wheel_right;
+
+void INIT_GPIO_IN(IotIoName NAME, unsigned char FUNC) {
+    IoTGpioInit(NAME);
+    IoSetFunc(NAME, FUNC);
+    IoTGpioSetDir(NAME, IOT_GPIO_DIR_IN);
+    IoSetPull(NAME, IOT_IO_PULL_UP);
+}
 
 void wheel_codec_svr(char *arg)
 {
@@ -88,11 +89,11 @@ void wheel_codec_svr(char *arg)
     }
     /* 加速中断极性转换时间 */
     pt -> polar ^= 1;
-    if (pt -> polar)
+    if (pt -> polar) {
         *reg |= (1 << pt->pin_name_a);
-    else
+    } else {
         *reg &= ~(1 << pt->pin_name_a);
-
+    }
 }
 
 int16_t get_wheel_cnt_right(void)

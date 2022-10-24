@@ -60,6 +60,5 @@
 void InitGyro(void);
 void Lsm_Get_RawAcc(void);
 void LSM6DS_Init(void);
-extern float g_gyro_yaw, g_gyro_pitch, g_gyro_roll;                 // 偏航角，俯仰角，翻滚角
-
+float GetPitchValue(void);
 #endif  // AHT20_H

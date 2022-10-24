@@ -38,12 +38,10 @@ typedef struct {
 #define CTRL_PID_TYPE_MASK_I    (0x01 << CTRL_PID_TYPE_BIT_I)
 #define CTRL_PID_TYPE_MASK_D    (0x01 << CTRL_PID_TYPE_BIT_D)
 
-extern CTRL_PID_STRUCT ctrl_pid_velocity;
-extern CTRL_PID_STRUCT ctrl_pid_stand;
-extern CTRL_PID_STRUCT ctrl_pid_diff;
-
 void init_ctrl_algo(void);
 float ctrl_pid_algo(float target, float feedback, CTRL_PID_STRUCT *param);
+CTRL_PID_STRUCT GetVelocity();
+CTRL_PID_STRUCT GetStand();
 
 #endif
 

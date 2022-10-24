@@ -302,4 +302,7 @@ void InitGyro(void)
     LSM6DS_Init();
 }
 
-
+float GetPitchValue(void)
+{
+    return g_gyro_pitch;
+}
