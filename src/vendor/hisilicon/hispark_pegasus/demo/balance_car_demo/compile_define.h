@@ -59,10 +59,4 @@
 #define WHEEL_DIRECTION_REVERT     (0)      // 0: 使编码器增加方向与车前进方向相同
                                             // 1: 使编码器增加方向与车前进方向相反
 #endif
-
-
-
-
 #endif
-
-

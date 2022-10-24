@@ -237,7 +237,7 @@ void TraceExampleTask(void)
             if ((m_left_value == 3) && (m_right_value == 0)) { // 左偏，向右转 3代表左边在白线的状态
                 car_left(car_drive.TurnRight);
                 LeftLED();
-            } else if ((m_left_value == 1) && (m_right_value == 2)) { //右偏，向左转 2代表右边在白线的状态
+            } else if ((m_left_value == 1) && (m_right_value == 2)) { // 右偏，向左转 2代表右边在白线的状态
                 car_right(car_drive.TurnLeft);
                 RightLed();
             } else if ((m_left_value == 3) && (m_right_value == 2)) { // 2,3代表左右两边都在白线

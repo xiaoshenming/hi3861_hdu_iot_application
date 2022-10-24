@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef __WHEEL_CODEC
-#define __WHEEL_CODEC
+#ifndef WHEEL_CODEC_H
+#define WHEEL_CODEC_H
 
 #include <iot_gpio.h>
 #include <iot_errno.h>

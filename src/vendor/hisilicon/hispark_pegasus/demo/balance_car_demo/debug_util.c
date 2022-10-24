@@ -39,9 +39,9 @@ void print_debug_points(void)
 {
     int i;
     printf("debug_points=[\n");
-    for (i=0;i<g_dbg_buffer_usage;i++) {
+    for (i = 0; i < g_dbg_buffer_usage; i++) {
         printf("%d,\n", g_dbg_buffer[i]);
-    }    
+    }
     printf("];\n");
 }
 
@@ -51,4 +51,3 @@ void init_test_pin(void)
     IoSetFunc(TEST_PIN_NAME, TEST_PIN_FUNC);
     IoTGpioSetDir(TEST_PIN_NAME, IOT_GPIO_DIR_OUT);
 }
-

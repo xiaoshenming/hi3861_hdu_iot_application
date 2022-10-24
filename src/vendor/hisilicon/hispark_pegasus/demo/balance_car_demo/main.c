@@ -16,23 +16,22 @@
 /* 平衡车直立控制算法演示Demo, 这个Demo里包括了陀螺仪滤波, 电机驱动, AB编码器, PID控制算法,
  * OLED字符串显示, 扩展IO, 定时器中断等功能
  * 固件烧录成功后, 按OLED的提示, S3按键将启动平衡车功能, S1键将切换设置项
- * 烧录固件后, 根据不同的小车的个体差异, 可能需要微调参数. 目前, 单节电池放在下电池仓, 
- * 并加装了金属卡扣后, target angle缺省设置为-82.8度: 
+ * 烧录固件后, 根据不同的小车的个体差异, 可能需要微调参数. 目前, 单节电池放在下电池仓,
+ * 并加装了金属卡扣后, target angle缺省设置为-82.8度:
  * 如果你的小车一直后仰, 试着增大target, 即向0度方向调整
  * 如果你的小车一直前倾, 试着减小target, 即向-90度方向调整
  *
- * Demo of the balance car vertical control algorithm. This Demo includes gyroscope filtering, 
- * motor drive, AB encoder, PID control algorithm, OLED string display, extended IO, timer interrupt 
- * and other functions. After the firmware is successfully burned, press the OLED prompt, S3 will 
- * start the balance car function, and S1 will switch the settings. After the firmware is burned, 
- * according to the individual differences of different cars, you may need to fine tune the parameters 
- * At present, after a single battery is placed in the lower battery compartment and metal clips are 
- * installed, the target angle is set to -82.8 degrees by default: 
- * if your car keeps leaning back, try to increase the target, that is, adjust to the direction of 0 degrees 
+ * Demo of the balance car vertical control algorithm. This Demo includes gyroscope filtering,
+ * motor drive, AB encoder, PID control algorithm, OLED string display, extended IO, timer interrupt
+ * and other functions. After the firmware is successfully burned, press the OLED prompt, S3 will
+ * start the balance car function, and S1 will switch the settings. After the firmware is burned,
+ * according to the individual differences of different cars, you may need to fine tune the parameters
+ * At present, after a single battery is placed in the lower battery compartment and metal clips are
+ * installed, the target angle is set to -82.8 degrees by default:
+ * if your car keeps leaning back, try to increase the target, that is, adjust to the direction of 0 degrees
  * If your car keeps leaning forward, try to reduce the target, that is, adjust to the direction of -90 degrees
- 
- 
  */
+
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -107,7 +106,7 @@ void init_gyro_timer(void)
     } else {
         printf("create timer success\n");
     }
-    ret = hi_timer_start(g_timer_handle, HI_TIMER_TYPE_PERIOD, 10, timer_svr, 188);
+    ret = hi_timer_start(g_timer_handle, HI_TIMER_TYPE_PERIOD, 10, timer_svr, 188); // 10ms
 }
 
 void ButtonDesplay(ENUM_MODE mode)
@@ -160,25 +159,27 @@ void ButtonSet(ENUM_MODE mode, bool button_pressed, bool button4_pressed)
             ssd1306_printf(g_car_started ? "start" : "stop");
             break;
         case MODE_DEBUG_GYRO:
-            if(button_pressed)
+            if (button_pressed) {
                 reset_debug_points();
-            if(button4_pressed)
+            }
+            if (button4_pressed) {
                 print_debug_points();
+            }
             break;
         case MODE_STAND_KP:
-            ctrl_pid_stand.kp += ((button_pressed) ? -0.1 : 0.1);
+            ctrl_pid_stand.kp += ((button_pressed) ? -0.1 : 0.1); // 0.1 kp系数
             ssd1306_printf("stand kp=%.2f", ctrl_pid_stand.kp);
             break;
         case MODE_STAND_KD:
-            ctrl_pid_stand.kd += (button_pressed ? -0.1 : 0.1);
+            ctrl_pid_stand.kd += (button_pressed ? -0.1 : 0.1); // 0.1 kd系数
             ssd1306_printf("stand kd=%.2f",  ctrl_pid_stand.kd);
-            break;            
+            break;
         case MODE_VELO_KP:
-            ctrl_pid_velocity.kp += ((button_pressed) ? -0.01 : 0.01);
+            ctrl_pid_velocity.kp += ((button_pressed) ? -0.01 : 0.01); // 0.1 kp系数
             ssd1306_printf("velocity kp=%.2f", ctrl_pid_velocity.kp);
             break;
         case MODE_VELO_KI:
-            ctrl_pid_velocity.ki += ((button_pressed) ? -0.001 : 0.001);
+            ctrl_pid_velocity.ki += ((button_pressed) ? -0.001 : 0.001); // 0.001速度环系数
             ssd1306_printf("velocity ki=%.4f", ctrl_pid_velocity.ki);
             break;
         case MODE_VELO_TARGET:
@@ -186,7 +187,7 @@ void ButtonSet(ENUM_MODE mode, bool button_pressed, bool button4_pressed)
             ssd1306_printf("velo target =%d", g_target_velo);
             break;
         case MODE_STAND_TARGET:
-            g_target_angle += (button_pressed ? -0.1 : 0.1);
+            g_target_angle += (button_pressed ? -0.1 : 0.1); // 0.1 俯仰角系数
             ssd1306_printf("target_angle=%.1f", g_target_angle);
             break;
         case MODE_TURN:
@@ -214,9 +215,24 @@ void ButtonPressProc(uint8_t ext_io_val)
         g_mode = (g_mode >= (MODE_END - 1)) ? 0 : (g_mode + 1);
         ButtonDesplay(g_mode);
     } else if (button2_pressed || button3_pressed) {
-       ButtonSet(g_mode, button2_pressed, button3_pressed);
+        ButtonSet(g_mode, button2_pressed, button3_pressed);
     }
     ext_io_val_d = ext_io_val;
+}
+
+void car_state(int pwm)
+{
+    int pwm_mid = pwm;
+/* execute */
+    if (g_car_started) {
+        if ((pwm_mid > -DEAD_ZONE) && (pwm_mid < DEAD_ZONE)) {
+            car_stop();
+        } else {
+            car_drive(pwm_mid);
+        }
+    } else {
+        car_stop();
+    }
 }
 
 void BalanceTask(void)
@@ -224,12 +240,12 @@ void BalanceTask(void)
     int pwm_mid;
     float bias, exec;
     int16_t pos_right, pos_left;
-    static int16_t pos_right_d = 0, pos_left_d = 0;    
+    static int16_t pos_right_d = 0, pos_left_d = 0;
     int16_t velo_left, velo_right;
     int16_t velo = 0;
 
-    printf("last compile:%s,%s\n",__DATE__,__TIME__);
-    hi_sleep(200);
+    printf("last compile:%s,%s\n", __DATE__, __TIME__);
+    hi_sleep(200); // 200ms
     InitGyro();
     init_ctrl_algo();
     ssd1306_Init();
@@ -262,19 +278,10 @@ void BalanceTask(void)
             /* dfx */
             append_debug_point(velo_left);
             append_debug_point(velo_right);
-            append_debug_point((int16_t)(bias * 100));
-            append_debug_point((int16_t)((g_target_angle + bias - g_gyro_pitch)*100));
+            append_debug_point((int16_t)(bias * 100)); // 100
+            append_debug_point((int16_t)((g_target_angle + bias - g_gyro_pitch) * 100)); // 100
             append_debug_point(pwm_mid);
-            /* execute */
-            if (g_car_started){
-                if ((pwm_mid > -DEAD_ZONE) && (pwm_mid < DEAD_ZONE)) {
-                    car_stop();
-                } else {
-                    car_drive(pwm_mid);
-                }
-            } else {
-                car_stop();
-            }
+            car_state(pwm_mid);
         }
     }
 }
@@ -285,13 +292,12 @@ void BalanceDemo(void)
     osThreadAttr_t attr;
     init_car_drive();
     IoTWatchDogDisable();
-
     attr.name = "BalanceDemo";
     attr.attr_bits = 0U;
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 5 * 1024;
+    attr.stack_size = 5 * 1024; // 任务栈大小为5 *1024
     attr.priority = osPriorityNormal;
     if (osThreadNew((osThreadFunc_t)BalanceTask, NULL, &attr) == NULL) {
         printf("[BalanceTask] Failed to create BalanceTask!\n");

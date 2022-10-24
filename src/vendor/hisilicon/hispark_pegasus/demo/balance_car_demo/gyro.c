@@ -16,20 +16,14 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>  // For memcpy
-
-
-
 #include <stdio.h>
 #include <unistd.h>
 
-#include "gyro.h"
 #include "iot_gpio_ex.h"
 #include "ssd1306.h"
-#include <ssd1306_fonts.h>
-
+#include "ssd1306_fonts.h"
 #include "ohos_init.h"
 #include "cmsis_os2.h"
-
 #include "iot_i2c.h"
 #include "iot_errno.h"
 #include "hi_errno.h"
@@ -40,6 +34,7 @@
 #include "debug_util.h"
 #include "wheel_codec.h"
 #include "ctrl_algo.h"
+#include "gyro.h"
 
 #define LSM6DS_I2C_IDX                  (0)
 #define IOT_I2C_IDX_BAUDRATE            (400000)    // 400k
@@ -53,7 +48,6 @@ float exInt = 0, eyInt = 0, ezInt = 0;  // 按比例缩小积分误差
 float g_gyro_yaw, g_gyro_pitch, g_gyro_roll;                 // 偏航角，俯仰角，翻滚角
 static float yaw_conv = 0.0f;
 
-
 /**
  * @berf i2c read
  * @param hi_u8 reg_high_8bit_cmd:Transmit register value 8 bits high
@@ -64,10 +58,10 @@ static float yaw_conv = 0.0f;
 */
 uint32_t LSM6DS_WriteRead(uint8_t reg_high_8bit_cmd, uint8_t send_len, uint8_t read_len)
 {
-    uint32_t status =0;
+    uint32_t status = 0;
     uint8_t recvData[888] = {0};
     uint32_t ret = 0;
-    hi_i2c_data c081nfc_i2c_write_cmd_addr ={0};
+    hi_i2c_data c081nfc_i2c_write_cmd_addr = { 0 };
     uint8_t send_user_cmd[1] = {reg_high_8bit_cmd};
 
     memset(recvData, 0x0, sizeof(recvData));
@@ -114,22 +108,20 @@ static uint32_t LSM6DS_Write(uint8_t addr, uint8_t writedata, uint32_t buffLen)
     return IOT_SUCCESS;
 }
 
-#define EXEUTION_FREQ 10  //单位ms
+#define EXEUTION_FREQ 10  // 单位ms
 
 void LSM6DS_Init(void)
 {
-    LSM6DS_Write(LSM6DSL_CTRL3_C, 0x34, 2);
-
-    LSM6DS_Write(LSM6DSL_CTRL2_G , 0X4C, 2); // 角速度陀螺仪配置2000dps ,104Hz
-    LSM6DS_Write(LSM6DSL_CTRL10_C, 0x38, 2); // timer en, pedo en, tilt en ??
-
-    LSM6DS_Write(LSM6DSL_CTRL1_XL, 0x4F, 2); // 加速度配置量程为8g,104Hz, lpf1_bw_sel=1, bw0_xl=1;
+    LSM6DS_Write(LSM6DSL_CTRL3_C, 0x34, 2); // 0x34 2 初始化陀螺仪
+    LSM6DS_Write(LSM6DSL_CTRL2_G, 0X4C, 2); // 0x4c 2 角速度陀螺仪配置2000dps,104Hz
+    LSM6DS_Write(LSM6DSL_CTRL10_C, 0x38, 2); // 0x38 2 timer en, pedo en, tilt en ??
+    LSM6DS_Write(LSM6DSL_CTRL1_XL, 0x4F, 2); // 0x4F 2 加速度配置量程为8g,104Hz, lpf1_bw_sel=1, bw0_xl=1;
     
-    LSM6DS_Write(LSM6DSL_TAP_CFG, 0x10, 2);
-    LSM6DS_Write(LSM6DSL_WAKE_UP_DUR, 0x00, 2);
-    LSM6DS_Write(LSM6DSL_WAKE_UP_THS, 0x02, 2);
-    LSM6DS_Write(LSM6DSL_TAP_THS_6D, 0x40, 2);
-    LSM6DS_Write(LSM6DSL_CTRL8_XL, 0x01, 2);
+    LSM6DS_Write(LSM6DSL_TAP_CFG, 0x10, 2); // 0x10 2长度 LSM6DSL_TAP_CFG
+    LSM6DS_Write(LSM6DSL_WAKE_UP_DUR, 0x00, 2); // 0x00 2长度 LSM6DSL_WAKE_UP_DUR
+    LSM6DS_Write(LSM6DSL_WAKE_UP_THS, 0x02, 2); // 0x02 2长度 LSM6DSL_WAKE_UP_THS
+    LSM6DS_Write(LSM6DSL_TAP_THS_6D, 0x40, 2); // 0x40 2长度 LSM6DSL_TAP_THS_6D
+    LSM6DS_Write(LSM6DSL_CTRL8_XL, 0x01, 2); // 0x01 2长度 LSM6DSL_CTRL8_XL
 }
 
 void IMU_YAW_CAL(float gyroZ)
@@ -141,18 +133,18 @@ void IMU_YAW_CAL(float gyroZ)
     #if 0
     static int a = 0;
     a++;
-    if (hi_get_seconds() <= 5) {
+    if (hi_get_seconds() <= 5) { // 5ms
         printf("---------times-----------:%d\n", a);
     }
     #endif
 
-    if (fabs(gyroZ) < 0.04) {
+    if (fabs(gyroZ) < 0.04) { // 0.04标准值
         temp = 0;
     } else {
         temp = gyroZ * dt;
     }
     yaw += temp;
-    yaw_conv = yaw * 57.32;
+    yaw_conv = yaw * 57.32; // 57.32 初始值
     // 360°一个循环
     if (fabs(yaw_conv) > 360.0f) {
         if ((yaw_conv) < 0) {
@@ -163,13 +155,53 @@ void IMU_YAW_CAL(float gyroZ)
     }
 }
 
-void IMU_Attitude_cal(float gx, float gy, float gz, float ax, float ay, float az)
+void GetRoll(float atan2x, float atan2y)
+{
+    float atan2_x = atan2x;
+    float atan2_y = atan2y;
+    if (atan2_x > 0) {
+        g_gyro_roll = atan(atan2_y / atan2_x) * DEGREES / PAI;
+    } else if (atan2_x < 0 && atan2_y >= 0) {
+        g_gyro_roll = atan(atan2_y / atan2_x) * DEGREES / PAI + DEGREES;
+    } else if (atan2_x < 0 && atan2_y < 0) {
+        g_gyro_roll = atan(atan2_y / atan2_x) * DEGREES / PAI - DEGREES;
+    } else if (atan2_y > 0 && atan2_x == 0) {
+        g_gyro_roll = 90; // 90°
+    } else if (atan2_y < 0 && atan2_x == 0) {
+        g_gyro_roll = -90; // -90°
+    } else {
+        printf("undefined\n");
+    }
+}
+
+void GetPitch(float atan2x, float atan2y)
+{
+    float atan2_x = atan2x;
+    float atan2_y_pitch = atan2y;
+    if (atan2_x > 0) {
+        g_gyro_pitch = atan(atan2_y_pitch / atan2_x) * DEGREES / PAI;
+    } else if (atan2_x < 0 && atan2_y_pitch >= 0) {
+        g_gyro_pitch = atan(atan2_y_pitch / atan2_x) * DEGREES / PAI + DEGREES;
+    } else if (atan2_x < 0 && atan2_y_pitch < 0) {
+        g_gyro_pitch = atan(atan2_y_pitch / atan2_x) * DEGREES / PAI - DEGREES;
+    } else if (atan2_y_pitch > 0 && atan2_x == 0) {
+        g_gyro_pitch = 90; // 90°
+    } else if (atan2_y_pitch <  0 && atan2_x == 0) {
+        g_gyro_pitch = -90; // -90°
+    } else {
+        printf("undefined\n");
+    }
+}
+
+void IMU_Attitude_cal(float gcx, float gcy, float gcz, float acx, float acy, float acz)
 {
     float norm;
     float vx, vy, vz;
     float ex, ey, ez;
     float atan2_x, atan2_y;
     float atan2_y_pitch;
+    float ax = acx, ay = acy, az = acz;
+    float gx = gcx, gy = gcy, gz = gcz;
 
     // 把采集到的三轴加速度转化为单位向量，即向量除以模
     norm = (float)sqrt((float)(ax * ax + ay * ay + az * az));
@@ -216,35 +248,10 @@ void IMU_Attitude_cal(float gx, float gy, float gz, float ax, float ay, float az
     // 计算姿态角，本文Roll为横滚角，Pitch为俯仰角
     atan2_x = -2 * q1 * q1 - 2 * q2 * q2 + 1; // 2 计算参数
     atan2_y = 2 * q2 * q3 + 2 * q0 * q1; // 2 计算参数
-    if (atan2_x > 0) {
-        g_gyro_roll = atan(atan2_y / atan2_x) * DEGREES / PAI;
-    } else if (atan2_x < 0 && atan2_y >= 0) {
-        g_gyro_roll = atan(atan2_y / atan2_x) * DEGREES / PAI + DEGREES;
-    } else if (atan2_x < 0 && atan2_y < 0) {
-        g_gyro_roll = atan(atan2_y / atan2_x) * DEGREES / PAI - DEGREES;
-    } else if (atan2_y > 0 && atan2_x == 0) {
-        g_gyro_roll = 90;
-    } else if (atan2_y <  0 && atan2_x == 0) {
-        g_gyro_roll = -90;
-    } else {
-        printf("undefined\n");
-    }
-
+    GetRoll(atan2_x, atan2_y);
     // 俯仰角
     atan2_y_pitch = -2 * q1 * q3 + 2 * q0 * q2; // 2 计算参数
-    if (atan2_x > 0) {
-        g_gyro_pitch = atan(atan2_y_pitch / atan2_x) * DEGREES / PAI;
-    } else if (atan2_x < 0 && atan2_y_pitch >= 0) {
-        g_gyro_pitch = atan(atan2_y_pitch / atan2_x) * DEGREES / PAI + DEGREES;
-    } else if (atan2_x < 0 && atan2_y_pitch < 0) {
-        g_gyro_pitch = atan(atan2_y_pitch / atan2_x) * DEGREES / PAI - DEGREES;
-    } else if (atan2_y_pitch > 0 && atan2_x == 0) {
-        g_gyro_pitch = 90;
-    } else if (atan2_y_pitch <  0 && atan2_x == 0) {
-        g_gyro_pitch = -90;
-    } else {
-        printf("undefined\n");
-    }
+    GetPitch(atan2_x, atan2_y_pitch);
 }
 
 void Lsm_Get_RawAcc(void)
@@ -259,16 +266,16 @@ void Lsm_Get_RawAcc(void)
         if (IOT_SUCCESS != LSM6DS_ReadCont(LSM6DSL_OUTX_L_G, buf, 12)) { // BUF 12
             printf("i2c read error!\n");
         } else {
-            ang_rate_x = (buf[1] << 8) + buf[0];
-            ang_rate_y = (buf[3] << 8) + buf[2];
-            ang_rate_z = (buf[5] << 8) + buf[4];
-            acc_x = (buf[7] << 8) + buf[6];
-            acc_y = (buf[9] << 8) + buf[8];
-            acc_z = (buf[11] << 8) + buf[10];
+            ang_rate_x = (buf[1] << 8) + buf[0]; // 将buff1 右移8位在与上buff 0
+            ang_rate_y = (buf[3] << 8) + buf[2]; // 将buff3 右移8位在与上buff 2
+            ang_rate_z = (buf[5] << 8) + buf[4]; // 将buff5 右移8位在与上buff 4
+            acc_x = (buf[7] << 8) + buf[6]; // 将buff7 右移8位在与上buff 6
+            acc_y = (buf[9] << 8) + buf[8]; // 将buff9 右移8位在与上buff 8
+            acc_z = (buf[11] << 8) + buf[10]; // 将buff11 右移8位在与上buff 10
 
-            ang_rate_x_conv = PAI / 180.0 * ang_rate_x / 14.29; // 180代表度数 14.29量程
-            ang_rate_y_conv = PAI / 180.0 * ang_rate_y / 14.29; // 180代表度数 14.29量程
-            ang_rate_z_conv = PAI / 180.0 * ang_rate_z / 14.29; // 180代表度数 14.29量程
+            ang_rate_x_conv = PAI / 180.0 * ang_rate_x / 14.29; // 180.0代表度数 14.29量程
+            ang_rate_y_conv = PAI / 180.0 * ang_rate_y / 14.29; // 180.0代表度数 14.29量程
+            ang_rate_z_conv = PAI / 180.0 * ang_rate_z / 14.29; // 180.0代表度数 14.29量程
 
             acc_x_conv = acc_x / 4098.36; // 4098.36量程
             acc_y_conv = acc_y / 4098.36; // 4098.36量程

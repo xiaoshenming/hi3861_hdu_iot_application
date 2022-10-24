@@ -14,20 +14,17 @@
  */
 
 
-#ifndef __DEBUG_UTIL
-#define __DEBUG_UTIL
+#ifndef DEBUG_UTIL_H
+#define DEBUG_UTIL_H
 
 #include <iot_gpio.h>
 #include <iot_errno.h>
 
 #define TEST_PIN_NAME       IOT_IO_NAME_GPIO_8
 #define TEST_PIN_FUNC       IOT_IO_FUNC_GPIO_8_GPIO
-#define TEST_PIN_HIGH()     IoTGpioSetOutputVal(TEST_PIN_NAME, IOT_GPIO_VALUE1)
-#define TEST_PIN_LOW()      IoTGpioSetOutputVal(TEST_PIN_NAME, IOT_GPIO_VALUE0)
 
 void reset_debug_points(void);
 void append_debug_point(int16_t data);
 void print_debug_points(void);
 void init_test_pin(void);
 #endif
-

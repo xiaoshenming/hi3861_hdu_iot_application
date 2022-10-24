@@ -82,7 +82,7 @@ void car_drive(int pwm_value)
 {
     if (pwm_value > 0) {
         car_forward((uint32_t)(pwm_value));
-    } else if(pwm_value < 0) {
+    } else if (pwm_value < 0) {
         car_backward((uint32_t)(-pwm_value));
     } else {
         car_stop();

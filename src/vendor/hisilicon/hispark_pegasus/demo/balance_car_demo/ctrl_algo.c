@@ -19,25 +19,24 @@
  * 更多平衡车自动控制的理论知识, 可以搜索相关技术文章和视频进行学习
  *
  * We realize the balance car function through two PID control loops
- * The inner loop is a PD vertical loop. The input is the specified vertical angle, the 
- * feedback is the current body vertical angle, and the output is the forward and backward 
+ * The inner loop is a PD vertical loop. The input is the specified vertical angle, the
+ * feedback is the current body vertical angle, and the output is the forward and backward
  * rotation of the motor
- * The outer loop is a PI speed loop. The input is the target speed, and the feedback is 
- * the moving speed of the current vehicle. It is replaced by the increment within the 
- * fixed time of the encoder. The output is the adjustment amount of the vertical loop 
+ * The outer loop is a PI speed loop. The input is the target speed, and the feedback is
+ * the moving speed of the current vehicle. It is replaced by the increment within the
+ * fixed time of the encoder. The output is the adjustment amount of the vertical loop
  * angle.
- * For more theoretical knowledge on automatic control of balance car, you can search 
- * relevant technical articles and videos for learning 
+ * For more theoretical knowledge on automatic control of balance car, you can search
+ * relevant technical articles and videos for learning
  */
 
-#include <stdio.h>
 #include "ctrl_algo.h"
 
 // pid param
 #define LIM_ERR_SUM             (99)
 #define LIM_ERR                 (5)
 #define USE_PI                  (0)
-#define LIMIT_ABS(val, lim)     val = ((val) > (lim)) ? (lim) : (((val) < -(lim)) ? (-(lim)) : (val))
+// #define LIMIT_ABS(val, lim)     val = ((val) > (lim)) ? (lim) : (((val) < -(lim)) ? (-(lim)) : (val))
 
 // [0]:P   [1]:I     [2]:D
 
@@ -72,6 +71,12 @@ void init_ctrl_algo(void)
     ctrl_pid_velocity.limit_exec = 45; // 限制执行 45
 }
 
+float LIMIT_ABS(float val, float lim)
+{
+
+    val = ((val) > (lim)) ? (lim) : (((val) < -(lim)) ? (-(lim)) : (val));
+    return val;
+}
 
 float ctrl_pid_algo(float target, float feedback, CTRL_PID_STRUCT *param)
 {
