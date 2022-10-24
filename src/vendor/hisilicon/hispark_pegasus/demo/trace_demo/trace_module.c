@@ -193,26 +193,27 @@ IotGpioValue get_do_value(IotAdcChannelIndex idx)
     int ret = -1;
 
     for (int i = 0; i < ADC_TEST_LENGTH; i++) {
-        ret = AdcRead(idx, &data, IOT_ADC_EQU_MODEL_4, IOT_ADC_CUR_BAIS_DEFAULT, 0xF0);//ADC_Channal_6  自动识别模式  CNcomment:4次平均算法模式 CNend */
+        // ADC_Channal_6  自动识别模式  CNcomment:4次平均算法模式 CNend
+        ret = AdcRead(idx, &data, IOT_ADC_EQU_MODEL_4, IOT_ADC_CUR_BAIS_DEFAULT, 0xF0);
         if (ret != HI_ERR_SUCCESS) {
             printf("hi_adc_read failed\n");
         }
     }
 
     if (idx == IOT_ADC_CHANNEL_3) {
-        printf("gpio7 m_right_value is %d \n",data);
+        printf("gpio7 m_right_value is %d\n", data);
     } else if (idx == IOT_ADC_CHANNEL_0) {
-        printf("gpio12 m_left_value is %d \n",data);
+        printf("gpio12 m_left_value is %d\n", data);
     }
 
-    if(data > car_drive.rightadcdata && idx == IOT_ADC_CHANNEL_3) {
+    if (data > car_drive.rightadcdata && idx == IOT_ADC_CHANNEL_3) {
         ret = 0;
-    } else if((data > car_drive.leftadcdata) && idx == IOT_ADC_CHANNEL_0) {
+    } else if ((data > car_drive.leftadcdata) && idx == IOT_ADC_CHANNEL_0) {
         ret = 1;
     } else if (data < car_drive.rightadcdata && idx == IOT_ADC_CHANNEL_3) {
-        ret = 2;
+        ret = 2; // 2代表右边在白线的状态
     } else if (data < car_drive.leftadcdata && idx == IOT_ADC_CHANNEL_0) {
-        ret = 3;
+        ret = 3; // 3代表左边在白线的状态
     }
 
     return ret;
@@ -233,16 +234,16 @@ void TraceExampleTask(void)
         if (g_State == 1 && g_CarStarted) {
             m_right_value = get_do_value(IOT_ADC_CHANNEL_3); // gpio7 ==>ADC5
             m_left_value = get_do_value(IOT_ADC_CHANNEL_0); // gpio12 ==>ADC0
-            if ((m_left_value == 3) && (m_right_value == 0)) {   // 左偏，向右转
+            if ((m_left_value == 3) && (m_right_value == 0)) { // 左偏，向右转 3代表左边在白线的状态
                 car_left(car_drive.TurnRight);
                 LeftLED();
-            } else if ((m_left_value == 1) && (m_right_value == 2)) {      //右偏，向左转
+            } else if ((m_left_value == 1) && (m_right_value == 2)) { //右偏，向左转 2代表右边在白线的状态
                 car_right(car_drive.TurnLeft);
                 RightLed();
-            } else if ((m_left_value == 3) && (m_right_value == 2)) { // 执行
+            } else if ((m_left_value == 3) && (m_right_value == 2)) { // 2,3代表左右两边都在白线
                 car_forward(car_drive.LeftForward, car_drive.RightForward);
                 LedOff();
-            } else {   //脱离轨道
+            } else { // 脱离轨道
                 car_stop();
             }
             g_State = 0;
@@ -252,7 +253,7 @@ void TraceExampleTask(void)
     }
 }
 
-void cb_timeout_periodic(void *arg)
+void cb_timeout_periodic(char *arg)
 {
     (void)arg;
     g_State = 1;
@@ -286,7 +287,7 @@ void TraceExampleEntry(void)
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 5 * 1024;
+    attr.stack_size = 5 * 1024; // 堆栈大小为5 *1024
     attr.priority = osPriorityNormal;
     if (osThreadNew((osThreadFunc_t)TraceExampleTask, NULL, &attr) == NULL) {
         printf("[LSM6DSTask] Failed to create LSM6DSTask!\n");
