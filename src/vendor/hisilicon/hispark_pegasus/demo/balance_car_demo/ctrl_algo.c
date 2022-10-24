@@ -108,12 +108,12 @@ float ctrl_pid_algo(float target, float feedback, CTRL_PID_STRUCT *param)
     return exec;
 }
 
-CTRL_PID_STRUCT GetVelocity()
+CTRL_PID_STRUCT GetVelocity(void)
 {
     return ctrl_pid_velocity;
 }
 
-CTRL_PID_STRUCT GetStand()
+CTRL_PID_STRUCT GetStand(void)
 {
     return ctrl_pid_stand;
 }

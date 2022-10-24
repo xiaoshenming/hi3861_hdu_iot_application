@@ -29,10 +29,10 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <hi_stdlib.h>
-#include "wheel_codec.h"
 #include "compile_define.h"
 #include "iot_gpio_ex.h"
 #include "debug_util.h"
+#include "wheel_codec.h"
 
 /*
  * iot_gpio.h的极性设置与示波器实测是反的, 重新定义一个类型
@@ -65,7 +65,8 @@ typedef struct {
 WHEEL_CODEC_STRUCT g_wheel_left;
 WHEEL_CODEC_STRUCT g_wheel_right;
 
-void INIT_GPIO_IN(IotIoName NAME, unsigned char FUNC) {
+void INIT_GPIO_IN(IotIoName NAME, unsigned char FUNC)
+{
     IoTGpioInit(NAME);
     IoSetFunc(NAME, FUNC);
     IoTGpioSetDir(NAME, IOT_GPIO_DIR_IN);
@@ -75,8 +76,8 @@ void INIT_GPIO_IN(IotIoName NAME, unsigned char FUNC) {
 void wheel_codec_svr(char *arg)
 {
     IotGpioValue value_b;
-    uint32_t * const reg = (uint32_t *)(0x5000603C);                 // reg GPIO_INT_POLARITY
-    WHEEL_CODEC_STRUCT * pt = (WHEEL_CODEC_STRUCT *)(arg);
+    uint32_t * const reg = (uint32_t *)(0x5000603C); // reg GPIO_INT_POLARITY
+    WHEEL_CODEC_STRUCT* pt = (WHEEL_CODEC_STRUCT*)(arg);
 
     if (IoTGpioGetInputVal(pt -> pin_name_b, &value_b) != IOT_SUCCESS) {
         printf("read wheel right SIGNAL B read fail\n");

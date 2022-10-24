@@ -40,8 +40,8 @@ typedef struct {
 
 void init_ctrl_algo(void);
 float ctrl_pid_algo(float target, float feedback, CTRL_PID_STRUCT *param);
-CTRL_PID_STRUCT GetVelocity();
-CTRL_PID_STRUCT GetStand();
+CTRL_PID_STRUCT GetVelocity(void);
+CTRL_PID_STRUCT GetStand(void);
 
 #endif
 
