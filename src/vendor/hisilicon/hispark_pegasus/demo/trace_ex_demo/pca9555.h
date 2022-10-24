@@ -35,17 +35,19 @@
 #define	PCA9555_REG_CFG0    0x06 // 方向配置寄存器0地址
 #define	PCA9555_REG_CFG1    0x07 // 方向配置寄存器1地址
 
-#define RED_LED 0x09
-#define GREEN_LED 0x12
-#define BLUE_LED 0x24
-#define WHITE_LED 0xff
-#define LED_OFF 0x00
+#define RED_LED             0x09
+#define GREEN_LED           0x12
+#define BLUE_LED            0x24
+#define WHITE_LED           0xff
+#define LED_OFF             0x00
+#define RIGHT_LED           0x07
+#define LEFT_LED            0x38
 
 typedef void (*PCA_EventProcFunc)(unsigned int);
 
 void InitPCA9555(void);
 void PCA_MainProc(void);
-void PCA_RegisterEventProcFunc(PCA_EventProcFunc);
+void PCA_RegisterEventProcFunc(PCA_EventProcFunc func);
 void PCA_UnregisterEventProcFunc(void);
 
 #endif  // AHT20_H

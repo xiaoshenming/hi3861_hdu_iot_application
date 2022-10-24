@@ -35,8 +35,8 @@ int g_CarStarted = 0;
 #define MASK_BUTTON1        (0x10)
 #define MASK_BUTTON2        (0x08)
 #define MASK_BUTTON3        (0x04)
-#define MASK_TRACE1         (0x20)
-#define MASK_TRACE2         (0x40)
+#define MASK_TRACE1         (0x01)
+#define MASK_TRACE2         (0x02)
 
 void init_ctrl_algo(void)
 {
@@ -53,6 +53,21 @@ void init_oled_mode(void)
     ssd1306_ClearOLED();
     ssd1306_printf("LF:%d, RF:%d", car_drive.LeftForward, car_drive.RightForward);
     ssd1306_printf("TL:%d, RT:%d", car_drive.TurnLeft, car_drive.TurnRight);
+}
+
+void LeftLED(void)
+{
+    PCA_WriteReg(PCA9555_REG_OUT1, LEFT_LED); /* IO1 012345低电平 */
+}
+
+void RightLed(void)
+{
+    PCA_WriteReg(PCA9555_REG_OUT1, RIGHT_LED); /* IO1 012345低电平 */
+}
+
+void LedOff(void)
+{
+    PCA_WriteReg(PCA9555_REG_OUT1, LED_OFF); /* IO1 012345低电平 */
 }
 
 void ButtonDesplay(ENUM_MODE mode)
@@ -129,17 +144,17 @@ void ButtonPressProc(uint8_t ext_io_val)
     } else if (button2_pressed || button3_pressed) {
         ButtonSet(g_mode, button2_pressed);
     }
-    if((hi_get_milli_seconds() - time_stamp) > 100 && g_CarStarted) {
+    if ((hi_get_milli_seconds() - time_stamp) > 100 && g_CarStarted) { // 100ms判断一次
         time_stamp = hi_get_milli_seconds();
         if (trace1_pressed && !trace2_pressed) {
             car_left(car_drive.TurnRight);
-            printf("11111111111111\r\n");
+            LeftLED();
         } else if (!trace1_pressed & trace2_pressed) {
-            car_right(!car_drive.TurnLeft);
-            printf("2222222222222222\r\n");
-        } else if(!trace2_pressed && !trace2_pressed) {
+            car_right(car_drive.TurnLeft);
+            RightLed();
+        } else if (!trace2_pressed && !trace2_pressed) {
             car_forward(car_drive.LeftForward, car_drive.RightForward);
-            printf("333333333333333\r\n");
+            LedOff();
         } else {
             car_stop();
         }
