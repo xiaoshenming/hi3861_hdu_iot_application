@@ -91,6 +91,7 @@ void car_drive(int pwm_value)
 
 void car_stop(void)
 {
+    printf("1111\r\n");
     IoTPwmStop(DRIVE_LEFT_FORWARD_PWM);
     IoTPwmStop(DRIVE_LEFT_BACKWARD_PWM);
     IoTPwmStop(DRIVE_RIGHT_FORWARD_PWM);
