@@ -188,7 +188,6 @@ void trace_module_init(void)
 
 IotGpioValue get_do_value(IotAdcChannelIndex idx)
 {
-
     unsigned short data = 0;
     int ret = -1;
 
