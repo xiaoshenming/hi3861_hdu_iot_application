@@ -62,7 +62,7 @@ void init_oled_mode(void)
     g_mode = MODE_ON_OFF;
     ssd1306_ClearOLED();
     ssd1306_printf("LF:%d, RF:%d", car_drive.LeftForward, car_drive.RightForward);
-    ssd1306_printf("TL:%d, RT:%d", car_drive.TurnLeft, car_drive.TurnRight);
+    ssd1306_printf("TL:%d, TR:%d", car_drive.TurnRight, car_drive.TurnLeft);
     ssd1306_printf("yaw:%.02f", car_drive.yaw);
     ssd1306_printf("distance:%.2f", car_drive.distance);
 }
@@ -72,7 +72,7 @@ void ButtonDesplay(ENUM_MODE mode)
     switch (mode) {
         case MODE_ON_OFF:
             ssd1306_printf("LF:%d, RF:%d", car_drive.LeftForward, car_drive.RightForward);
-            ssd1306_printf("TL:%d, TR:%d", car_drive.TurnLeft, car_drive.TurnRight);
+            ssd1306_printf("TL:%d, TR:%d", car_drive.TurnRight, car_drive.TurnLeft);
             ssd1306_printf("yaw:%.2f", car_drive.yaw);
             ssd1306_printf("distance:%.2f", car_drive.distance);
             break;

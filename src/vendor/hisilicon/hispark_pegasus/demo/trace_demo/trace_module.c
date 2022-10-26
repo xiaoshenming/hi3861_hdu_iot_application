@@ -55,7 +55,7 @@ void init_oled_mode(void)
     g_mode = MODE_ON_OFF;
     ssd1306_ClearOLED();
     ssd1306_printf("LF:%d, RF:%d", car_drive.LeftForward, car_drive.RightForward);
-    ssd1306_printf("TL:%d, RT:%d", car_drive.TurnLeft, car_drive.TurnRight);
+    ssd1306_printf("TL:%d, TR:%d", car_drive.TurnRight, car_drive.TurnLeft);
     ssd1306_printf("leftadcdata:%d", car_drive.leftadcdata);
     ssd1306_printf("rightadcdata:%d", car_drive.rightadcdata);
 }
@@ -80,7 +80,7 @@ void ButtonDesplay(ENUM_MODE mode)
     switch (mode) {
         case MODE_ON_OFF:
             ssd1306_printf("LF:%d, RF:%d", car_drive.LeftForward, car_drive.RightForward);
-            ssd1306_printf("TL:%d, RT:%d", car_drive.TurnLeft, car_drive.TurnRight);
+            ssd1306_printf("TL:%d, TR:%d", car_drive.TurnRight, car_drive.TurnLeft);
             ssd1306_printf("leftadcdata:%d", car_drive.leftadcdata);
             ssd1306_printf("rightadcdata:%d", car_drive.rightadcdata);
             break;
@@ -130,8 +130,8 @@ void ButtonSet(ENUM_MODE mode, bool button_pressed)
             ssd1306_printf("TurnLeft=%d", car_drive.TurnRight);
             break;
         case MODE_SET_TURN_RIGHT:
-            car_drive.TurnRight += ((button_pressed) ? -1 : 1);
-            ssd1306_printf("TurnRight=%d", car_drive.TurnRight);
+            car_drive.TurnLeft += ((button_pressed) ? -1 : 1);
+            ssd1306_printf("TurnRight=%d", car_drive.TurnLeft);
             break;
         case MODE_SET_LEFT_ADC:
             car_drive.leftadcdata += ((button_pressed) ? -10 : 10); // 10代表adc正负10
