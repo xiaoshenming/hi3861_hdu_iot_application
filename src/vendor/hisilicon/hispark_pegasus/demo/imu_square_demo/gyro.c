@@ -62,11 +62,11 @@ float yaw_data = 0.0f;
 void init_ctrl_algo(void)
 {
     memset(car_drive, 0, sizeof(CAR_DRIVE));
-    car_drive.LeftForward = 10; // 10 左轮前进速度
+    car_drive.LeftForward = 13; // 13 左轮前进速度
     car_drive.RightForward = 10; // 10 右轮前进速度
     car_drive.TurnRight = 30; // 30 右转弯左轮速度
     car_drive.yaw1 = YAW;
-    car_drive.yaw2 = 180.0; // 航向角180.0
+    car_drive.yaw2 = 181.0; // 航向角181.0
     car_drive.yaw3 = 270.0; // 航向角270.0
     car_drive.yaw4 = 360.0; // 航向角360.0
     car_drive.time = 3000; // 行驶时间3000ms

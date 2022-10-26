@@ -46,7 +46,7 @@ float yaw_data = 0.0f;
 void init_ctrl_algo(void)
 {
     (void)memset(car_drive, 0, sizeof(CAR_DRIVE));
-    car_drive.LeftForward = 10; // 10 左轮前进速度
+    car_drive.LeftForward = 13; // 13 左轮前进速度
     car_drive.RightForward = 10; // 10 右轮前进速度
     car_drive.TurnLeft = 30; // 30 左转弯右轮速度
     car_drive.TurnRight = 30; // 30 右转弯左轮速度
@@ -54,7 +54,7 @@ void init_ctrl_algo(void)
     car_drive.distance = DISTANCE;
     car_drive.leftangle = 2500; // 2500 舵机左转90度
     car_drive.middangle = 1500; // 1500 舵机居中
-    car_drive.rightangle = 500; // 舵机右转90度
+    car_drive.rightangle = 500; // 500 舵机右转90度
 }
 
 void init_oled_mode(void)
@@ -62,7 +62,7 @@ void init_oled_mode(void)
     g_mode = MODE_ON_OFF;
     ssd1306_ClearOLED();
     ssd1306_printf("LF:%d, RF:%d", car_drive.LeftForward, car_drive.RightForward);
-    ssd1306_printf("TL:%d, RT:%d", car_drive.TurnLeft, car_drive.TurnRight);
+    ssd1306_printf("TL:%d, TR:%d", car_drive.TurnRight, car_drive.TurnLeft);
     ssd1306_printf("yaw:%.02f", car_drive.yaw);
     ssd1306_printf("distance:%.2f", car_drive.distance);
 }
@@ -72,7 +72,7 @@ void ButtonDesplay(ENUM_MODE mode)
     switch (mode) {
         case MODE_ON_OFF:
             ssd1306_printf("LF:%d, RF:%d", car_drive.LeftForward, car_drive.RightForward);
-            ssd1306_printf("TL:%d, TR:%d", car_drive.TurnLeft, car_drive.TurnRight);
+            ssd1306_printf("TL:%d, TR:%d", car_drive.TurnRight, car_drive.TurnLeft);
             ssd1306_printf("yaw:%.2f", car_drive.yaw);
             ssd1306_printf("distance:%.2f", car_drive.distance);
             break;
