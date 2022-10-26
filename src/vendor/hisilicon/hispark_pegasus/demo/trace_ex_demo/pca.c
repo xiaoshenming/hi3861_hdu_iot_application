@@ -18,25 +18,7 @@
 #define IOT_I2C_IDX_BAUDRATE         400000 // 400k
 #define	GET_BIT(x, bit)	((x & (1 << bit)) >> bit)
 volatile static int g_ext_io_int_valid = 0;
-
-#define PCA9555_INT_PIN_NAME    (IOT_IO_NAME_GPIO_11)
-#define PCA9555_INT_PIN_FUNC    (IOT_IO_FUNC_GPIO_11_GPIO)
-#define PCA_REG_IO0_STATE       (0x00)
-
-uint32_t PCA_WriteReg(uint8_t reg_addr, uint8_t reg_val)
-{
-    uint8_t buffer[2];
-    
-    buffer[0] = reg_addr;
-    buffer[1] = reg_val;
-
-    uint32_t retval = IoTI2cWrite(PCA5555_I2C_IDX, PCA9555_WRITE_ADDR, buffer, 2);
-    if (retval != IOT_SUCCESS) {
-        printf("IoTI2cWrite failed\n");
-        return retval;
-    }
-    return IOT_SUCCESS;
-}
+//static uint8_t button[255] = { 0 };
 
 /**
  * @berf i2c read
@@ -84,6 +66,15 @@ void PCA_Gpio_Config(uint8_t addr, uint8_t buffer, uint32_t buffLen)
     PCA95555_Write(write, WRITELEN);
 }
 
+
+#define LEFT_LAMP_ON()      g_ext_io_output |= 0x38; PCA_Gpio_Config(PCA9555_REG_OUT1, g_ext_io_output, 2);
+#define LEFT_LAMP_OFF()      g_ext_io_output &= (~0x38); PCA_Gpio_Config(PCA9555_REG_OUT1, g_ext_io_output, 2);
+#define RIGHT_LAMP_ON()      g_ext_io_output |= 0x07; PCA_Gpio_Config(PCA9555_REG_OUT1, g_ext_io_output, 2);
+#define RIGHT_LAMP_OFF()      g_ext_io_output &= (~0x07); PCA_Gpio_Config(PCA9555_REG_OUT1, g_ext_io_output, 2);
+
+extern void car_forward();
+extern void car_backward();
+
 uint8_t g_ext_io_input = 0;
 uint8_t g_ext_io_input_d = 0;
 uint8_t g_ext_io_output = 0;
@@ -92,77 +83,88 @@ int32_t g_encoderLeftACounter = 0;
 uint32_t g_StartTick = 0;
 uint8_t g_car_on_off = 0;
 
-void LeftLED(void)
-{
-    PCA_WriteReg(PCA9555_REG_OUT1, LEFT_LED); /* IO1 012345低电平 */
-}
-
-void RightLed(void)
-{
-    PCA_WriteReg(PCA9555_REG_OUT1, RIGHT_LED); /* IO1 012345低电平 */
-}
-
-void LedOff(void)
-{
-    PCA_WriteReg(PCA9555_REG_OUT1, LED_OFF); /* IO1 012345低电平 */
-}
-
-void PressToRestore(void)
-{
-    uint8_t ext_io_state = 0;
-    IotGpioValue value = 0;
-    uint8_t intLowFlag = 0;
-    uint32_t cTick = 0;
-    uint8_t status;
-    status = IoTGpioGetInputVal(PCA9555_INT_PIN_NAME, &value);
-    if (status != IOT_SUCCESS) {
-        printf("status = %d\r\n", status);
-    }
-    if (value == 1) {
-        intLowFlag = 0;
-    } else {
-        if (intLowFlag == 0) {
-            cTick = hi_get_milli_seconds();
-            intLowFlag = 1;
-        } else {
-            if ((hi_get_milli_seconds() - cTick) > 2) { // 2ms
-                status = PCA_ReadExtIO0(&ext_io_state);
-                intLowFlag = 0;
-            }
-        }
-    }
-}
 
 
 void PCA9555_int_proc()
 {
     uint8_t diff;
+
     if (g_ext_io_int_valid == 1) {
         g_ext_io_input = PCA95555_WriteRead(PCA9555_REG_IN0, 1, 1);
         diff = g_ext_io_input ^ g_ext_io_input_d;
+
+        //printf("ext_io_input = %02x\r\n", ext_io_input);
+
         /* ext io 0 - 1: lighting sensor */
         if (diff & 0x01) {
             if (g_ext_io_input & 0x01) {
                 printf("left lighten\n");
-                LeftLED();
+                LEFT_LAMP_ON();
             } else {
                 printf("left darken\n");
-                LedOff();
+                LEFT_LAMP_OFF();
             }
         }
         if (diff & 0x02) {
             if (g_ext_io_input & 0x02) {
                 printf("right lighten\n");
-                RightLed();
+                RIGHT_LAMP_ON();
             } else {
                 printf("right darken\n");
-                LedOff();
+                RIGHT_LAMP_OFF();
             }
+        }
+
+        /* ext io 2 - 4: user button */
+        if ((diff & 0x04) && ((g_ext_io_input & 0x04) == 0)) {
+            // button1 pressed event proc
+            printf("button 1 pressed\n");
+            car_left();
+            g_car_on_off = 1;
+        } else if ((diff & 0x08) && ((g_ext_io_input & 0x08) == 0)) {
+            // button2 pressed event proc
+            printf("button 2 pressed\n");
+            car_right();
+            g_car_on_off = 1;
+        } else if ((diff & 0x10) && ((g_ext_io_input & 0x10) == 0)) {
+            // button3 pressed event proc
+            printf("button 3 pressed\n");
+            g_car_on_off = !g_car_on_off;
+            if(g_car_on_off)
+            {
+                car_forward();
+            }
+            else
+            {
+                car_stop();
+            }
+        }
+
+        /* ext io 5 - 6: motor encoder */
+        if ((diff & 0x20) && ((g_ext_io_input & 0x20) == 0)) {
+            g_encoderLeftACounter++;
         }
         g_ext_io_int_valid = 0;
         g_ext_io_input_d = g_ext_io_input;
-    } else {
-        PressToRestore();
+    }
+    else 
+    {
+        IotGpioValue value = 0;
+        if (IoTGpioGetInputVal(IOT_IO_NAME_GPIO_11, &value) == IOT_SUCCESS) {
+            if (value == 1) {
+                g_intLowFlag = 0;
+            } else {
+                if (g_intLowFlag == 0) {
+                    g_StartTick = hi_get_milli_seconds();
+                    g_intLowFlag = 1;
+                } else {
+                    if ((hi_get_milli_seconds() - g_StartTick) > 2) {
+                        g_ext_io_input = PCA95555_WriteRead(PCA9555_REG_IN0, 1, 1);
+                        g_intLowFlag = 0;
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -170,23 +172,49 @@ void PCA9555_int_proc()
 void PCA95555TestTask()
 {
     uint8_t status;
-    PCA_Gpio_Config(PCA9555_REG_CFG0, 0x1F, 2);     /* 1F */
+    // PCA_Gpio_Config(PCA9555_REG_CFG0, 0x7F, 2); /* 输入为1，输出为0，IO0 234输入,0x60代表只用编码器，0x7c代表按键编码器同时使用，0x1c代表只用按键 */
+    // PCA_Gpio_Config(PCA9555_REG_CFG1, 0x00, 2); /*IO1 012345输出 */
+    // PCA_Gpio_Config(PCA9555_REG_OUT1, LED_OFF, 2); /*IO1 012345低电平 */
+    // LSM6DSTask();
+    // car_forward();
+
+    /* PCA Input
+        /* ext io 0 - 1: lighting sensor
+        ext io 2 - 4: user button
+        ext io 5 - 6: motor encoder    
+     */
+
+    PCA_Gpio_Config(PCA9555_REG_CFG0, 0x1F, 2);     /*  */
     PCA_Gpio_Config(PCA9555_REG_CFG1, 0x00, 2);     /*IO1 012345输出 */
     PCA_Gpio_Config(PCA9555_REG_OUT1, LED_OFF, 2);  /*IO1 012345低电平 */
     while (1) {
         PCA9555_int_proc();
-        static int time_stamp = 0;
-        static int encoderLeftACounter_d = 0;
-        if ((hi_get_milli_seconds() - time_stamp) > 100) {
-            time_stamp = hi_get_milli_seconds();
-            if((g_ext_io_input & 0x03) == 0x02) {
-                car_right();
-            } else if((g_ext_io_input & 0x03) == 0x01) {
-                car_left();
-            } else if((g_ext_io_input & 0x03) == 0x03) {
-                car_stop();
-            } else {
-                car_forward();
+
+        {
+            static int time_stamp = 0;
+            static int encoderLeftACounter_d = 0;
+            if((hi_get_milli_seconds() - time_stamp) > 100)
+            {
+                //printf("rpm: %d\n", (g_encoderLeftACounter - encoderLeftACounter_d) * 60);
+                encoderLeftACounter_d = g_encoderLeftACounter;
+                time_stamp = hi_get_milli_seconds();
+
+                if((g_ext_io_input & 0x03) == 0x02)
+                {
+                    car_left();
+                }
+                else if((g_ext_io_input & 0x03) == 0x01)
+                {
+                    car_right();
+                }
+                else if((g_ext_io_input & 0x03) == 0x03)
+                {
+                    car_forward();
+                }
+                else
+                {
+                    car_stop();
+                }
             }
         }
     }

@@ -146,10 +146,10 @@ void ButtonPressProc(uint8_t ext_io_val)
     }
     if ((hi_get_milli_seconds() - time_stamp) > 100 && g_CarStarted) { // 100ms判断一次
         time_stamp = hi_get_milli_seconds();
-        if (trace1_pressed && !trace2_pressed) {
+        if (trace1_pressed) {
             car_left(car_drive.TurnRight);
             LeftLED();
-        } else if (!trace1_pressed & trace2_pressed) {
+        } else if (trace2_pressed) {
             car_right(car_drive.TurnLeft);
             RightLed();
         } else if (!trace2_pressed && !trace2_pressed) {

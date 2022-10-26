@@ -66,30 +66,30 @@ void GA12N20Init(void)
 }
 
 // PWM取值：[1, 65535]，占空比[0-99]
-void car_backward(uint32_t left_pwm_value, uint32_t right_pwm_value)
+void car_backward(void)
 {
     car_stop();
-    IoTPwmStart(IOT_PWM_PORT_PWM0, right_pwm_value, IOT_FREQ);
-    IoTPwmStart(IOT_PWM_PORT_PWM3, left_pwm_value, IOT_FREQ);
+    IoTPwmStart(IOT_PWM_PORT_PWM0, 10, 65535);
+	IoTPwmStart(IOT_PWM_PORT_PWM3, 10, 65535);
 }
 
-void car_forward(uint32_t left_pwm_value, uint32_t right_pwm_value)
+void car_forward()
 {
     car_stop();
-    IoTPwmStart(IOT_PWM_PORT_PWM2, left_pwm_value, IOT_FREQ);
-    IoTPwmStart(IOT_PWM_PORT_PWM1, right_pwm_value, IOT_FREQ);
+    IoTPwmStart(IOT_PWM_PORT_PWM2, 10, 65535);
+    IoTPwmStart(IOT_PWM_PORT_PWM1, 10, 65535);
 }
 
-void car_left(uint32_t right_pwm_value)
+void car_left(void)
 {
     car_stop();
-    IoTPwmStart(IOT_PWM_PORT_PWM1, right_pwm_value, IOT_FREQ);
+    IoTPwmStart(IOT_PWM_PORT_PWM3, 30, 65535);
 }
 
-void car_right(uint32_t left_pwm_value)
+void car_right(void)
 {
     car_stop();
-    IoTPwmStart(IOT_PWM_PORT_PWM2, left_pwm_value, IOT_FREQ);
+    IoTPwmStart(IOT_PWM_PORT_PWM0, 30, 65535);
 }
 
 void car_stop(void)

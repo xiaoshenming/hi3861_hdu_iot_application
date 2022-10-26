@@ -16,10 +16,10 @@ static_library("trace_ex_demo") {
   sources = [
     "motor_control.c",
     "hal_iot_gpio_ex.c",
-    "trace_control.c",
-    "ssd1306.c",
+    #"trace_control.c",
+    #"ssd1306.c",
     "pca9555.c",
-    "//third_party/ssd1306/ssd1306_fonts.c",
+    #"//third_party/ssd1306/ssd1306_fonts.c",
   ]
 
   include_dirs = [
