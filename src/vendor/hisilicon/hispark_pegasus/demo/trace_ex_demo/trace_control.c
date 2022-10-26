@@ -53,6 +53,7 @@ void init_oled_mode(void)
     ssd1306_ClearOLED();
     ssd1306_printf("LF:%d, RF:%d", car_drive.LeftForward, car_drive.RightForward);
     ssd1306_printf("TL:%d, TR:%d", car_drive.TurnRight, car_drive.TurnLeft);
+}
 
 void LeftLED(void)
 {
