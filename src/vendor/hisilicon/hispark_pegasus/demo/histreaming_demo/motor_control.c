@@ -82,12 +82,12 @@ void car_forward(void)
 
 void car_left(void)
 {
-    IoTPwmStart(IOT_PWM_PORT_PWM3, IOT_DUTY2, IOT_FREQ);
+    IoTPwmStart(IOT_PWM_PORT_PWM1, IOT_DUTY2, IOT_FREQ);
 }
 
 void car_right(void)
 {
-    IoTPwmStart(IOT_PWM_PORT_PWM0, IOT_DUTY2, IOT_FREQ);
+    IoTPwmStart(IOT_PWM_PORT_PWM2, IOT_DUTY2, IOT_FREQ);
 }
 
 void car_stop(void)

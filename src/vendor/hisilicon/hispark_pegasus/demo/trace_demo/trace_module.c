@@ -44,7 +44,7 @@ void init_ctrl_algo(void)
     memset(car_drive, 0, sizeof(CAR_DRIVE));
     car_drive.LeftForward = 10; // 10 左轮前进速度
     car_drive.RightForward = 10; // 10 右轮前进速度
-    car_drive.TurnLeft = 30; // 30 左转弯右轮速度
+    car_drive.TurnLeft = 35; // 35 左转弯右轮速度
     car_drive.TurnRight = 30; // 30 右转弯左轮速度
     car_drive.leftadcdata = 790; // 790代表左边ADC数据
     car_drive.rightadcdata = 1650; // 1650代表右边ADC数据
@@ -126,12 +126,12 @@ void ButtonSet(ENUM_MODE mode, bool button_pressed)
             ssd1306_printf("RightForward=%d", car_drive.RightForward);
             break;
         case MODE_SET_TURN_LEFT:
-            car_drive.TurnLeft += ((button_pressed) ? -1 : 1);
+            car_drive.TurnRight += ((button_pressed) ? -1 : 1);
             ssd1306_printf("TurnLeft=%d", car_drive.TurnRight);
             break;
         case MODE_SET_TURN_RIGHT:
             car_drive.TurnRight += ((button_pressed) ? -1 : 1);
-            ssd1306_printf("TurnRight=%d", car_drive.TurnLeft);
+            ssd1306_printf("TurnRight=%d", car_drive.TurnRight);
             break;
         case MODE_SET_LEFT_ADC:
             car_drive.leftadcdata += ((button_pressed) ? -10 : 10); // 10代表adc正负10
@@ -188,7 +188,6 @@ void trace_module_init(void)
 
 IotGpioValue get_do_value(IotAdcChannelIndex idx)
 {
-
     unsigned short data = 0;
     int ret = -1;
 
@@ -235,11 +234,11 @@ void TraceExampleTask(void)
             m_right_value = get_do_value(IOT_ADC_CHANNEL_3); // gpio7 ==>ADC5
             m_left_value = get_do_value(IOT_ADC_CHANNEL_0); // gpio12 ==>ADC0
             if ((m_left_value == 3) && (m_right_value == 0)) { // 左偏，向右转 3代表左边在白线的状态
-                car_left(car_drive.TurnRight);
-                LeftLED();
-            } else if ((m_left_value == 1) && (m_right_value == 2)) { // 右偏，向左转 2代表右边在白线的状态
                 car_right(car_drive.TurnLeft);
                 RightLed();
+            } else if ((m_left_value == 1) && (m_right_value == 2)) { // 右偏，向左转 2代表右边在白线的状态
+                car_left(car_drive.TurnRight);
+                LeftLED();
             } else if ((m_left_value == 3) && (m_right_value == 2)) { // 2,3代表左右两边都在白线
                 car_forward(car_drive.LeftForward, car_drive.RightForward);
                 LedOff();

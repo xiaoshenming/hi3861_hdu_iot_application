@@ -49,26 +49,26 @@ void RegressMiddle(void)
 }
 
 /* Turn 90 degrees to the right of the steering gear
-1、依据角度与脉冲的关系，设置高电平时间为500微秒
+1、依据角度与脉冲的关系，设置高电平时间为2500微秒
 2、不断地发送信号，控制舵机向右旋转90度
 */
 /*  Steering gear turn right */
 void EngineTurnRight(void)
 {
-    unsigned int angle = 500;
+    unsigned int angle = 2500;
     for (int i = 0; i < COUNT; i++) {
         SetAngle(angle);
     }
 }
 
 /* Turn 90 degrees to the left of the steering gear
-1、依据角度与脉冲的关系，设置高电平时间为2500微秒
+1、依据角度与脉冲的关系，设置高电平时间为500微秒
 2、不断地发送信号，控制舵机向左旋转90度
 */
 /* Steering gear turn left */
 void EngineTurnLeft(void)
 {
-    unsigned int angle = 2500;
+    unsigned int angle = 500;
     for (int i = 0; i < COUNT; i++) {
         SetAngle(angle);
     }

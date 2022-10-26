@@ -26,7 +26,7 @@
 #define IOT_PWM_PORT_PWM1           (1)
 #define IOT_PWM_PORT_PWM2           (2)
 #define IOT_PWM_PORT_PWM3           (3)
-#define IOT_FREQ            65535
+#define IOT_FREQ            100000
 
 #define DRIVE_LEFT_FORWARD_PIN_NAME (IOT_IO_NAME_GPIO_5)
 #define DRIVE_LEFT_FORWARD_PIN_GPIO (IOT_IO_FUNC_GPIO_5_GPIO)
