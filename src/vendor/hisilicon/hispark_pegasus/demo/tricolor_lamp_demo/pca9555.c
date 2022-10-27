@@ -96,7 +96,7 @@ uint32_t PCA9555I2CReadByte(uint8_t *rec_byte)
 /*
  * 向指定地址的PCA9555器件的指定寄存器写一字节数据
  * Write one byte of data to the specified register of the PCA9555 device with the specified address
- */s
+ */
 uint32_t PCA9555I2CWriteByte(uint8_t* buffer, uint32_t buffLen)
 {
     uint32_t retval = IoTI2cWrite(PCA9555_I2C_IDX, PCA9555_WRITE, buffer, buffLen);
