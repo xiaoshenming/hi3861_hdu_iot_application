@@ -69,10 +69,10 @@ uint32_t PCA_WriteReg(uint8_t reg_addr, uint8_t reg_val)
 */
 static uint32_t PCA95555_WriteRead(uint8_t reg_high_8bit_cmd, uint8_t send_len, uint8_t read_len)
 {
-    uint32_t status =0;
+    uint32_t status = 0;
     uint32_t ret = 0;
     uint8_t recvData[888] = {0};
-    hi_i2c_data c081nfc_i2c_write_cmd_addr ={0};
+    hi_i2c_data c081nfc_i2c_write_cmd_addr = { 0 };
     uint8_t send_user_cmd[1] = {reg_high_8bit_cmd};
     memset(recvData, 0x0, sizeof(recvData));
     c081nfc_i2c_write_cmd_addr.send_buf = send_user_cmd;
@@ -135,7 +135,7 @@ void PressToRestore(void)
             g_StartTick = hi_get_milli_seconds();
             g_intLowFlag = 1;
         } else {
-            if ((hi_get_milli_seconds() - g_StartTick) > 2) {
+            if ((hi_get_milli_seconds() - g_StartTick) > 2) { // 2ms复位pca9555
                 g_ext_io_input = PCA95555_WriteRead(PCA9555_REG_IN0, 1, 1);
                 g_intLowFlag = 0;
             }
@@ -179,18 +179,18 @@ void PCA9555_int_proc(void)
 void PCA95555TestTask(void)
 {
     PCA_Gpio_Config(PCA9555_REG_CFG0, 0x1F, 2);     /* 0x1f,2长度按键加编码器 */
-    PCA_Gpio_Config(PCA9555_REG_CFG1, 0x00, 2);     /*IO1 012345输出 */
-    PCA_Gpio_Config(PCA9555_REG_OUT1, LED_OFF, 2);  /*IO1 012345低电平 */
+    PCA_Gpio_Config(PCA9555_REG_CFG1, 0x00, 2);     /* IO1 012345输出 */
+    PCA_Gpio_Config(PCA9555_REG_OUT1, LED_OFF, 2);  /* IO1 012345低电平 */
     while (1) {
         PCA9555_int_proc();
         static int time_stamp = 0;
-        if ((hi_get_milli_seconds() - time_stamp) > 100) {
+        if ((hi_get_milli_seconds() - time_stamp) > 100) { // 100ms判断一次寻迹模块
             time_stamp = hi_get_milli_seconds();
-            if((g_ext_io_input & 0x03) == 0x02) { // 与0x03,等于0x02代表左轮在黑线
+            if ((g_ext_io_input & 0x03) == 0x02) { // 与0x03,等于0x02代表左轮在黑线
                 car_right();
-            } else if((g_ext_io_input & 0x03) == 0x01) { // 与0x03,等于0x01代表右轮在黑线
+            } else if ((g_ext_io_input & 0x03) == 0x01) { // 与0x03,等于0x01代表右轮在黑线
                 car_left();
-            } else if((g_ext_io_input & 0x03) == 0x03) { // 与0x03,等于0x03代表两轮在黑线
+            } else if ((g_ext_io_input & 0x03) == 0x03) { // 与0x03,等于0x03代表两轮在黑线
                 car_stop();
             } else {
                 car_forward();
@@ -216,7 +216,8 @@ void PCA95555GpioInit(void)
     IoSetFunc(IOT_IO_NAME_GPIO_11, IOT_IO_FUNC_GPIO_11_GPIO);
     IoTGpioSetDir(IOT_IO_NAME_GPIO_11, IOT_GPIO_DIR_IN);
     IoSetPull(IOT_IO_NAME_GPIO_11, IOT_IO_PULL_UP);
-    IoTGpioRegisterIsrFunc(IOT_IO_NAME_GPIO_11, IOT_INT_TYPE_EDGE, IOT_GPIO_EDGE_FALL_LEVEL_LOW, OnExtIoTriggered, NULL);
+    IoTGpioRegisterIsrFunc(IOT_IO_NAME_GPIO_11, IOT_INT_TYPE_EDGE,
+                           IOT_GPIO_EDGE_FALL_LEVEL_LOW, OnExtIoTriggered, NULL);
 }
 
 void TraceDemoTest(void)

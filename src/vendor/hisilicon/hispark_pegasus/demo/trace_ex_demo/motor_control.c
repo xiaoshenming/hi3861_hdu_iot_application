@@ -71,10 +71,10 @@ void car_backward(void)
 {
     car_stop();
     IoTPwmStart(IOT_PWM_PORT_PWM0, PWM, IOT_FREQ);
-	IoTPwmStart(IOT_PWM_PORT_PWM3, PWM, IOT_FREQ);
+    IoTPwmStart(IOT_PWM_PORT_PWM3, PWM, IOT_FREQ);
 }
 
-void car_forward()
+void car_forward(void)
 {
     car_stop();
     IoTPwmStart(IOT_PWM_PORT_PWM2, PWM, IOT_FREQ);
