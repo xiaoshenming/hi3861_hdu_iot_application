@@ -47,7 +47,6 @@ typedef void (*PCA_EventProcFunc)(unsigned char);
 
 void InitPCA9555(void);
 void PCA_MainProc(void);
-void PCA_RegisterEventProcFunc(PCA_EventProcFunc func);
-void PCA_UnregisterEventProcFunc(void);
+
 
 #endif  // AHT20_H

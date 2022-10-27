@@ -1,5 +1,17 @@
-#include "pca.h"
-#include "iot_gpio_ex.h"
+/*
+ * Copyright (c) 2022 HiSilicon (Shanghai) Technologies CO., LIMITED.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,16 +24,25 @@
 #include "iot_errno.h"
 #include "hi_errno.h"
 #include "hi_i2c.h"
+#include "iot_gpio_ex.h"
+#include "iot_watchdog.h"
 #include "iot_gpio.h"
+#include "hi_time.h"
+#include "motor_control.h"
+#include "pca9555.h"
 
 #define PCA5555_I2C_IDX 0
 #define IOT_I2C_IDX_BAUDRATE         400000 // 400k
-#define	GET_BIT(x, bit)	((x & (1 << bit)) >> bit)
-volatile static int g_ext_io_int_valid = 0;
-
 #define PCA9555_INT_PIN_NAME    (IOT_IO_NAME_GPIO_11)
 #define PCA9555_INT_PIN_FUNC    (IOT_IO_FUNC_GPIO_11_GPIO)
 #define PCA_REG_IO0_STATE       (0x00)
+
+uint8_t g_ext_io_input = 0;
+uint8_t g_ext_io_input_d = 0;
+uint8_t g_ext_io_output = 0;
+int g_intLowFlag = 0;
+uint32_t g_StartTick = 0;
+static volatile int g_ext_io_int_valid = 0;
 
 uint32_t PCA_WriteReg(uint8_t reg_addr, uint8_t reg_val)
 {
@@ -81,16 +102,8 @@ static uint32_t PCA95555_Write(uint8_t* buffer, uint32_t buffLen)
 void PCA_Gpio_Config(uint8_t addr, uint8_t buffer, uint32_t buffLen)
 {
     uint8_t write[WRITELEN] = {addr, buffer};
-    PCA95555_Write(write, WRITELEN);
+    PCA95555_Write(write, buffLen);
 }
-
-uint8_t g_ext_io_input = 0;
-uint8_t g_ext_io_input_d = 0;
-uint8_t g_ext_io_output = 0;
-int g_intLowFlag = 0;
-int32_t g_encoderLeftACounter = 0;
-uint32_t g_StartTick = 0;
-uint8_t g_car_on_off = 0;
 
 void LeftLED(void)
 {
@@ -109,32 +122,28 @@ void LedOff(void)
 
 void PressToRestore(void)
 {
-    uint8_t ext_io_state = 0;
     IotGpioValue value = 0;
-    uint8_t intLowFlag = 0;
-    uint32_t cTick = 0;
     uint8_t status;
-    status = IoTGpioGetInputVal(PCA9555_INT_PIN_NAME, &value);
+    status = IoTGpioGetInputVal(IOT_IO_NAME_GPIO_11, &value);
     if (status != IOT_SUCCESS) {
         printf("status = %d\r\n", status);
     }
     if (value == 1) {
-        intLowFlag = 0;
+        g_intLowFlag = 0;
     } else {
-        if (intLowFlag == 0) {
-            cTick = hi_get_milli_seconds();
-            intLowFlag = 1;
+        if (g_intLowFlag == 0) {
+            g_StartTick = hi_get_milli_seconds();
+            g_intLowFlag = 1;
         } else {
-            if ((hi_get_milli_seconds() - cTick) > 2) { // 2ms
-                status = PCA_ReadExtIO0(&ext_io_state);
-                intLowFlag = 0;
+            if ((hi_get_milli_seconds() - g_StartTick) > 2) {
+                g_ext_io_input = PCA95555_WriteRead(PCA9555_REG_IN0, 1, 1);
+                g_intLowFlag = 0;
             }
         }
     }
 }
 
-
-void PCA9555_int_proc()
+void PCA9555_int_proc(void)
 {
     uint8_t diff;
     if (g_ext_io_int_valid == 1) {
@@ -142,7 +151,7 @@ void PCA9555_int_proc()
         diff = g_ext_io_input ^ g_ext_io_input_d;
         /* ext io 0 - 1: lighting sensor */
         if (diff & 0x01) {
-            if (g_ext_io_input & 0x01) {
+            if (g_ext_io_input & 0x01) { // 0x01左边大灯
                 printf("left lighten\n");
                 LeftLED();
             } else {
@@ -151,7 +160,7 @@ void PCA9555_int_proc()
             }
         }
         if (diff & 0x02) {
-            if (g_ext_io_input & 0x02) {
+            if (g_ext_io_input & 0x02) { // 0x02右边大灯
                 printf("right lighten\n");
                 RightLed();
             } else {
@@ -167,23 +176,21 @@ void PCA9555_int_proc()
 }
 
 
-void PCA95555TestTask()
+void PCA95555TestTask(void)
 {
-    uint8_t status;
-    PCA_Gpio_Config(PCA9555_REG_CFG0, 0x1F, 2);     /* 1F */
+    PCA_Gpio_Config(PCA9555_REG_CFG0, 0x1F, 2);     /* 0x1f,2长度按键加编码器 */
     PCA_Gpio_Config(PCA9555_REG_CFG1, 0x00, 2);     /*IO1 012345输出 */
     PCA_Gpio_Config(PCA9555_REG_OUT1, LED_OFF, 2);  /*IO1 012345低电平 */
     while (1) {
         PCA9555_int_proc();
         static int time_stamp = 0;
-        static int encoderLeftACounter_d = 0;
         if ((hi_get_milli_seconds() - time_stamp) > 100) {
             time_stamp = hi_get_milli_seconds();
-            if((g_ext_io_input & 0x03) == 0x02) {
+            if((g_ext_io_input & 0x03) == 0x02) { // 与0x03,等于0x02代表左轮在黑线
                 car_right();
-            } else if((g_ext_io_input & 0x03) == 0x01) {
+            } else if((g_ext_io_input & 0x03) == 0x01) { // 与0x03,等于0x01代表右轮在黑线
                 car_left();
-            } else if((g_ext_io_input & 0x03) == 0x03) {
+            } else if((g_ext_io_input & 0x03) == 0x03) { // 与0x03,等于0x03代表两轮在黑线
                 car_stop();
             } else {
                 car_forward();
@@ -192,13 +199,13 @@ void PCA95555TestTask()
     }
 }
 
-void OnExtIoTriggered(const char *arg)
+void OnExtIoTriggered(char *arg)
 {
     (void) arg;
     g_ext_io_int_valid = 1;
 }
 
-void PCA95555GpioInit()
+void PCA95555GpioInit(void)
 {
     IoTI2cInit(0, IOT_I2C_IDX_BAUDRATE); /* baudrate: 400000 */
     IoTI2cSetBaudrate(0, IOT_I2C_IDX_BAUDRATE);
@@ -223,10 +230,10 @@ void TraceDemoTest(void)
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 5 * 1024;
+    attr.stack_size = 5 * 1024; // 任务栈大小5*1024
     attr.priority = osPriorityNormal;
 
-    if (osThreadNew(PCA95555TestTask, NULL, &attr) == NULL) {
+    if (osThreadNew((osThreadFunc_t)PCA95555TestTask, NULL, &attr) == NULL) {
         printf("[robot_car_demo] Failed to create Aht20TestTask!\n");
     }
 }
