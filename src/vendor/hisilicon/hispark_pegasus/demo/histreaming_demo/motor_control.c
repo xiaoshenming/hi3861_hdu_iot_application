@@ -70,23 +70,27 @@ void GA12N20Init(void)
 // PWM取值：[1, 65535]，占空比[0-99]
 void car_backward(void)
 {
+    car_stop();
     IoTPwmStart(IOT_PWM_PORT_PWM0, IOT_DUTY1, IOT_FREQ);
     IoTPwmStart(IOT_PWM_PORT_PWM3, IOT_DUTY1, IOT_FREQ);
 }
 
 void car_forward(void)
 {
+    car_stop();
     IoTPwmStart(IOT_PWM_PORT_PWM2, IOT_DUTY1, IOT_FREQ);
     IoTPwmStart(IOT_PWM_PORT_PWM1, IOT_DUTY1, IOT_FREQ);
 }
 
 void car_left(void)
 {
+    car_stop();
     IoTPwmStart(IOT_PWM_PORT_PWM1, IOT_DUTY2, IOT_FREQ);
 }
 
 void car_right(void)
 {
+    car_stop();
     IoTPwmStart(IOT_PWM_PORT_PWM2, IOT_DUTY2, IOT_FREQ);
 }
 

@@ -187,9 +187,9 @@ void PCA95555TestTask(void)
         if ((hi_get_milli_seconds() - time_stamp) > 100) { // 100ms判断一次寻迹模块
             time_stamp = hi_get_milli_seconds();
             if ((g_ext_io_input & 0x03) == 0x02) { // 与0x03,等于0x02代表左轮在黑线
-                car_right();
-            } else if ((g_ext_io_input & 0x03) == 0x01) { // 与0x03,等于0x01代表右轮在黑线
                 car_left();
+            } else if ((g_ext_io_input & 0x03) == 0x01) { // 与0x03,等于0x01代表右轮在黑线
+                car_right();
             } else if ((g_ext_io_input & 0x03) == 0x03) { // 与0x03,等于0x03代表两轮在黑线
                 car_stop();
             } else {
