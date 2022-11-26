@@ -7,6 +7,14 @@
 ## 介绍
 欢迎使用Hi3861V100开发OpenHarmony物联网应用.
 
+## 理论知识
+在学习课程前，可以先学习相关理论知.
+
+物联网技术及应用理论课PPT学习链接：https://developer.huawei.com/consumer/cn/training/course/mooc/C101641968823265204?refresh=1669428623989
+
+物联网技术及应用理论课视频学习链接：https://developer.huawei.com/consumer/cn/training/course/introduction/C101641968823265204
+
+
 ## 硬件说明
 这是一个嵌入式软件项目, 所以你需要有一块Hi3861V100的开发板. 如果你只是想学习使用Hi3861开发WiFi物联网应用, 那么基本上任何一块基于Hi3861V100的开发板都是可以的. 如果你需要使用这个项目中的全部外设实验用例, 例如陀螺仪, NFC, 马达控制, 平衡车等等, 那么你需要配合一块HiSpark T1开发板使用.
 
