@@ -5,14 +5,7 @@
 
 
 ## 介绍
-欢迎使用Hi3861V100开发OpenHarmony物联网应用.
-
-## 理论知识
-在学习课程前，可以先学习相关理论知.
-
-物联网技术及应用理论课PPT学习链接：https://developer.huawei.com/consumer/cn/training/course/mooc/C101641968823265204?refresh=1669428623989
-
-物联网技术及应用理论课视频学习链接：https://developer.huawei.com/consumer/cn/training/course/introduction/C101641968823265204
+欢迎使用Hi3861V100开发OpenHarmony物联网应用.[](https://developer.huawei.com/consumer/cn/training/course/mooc/C101641968823265204?refresh=166942862398)
 
 
 ## 硬件说明
@@ -120,7 +113,11 @@ loader:Hi3861_loader_signed.bin
 
 再按一下复位键, 现在, 你的第一个OpenHarmony程序已经在你的开发板上运行起来了. :thumbsup:
 
+## 理论参考
 
+[物联网技术及应用理论课PPT（点击该链接，注册华为账号登录后，点击学习，即可看到PPT）](https://developer.huawei.com/consumer/cn/training/course/mooc/C101641968823265204?refresh=1669428623989 )
+
+[物联网技术及应用理论课视频(点击该链接，注册华为账号登录后，点击课程目录，即可看到视频)](https://developer.huawei.com/consumer/cn/training/course/introduction/C101641968823265204)
 
 ## 问题与解答
 
