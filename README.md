@@ -113,12 +113,6 @@ loader:Hi3861_loader_signed.bin
 
 再按一下复位键, 现在, 你的第一个OpenHarmony程序已经在你的开发板上运行起来了. :thumbsup:
 
-## 理论参考
-
-物联网技术及应用理论课PPT（点击该链接，注册华为账号登录后，点击学习，即可看到PPT）:https://developer.huawei.com/consumer/cn/training/course/mooc/C101641968823265204?refresh=1669428623989 
-
-物联网技术及应用理论课视频(点击该链接，注册华为账号登录后，点击课程目录，即可看到视频)：https://developer.huawei.com/consumer/cn/training/course/introduction/C101641968823265204
-
 ## 问题与解答
 
 如果你对项目中的代码或者文档存在疑问, 欢迎在Issues中提出你的问题(别忘了先在FAQ中看一看是否已经有答案了😎). 如果你自己解决了一个了不起的问题, 非常欢迎你把问题和解决方法发到Issues里, 如果你看到别人的问题而你正好有答案, 也欢迎你帮助解答其他人的问题, 所谓"授人玫瑰手有余香"嘛.
@@ -137,3 +131,8 @@ OpenHarmony还是一个相当年轻的系统, 还在快速的发展中, 所以�
 
 最后的最后, 欢迎来到OpenHarmony的世界探险!
 
+
+
+## 参考
+
+- [HarmonyOS物联网开发课程](https://developer.huawei.com/consumer/cn/training/course/mooc/C101641968823265204?refresh=1669428623989)
