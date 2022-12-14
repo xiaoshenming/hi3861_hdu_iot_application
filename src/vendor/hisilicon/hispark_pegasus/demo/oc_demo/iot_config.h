@@ -23,7 +23,7 @@
 // /<CONFIG THE WIFI
 /* Please modify the ssid and pwd for the own */
 #define CONFIG_AP_SSID  "H" // WIFI SSID
-#define CONFIG_AP_PWD "12345678" // WIFI PWD
+#define CONFIG_AP_PWD  "12345678" // WIFI PWD
 
 // /<Configure the iot platform
 /* Please modify the device id and pwd for your own */

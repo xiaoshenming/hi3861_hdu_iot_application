@@ -33,6 +33,7 @@
 
 #include "lwip/netifapi.h"
 #include "lwip/api_shell.h"
+#include "iot_config.h"
 
 static void PrintLinkedInfo(WifiLinkedInfo* info)
 {
@@ -82,8 +83,8 @@ int ConnectToHotspot(void)
     WifiErrorCode errCode;
     int netId = -1;
     WifiDeviceConfig apConfig = {0};
-    strcpy(apConfig.ssid, "H");
-    strcpy(apConfig.preSharedKey, "12345678");
+    strcpy(apConfig.ssid, CONFIG_AP_SSID);
+    strcpy(apConfig.preSharedKey, CONFIG_AP_PWD);
     apConfig.securityType = WIFI_SEC_TYPE_PSK;
 
     errCode = RegisterWifiEvent(&g_defaultWifiEventListener);
