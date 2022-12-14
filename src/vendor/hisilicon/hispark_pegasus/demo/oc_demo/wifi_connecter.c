@@ -35,6 +35,9 @@
 #include "lwip/api_shell.h"
 #include "iot_config.h"
 
+#define SSID_LEN    (11)
+#define PWD_LEN     (11)
+
 static void PrintLinkedInfo(WifiLinkedInfo* info)
 {
     if (!info) return;
@@ -83,8 +86,14 @@ int ConnectToHotspot(void)
     WifiErrorCode errCode;
     int netId = -1;
     WifiDeviceConfig apConfig = {0};
-    strcpy(apConfig.ssid, CONFIG_AP_SSID);
-    strcpy(apConfig.preSharedKey, CONFIG_AP_PWD);
+    int ret = strcpy_s(apConfig.ssid, SSID_LEN, CONFIG_AP_SSID);
+    if (ret != 0) {
+        return 0;
+    }
+    ret = strcpy_s(apConfig.preSharedKey, PWD_LEN, CONFIG_AP_PWD);
+    if (ret != 0) {
+        return 0;
+    }
     apConfig.securityType = WIFI_SEC_TYPE_PSK;
 
     errCode = RegisterWifiEvent(&g_defaultWifiEventListener);
