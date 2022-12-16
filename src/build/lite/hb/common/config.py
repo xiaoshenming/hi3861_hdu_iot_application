@@ -169,7 +169,10 @@ class Config(metaclass=Singleton):
 
     @property
     def gn_path(self):
-        repo_gn_path = os.path.join(self.build_tools_path, 'gn')
+        if platform.system() == 'Windows':
+            repo_gn_path = os.path.join(self.build_tools_path, 'gn.exe')
+        else:
+            repo_gn_path = os.path.join(self.build_tools_path, 'gn')
         # gn exist.
         if os.path.isfile(repo_gn_path):
             return repo_gn_path
@@ -185,7 +188,10 @@ class Config(metaclass=Singleton):
 
     @property
     def ninja_path(self):
-        repo_ninja_path = os.path.join(self.build_tools_path, 'ninja')
+        if platform.system() == 'Windows':
+            repo_ninja_path = os.path.join(self.build_tools_path, 'ninja.exe')
+        else:
+            repo_ninja_path = os.path.join(self.build_tools_path, 'ninja')
         # ninja exist.
         if os.path.isfile(repo_ninja_path):
             return repo_ninja_path
