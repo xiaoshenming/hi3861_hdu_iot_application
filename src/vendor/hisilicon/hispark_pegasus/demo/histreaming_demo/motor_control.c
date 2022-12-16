@@ -56,7 +56,7 @@ void GA12N20Init(void)
     // GPIO9方向设置为输出
     IoTGpioSetDir(IOT_IO_NAME_GPIO_9, IOT_GPIO_DIR_OUT);
     // GPIO10方向设置为输出
-    IoTGpioSetDir(IOT_IO_NAME_GPIO_9, IOT_GPIO_DIR_OUT);
+    IoTGpioSetDir(IOT_IO_NAME_GPIO_10, IOT_GPIO_DIR_OUT);
     // 初始化PWM2
     IoTPwmInit(IOT_PWM_PORT_PWM2);
     // 初始化PWM3

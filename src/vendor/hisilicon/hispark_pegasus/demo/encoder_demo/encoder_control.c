@@ -88,9 +88,9 @@ void EncoderInit(void)
      */
     IoSetPull(IOT_IO_NAME_GPIO_0, IOT_IO_PULL_UP);
     /*
-     * 使能GPIO0的中断功能, 上升沿触发中断，rightACounterHandler为中断的回调函数
+     * 使能GPIO0的中断功能, 上升沿触发中断，LeftBCounterHandler为中断的回调函数
      * Enable the interrupt function of GPIO0, the rising edge triggers
-     * the interrupt, and rightACounterHandler is the interrupt callback function
+     * the interrupt, and LeftBCounterHandler is the interrupt callback function
      */
     IoTGpioRegisterIsrFunc(IOT_IO_NAME_GPIO_0, IOT_INT_TYPE_EDGE,
                            IOT_GPIO_EDGE_RISE_LEVEL_HIGH, LeftBCounterHandler, NULL);
@@ -110,9 +110,9 @@ void EncoderInit(void)
      */
     IoSetPull(IOT_IO_NAME_GPIO_12, IOT_IO_PULL_UP);
     /*
-     * 使能GPIO1的中断功能, 上升沿触发中断，rightBCounterHandler 为中断的回调函数
+     * 使能GPIO1的中断功能, 上升沿触发中断，LeftACounterHandler 为中断的回调函数
      * Enable the interrupt function of GPIO1, the rising edge triggers the interrupt,
-     * and rightBCounterHandler is the interrupt callback function
+     * and LeftACounterHandler is the interrupt callback function
      */
     IoTGpioRegisterIsrFunc(IOT_IO_NAME_GPIO_12, IOT_INT_TYPE_EDGE,
                            IOT_GPIO_EDGE_RISE_LEVEL_HIGH, LeftACounterHandler, NULL);
