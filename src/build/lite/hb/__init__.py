@@ -56,7 +56,7 @@ BUILD_TOOLS_CFG = {
                  '10.0.1-62608/linux/llvm.tar.gz'
     },
     "Windows": {
-        "build_tools_path": 'prebuilts\\build-tools\\win-x86\\bin',
+        "build_tools_path": 'prebuilts\\build-tools\\win64-x64\\bin',
         "gn": 'https://repo.huaweicloud.com/harmonyos/compiler/gn/' +\
               '1744/windows/gn-windows-amd64.zip',
         "ninja": 'https://repo.huaweicloud.com/harmonyos/compiler/ninja/' +\
