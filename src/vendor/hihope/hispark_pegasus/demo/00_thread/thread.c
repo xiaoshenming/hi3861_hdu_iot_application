@@ -1,5 +1,4 @@
-/*
- * Copyright (C) 2022 HiHope Open Source Organization .
+/* Copyright (C) 2022 HiHope Open Source Organization .
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +21,8 @@
 
 #define THREAD_NUM (1000)
 #define STACK_SIZE (1024)
-#define DELAY_MS   (20)
+#define DELAY_20MS   (20)
+#define DELAY_100MS (100)
 
 osThreadId_t newThread(char *name, osThreadFunc_t func, char *arg)
 {
@@ -47,7 +47,7 @@ void threadTest(char *arg)
     while (count < THREAD_NUM) {
         count++;
         printf("[Thread Test] threadTest, count: %d.\r\n", count);
-        osDelay(DELAY_MS);
+        osDelay(DELAY_20MS);
     }
 }
 
@@ -82,7 +82,7 @@ void rtosv2_thread_main(void)
     uint32_t t_count = osThreadGetCount();
     printf("[Thread Test] osThreadGetCount, count: %u.\r\n", t_count);
 
-    osDelay(DELAY_MS*5);
+    osDelay(DELAY_100MS);
     status = osThreadTerminate(tid);
     printf("[Thread Test] osThreadTerminate, status: %d.\r\n", status);
 }
