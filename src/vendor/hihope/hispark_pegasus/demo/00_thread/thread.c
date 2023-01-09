@@ -1,14 +1,35 @@
+/*
+ * Copyright (C) 2022 HiHope Open Source Organization .
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http:// www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ *
+ * limitations under the License.
+ */
+
 #include <stdio.h>
 #include <unistd.h>
 
 #include "ohos_init.h"
 #include "cmsis_os2.h"
 
-osThreadId_t newThread(char *name, osThreadFunc_t func, void *arg) {
+#define THREAD_NUM (1000)
+#define STACK_SIZE (1024)
+#define DELAY_MS   (20)
+
+osThreadId_t newThread(char *name, osThreadFunc_t func, char *arg)
+{
     osThreadAttr_t attr = {
-        name, 0, NULL, 0, NULL, 1024*2, osPriorityNormal, 0, 0
+        name, 0, NULL, 0, NULL, STACK_SIZE*2, osPriorityNormal, 0, 0
     };
-    osThreadId_t tid = osThreadNew(func, arg, &attr);
+    osThreadId_t tid = osThreadNew(func, (void *)arg, &attr);
     if (tid == NULL) {
         printf("[Thread Test] osThreadNew(%s) failed.\r\n", name);
     } else {
@@ -17,21 +38,22 @@ osThreadId_t newThread(char *name, osThreadFunc_t func, void *arg) {
     return tid;
 }
 
-void threadTest(void *arg) {
+void threadTest(char *arg)
+{
     static int count = 0;
-    printf("%s\r\n",(char *)arg);
+    printf("%s\r\n", arg);
     osThreadId_t tid = osThreadGetId();
     printf("[Thread Test] threadTest osThreadGetId, thread id:%p\r\n", tid);
-    while (1) {
+    while (count < THREAD_NUM) {
         count++;
         printf("[Thread Test] threadTest, count: %d.\r\n", count);
-        osDelay(20);
+        osDelay(DELAY_MS);
     }
 }
 
-void rtosv2_thread_main(void *arg) {
-    (void)arg;
-    osThreadId_t tid=newThread("test_thread", threadTest, "This is a test thread.");
+void rtosv2_thread_main(void)
+{
+    osThreadId_t tid = newThread("test_thread", threadTest, "This is a test thread.");
 
     const char *t_name = osThreadGetName(tid);
     printf("[Thread Test] osThreadGetName, thread name: %s.\r\n", t_name);
@@ -42,11 +64,11 @@ void rtosv2_thread_main(void *arg) {
     osStatus_t status = osThreadSetPriority(tid, osPriorityNormal4);
     printf("[Thread Test] osThreadSetPriority, status: %d.\r\n", status);
 
-    osPriority_t pri = osThreadGetPriority (tid);   
+    osPriority_t pri = osThreadGetPriority(tid);
     printf("[Thread Test] osThreadGetPriority, priority: %d.\r\n", pri);
 
     status = osThreadSuspend(tid);
-    printf("[Thread Test] osThreadSuspend, status: %d.\r\n", status);  
+    printf("[Thread Test] osThreadSuspend, status: %d.\r\n", status);
 
     status = osThreadResume(tid);
     printf("[Thread Test] osThreadResume, status: %d.\r\n", status);
@@ -60,7 +82,7 @@ void rtosv2_thread_main(void *arg) {
     uint32_t t_count = osThreadGetCount();
     printf("[Thread Test] osThreadGetCount, count: %u.\r\n", t_count);
 
-    osDelay(100);
+    osDelay(DELAY_MS*5);
     status = osThreadTerminate(tid);
     printf("[Thread Test] osThreadTerminate, status: %d.\r\n", status);
 }
@@ -74,12 +96,11 @@ static void ThreadTestTask(void)
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 1024;
+    attr.stack_size = STACK_SIZE;
     attr.priority = osPriorityNormal;
 
     if (osThreadNew((osThreadFunc_t)rtosv2_thread_main, NULL, &attr) == NULL) {
         printf("[ThreadTestTask] Falied to create rtosv2_thread_main!\n");
     }
 }
-
 APP_FEATURE_INIT(ThreadTestTask);
