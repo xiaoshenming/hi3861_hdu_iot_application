@@ -36,7 +36,7 @@ void sender_thread(void)
 {
     static int count = 0;
     message_entry sentry;
-    while(1) {
+    while (1) {
         sentry.tid = osThreadGetId();
         sentry.count = count;
         printf("[Message Test] %s send %d to message queue.\r\n",
@@ -50,7 +50,7 @@ void sender_thread(void)
 void receiver_thread(void)
 {
     message_entry rentry;
-    while(1) {
+    while (1) {
         osMessageQueueGet(qid, (void *)&rentry, NULL, osWaitForever);
         printf("[Message Test] %s get %d from %s by message queue.\r\n",
                osThreadGetName(osThreadGetId()), rentry.count, osThreadGetName(rentry.tid));
