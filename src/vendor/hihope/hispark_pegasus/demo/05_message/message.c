@@ -34,7 +34,7 @@ osMessageQueueId_t qid;
 
 void sender_thread(void)
 {
-    static int count=0;
+    static int count = 0;
     message_entry sentry;
     while(1) {
         sentry.tid = osThreadGetId();
@@ -58,12 +58,12 @@ void receiver_thread(void)
     }
 }
 
-osThreadId_t newThread(char *name, osThreadFunc_t func, void *arg)
+osThreadId_t newThread(char *name, osThreadFunc_t func, char *arg)
 {
     osThreadAttr_t attr = {
         name, 0, NULL, 0, NULL, STACK_SIZE*2, osPriorityNormal, 0, 0
     };
-    osThreadId_t tid = osThreadNew(func, arg, &attr);
+    osThreadId_t tid = osThreadNew(func, (void *)arg, &attr);
     if (tid == NULL) {
         printf("[Message Test] osThreadNew(%s) failed.\r\n", name);
     } else {
@@ -84,13 +84,13 @@ void rtosv2_msgq_main(void)
 
     osDelay(DELAY_20MS);
     uint32_t cap = osMessageQueueGetCapacity(qid);
-    printf("[Message Test] osMessageQueueGetCapacity, capacity: %u.\r\n",cap);
+    printf("[Message Test] osMessageQueueGetCapacity, capacity: %u.\r\n", cap);
     uint32_t msg_size =  osMessageQueueGetMsgSize(qid);
-    printf("[Message Test] osMessageQueueGetMsgSize, size: %u.\r\n",msg_size);
+    printf("[Message Test] osMessageQueueGetMsgSize, size: %u.\r\n", msg_size);
     uint32_t count = osMessageQueueGetCount(qid);
-    printf("[Message Test] osMessageQueueGetCount, count: %u.\r\n",count);
+    printf("[Message Test] osMessageQueueGetCount, count: %u.\r\n", count);
     uint32_t space = osMessageQueueGetSpace(qid);
-    printf("[Message Test] osMessageQueueGetSpace, space: %u.\r\n",space);
+    printf("[Message Test] osMessageQueueGetSpace, space: %u.\r\n", space);
 
     osDelay(DELAY_80MS);
     osThreadTerminate(ctid1);
