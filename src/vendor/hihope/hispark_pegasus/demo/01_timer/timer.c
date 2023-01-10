@@ -24,9 +24,8 @@
 #define TEST_TIMES      (3)
 static int times = 0;
 
-void cb_timeout_periodic(void *arg)
+void cb_timeout_periodic(void)
 {
-    (void)arg;
     times++;
 }
 
@@ -47,7 +46,7 @@ void timer_periodic(void)
         printf("[Timer Test] osTimerStart(periodic timer) success, wait a while and stop.\r\n");
     }
 
-    while(times < TEST_TIMES) {
+    while (times < TEST_TIMES) {
         printf("[Timer Test] times:%d.\r\n", times);
         osDelay(DELAY_100MS);
     }
