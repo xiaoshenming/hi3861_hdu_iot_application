@@ -23,17 +23,18 @@
 #define DELAY_5MS       (5)
 #define DELAY_13MS     (13)
 #define DELAY_17MS     (17)
-#define DELAY_100TICK (100)
+#define NUMBER_2        (2)
+#define NUMBER_100    (100)
 
 static int g_test_value = 0;
 
-void number_thread(void *arg)
+void number_thread(osMutexId_t *arg)
 {
-    osMutexId_t *mid = (osMutexId_t *)arg;
-    while(1) {
-        if (osMutexAcquire(*mid, 100) == osOK) {
+    osMutexId_t *mid = arg;
+    while (g_test_value < NUMBER_100) {
+        if (osMutexAcquire(*mid, NUMBER_100) == osOK) {
             g_test_value++;
-            if (g_test_value % 2 == 0) {
+            if (g_test_value % NUMBER_2 == 0) {
                 printf("[Mutex Test]%s gets an even value %d.\r\n", osThreadGetName(osThreadGetId()), g_test_value);
             } else {
                 printf("[Mutex Test]%s gets an odd value %d.\r\n", osThreadGetName(osThreadGetId()), g_test_value);
