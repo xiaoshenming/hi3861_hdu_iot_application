@@ -36,7 +36,8 @@ void producer_thread(void)
     while (1) {
         osSemaphoreAcquire(empty_id, osWaitForever);
         product_number++;
-        printf("[Semp Test]%s produces a product, now product number: %d.\r\n", osThreadGetName(osThreadGetId()), product_number);
+        printf("[Semp Test]%s produces a product, now product number: %d.\r\n",
+               osThreadGetName(osThreadGetId()), product_number);
         osDelay(DELAY_4MS);
         osSemaphoreRelease(filled_id);
     }
@@ -47,18 +48,19 @@ void consumer_thread(void)
     while (1) {
         osSemaphoreAcquire(filled_id, osWaitForever);
         product_number--;
-        printf("[Semp Test]%s consumes a product, now product number: %d.\r\n", osThreadGetName(osThreadGetId()), product_number);
+        printf("[Semp Test]%s consumes a product, now product number: %d.\r\n",
+               osThreadGetName(osThreadGetId()), product_number);
         osDelay(DELAY_3MS);
         osSemaphoreRelease(empty_id);
     }
 }
 
-osThreadId_t newThread(char *name, osThreadFunc_t func, void *arg)
+osThreadId_t newThread(char *name, osThreadFunc_t func, char *arg)
 {
     osThreadAttr_t attr = {
         name, 0, NULL, 0, NULL, STACK_SIZE*2, osPriorityNormal, 0, 0
     };
-    osThreadId_t tid = osThreadNew(func, arg, &attr);
+    osThreadId_t tid = osThreadNew(func, (void *)arg, &attr);
     if (tid == NULL) {
         printf("[Semp Test]osThreadNew(%s) failed.\r\n", name);
     } else {
