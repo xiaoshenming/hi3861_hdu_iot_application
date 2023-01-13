@@ -20,9 +20,9 @@
 #include "cmsis_os2.h"
 
 #define STACK_SIZE   (1024)
-#define DELAY_5MS       (5)
-#define DELAY_13MS     (13)
-#define DELAY_17MS     (17)
+#define DELAY_TICKS_5   (5)
+#define DELAY_TICKS_13 (13)
+#define DELAY_TICKS_17 (17)
 #define NUMBER_2        (2)
 #define NUMBER_100    (100)
 
@@ -40,7 +40,7 @@ void number_thread(osMutexId_t *arg)
                 printf("[Mutex Test]%s gets an odd value %d.\r\n", osThreadGetName(osThreadGetId()), g_test_value);
             }
             osMutexRelease(*mid);
-            osDelay(DELAY_5MS);
+            osDelay(DELAY_TICKS_5);
         }
     }
 }
@@ -74,10 +74,10 @@ void rtosv2_mutex_main(void)
     osThreadId_t tid2 = newThread("Thread_2", number_thread, &mid);
     osThreadId_t tid3 = newThread("Thread_3", number_thread, &mid);
 
-    osDelay(DELAY_13MS);
+    osDelay(DELAY_TICKS_13);
     osThreadId_t tid = osMutexGetOwner(mid);
     printf("[Mutex Test]osMutexGetOwner, thread id: %p, thread name: %s.\r\n", tid, osThreadGetName(tid));
-    osDelay(DELAY_17MS);
+    osDelay(DELAY_TICKS_17);
 
     osThreadTerminate(tid1);
     osThreadTerminate(tid2);

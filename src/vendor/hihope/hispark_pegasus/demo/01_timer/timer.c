@@ -19,8 +19,8 @@
 #include "ohos_init.h"
 #include "cmsis_os2.h"
 
-#define STACK_SIZE   (1024)
-#define DELAY_100MS   (100)
+#define STACK_SIZE      (1024)
+#define DELAY_TICKS_100 (100)
 #define TEST_TIMES      (3)
 static int times = 0;
 
@@ -38,7 +38,7 @@ void timer_periodic(void)
     } else {
         printf("[Timer Test] osTimerNew(periodic timer) success, tid: %p.\r\n", periodic_tid);
     }
-    osStatus_t status = osTimerStart(periodic_tid, DELAY_100MS);
+    osStatus_t status = osTimerStart(periodic_tid, DELAY_TICKS_100);
     if (status != osOK) {
         printf("[Timer Test] osTimerStart(periodic timer) failed.\r\n");
         return;
@@ -48,7 +48,7 @@ void timer_periodic(void)
 
     while (times < TEST_TIMES) {
         printf("[Timer Test] times:%d.\r\n", times);
-        osDelay(DELAY_100MS);
+        osDelay(DELAY_TICKS_100);
     }
 
     status = osTimerStop(periodic_tid);

@@ -20,10 +20,10 @@
 #include "cmsis_os2.h"
 
 #define STACK_SIZE   (1024)
-#define DELAY_3MS       (3)
-#define DELAY_5MS       (5)
-#define DELAY_20MS     (20)
-#define DELAY_80MS     (80)
+#define DELAY_TICKS_3   (3)
+#define DELAY_TICKS_5   (5)
+#define DELAY_TICKS_20 (20)
+#define DELAY_TICKS_80 (80)
 
 #define QUEUE_SIZE 3
 typedef struct {
@@ -43,7 +43,7 @@ void sender_thread(void)
                osThreadGetName(osThreadGetId()), count);
         osMessageQueuePut(qid, (const void *)&sentry, 0, osWaitForever);
         count++;
-        osDelay(DELAY_5MS);
+        osDelay(DELAY_TICKS_5);
     }
 }
 
@@ -54,7 +54,7 @@ void receiver_thread(void)
         osMessageQueueGet(qid, (void *)&rentry, NULL, osWaitForever);
         printf("[Message Test] %s get %d from %s by message queue.\r\n",
                osThreadGetName(osThreadGetId()), rentry.count, osThreadGetName(rentry.tid));
-        osDelay(DELAY_3MS);
+        osDelay(DELAY_TICKS_3);
     }
 }
 
@@ -82,7 +82,7 @@ void rtosv2_msgq_main(void)
     osThreadId_t ptid2 = newThread("sender2", sender_thread, NULL);
     osThreadId_t ptid3 = newThread("sender3", sender_thread, NULL);
 
-    osDelay(DELAY_20MS);
+    osDelay(DELAY_TICKS_20);
     uint32_t cap = osMessageQueueGetCapacity(qid);
     printf("[Message Test] osMessageQueueGetCapacity, capacity: %u.\r\n", cap);
     uint32_t msg_size =  osMessageQueueGetMsgSize(qid);
@@ -92,7 +92,7 @@ void rtosv2_msgq_main(void)
     uint32_t space = osMessageQueueGetSpace(qid);
     printf("[Message Test] osMessageQueueGetSpace, space: %u.\r\n", space);
 
-    osDelay(DELAY_80MS);
+    osDelay(DELAY_TICKS_80);
     osThreadTerminate(ctid1);
     osThreadTerminate(ctid2);
     osThreadTerminate(ptid1);
