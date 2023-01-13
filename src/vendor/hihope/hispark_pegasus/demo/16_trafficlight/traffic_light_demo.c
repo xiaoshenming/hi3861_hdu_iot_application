@@ -32,9 +32,9 @@ static int g_beepState = 0;
 #define     PWM_DUTY_50            (50)
 #define     PWM_FREQ_4K            (4000)
 #define     LIGHT_NUM              (3)
-#define     DELAY_100MS            (100*1000)
-#define     DELAY_200MS            (200*1000)
-#define     DELAY_500MS            (500*1000)
+#define     DELAY_100MS            (100 * 1000)
+#define     DELAY_200MS            (200 * 1000)
+#define     DELAY_500MS            (500 * 1000)
 
 
 #define     IOT_GPIO_IDX_10    10  // Red

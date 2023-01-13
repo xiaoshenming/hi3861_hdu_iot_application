@@ -92,7 +92,7 @@ static void CorlorfulLightTask(void)
         static const int chan[] = {HUMAN_SENSOR_CHAN_NAME, LIGHT_SENSOR_CHAN_NAME};
         static const int port[] = {IOT_PWM_PORT_PWM1, IOT_PWM_PORT_PWM2};
 
-        for (size_t i = 0; i < sizeof(chan)/sizeof(chan[0]); i++) { 
+        for (size_t i = 0; i < sizeof(chan) / sizeof(chan[0]); i++) {
             if (hi_adc_read(chan[i], &data[i], HI_ADC_EQU_MODEL_4, HI_ADC_CUR_BAIS_DEFAULT, 0)
                 == IOT_SUCCESS) {
                 duty[i] = IOT_PWM_DUTY_MAX * (unsigned int)data[i] / ADC_RESOLUTION - NUM_3;

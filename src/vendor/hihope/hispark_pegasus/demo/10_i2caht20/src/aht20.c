@@ -59,17 +59,28 @@
  **/
 #define AHT20_STATUS_BUSY_SHIFT 7       // bit[7] Busy indication
 #define AHT20_STATUS_BUSY_MASK  (0x1<<AHT20_STATUS_BUSY_SHIFT)
-#define AHT20_STATUS_BUSY(status) (((status) & AHT20_STATUS_BUSY_MASK) >> AHT20_STATUS_BUSY_SHIFT)
+// #define AHT20_STATUS_BUSY(status) (((status) & AHT20_STATUS_BUSY_MASK) >> AHT20_STATUS_BUSY_SHIFT)
+uint8_t aht20_status_busy(uint8_t status)
+{
+    return (((status) & AHT20_STATUS_BUSY_MASK) >> AHT20_STATUS_BUSY_SHIFT);
+}
 
 #define AHT20_STATUS_MODE_SHIFT 5       // bit[6:5] Mode Status
 #define AHT20_STATUS_MODE_MASK  (0x3<<AHT20_STATUS_MODE_SHIFT)
-#define AHT20_STATUS_MODE(status) (((status) & AHT20_STATUS_MODE_MASK) >> AHT20_STATUS_MODE_SHIFT)
-
+// #define AHT20_STATUS_MODE(status) (((status) & AHT20_STATUS_MODE_MASK) >> AHT20_STATUS_MODE_SHIFT)
+uint8_t aht20_status_mode(uint8_t status)
+{
+    return (((status) & AHT20_STATUS_MODE_MASK) >> AHT20_STATUS_MODE_SHIFT);
+}
                                         // bit[4] Reserved
 #define AHT20_STATUS_CALI_SHIFT 3       // bit[3] CAL Enable
 #define AHT20_STATUS_CALI_MASK  (0x1<<AHT20_STATUS_CALI_SHIFT)
 #define AHT20_STATUS_CALI(status) (((status) & AHT20_STATUS_CALI_MASK) >> AHT20_STATUS_CALI_SHIFT)
                                         // bit[2:0] Reserved
+uint8_t aht20_status_cali(uint8_t status)
+{
+    return (((status) & AHT20_STATUS_CALI_MASK) >> AHT20_STATUS_CALI_SHIFT);
+}
 
 #define AHT20_STATUS_RESPONSE_MAX 6
 
@@ -136,7 +147,7 @@ uint32_t AHT20_Calibrate(void)
 {
     uint32_t retval = 0;
     uint8_t buffer[AHT20_STATUS_RESPONSE_MAX];
-    //memset(&buffer, 0x0, sizeof(buffer));
+    // memset(&buffer, 0x0, sizeof(buffer));
     memset_s(&buffer, sizeof(buffer), 0x0, sizeof(buffer));
 
     retval = AHT20_StatusCommand();
@@ -149,7 +160,8 @@ uint32_t AHT20_Calibrate(void)
         return retval;
     }
 
-    if (AHT20_STATUS_BUSY(buffer[0]) || !AHT20_STATUS_CALI(buffer[0])) {
+ // if (AHT20_STATUS_BUSY(buffer[0]) || !AHT20_STATUS_CALI(buffer[0])) {
+    if (aht20_status_busy(buffer[0]) || !aht20_status_cali(buffer[0])) {
         retval = AHT20_ResetCommand();
         if (retval != HI_ERR_SUCCESS) {
             return retval;
@@ -186,14 +198,15 @@ uint32_t AHT20_GetMeasureResult(float* temp, float* humi)
     }
 
     uint8_t buffer[AHT20_STATUS_RESPONSE_MAX];
-    //memset(&buffer, 0x0, sizeof(buffer));
+    // memset(&buffer, 0x0, sizeof(buffer));
     memset_s(&buffer, sizeof(buffer), 0x0, sizeof(buffer));
     retval = AHT20_Read(buffer, sizeof(buffer));  // recv status command result
     if (retval != HI_ERR_SUCCESS) {
         return retval;
     }
 
-    for (i = 0; AHT20_STATUS_BUSY(buffer[IDX_0]) && i < AHT20_MAX_RETRY; i++) {
+ // for (i = 0; AHT20_STATUS_BUSY(buffer[IDX_0]) && i < AHT20_MAX_RETRY; i++) {
+    for (i = 0; aht20_status_busy(buffer[IDX_0]) && i < AHT20_MAX_RETRY; i++) {
         // printf("AHT20 device busy, retry %d/%d!\r\n", i, AHT20_MAX_RETRY);
         usleep(AHT20_MEASURE_TIME);
         retval = AHT20_Read(buffer, sizeof(buffer));  // recv status command result

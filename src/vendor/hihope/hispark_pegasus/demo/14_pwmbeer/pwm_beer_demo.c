@@ -56,7 +56,7 @@ static void *PWMBeerTask(void)
 static void OnButtonPressed(void)
 {
     g_beepState = !g_beepState;
-    g_beepCount --;
+    g_beepCount--;
 }
 
 static void StartPWMBeerTask(void)

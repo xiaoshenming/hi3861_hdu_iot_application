@@ -26,7 +26,7 @@
 #include "hi_i2c.h"
 
 #define STACK_SIZE     (4096)
-#define I2C_DATA_RATE  (400 * 1000)  //400K
+#define I2C_DATA_RATE  (400 * 1000)  // 400K
 #define DELAY_S        (1)
 
 void Aht20TestTask(void)
