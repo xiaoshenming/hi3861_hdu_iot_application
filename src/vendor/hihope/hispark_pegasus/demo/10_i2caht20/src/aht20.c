@@ -75,7 +75,7 @@ uint8_t aht20_status_mode(uint8_t status)
                                         // bit[4] Reserved
 #define AHT20_STATUS_CALI_SHIFT 3       // bit[3] CAL Enable
 #define AHT20_STATUS_CALI_MASK  (0x1<<AHT20_STATUS_CALI_SHIFT)
-#define AHT20_STATUS_CALI(status) (((status) & AHT20_STATUS_CALI_MASK) >> AHT20_STATUS_CALI_SHIFT)
+// #define AHT20_STATUS_CALI(status) (((status) & AHT20_STATUS_CALI_MASK) >> AHT20_STATUS_CALI_SHIFT)
                                         // bit[2:0] Reserved
 uint8_t aht20_status_cali(uint8_t status)
 {

@@ -61,7 +61,7 @@ static void *TrafficLightTask(void)
         }
     }
 
-    while (g_beepCnt --) {
+    while (g_beepCnt--) {
         for (unsigned int j = 0; j < LIGHT_NUM; j++) {
             IoTGpioSetOutputVal(pins[j], g_ledStates[j]);
         }
@@ -86,7 +86,9 @@ static void OnButtonPressed(void)
         }
     }
     g_currentBright++;
-    if (g_currentBright == LIGHT_NUM) g_currentBright = 0;
+    if (g_currentBright == LIGHT_NUM) {
+        g_currentBright = 0;
+    }
 
     g_beepState = !g_beepState;
 }

@@ -51,15 +51,15 @@
 #define CLK_160M                160000000
 
 #define STACK_SIZE             (4096)
-#define DELAY_300MS            (300*1000)
-#define DELAY_10MS             (10*1000)
+#define DELAY_300MS            (300 * 1000)
+#define DELAY_10MS             (10 * 1000)
 
 static void CorlorfulLightTask(void)
 {
     static const unsigned int pins[] = {RED_LED_PIN_NAME, GREEN_LED_PIN_NAME, BLUE_LED_PIN_NAME};
 
     for (int i = 0; i < NUM_BLINKS; i++) {
-        for (unsigned j = 0; j < sizeof(pins)/sizeof(pins[0]); j++) {
+        for (unsigned j = 0; j < sizeof(pins) / sizeof(pins[0]); j++) {
             IoTGpioSetOutputVal(pins[j], LED_BRIGHT);
             usleep(DELAY_300MS);
             IoTGpioSetOutputVal(pins[j], LED_DARK);
@@ -76,7 +76,7 @@ static void CorlorfulLightTask(void)
     IoTPwmInit(IOT_PWM_PORT_PWM2); // G
     IoTPwmInit(IOT_PWM_PORT_PWM3); // B
 
-    for(int i = 1; i < IOT_PWM_PORT_PWM_MAX; i++) {
+    for (int i = 1; i < IOT_PWM_PORT_PWM_MAX; i++) {
         // use PWM control BLUE LED brightness
         for (int j = 1; j <= IOT_PWM_DUTY_MAX; j *= NUM_2) {
             IoTPwmStart(i, j, CLK_160M / PWM_FREQ_DIVITION);
@@ -86,7 +86,7 @@ static void CorlorfulLightTask(void)
     }
 
     static int g_blinkCnt = 1000;
-    while (g_blinkCnt --) {
+    while (g_blinkCnt--) {
         unsigned short duty[NUM_SENSORS] = {0, 0};
         unsigned short data[NUM_SENSORS] = {0, 0};
         static const int chan[] = {HUMAN_SENSOR_CHAN_NAME, LIGHT_SENSOR_CHAN_NAME};
