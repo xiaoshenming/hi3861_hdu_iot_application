@@ -16,7 +16,7 @@ build_ext_component("run_wifiiot_scons") {
   outdir = rebase_path(root_out_dir)
 
   if (host_os == "win") {
-    command = "python hm_build.py $outdir"
+    command = "sh hm_build.sh $outdir win"
   } else {
     command = "sh hm_build.sh $outdir linux"
   }
