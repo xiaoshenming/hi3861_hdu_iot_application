@@ -18,7 +18,7 @@
 
 #include "cmsis_os2.h"
 #include "ohos_init.h"
-#include "iot_gpio.h" 
+#include "iot_gpio.h"
 
 #define LED_TASK_GPIO 9
 #define LED_TASK_STACK_SIZE 1024
@@ -32,13 +32,13 @@ static void* GpioTask(void)
     static int count = 100;
 
     IoTGpioInit(LED_TASK_GPIO);
-    IoTGpioSetDir(LED_TASK_GPIO,IOT_GPIO_DIR_OUT);
+    IoTGpioSetDir(LED_TASK_GPIO, IOT_GPIO_DIR_OUT);
 
     while (count--) {
         printf(" LED_SPARK!\n");
-        IoTGpioSetOutputVal(LED_TASK_GPIO,GPIO_LOW);
+        IoTGpioSetOutputVal(LED_TASK_GPIO, GPIO_LOW);
         osDelay(DELAY_TICKS_50);
-        IoTGpioSetOutputVal(LED_TASK_GPIO,GPIO_HIGH);
+        IoTGpioSetOutputVal(LED_TASK_GPIO, GPIO_HIGH);
         osDelay(DELAY_TICKS_50);
     }
     return NULL;

@@ -43,17 +43,17 @@ static void *LedTask(void)
     while (g_count) {
         switch (g_ledState) {
             case LED_ON:
-                IoTGpioSetOutputVal(LED_TASK_GPIO,GPIO_LOW);
+                IoTGpioSetOutputVal(LED_TASK_GPIO, GPIO_LOW);
                 osDelay(DELAY_TICKS_30);
                 break;
             case LED_OFF:
-                IoTGpioSetOutputVal(LED_TASK_GPIO,GPIO_HIGH);
+                IoTGpioSetOutputVal(LED_TASK_GPIO, GPIO_HIGH);
                 osDelay(DELAY_TICKS_30);
                 break;
             case LED_SPARK:
-                IoTGpioSetOutputVal(LED_TASK_GPIO,GPIO_LOW);
+                IoTGpioSetOutputVal(LED_TASK_GPIO, GPIO_LOW);
                 osDelay(DELAY_TICKS_30);
-                IoTGpioSetOutputVal(LED_TASK_GPIO,GPIO_HIGH);
+                IoTGpioSetOutputVal(LED_TASK_GPIO, GPIO_HIGH);
                 osDelay(DELAY_TICKS_30);
                 break;
             default:
@@ -91,7 +91,7 @@ static void LedExampleEntry(void)
     osThreadAttr_t attr;
 
     IoTGpioInit(LED_TASK_GPIO);
-    IoTGpioSetDir(LED_TASK_GPIO,IOT_GPIO_DIR_OUT);
+    IoTGpioSetDir(LED_TASK_GPIO, IOT_GPIO_DIR_OUT);
  
     IoTGpioInit(IOT_GPIO_KEY);
     hi_io_set_func(IOT_GPIO_KEY, GPIO_LOW);

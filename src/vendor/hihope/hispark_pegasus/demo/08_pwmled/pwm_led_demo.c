@@ -31,18 +31,19 @@
 #define DELAY_US 250000
 #define STACK_SIZE (4096)
 #define PWM_PORT_NUM  (1)
+#define DOUBLE  (2)
 
 static void PWMLedDemoTask(void)
 {
     static int g_count = 100;
 
-    //炫彩灯板的红灯
+    // 炫彩灯板的红灯
     hi_io_set_func(RED_LED_PIN_NAME, HI_IO_FUNC_GPIO_10_PWM1_OUT);
     IoTPwmInit(PWM_PORT_NUM);
 
     while (g_count) {
         // use PWM control RED LED brightness
-        for (int i = 1; i <= RESOLUTION; i *= 2) {
+        for (int i = 1; i <= RESOLUTION; i *= DOUBLE) {
             IoTPwmStart(PWM_PORT_NUM, i, PWM_FREQ_DIVITION);
             usleep(DELAY_US);
             IoTPwmStop(PWM_PORT_NUM);
@@ -56,7 +57,7 @@ static void PWMLedDemo(void)
     osThreadAttr_t attr;
 
     // set Red LED pin to GPIO function
-    IoTGpioInit(RED_LED_PIN_NAME); 
+    IoTGpioInit(RED_LED_PIN_NAME);
 
     attr.name = "PWMLedDemoTask";
     attr.attr_bits = 0U;
