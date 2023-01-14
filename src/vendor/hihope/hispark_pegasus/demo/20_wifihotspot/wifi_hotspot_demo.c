@@ -37,6 +37,8 @@
 #include "lwip/netifapi.h"
 
 #define STACK_SIZE     10240
+#define AP_SSID        "ABCD"
+#define AP_SKEY        "123456789"
 #define IDX_0          0
 #define IDX_1          1
 #define IDX_2          2
@@ -119,9 +121,9 @@ int StartHotspot(const HotspotConfig* config)
         ip4_addr_t gateway;
         ip4_addr_t netmask;
 
-        IP4_ADDR(&ipaddr,  192, 168, 1, 1);     /* input your IP for example: 192.168.1.1 */
-        IP4_ADDR(&gateway, 192, 168, 1, 1);     /* input your gateway for example: 192.168.1.1 */
-        IP4_ADDR(&netmask, 255, 255, 255, 0);   /* input your netmask for example: 255.255.255.0 */
+        IP4_ADDR(&ipaddr,  192, 168, 1, 1);     /* input your IP for example: 192 168 1 1 */
+        IP4_ADDR(&gateway, 192, 168, 1, 1);     /* input your gateway for example: 192 168 1 1 */
+        IP4_ADDR(&netmask, 255, 255, 255, 0);   /* input your netmask for example: 255 255 255 0 */
         err_t ret = netifapi_netif_set_addr(g_iface, &ipaddr, &netmask, &gateway);
         printf("netifapi_netif_set_addr: %d\r\n", ret);
 
@@ -154,8 +156,10 @@ static void WifiHotspotTask(void)
     WifiErrorCode errCode;
     HotspotConfig config = {0};
 
-    strcpy(config.ssid, "HiSpark-AP");
-    strcpy(config.preSharedKey, "12345678");
+    // strcpy(config.ssid, "ABCD");
+    // strcpy(config.preSharedKey, "12345678");
+    strcpy_s(config.ssid, WIFI_MAX_SSID_LEN, AP_SSID);
+    strcpy_s(config.preSharedKey, WIFI_MAX_KEY_LEN, AP_SKEY);
     config.securityType = WIFI_SEC_TYPE_PSK;
     config.band = HOTSPOT_BAND_TYPE_2G;
     config.channelNum = CH_NUM;

@@ -121,8 +121,8 @@ void ssd1306_TestFPS(void)
 
 void ssd1306_TestLine(void)
 {
-    ssd1306_DrawLine(1,1,SSD1306_WIDTH - 1,SSD1306_HEIGHT - 1,White);
-    ssd1306_DrawLine(SSD1306_WIDTH - 1,1,1,SSD1306_HEIGHT - 1,White);
+    ssd1306_DrawLine(1, 1, SSD1306_WIDTH - 1, SSD1306_HEIGHT - 1, White);
+    ssd1306_DrawLine(SSD1306_WIDTH - 1, 1, 1, SSD1306_HEIGHT - 1, White);
     ssd1306_UpdateScreen();
     return;
 }
@@ -134,7 +134,7 @@ void ssd1306_TestRectangle(void)
 
     for(delta = 0; delta < delta_max; delta ++) {
         ssd1306_DrawRectangle(1 + (delta_max * delta),1 + (delta_max * delta) ,
-            SSD1306_WIDTH-1 - (delta_max * delta),SSD1306_HEIGHT-1 - (delta_max * delta),White);
+            SSD1306_WIDTH-1 - (delta_max * delta),SSD1306_HEIGHT-1 - (delta_max * delta), White);
     }
     ssd1306_UpdateScreen();
     return;

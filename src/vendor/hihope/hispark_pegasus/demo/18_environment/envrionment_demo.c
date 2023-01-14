@@ -62,7 +62,8 @@
 #define IDX_4          4
 #define IDX_5          5
 #define IDX_6          6
-#define VOLTAGE_5V     5
+#define VOLTAGE_5V     (5.0)
+#define EPS            (1e-7)
 
 unsigned int g_sensorStatus = 0;
 float range_20 = 20.0f;
@@ -137,7 +138,7 @@ static void EnvironmentTask(void)
              // Vx / 5 == 1kom / (1kom + Rx)
              //   => Rx + 1 == 5/Vx
              //   =>  Rx = 5/Vx - 1
-            if (Vx > 0.0) {
+            if (abs(Vx) > EPS) {
                 gasSensorResistance = VOLTAGE_5V / Vx - 1;
                 printf("\r\n hi_adc_read ok, data=%d, vx=%f, gasSensorResistance=%f", data, Vx, gasSensorResistance);
             }
@@ -159,23 +160,23 @@ static void EnvironmentTask(void)
         if (temperature > range_35 || temperature < 0) {
             g_sensorStatus++;
             OledShowString(0, IDX_5, "temp abnormal!!", 1);
-        }     
+        }
 
         if (humidity < range_20 || humidity > range_50) {
             g_sensorStatus++;
-            if (temperature > range_35 || temperature < 0) { 
-                OledShowString(0, IDX_6, "humi abnormal!!", 1);            
-            }   else {
-                OledShowString(0, IDX_5, "humi abnormal!!", 1);            
-            }        
-        }        
+            if (temperature > range_35 || temperature < 0) {
+                OledShowString(0, IDX_6, "humi abnormal!!", 1);
+            } else {
+                OledShowString(0, IDX_5, "humi abnormal!!", 1);
+            }
+        }
 
-        if (g_sensorStatus > 0) { 
-            IoTPwmStart(WIFI_IOT_PWM_PORT_PWM0, BEEP_PWM_DUTY, BEEP_PWM_FREQ);            
-            usleep(DELAY_500MS);            
-            IoTPwmStop(WIFI_IOT_PWM_PORT_PWM0);            
-            g_sensorStatus = 0;        
-        } 
+        if (g_sensorStatus > 0) {
+            IoTPwmStart(WIFI_IOT_PWM_PORT_PWM0, BEEP_PWM_DUTY, BEEP_PWM_FREQ);
+            usleep(DELAY_500MS);
+            IoTPwmStop(WIFI_IOT_PWM_PORT_PWM0);
+            g_sensorStatus = 0;
+        }
 
         usleep(DELAY_500MS);
     }

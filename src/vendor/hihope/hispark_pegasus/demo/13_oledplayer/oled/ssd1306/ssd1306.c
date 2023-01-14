@@ -67,10 +67,10 @@ uint32_t HAL_GetTick(void)
 {
     uint32_t t = MS_US_RATIO;
     uint32_t msPerTick = t / osKernelGetTickFreq(); // 10ms
-    uint32_t tickMs = osKernelGetTickCount()* msPerTick;
+    uint32_t tickMs = osKernelGetTickCount() * msPerTick;
 
-    uint32_t csPerMs = osKernelGetSysTimerFreq()/ t; // 160K cycle/ms
-    uint32_t csPerTick = csPerMs * msPerTick; // 1600K cycles/tick
+    uint32_t csPerMs = osKernelGetSysTimerFreq() / t; // 160K cycle/ms
+    uint32_t csPerTick = csPerMs * msPerTick;         // 1600K cycles/tick
     uint32_t restMs = osKernelGetSysTimerCount() % csPerTick / csPerMs;
 
     return tickMs + restMs;
@@ -109,10 +109,10 @@ void ssd1306_WriteData(uint8_t* buffer, size_t buff_size)
 {
     uint8_t data[SSD1306_WIDTH * DOUBLE] = {0};
     for (size_t i = 0; i < buff_size; i++) {
-        data[i*DOUBLE] = SSD1306_CTRL_DATA | SSD1306_MASK_CONT;
-        data[i*DOUBLE+1] = buffer[i];
+        data[i * DOUBLE] = SSD1306_CTRL_DATA | SSD1306_MASK_CONT;
+        data[i * DOUBLE + 1] = buffer[i];
     }
-    data[(buff_size - 1)* DOUBLE] = SSD1306_CTRL_DATA;
+    data[(buff_size - 1) * DOUBLE] = SSD1306_CTRL_DATA;
     ssd1306_SendData(data, sizeof(data));
 }
 
@@ -165,8 +165,9 @@ SSD1306_Error_t ssd1306_FillBuffer(uint8_t* buf, uint32_t len)
     SSD1306_Error_t ret = SSD1306_ERR;
     if (len <= SSD1306_BUFFER_SIZE) {
         // memcpy(SSD1306_Buffer,buf,len);
-        int ret = memmove_s(SSD1306_Buffer, len, buf, len);
-        if (ret != 0) {
+        int r = memmove_s(SSD1306_Buffer, SSD1306_BUFFER_SIZE, buf, len);
+        if (r != 0) {
+            return ret;
         }
         ret = SSD1306_OK;
     }
@@ -304,10 +305,10 @@ void ssd1306_UpdateScreen(void)
         0X07,   // 页终止地址 7
     };
     uint32_t count = 0;
-    uint8_t data[sizeof(cmd)*DOUBLE + SSD1306_BUFFER_SIZE + 1] = {};
+    uint8_t data[sizeof(cmd) * DOUBLE + SSD1306_BUFFER_SIZE + 1] = {};
 
     // copy cmd
-    for (uint32_t i = 0; i < sizeof(cmd)/sizeof(cmd[0]); i++) {
+    for (uint32_t i = 0; i < sizeof(cmd) / sizeof(cmd[0]); i++) {
         data[count++] = SSD1306_CTRL_CMD | SSD1306_MASK_CONT;
         data[count++] = cmd[i];
     }
@@ -448,10 +449,10 @@ void ssd1306_DrawLine(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, SSD1306_CO
         /* nothing to do */
         }
     }
-  return;
+    return;
 }
 
-//Draw polyline
+// Draw polyline
 void ssd1306_DrawPolyline(const SSD1306_VERTEX *par_vertex, uint16_t par_size, SSD1306_COLOR color)
 {
     // uint16_t i;
@@ -485,7 +486,7 @@ static uint16_t ssd1306_NormalizeTo0_360(uint16_t par_deg)
     }
     return loc_angle;
 }
-/*DrawArc. Draw angle is beginning from 4 quart of trigonometric circle (3pi/2)
+/* DrawArc. Draw angle is beginning from 4 quart of trigonometric circle (3pi/2)
  * start_angle in degree
  * sweep in degree
  */
@@ -583,7 +584,7 @@ void ssd1306_DrawBitmap(const uint8_t* bitmap, uint32_t size)
     }
     for (uint8_t y = 0; y < rows; y++) {
         for (uint8_t x = 0; x < SSD1306_WIDTH; x++) {
-            uint8_t byte = bitmap[(y * SSD1306_WIDTH / c)+ (x / c)];
+            uint8_t byte = bitmap[(y * SSD1306_WIDTH / c) + (x / c)];
             uint8_t bit = byte & (0x80 >> (x % c));
             ssd1306_DrawPixel(x, y, bit ? White : Black);
         }

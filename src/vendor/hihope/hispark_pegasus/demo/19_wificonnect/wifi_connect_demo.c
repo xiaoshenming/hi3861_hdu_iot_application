@@ -39,6 +39,8 @@
 #include "lwip/api_shell.h"
 
 #define STACK_SIZE     10240
+#define AP_SSID        "ABCD"
+#define AP_SKEY        "123456789"
 
 #define IDX_0          0
 #define IDX_1          1
@@ -101,8 +103,10 @@ static void WifiConnectTask(void)
     printf("RegisterWifiEvent: %d\r\n", errCode);
 
     // setup your AP params
-    strcpy(apConfig.ssid, "ABCD");
-    strcpy(apConfig.preSharedKey, "147258369");
+    // strcpy(apConfig.ssid, "ABCD");
+    // strcpy(apConfig.preSharedKey, "147258369");
+    strcpy_s(apConfig.ssid, WIFI_MAX_SSID_LEN, AP_SSID);
+    strcpy_s(apConfig.preSharedKey, WIFI_MAX_KEY_LEN, AP_SKEY);
     apConfig.securityType = WIFI_SEC_TYPE_PSK;
 
     int timeoutCounter = COUNTER * COUNTER;

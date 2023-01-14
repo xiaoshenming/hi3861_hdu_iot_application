@@ -39,7 +39,7 @@
 
 void TestGetTick(void)
 {
-    uint32_t tick = NUMBER_100 * NUMBER_100;  //10 * 1000;
+    uint32_t tick = NUMBER_100 * NUMBER_100;  // 10 * 1000;
     for (int i = 0; i < MAX_COUNT; i++) {
         usleep(tick);
         printf("HAL_GetTick(): %d\r\n", HAL_GetTick());
@@ -131,14 +131,14 @@ void Ssd1306TestTask(void)
 
     // WatchDogDisable();
 
-    //usleep(20*1000);
-    usleep(NUMBER_2*NUMBER_100*NUMBER_100);
+    // usleep(20 * 1000);
+    usleep(NUMBER_2 * NUMBER_100 * NUMBER_100);
     ssd1306_Init();
     ssd1306_Fill(Black);
     ssd1306_SetCursor(0, 0);
     ssd1306_DrawString("Hello HiHope!", Font_7x10, White);
 
-    // usleep(2000*1000);
+    // usleep(2000 * 1000);
     sleep(DELAY_2S);
 
     uint32_t start = HAL_GetTick();
@@ -153,7 +153,7 @@ void Ssd1306TestTask(void)
     int testCount = 100; // test 100 times
     while (testCount--) {
         ssd1306_TestAll();
-        //usleep(10000);
+        // usleep(10000);
         usleep(NUMBER_100 * NUMBER_100);
     }
 }

@@ -16,13 +16,13 @@
 
 #include <stddef.h>
 #include <stdio.h>
-#include "oled_ssd1306.h"
 #include "iot_gpio.h"
 #include "iot_i2c.h"
 #include "iot_errno.h"
 #include "oled_fonts.h"
 #include "hi_io.h"
-
+#include "oled_ssd1306.h"
+ 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 
 #define OLED_I2C_IDX 0
@@ -114,25 +114,25 @@ uint32_t OledInit(void)
         0x3F, // --1/32 duty
         0xC8, // Com scan direction
         0xD3, // -set display offset
-        0x00, // 
+        0x00, //
         0xD5, // set osc division
-        0x80, // 
+        0x80, //
         0xD8, // set area color mode off
-        0x05, // 
+        0x05, //
         0xD9, // Set Pre-Charge Period
-        0xF1, // 
+        0xF1, //
         0xDA, // set com pin configuartion
-        0x12, // 
+        0x12, //
         0xDB, // set Vcomh
-        0x30, // 
+        0x30, //
         0x8D, // set charge pump enable
-        0x14, // 
+        0x14, //
         0xAF, // --turn on oled panel
     };
 
     IoTGpioInit(IOT_GPIO_IDX_13);
     hi_io_set_func(IOT_GPIO_IDX_13, HI_IO_FUNC_GPIO_13_I2C0_SDA);
-    IoTGpioInit(IOT_GPIO_IDX_14);    
+    IoTGpioInit(IOT_GPIO_IDX_14);
     hi_io_set_func(IOT_GPIO_IDX_14, HI_IO_FUNC_GPIO_14_I2C0_SCL);
 
     IoTI2cInit(OLED_I2C_IDX, OLED_I2C_BAUDRATE);
@@ -159,12 +159,12 @@ void OledFillScreen(uint8_t fillData)
     uint8_t m = 0;
     uint8_t n = 0;
 
-    for (m=0; m < NUM_8; m++) {
+    for (m = 0; m < NUM_8; m++) {
         WriteCmd(0xb0 + m);
         WriteCmd(0x00);
         WriteCmd(0x10);
 
-        for (n=0; n < NUM_128; n++) {
+        for (n = 0; n < NUM_128; n++) {
             WriteData(fillData);
         }
     }
@@ -172,7 +172,7 @@ void OledFillScreen(uint8_t fillData)
 
 /**
  * @brief 8*16 typeface
- * @param x: write positon start from x axis 
+ * @param x: write positon start from x axis
  * @param y: write positon start from y axis
  * @param ch: write data
  * @param font: selected font
@@ -190,11 +190,11 @@ void OledShowChar(uint8_t x, uint8_t y, uint8_t ch, Font font)
 
     if (font == FONT8x16) {
         OledSetPosition(x, y);
-        for (i = 0; i < NUM_8; i++){
+        for (i = 0; i < NUM_8; i++) {
             WriteData(F8X16[c * NUM_16 + i]);
         }
 
-        OledSetPosition(x, y+1);
+        OledSetPosition(x, y + 1);
         for (i = 0; i < NUM_8; i++) {
             WriteData(F8X16[c * NUM_16 + i + NUM_8]);
         }
@@ -214,12 +214,14 @@ void OledShowString(uint8_t x, uint8_t y, const char* str, Font font)
         return;
     }
 
+    uint8_t tempx = x;
+    uint8_t tempy = y;
     while (str[j]) {
-        OledShowChar(x, y, str[j], font);
-        x += NUM_8;
-        if (x > NUM_120) {
-            x = 0;
-            y += NUM_2;
+        OledShowChar(tempx, tempy, str[j], font);
+        tempx += NUM_8;
+        if (tempx > NUM_120) {
+            tempx = 0;
+            tempy += NUM_2;
         }
         j++;
     }
