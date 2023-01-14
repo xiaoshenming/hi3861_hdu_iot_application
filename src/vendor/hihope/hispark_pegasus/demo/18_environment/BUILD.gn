@@ -12,20 +12,15 @@
 #
 #limitations under the License.
 
-static_library("oled_ssd1306") {
+static_library("environment") {
     sources = [
-        "ssd1306.c",
-        "ssd1306_fonts.c",
+       "envrionment_demo.c", "oled_ssd1306.c", "aht20.c",
     ]
 
     include_dirs = [
         "//utils/native/lite/include",
-        "//kernel/liteos_m/kal/cmsis",
+        "//kernel/liteos_m/kal",
         "//base/iot_hardware/peripheral/interfaces/kits",
-#        "//device/soc/hisilicon/hi3861v100/hi3861_adapter/hals/communication/wifi_lite/wifiservice",
-#        "//device/soc/hisilicon/hi3861v100/hi3861_adapter/kal",
+        "//device/soc/hisilicon/hi3861v100/sdk_liteos/include"
     ]
 }
-
-
-
