@@ -53,7 +53,7 @@ static uint32_t PlayStream(void)
 {
     uint32_t frameIdMax = 1000000;  // for while loop condition
     uint32_t frameId = 0;
-    int sockfd =  lwip_socket(AF_INET, SOCK_STREAM, 0);
+    int sockfd = lwip_socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) {
         printf("lwip_socket failed!\r\n");
         return 0;
@@ -149,8 +149,10 @@ static void Ssd1306PlayTask(void)
 
     // prepare hotspot prarams
     WifiDeviceConfig apConfig = {};
-    strcpy(apConfig.ssid, PARAM_HOTSPOT_SSID);
-    strcpy(apConfig.preSharedKey, PARAM_HOTSPOT_PSK);
+    // strcpy(apConfig.ssid, PARAM_HOTSPOT_SSID);
+    // strcpy(apConfig.preSharedKey, PARAM_HOTSPOT_PSK);
+    strcpy_s(apConfig.ssid, WIFI_MAX_SSID_LEN, PARAM_HOTSPOT_SSID);
+    strcpy_s(apConfig.preSharedKey, WIFI_MAX_KEY_LEN, PARAM_HOTSPOT_PSK);
     apConfig.securityType = PARAM_HOTSPOT_TYPE;
 
     int netId = ConnectToHotspot(&apConfig);

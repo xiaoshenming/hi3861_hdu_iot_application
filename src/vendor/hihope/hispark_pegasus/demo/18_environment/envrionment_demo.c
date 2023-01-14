@@ -26,7 +26,7 @@
 #include "iot_pwm.h"
 #include "iot_errno.h"
 #include "hi_io.h"
-//#include "iot_adc.h"
+// #include "iot_adc.h"
 #include "aht20.h"
 #include "oled_ssd1306.h"
 
@@ -97,7 +97,7 @@ static void EnvironmentTask(void)
     IoTPwmInit(WIFI_IOT_PWM_PORT_PWM0);
 
     for (int i = 0; i < BEEP_TIMES; i++) {
-        snprintf(line, sizeof(line), "beep %d/%d", (i+1), BEEP_TIMES);
+        snprintf(line, sizeof(line), "beep %d/%d", (i + 1), BEEP_TIMES);
         OledShowString(0, IDX_0, line, 1);
 
         IoTPwmStart(WIFI_IOT_PWM_PORT_PWM0, BEEP_PWM_DUTY, BEEP_PWM_FREQ);

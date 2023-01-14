@@ -66,7 +66,7 @@ static uint32_t I2cWiteByte(uint8_t regAddr, uint8_t byte)
     IotI2cData i2cData = {0};
 
     i2cData.sendBuf = buffer;
-    i2cData.sendLen = sizeof(buffer)/sizeof(buffer[0]);
+    i2cData.sendLen = sizeof(buffer) / sizeof(buffer[0]);
 
     return IoTI2cWrite(id, OLED_I2C_ADDR, i2cData.sendBuf, i2cData.sendLen);
 }
@@ -104,11 +104,11 @@ uint32_t OledInit(void)
         0xAE, // --display off
         0x00, // ---set low column address
         0x10, // ---set high column address
-        0x40, // --set start line address  
+        0x40, // --set start line address
         0xB0, // --set page address
         0x81, // contract control
-        0xFF, // --128   
-        0xA1, // set segment remap 
+        0xFF, // --128
+        0xA1, // set segment remap
         0xA6, // --normal / reverse
         0xA8, // --set multiplex ratio(1 to 64)
         0x3F, // --1/32 duty
@@ -181,25 +181,27 @@ void OledShowChar(uint8_t x, uint8_t y, uint8_t ch, Font font)
 {
     uint8_t c = 0;
     uint8_t i = 0;
+    uint8_t tempx = x;
+    uint8_t tempy = y;
 
-    c = ch - ' '; //得到偏移后的值
-    if (x > OLED_WIDTH - 1) {
-        x = 0;
-        y = y + NUM_2;
+    c = ch - ' '; // 得到偏移后的值
+    if (tempx > OLED_WIDTH - 1) {
+        tempx = 0;
+        tempy = tempy + NUM_2;
     }
 
     if (font == FONT8x16) {
-        OledSetPosition(x, y);
+        OledSetPosition(tempx, tempy);
         for (i = 0; i < NUM_8; i++) {
             WriteData(F8X16[c * NUM_16 + i]);
         }
 
-        OledSetPosition(x, y + 1);
+        OledSetPosition(tempx, tempy + 1);
         for (i = 0; i < NUM_8; i++) {
             WriteData(F8X16[c * NUM_16 + i + NUM_8]);
         }
     } else {
-        OledSetPosition(x, y);
+        OledSetPosition(tempx, tempy);
         for (i = 0; i < NUM_6; i++) {
             WriteData(F6x8[c][i]);
         }
