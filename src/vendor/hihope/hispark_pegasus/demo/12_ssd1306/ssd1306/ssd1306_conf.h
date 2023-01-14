@@ -24,17 +24,17 @@
 
 // Choose a microcontroller family
 // #define STM32F0
-//#define STM32F1
-//#define STM32F4
-//#define STM32L0
-//#define STM32L4
-//#define STM32F3
-//#define STM32H7
-//#define STM32F7
+// #define STM32F1
+// #define STM32F4
+// #define STM32L0
+// #define STM32L4
+// #define STM32F3
+// #define STM32H7
+// #define STM32F7
 
 // Choose a bus
 #define SSD1306_USE_I2C
-//#define SSD1306_USE_SPI
+// #define SSD1306_USE_SPI
 
 // I2C Configuration
 // #define SSD1306_I2C_PORT        hi2c1

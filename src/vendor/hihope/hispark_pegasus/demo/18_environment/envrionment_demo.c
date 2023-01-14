@@ -33,7 +33,7 @@
 #include "hi_adc.h"
 
 #ifndef ARRAY_SIZE
-#define ARRAY_SIZE(a) sizeof(a)/sizeof(a[0])
+#define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 #endif
 
 #define MS_PER_S 1000
@@ -110,7 +110,8 @@ static void EnvironmentTask(void)
         usleep(MS_PER_S);
     }
 
-    while (1) {
+    int measureCnt = 1000;
+    while (measureCnt--) {
         retval = AHT20_StartMeasure();
         if (retval != IOT_SUCCESS) {
             printf("trigger measure failed!\r\n");
@@ -136,8 +137,10 @@ static void EnvironmentTask(void)
              // Vx / 5 == 1kom / (1kom + Rx)
              //   => Rx + 1 == 5/Vx
              //   =>  Rx = 5/Vx - 1
-            gasSensorResistance = VOLTAGE_5V / Vx - 1;
-            printf("\r\n hi_adc_read ok, data=%d, vx=%f, gasSensorResistance=%f", data, Vx, gasSensorResistance);
+            if (Vx > 0.0) {
+                gasSensorResistance = VOLTAGE_5V / Vx - 1;
+                printf("\r\n hi_adc_read ok, data=%d, vx=%f, gasSensorResistance=%f", data, Vx, gasSensorResistance);
+            }
         } else {
             printf("\r\n hi_adc_read fail, ret=%d", ret);
         }

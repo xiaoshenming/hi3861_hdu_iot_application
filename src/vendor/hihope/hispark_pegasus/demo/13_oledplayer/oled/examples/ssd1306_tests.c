@@ -19,8 +19,8 @@
 #include "ssd1306.h"
 #include "ssd1306_tests.h"
 
-#define X_MAX (127)
-#define Y_MAX (63)
+#define X_MAX        (127)
+#define Y_MAX        (63)
 #define DELAY_MS     (1000)
 #define TICK_5K      (5000)
 #define TICK_8K      (8000)
@@ -38,11 +38,11 @@ void ssd1306_TestBorder(void)
     do {
         ssd1306_DrawPixel(x, y, Black);
 
-        if((y == 0) && (x < X_MAX))
+        if ((y == 0) && (x < X_MAX))
             x++;
-        else if((x == X_MAX) && (y < Y_MAX))
+        else if ((x == X_MAX) && (y < Y_MAX))
             y++;
-        else if((y == Y_MAX) && (x > 0))
+        else if ((y == Y_MAX) && (x > 0))
             x--;
         else
             y--;
@@ -51,7 +51,7 @@ void ssd1306_TestBorder(void)
         ssd1306_UpdateScreen();
 
         end = HAL_GetTick();
-    } while((end - start) < TICK_8K);
+    } while ((end - start) < TICK_8K);
 
     HAL_Delay(DELAY_MS);
 }
@@ -97,8 +97,10 @@ void ssd1306_TestFPS(void)
         ssd1306_UpdateScreen();
 
         char ch = message[0];
-        //memmove(message, message+1, sizeof(message)-2);
-        memmove_s(message, sizeof(message)-1-1, message+1, sizeof(message)-1-1);
+        // memmove(message, message+1, sizeof(message)-2);
+        int ret = memmove_s(message, sizeof(message)-1-1, message+1, sizeof(message)-1-1);
+        if (ret != 0) {
+        }
         message[sizeof(message)-1-1] = ch;
 
         fps++;
@@ -168,16 +170,16 @@ void ssd1306_TestPolyline(void)
 {
     SSD1306_VERTEX loc_vertex[] =
     {
-        {35,40},
-        {40,20},
-        {45,28},
-        {50,10},
-        {45,16},
-        {50,10},
-        {53,16}
+        {35, 40},
+        {40, 20},
+        {45, 28},
+        {50, 10},
+        {45, 16},
+        {50, 10},
+        {53, 16}
     };
 
-    ssd1306_DrawPolyline(loc_vertex,sizeof(loc_vertex)/sizeof(loc_vertex[0]),White);
+    ssd1306_DrawPolyline(loc_vertex, sizeof(loc_vertex) / sizeof(loc_vertex[0]), White);
     ssd1306_UpdateScreen();
     return;
 }

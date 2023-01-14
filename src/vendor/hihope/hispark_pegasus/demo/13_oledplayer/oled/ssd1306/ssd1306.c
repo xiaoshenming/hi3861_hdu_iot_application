@@ -44,7 +44,6 @@ typedef struct {
     unsigned int  sendLen;
 } WifiIotI2cData;
 
-
 void ssd1306_Reset(void)
 {
     /* for I2C - do nothing */
@@ -165,7 +164,10 @@ SSD1306_Error_t ssd1306_FillBuffer(uint8_t* buf, uint32_t len)
 {
     SSD1306_Error_t ret = SSD1306_ERR;
     if (len <= SSD1306_BUFFER_SIZE) {
-        memcpy(SSD1306_Buffer,buf,len);
+        // memcpy(SSD1306_Buffer,buf,len);
+        int ret = memmove_s(SSD1306_Buffer, len, buf, len);
+        if (ret != 0) {
+        }
         ret = SSD1306_OK;
     }
     return ret;
@@ -312,7 +314,10 @@ void ssd1306_UpdateScreen(void)
 
     // copy frame data
     data[count++] = SSD1306_CTRL_DATA;
-    memcpy(&data[count], SSD1306_Buffer, sizeof(SSD1306_Buffer));
+    // memcpy(&data[count], SSD1306_Buffer, sizeof(SSD1306_Buffer));
+    int ret = memmove_s(&data[count], sizeof(SSD1306_Buffer), SSD1306_Buffer, sizeof(SSD1306_Buffer));
+    if (ret != 0) {
+    }
     count += sizeof(SSD1306_Buffer);
 
     // send to i2c bus
@@ -328,7 +333,7 @@ void ssd1306_UpdateScreen(void)
 //    color => Pixel color
 void ssd1306_DrawPixel(uint8_t x, uint8_t y, SSD1306_COLOR color)
 {
-    if(x >= SSD1306_WIDTH || y >= SSD1306_HEIGHT) {
+    if (x >= SSD1306_WIDTH || y >= SSD1306_HEIGHT) {
         // Don't write outside the buffer
         return;
     }
@@ -342,9 +347,9 @@ void ssd1306_DrawPixel(uint8_t x, uint8_t y, SSD1306_COLOR color)
     // Draw in the right color
     uint32_t c = 8;
     if (color_temp == White) {
-        SSD1306_Buffer[x + (y / c)* SSD1306_WIDTH] |= 1 << (y % c);
+        SSD1306_Buffer[x + (y / c) * SSD1306_WIDTH] |= 1 << (y % c);
     } else {
-        SSD1306_Buffer[x + (y / c)* SSD1306_WIDTH] &= ~(1 << (y % c));
+        SSD1306_Buffer[x + (y / c) * SSD1306_WIDTH] &= ~(1 << (y % c));
     }
 }
 
@@ -354,7 +359,7 @@ void ssd1306_DrawPixel(uint8_t x, uint8_t y, SSD1306_COLOR color)
 // color    => Black or White
 char ssd1306_DrawChar(char ch, FontDef Font, SSD1306_COLOR color)
 {
-    //uint32_t i, b, j;
+    // uint32_t i, b, j;
 
     // Check if character is valid
     uint32_t ch_min = 32;
@@ -364,17 +369,16 @@ char ssd1306_DrawChar(char ch, FontDef Font, SSD1306_COLOR color)
     }
     // Check remaining space on current line
     if (SSD1306_WIDTH < (SSD1306.CurrentX + Font.FontWidth) ||
-        SSD1306_HEIGHT < (SSD1306.CurrentY + Font.FontHeight))
-    {
+        SSD1306_HEIGHT < (SSD1306.CurrentY + Font.FontHeight)) {
         // Not enough space on current line
         return 0;
     }
 
     // Use the font to write
     for (uint32_t i = 0; i < Font.FontHeight; i++) {
-        uint32_t b = Font.data[(ch - ch_min)* Font.FontHeight + i];
+        uint32_t b = Font.data[(ch - ch_min) * Font.FontHeight + i];
         for (uint32_t j = 0; j < Font.FontWidth; j++) {
-            if ((b << j)& 0x8000) {
+            if ((b << j) & 0x8000) {
                 ssd1306_DrawPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i), (SSD1306_COLOR)color);
             } else {
                 ssd1306_DrawPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i), (SSD1306_COLOR)!color);
@@ -419,10 +423,10 @@ void ssd1306_DrawLine(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, SSD1306_CO
 {
     int32_t deltaX = abs(x2 - x1);
     int32_t deltaY = abs(y2 - y1);
-    int32_t signX = ((x1 < x2)? 1 : -1);
-    int32_t signY = ((y1 < y2)? 1 : -1);
+    int32_t signX = ((x1 < x2) ? 1 : -1);
+    int32_t signY = ((y1 < y2) ? 1 : -1);
     int32_t error = deltaX - deltaY;
-    //int32_t error2;
+    // int32_t error2;
     uint8_t y1_temp = y1;
     uint8_t x1_temp = x1;
 
@@ -430,36 +434,34 @@ void ssd1306_DrawLine(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, SSD1306_CO
     while ((x1_temp != x2)|| (y1_temp != y2)) {
         ssd1306_DrawPixel(x1_temp, y1_temp, color);
         int32_t error2 = error * DOUBLE;
-    if (error2 > -deltaY) {
-        error -= deltaY;
-        x1_temp += signX;
-    } else {
-    /* nothing to do */
-    }
+        if (error2 > -deltaY) {
+            error -= deltaY;
+            x1_temp += signX;
+        } else {
+        /* nothing to do */
+        }
 
-    if (error2 < deltaX) {
-        error += deltaX;
-        y1_temp += signY;
-    } else {
-    /* nothing to do */
+        if (error2 < deltaX) {
+            error += deltaX;
+            y1_temp += signY;
+        } else {
+        /* nothing to do */
+        }
     }
-  }
   return;
 }
 
 //Draw polyline
 void ssd1306_DrawPolyline(const SSD1306_VERTEX *par_vertex, uint16_t par_size, SSD1306_COLOR color)
 {
-    //uint16_t i;
-    if(par_vertex != 0){
-      for(uint16_t i = 1; i < par_size; i++){
-        ssd1306_DrawLine(par_vertex[i - 1].x, par_vertex[i - 1].y,
-           par_vertex[i].x, par_vertex[i].y, color);
-      }
-    }
-    else
-    {
-      /*nothing to do*/
+    // uint16_t i;
+    if (par_vertex != 0) {
+        for (uint16_t i = 1; i < par_size; i++) {
+            ssd1306_DrawLine(par_vertex[i - 1].x, par_vertex[i - 1].y,
+                par_vertex[i].x, par_vertex[i].y, color);
+        }
+    } else {
+      /* nothing to do */
     }
     return;
 }
@@ -478,8 +480,8 @@ static uint16_t ssd1306_NormalizeTo0_360(uint16_t par_deg)
     if (par_deg <= angle) {
         loc_angle = par_deg;
     } else {
-        //loc_angle = par_deg % angle;
-        loc_angle = ((par_deg != 0)?par_deg:angle);
+        // loc_angle = par_deg % angle;
+        loc_angle = ((par_deg != 0) ? par_deg : angle);
     }
     return loc_angle;
 }
@@ -492,34 +494,31 @@ void ssd1306_DrawArc(uint8_t x, uint8_t y, uint8_t radius, uint16_t start_angle,
     #define CIRCLE_APPROXIMATION_SEGMENTS 36
     float approx_degree;
     uint32_t approx_segments;
-    //uint8_t xp1,xp2;
-    //uint8_t yp1,yp2;
+    // uint8_t xp1,xp2;
+    // uint8_t yp1,yp2;
     uint32_t count = 0;
     uint32_t loc_sweep = 0;
-    //float rad;
+    // float rad;
     unsigned int angle = 360;
 
     loc_sweep = ssd1306_NormalizeTo0_360(sweep);
 
-    count = (ssd1306_NormalizeTo0_360(start_angle)* CIRCLE_APPROXIMATION_SEGMENTS)/ angle;
-    approx_segments = (loc_sweep * CIRCLE_APPROXIMATION_SEGMENTS)/ angle;
+    count = (ssd1306_NormalizeTo0_360(start_angle) * CIRCLE_APPROXIMATION_SEGMENTS) / angle;
+    approx_segments = (loc_sweep * CIRCLE_APPROXIMATION_SEGMENTS) / angle;
     approx_degree = loc_sweep / (float)approx_segments;
     while (count < approx_segments) {
-        float rad = ssd1306_DegToRad(count*approx_degree);
-        uint8_t xp1 = x + (int8_t)(sin(rad)*radius);
-        uint8_t yp1 = y + (int8_t)(cos(rad)*radius);
+        float rad = ssd1306_DegToRad(count * approx_degree);
+        uint8_t xp1 = x + (int8_t)(sin(rad) * radius);
+        uint8_t yp1 = y + (int8_t)(cos(rad) * radius);
         count++;
-        if(count != approx_segments)
-        {
-            rad = ssd1306_DegToRad(count*approx_degree);
-        }
-        else
-        {
+        if (count != approx_segments) {
+            rad = ssd1306_DegToRad(count * approx_degree);
+        } else {
             rad = ssd1306_DegToRad(loc_sweep);
         }
-        uint8_t xp2 = x + (int8_t)(sin(rad)*radius);
-        uint8_t yp2 = y + (int8_t)(cos(rad)*radius);
-        ssd1306_DrawLine(xp1,yp1,xp2,yp2,color);
+        uint8_t xp2 = x + (int8_t)(sin(rad) * radius);
+        uint8_t yp2 = y + (int8_t)(cos(rad) * radius);
+        ssd1306_DrawLine(xp1, yp1, xp2, yp2, color);
     }
 
     return;
@@ -531,10 +530,10 @@ void ssd1306_DrawCircle(uint8_t par_x, uint8_t par_y, uint8_t par_r, SSD1306_COL
     int32_t y = 0;
     int32_t b = 2;
     int32_t err = b - b * par_r;
-    //int32_t e2;
+    // int32_t e2;
 
     if (par_x >= SSD1306_WIDTH || par_y >= SSD1306_HEIGHT) {
-      return;
+        return;
     }
 
     do {
@@ -560,19 +559,18 @@ void ssd1306_DrawCircle(uint8_t par_x, uint8_t par_y, uint8_t par_r, SSD1306_COL
         } else {
             /* nothing to do */
         }
-    } while(x <= 0);
+    } while (x <= 0);
 
     return;
 }
 
-//Draw rectangle
+// Draw rectangle
 void ssd1306_DrawRectangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, SSD1306_COLOR color)
 {
-    ssd1306_DrawLine(x1,y1,x2,y1,color);
-    ssd1306_DrawLine(x2,y1,x2,y2,color);
-    ssd1306_DrawLine(x2,y2,x1,y2,color);
-    ssd1306_DrawLine(x1,y2,x1,y1,color);
-    
+    ssd1306_DrawLine(x1, y1, x2, y1, color);
+    ssd1306_DrawLine(x2, y1, x2, y2, color);
+    ssd1306_DrawLine(x2, y2, x1, y2, color);
+    ssd1306_DrawLine(x1, y2, x1, y1, color);
     return;
 }
 

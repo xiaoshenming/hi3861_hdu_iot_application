@@ -23,7 +23,7 @@
 #include "oled_fonts.h"
 #include "hi_io.h"
 
-#define ARRAY_SIZE(a) sizeof(a)/sizeof(a[0])
+#define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 
 #define OLED_I2C_IDX 0
 
@@ -31,12 +31,12 @@
 #define OLED_I2C_ADDR 0x78 // 默认地址为 0x78
 #define OLED_I2C_CMD  0x00 // 0000 0000       写命令
 #define OLED_I2C_DATA 0x40 // 0100 0000(0x40) 写数据
-#define OLED_I2C_BAUDRATE (400*1000) // 400k
+#define OLED_I2C_BAUDRATE (400 * 1000) // 400k
 
 #define IOT_GPIO_IDX_13    13
 #define IOT_GPIO_IDX_14    14
 
-#define DELAY_100_MS (100*1000)
+#define DELAY_100_MS (100 * 1000)
 #define NUM_2    2
 #define NUM_4    4
 #define NUM_6    6
