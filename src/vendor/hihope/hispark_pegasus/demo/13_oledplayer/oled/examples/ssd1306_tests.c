@@ -132,7 +132,7 @@ void ssd1306_TestRectangle(void)
     uint32_t delta;
     uint32_t delta_max = 5;
 
-    for(delta = 0; delta < delta_max; delta ++) {
+    for (delta = 0; delta < delta_max; delta ++) {
         ssd1306_DrawRectangle(1 + (delta_max * delta), 1 + (delta_max * delta),
             SSD1306_WIDTH-1 - (delta_max * delta), SSD1306_HEIGHT-1 - (delta_max * delta), White);
     }

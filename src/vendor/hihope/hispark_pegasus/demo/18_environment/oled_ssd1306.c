@@ -153,7 +153,7 @@ void OledSetPosition(uint8_t x, uint8_t y)
     WriteCmd(x & 0x0f);
 }
 
-/*全屏填充*/
+/* 全屏填充 */
 void OledFillScreen(uint8_t fillData)
 {
     uint8_t m = 0;

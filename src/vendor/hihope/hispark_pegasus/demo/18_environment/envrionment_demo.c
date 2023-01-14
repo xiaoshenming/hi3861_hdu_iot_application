@@ -140,7 +140,7 @@ static void EnvironmentTask(void)
              //   =>  Rx = 5/Vx - 1
             if (abs(Vx) > EPS) {
                 gasSensorResistance = VOLTAGE_5V / Vx - 1;
-                printf("\r\n hi_adc_read ok, data=%d, vx=%f, gasSensorResistance=%f", data, Vx, gasSensorResistance);
+                printf("\r\n hi_adc_read ok, data=%hu, vx=%f, gasSensorResistance=%f", data, Vx, gasSensorResistance);
             }
         } else {
             printf("\r\n hi_adc_read fail, ret=%d", ret);

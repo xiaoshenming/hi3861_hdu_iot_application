@@ -281,7 +281,7 @@ void ssd1306_Init(void)
 void ssd1306_Fill(SSD1306_COLOR color)
 {
     /* Set memory */
-    for(uint32_t i = 0; i < sizeof(SSD1306_Buffer); i++) {
+    for (uint32_t i = 0; i < sizeof(SSD1306_Buffer); i++) {
         SSD1306_Buffer[i] = (color == Black) ? 0x00 : 0xFF;
     }
 }
