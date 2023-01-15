@@ -53,7 +53,7 @@ void UdpServerTest(unsigned short port)
         printf("bind failed, %ld!\r\n", retval);
         goto do_cleanup;
     }
-    printf("bind to port %d success!\r\n", port);
+    printf("bind to port %hu success!\r\n", port);
 
     retval = recvfrom(sockfd, message, sizeof(message), 0, (struct sockaddr *)&clientAddr, &clientAddrLen);
     if (retval < 0) {
