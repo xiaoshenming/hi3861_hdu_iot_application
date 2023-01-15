@@ -33,7 +33,7 @@ const char* GetNetDemoName(void);
     void NetDemoTest(unsigned short port, const char* host) { \
         (void) host; \
         printf("%s start\r\n", #testFunc); \
-        printf("I will connect to %s:%d\r\n", host, port); \
+        printf("I will connect to %s:%hu\r\n", host, port); \
         testFunc(host, port); \
         printf("%s done!\r\n", #testFunc); \
     } \
@@ -43,7 +43,7 @@ const char* GetNetDemoName(void);
     void NetDemoTest(unsigned short port, const char* host) { \
         (void) host; \
         printf("%s start\r\n", #testFunc); \
-        printf("I will listen on :%d\r\n", port); \
+        printf("I will listen on :%hu\r\n", port); \
         testFunc(port); \
         printf("%s done!\r\n", #testFunc); \
     } \
