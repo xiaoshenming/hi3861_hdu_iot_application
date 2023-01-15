@@ -28,7 +28,7 @@
  */
 #include <errno.h>
 #include <stdio.h>
-#include <string.h>
+// #include <string.h>
 #include <unistd.h>
 
 #include "net_demo.h"
