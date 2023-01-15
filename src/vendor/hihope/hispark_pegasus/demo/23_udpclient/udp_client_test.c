@@ -69,7 +69,7 @@ void UdpClientTest(const char* host, unsigned short port)
     }
     response[retval] = '\0';
     printf("recv UDP message {%s} %ld done!\r\n", response, retval);
-    printf("peer info: ipaddr = %s, port = %d\r\n", inet_ntoa(fromAddr.sin_addr), ntohs(fromAddr.sin_port));
+    printf("peer info: ipaddr = %s, port = %hu\r\n", inet_ntoa(fromAddr.sin_addr), ntohs(fromAddr.sin_port));
 
 do_cleanup:
     printf("do_cleanup...\r\n");

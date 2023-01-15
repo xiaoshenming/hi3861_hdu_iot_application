@@ -45,7 +45,7 @@ void TcpServerTest(unsigned short port)
         printf("bind failed, %ld!\r\n", retval);
         goto do_cleanup;
     }
-    printf("bind to port %d success!\r\n", port);
+    printf("bind to port %hu success!\r\n", port);
 
     retval = listen(sockfd, backlog); // 开始监听
     if (retval < 0) {
@@ -65,7 +65,7 @@ void TcpServerTest(unsigned short port)
         goto do_cleanup;
     }
     printf("accept success, connfd = %d!\r\n", connfd);
-    printf("client addr info: host = %s, port = %d\r\n", inet_ntoa(clientAddr.sin_addr), ntohs(clientAddr.sin_port));
+    printf("client addr info: host = %s, port = %hu\r\n", inet_ntoa(clientAddr.sin_addr), ntohs(clientAddr.sin_port));
 
     // 后续 收、发 都在 表示连接的 socket 上进行；
     retval = recv(connfd, request, sizeof(request), 0);

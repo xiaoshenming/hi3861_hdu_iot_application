@@ -61,7 +61,7 @@ void UdpServerTest(unsigned short port)
         goto do_cleanup;
     }
     printf("recv message {%s} %ld done!\r\n", message, retval);
-    printf("peer info: ipaddr = %s, port = %d\r\n", inet_ntoa(clientAddr.sin_addr), ntohs(clientAddr.sin_port));
+    printf("peer info: ipaddr = %s, port = %hu\r\n", inet_ntoa(clientAddr.sin_addr), ntohs(clientAddr.sin_port));
 
     retval = sendto(sockfd, message, strlen(message), 0, (struct sockaddr *)&clientAddr, sizeof(clientAddr));
     if (retval <= 0) {
