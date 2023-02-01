@@ -23,6 +23,7 @@
 #ifndef __SSD1306_H__
 #define __SSD1306_H__
 
+#include <stdint.h>
 #include <stddef.h>
 #include <_ansi.h>
 

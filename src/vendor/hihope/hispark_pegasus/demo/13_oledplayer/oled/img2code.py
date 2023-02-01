@@ -18,7 +18,7 @@ import sys
 import os
 from datetime import datetime
 
-DEBUG = False
+#DEBUG = False
 DEBUG = True
 TARGET_WIDTH = 128
 TARGET_HEIGHT = 64

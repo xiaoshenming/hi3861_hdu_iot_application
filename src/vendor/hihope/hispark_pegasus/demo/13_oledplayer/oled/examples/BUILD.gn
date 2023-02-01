@@ -20,9 +20,10 @@ static_library("oled_test") {
 
     include_dirs = [
         "../ssd1306",
+        "//third_party/ssd1306",
         "//utils/native/lite/include",
         "//kernel/liteos_m/kal/cmsis",
-        "//base/iot_hardware/peripheral/interfaces/kits",
+        "//base/iothardware/peripheral/interfaces/inner_api",
     ]
 }
 

@@ -33,12 +33,12 @@ static_library("stream_player") {
 
     include_dirs = [
         "../oled/ssd1306",
+        "//third_party/ssd1306",
         "//utils/native/lite/include",
         "//kernel/liteos_m/kal/cmsis",
-        "//base/iot_hardware/peripheral/interfaces/kits",
+        "//base/iothardware/peripheral/interfaces/inner_api",
         "//foundation/communication/wifi_lite/interfaces/wifiservice",
         "//device/hisilicon/hispark_pegasus/sdk_liteos/third_party/lwip_sack/include",
-        # "//vendor/hisi/hi3861/hi3861/third_party/lwip_sack/include/",
     ]
 }
 

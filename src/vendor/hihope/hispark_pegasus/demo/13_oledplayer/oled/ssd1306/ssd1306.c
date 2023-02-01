@@ -37,13 +37,6 @@
 #define DELAY_10MS  (10)
 #define DELAY_100MS (100)
 
-typedef struct {
-    /** Pointer to the buffer storing data to send */
-    unsigned char *sendBuf;
-    /** Length of data to send */
-    unsigned int  sendLen;
-} WifiIotI2cData;
-
 void ssd1306_Reset(void)
 {
     /* for I2C - do nothing */
@@ -78,18 +71,9 @@ uint32_t HAL_GetTick(void)
 
 static uint32_t ssd1306_SendData(uint8_t* data, size_t size)
 {
-    unsigned int id = SSD1306_I2C_IDX;
-    WifiIotI2cData i2cData = {0};
+    int id = SSD1306_I2C_IDX;
 
-    i2cData.sendBuf = data;
-    i2cData.sendLen = size;
-
-    uint32_t retval = IoTI2cWrite(id, SSD1306_I2C_ADDR, i2cData.sendBuf, i2cData.sendLen);
-    if (retval != IOT_SUCCESS) {
-        printf("I2cWrite(%02X) failed, %0X!\n", i2cData.sendBuf[0], retval);
-        return retval;
-    }
-    return IOT_SUCCESS;
+    return IoTI2cWrite(id, SSD1306_I2C_ADDR, data, size);
 }
 
 static uint32_t ssd1306_WiteByte(uint8_t regAddr, uint8_t byte)

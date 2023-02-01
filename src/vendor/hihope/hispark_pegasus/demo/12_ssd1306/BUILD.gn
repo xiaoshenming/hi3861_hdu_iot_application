@@ -18,6 +18,6 @@ lite_component("app") {
     features = [
         "ssd1306:oled_ssd1306",
         "examples:oled_test",
-        "libm_port:libm_port"
+        "//third_party/libm_port:libm_port"
     ]
 }

@@ -17,7 +17,7 @@ import("//build/lite/config/component/lite_component.gni")
 lite_component("app") {
     features = [
         "oled/ssd1306:oled_ssd1306",
-        "oled/libm_port:libm_port",
+        "//third_party/libm_port:libm_port",
         "play:stream_player",
     ]
 }
