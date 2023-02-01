@@ -19,28 +19,39 @@
 #include "ohos_init.h"
 #include "cmsis_os2.h"
 
-#define STACK_SIZE      (1024)
-#define DELAY_TICKS_100 (100)
+#include "hi_gpio.h"
+#include "hi_io.h"
+#include "hi_adc.h"
+#include "hi_errno.h"
 
-void rtosv2_delay_main(void)
+#define STACK_SIZE   (1024)
+#define DELAY_US     (100000)
+
+static void AdcGpioTask(void)
 {
-    printf("[Delay Test] Current system tick: %d.\r\n", osKernelGetTickCount());
-    osStatus_t status = osDelay(DELAY_TICKS_100);
-    printf("[Delay Test] osDelay, status: %d.\r\n", status);
-    printf("[Delay Test] Current system tick: %d.\r\n", osKernelGetTickCount());
-
-    uint32_t tick = osKernelGetTickCount();
-    tick += DELAY_TICKS_100;
-    status = osDelayUntil(tick);
-    printf("[Delay Test] osDelayUntil, status: %d.\r\n", status);
-    printf("[Delay Test] Current system tick: %d.\r\n", osKernelGetTickCount());
+    static int count = 1000;
+    hi_u16 value;
+    while (count--) {
+        if (hi_adc_read(HI_ADC_CHANNEL_4, &value,
+            HI_ADC_EQU_MODEL_4, HI_ADC_CUR_BAIS_DEFAULT, 0) != HI_ERR_SUCCESS) {
+            printf("ADC read error!\n");
+        } else {
+            printf("ADC_VALUE = %u\n", (unsigned int)value);
+            usleep(DELAY_US);
+        }
+    }
 }
 
-static void DelayTestTask(void)
+static void AdcGpioEntry(void)
 {
+    printf("ADC Test!\n");
     osThreadAttr_t attr;
 
-    attr.name = "rtosv2_delay_main";
+    hi_gpio_init();
+    hi_io_set_func(HI_GPIO_IDX_9, HI_IO_FUNC_GPIO_9_GPIO);
+    hi_gpio_set_dir(HI_GPIO_IDX_9, HI_GPIO_DIR_IN);
+
+    attr.name = "AdcGpioTask";
     attr.attr_bits = 0U;
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
@@ -48,8 +59,8 @@ static void DelayTestTask(void)
     attr.stack_size = STACK_SIZE;
     attr.priority = osPriorityNormal;
 
-    if (osThreadNew((osThreadFunc_t)rtosv2_delay_main, NULL, &attr) == NULL) {
-        printf("[DelayTestTask] Falied to create rtosv2_delay_main!\n");
+    if (osThreadNew(AdcGpioTask, NULL, &attr) == NULL) {
+        printf("[LedExample] Falied to create LedTask!\n");
     }
 }
-APP_FEATURE_INIT(DelayTestTask);
+SYS_RUN(AdcGpioEntry);

@@ -20,9 +20,9 @@
 #include "cmsis_os2.h"
 
 #define STACK_SIZE   (1024)
-#define DELAY_3MS       (3)
-#define DELAY_4MS       (4)
-#define DELAY_50MS     (50)
+#define DELAY_TICKS_3   (3)
+#define DELAY_TICKS_4   (4)
+#define DELAY_TICKS_50 (50)
 
 #define BUFFER_SIZE 5U
 static int product_number = 0;
@@ -38,7 +38,7 @@ void producer_thread(void)
         product_number++;
         printf("[Semp Test]%s produces a product, now product number: %d.\r\n",
                osThreadGetName(osThreadGetId()), product_number);
-        osDelay(DELAY_4MS);
+        osDelay(DELAY_TICKS_4);
         osSemaphoreRelease(filled_id);
     }
 }
@@ -50,7 +50,7 @@ void consumer_thread(void)
         product_number--;
         printf("[Semp Test]%s consumes a product, now product number: %d.\r\n",
                osThreadGetName(osThreadGetId()), product_number);
-        osDelay(DELAY_3MS);
+        osDelay(DELAY_TICKS_3);
         osSemaphoreRelease(empty_id);
     }
 }
@@ -80,7 +80,7 @@ void rtosv2_semp_main(void)
     osThreadId_t ctid1 = newThread("consumer1", consumer_thread, NULL);
     osThreadId_t ctid2 = newThread("consumer2", consumer_thread, NULL);
 
-    osDelay(DELAY_50MS);
+    osDelay(DELAY_TICKS_50);
 
     osThreadTerminate(ptid1);
     osThreadTerminate(ptid2);

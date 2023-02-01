@@ -21,8 +21,8 @@
 
 #define THREAD_NUM (1000)
 #define STACK_SIZE (1024)
-#define DELAY_20MS   (20)
-#define DELAY_100MS (100)
+#define DELAY_TICKS_20   (20)
+#define DELAY_TICKS_100 (100)
 
 osThreadId_t newThread(char *name, osThreadFunc_t func, char *arg)
 {
@@ -47,7 +47,7 @@ void threadTest(char *arg)
     while (count < THREAD_NUM) {
         count++;
         printf("[Thread Test] threadTest, count: %d.\r\n", count);
-        osDelay(DELAY_20MS);
+        osDelay(DELAY_TICKS_20);
     }
 }
 
@@ -82,7 +82,7 @@ void rtosv2_thread_main(void)
     uint32_t t_count = osThreadGetCount();
     printf("[Thread Test] osThreadGetCount, count: %u.\r\n", t_count);
 
-    osDelay(DELAY_100MS);
+    osDelay(DELAY_TICKS_100);
     status = osThreadTerminate(tid);
     printf("[Thread Test] osThreadTerminate, status: %d.\r\n", status);
 }
