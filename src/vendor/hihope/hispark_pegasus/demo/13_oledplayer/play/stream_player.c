@@ -64,12 +64,16 @@ static uint32_t PlayStream(void)
     serverAddr.sin_port = lwip_htons(g_serverPort);
     if (lwip_inet_pton(AF_INET, g_serverIp, &serverAddr.sin_addr) <= 0) {
         printf("lwip_inet_pton failed!\r\n");
-        goto do_close;
+        // goto do_close;
+        lwip_close(sockfd);
+        return frameId;
     }
 
     if (lwip_connect(sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0) {
         printf("lwip_connect failed!\r\n");
-        goto do_close;
+        // goto do_close;
+        lwip_close(sockfd);
+        return frameId;
     }
     printf("connect to server %s success!\r\n", g_serverIp);
 
@@ -123,9 +127,9 @@ static uint32_t PlayStream(void)
     }
     printf("playing video done, played frames: %u!\r\n", frameId);
 
-do_close:
-    lwip_close(sockfd);
-    return frameId;
+// do_close:
+//    lwip_close(sockfd);
+//    return frameId;
 }
 
 static void Ssd1306PlayTask(void)

@@ -100,6 +100,7 @@ void ssd1306_TestFPS(void)
         // memmove(message, message+1, sizeof(message)-2);
         int ret = memmove_s(message, sizeof(message)-1-1, message+1, sizeof(message)-1-1);
         if (ret != 0) {
+            continue;
         }
         message[sizeof(message)-1-1] = ch;
 
@@ -111,7 +112,10 @@ void ssd1306_TestFPS(void)
 
     char buff[64];
     fps = (float)fps / ((end - start) / m);
-    snprintf(buff, sizeof(buff), "~%d FPS", fps);
+    int ret = snprintf(buff, sizeof(buff), "~%d FPS", fps);
+    if (ret < 0) {
+        return;
+    }
 
     ssd1306_Fill(White);
     ssd1306_SetCursor(x, y2);

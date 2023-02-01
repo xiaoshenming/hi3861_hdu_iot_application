@@ -32,9 +32,9 @@
 
 #include "hi_adc.h"
 
-#ifndef ARRAY_SIZE
-#define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
-#endif
+// #ifndef ARRAY_SIZE
+// #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
+// #endif
 
 #define MS_PER_S 1000
 
@@ -77,6 +77,7 @@ static float ConvertToVoltage(unsigned short data)
 
 static void EnvironmentTask(void)
 {
+    int ret = 0;
     uint32_t retval = 0;
     float humidity = 0.0f;
     float temperature = 0.0f;
@@ -97,7 +98,11 @@ static void EnvironmentTask(void)
     IoTPwmInit(WIFI_IOT_PWM_PORT_PWM0);
 
     for (int i = 0; i < BEEP_TIMES; i++) {
-        snprintf(line, sizeof(line), "beep %d/%d", (i + 1), BEEP_TIMES);
+        ret = snprintf(line, sizeof(line), "beep %d/%d", (i + 1), BEEP_TIMES);
+        if (ret < 0) {
+            continue;
+        }
+
         OledShowString(0, IDX_0, line, 1);
 
         IoTPwmStart(WIFI_IOT_PWM_PORT_PWM0, BEEP_PWM_DUTY, BEEP_PWM_FREQ);
@@ -128,7 +133,6 @@ static void EnvironmentTask(void)
         ret = hi_adc_read(GAS_SENSOR_CHAN_NAME, &data, HI_ADC_EQU_MODEL_4, HI_ADC_CUR_BAIS_DEFAULT, 0);
         if (ret == IOT_SUCCESS) {
             float Vx = ConvertToVoltage(data);
-
              // Vcc            ADC            GND
              //  |    ______   |     ______   |
              //  +---| MG-2 |---+---| 1kom |---+
@@ -148,13 +152,22 @@ static void EnvironmentTask(void)
 
         OledShowString(0, IDX_0, "Sensor values:", 1);
 
-        snprintf(line, sizeof(line), "temp: %.2f", temperature);
+        ret = snprintf(line, sizeof(line), "temp: %.2f", temperature);
+        if (ret < 0) {
+            continue;
+        }
         OledShowString(0, IDX_1, line, 1);
 
-        snprintf(line, sizeof(line), "humi: %.2f", humidity);
+        ret = snprintf(line, sizeof(line), "humi: %.2f", humidity);
+        if (ret < 0) {
+            continue;
+        }
         OledShowString(0, IDX_2, line, 1);
 
-        snprintf(line, sizeof(line), "gas: %.2f kom", gasSensorResistance);
+        ret = snprintf(line, sizeof(line), "gas: %.2f kom", gasSensorResistance);
+        if (ret < 0) {
+            continue;
+        }
         OledShowString(0, IDX_3, line, 1);
 
         if (temperature > range_35 || temperature < 0) {

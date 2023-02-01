@@ -23,7 +23,7 @@
 #include "hi_io.h"
 #include "oled_ssd1306.h"
  
-#define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
+// #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 
 #define OLED_I2C_IDX 0
 
@@ -137,7 +137,9 @@ uint32_t OledInit(void)
 
     IoTI2cInit(OLED_I2C_IDX, OLED_I2C_BAUDRATE);
 
-    for (size_t i = 0; i < ARRAY_SIZE(initCmds); i++) {
+    uint32_t arraySize = (sizeof(initCmds) / sizeof((initCmds)[0]));
+    // for (size_t i = 0; i < ARRAY_SIZE(initCmds); i++) {
+    for (size_t i = 0; i < arraySize; i++) {
         uint32_t status = WriteCmd(initCmds[i]);
         if (status != IOT_SUCCESS) {
             return status;
