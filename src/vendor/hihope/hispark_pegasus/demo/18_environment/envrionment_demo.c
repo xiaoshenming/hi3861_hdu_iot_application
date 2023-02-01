@@ -99,7 +99,7 @@ static void EnvironmentTask(void)
 
     for (int i = 0; i < BEEP_TIMES; i++) {
         // ret = snprintf(line, sizeof(line), "beep %d/%d", (i + 1), BEEP_TIMES);
-        ret = snprintf_s(line, sizeof(line), sizeof(line)-1, "beep %d/%d", (i + 1), BEEP_TIMES);
+        ret = snprintf_s(line, sizeof(line), sizeof(line) - 1, "beep %d/%d", (i + 1), BEEP_TIMES);
         if (ret < 0) {
             continue;
         }
@@ -153,21 +153,21 @@ static void EnvironmentTask(void)
         OledShowString(0, IDX_0, "Sensor values:", 1);
 
         // ret = snprintf(line, sizeof(line), "temp: %.2f", temperature);
-        ret = snprintf_s(line, sizeof(line), sizeof(line)-1, "temp: %.2f", temperature);
+        ret = snprintf_s(line, sizeof(line), sizeof(line) - 1, "temp: %.2f", temperature);
         if (ret < 0) {
             continue;
         }
         OledShowString(0, IDX_1, line, 1);
 
         // ret = snprintf(line, sizeof(line), "humi: %.2f", humidity);
-        ret = snprintf_s(line, sizeof(line), sizeof(line)-1, "humi: %.2f", humidity);
+        ret = snprintf_s(line, sizeof(line), sizeof(line) - 1, "humi: %.2f", humidity);
         if (ret < 0) {
             continue;
         }
         OledShowString(0, IDX_2, line, 1);
 
         // ret = snprintf(line, sizeof(line), "gas: %.2f kom", gasSensorResistance);
-        ret = snprintf(line, sizeof(line), sizeof(line)-1, "gas: %.2f kom", gasSensorResistance);
+        ret = snprintf_s(line, sizeof(line), sizeof(line) - 1, "gas: %.2f kom", gasSensorResistance);
         if (ret < 0) {
             continue;
         }

@@ -113,7 +113,7 @@ void ssd1306_TestFPS(void)
     char buff[64];
     fps = (float)fps / ((end - start) / m);
     // int ret = snprintf(buff, sizeof(buff), "~%d FPS", fps);
-    int ret = snprintf_s(buff, sizeof(buff), sizeof(buff)-1, "~%d FPS", fps);
+    int ret = snprintf_s(buff, sizeof(buff), sizeof(buff) - 1, "~%d FPS", fps);
     if (ret < 0) {
         return;
     }
