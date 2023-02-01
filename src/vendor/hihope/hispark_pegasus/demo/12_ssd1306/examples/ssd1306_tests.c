@@ -26,6 +26,7 @@
 #define TICK_8K      (8000)
 #define DOUBLE 2
 #define TRIPLE 3
+#define EOK (0)
 
 void ssd1306_TestBorder(void)
 {
@@ -99,7 +100,7 @@ void ssd1306_TestFPS(void)
         char ch = message[0];
         // memmove(message, message+1, sizeof(message)-2);
         int ret = memmove_s(message, sizeof(message)-1-1, message+1, sizeof(message)-1-1);
-        if (ret != 0) {
+        if (ret != EOK) {
             continue;
         }
         message[sizeof(message)-1-1] = ch;
