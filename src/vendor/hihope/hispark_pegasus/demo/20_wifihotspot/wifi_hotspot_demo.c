@@ -69,7 +69,8 @@ static void PrintStationInfo(StationInfo* info)
     if (!info) return;
     static char macAddress[32] = {0};
     unsigned char* mac = info->macAddress;
-    int ret = snprintf(macAddress, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X",
+    // int ret = snprintf(macAddress, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X",
+    int ret = snprintf_s(macAddress, sizeof(macAddress), sizeof(macAddress)-1, "%02X:%02X:%02X:%02X:%02X:%02X",
         mac[IDX_0], mac[IDX_1], mac[IDX_2], mac[IDX_3], mac[IDX_4], mac[IDX_5]);
     if (ret < 0) {
         return;
