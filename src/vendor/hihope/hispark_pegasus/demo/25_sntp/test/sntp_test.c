@@ -80,14 +80,15 @@ void SntpSetServers(void)
 }
 #endif
 
-static void SntpTask(void* arg)
+static void SntpTask(void)
 {
-    (void) arg;
     WifiDeviceConfig config = {0};
 
     // 准备AP的配置参数
-    strcpy(config.ssid, PARAM_HOTSPOT_SSID);
-    strcpy(config.preSharedKey, PARAM_HOTSPOT_PSK);
+    // strcpy(config.ssid, PARAM_HOTSPOT_SSID);
+    // strcpy(config.preSharedKey, PARAM_HOTSPOT_PSK);
+    strcpy_s(config.ssid, WIFI_MAX_SSID_LEN, PARAM_HOTSPOT_SSID);
+    strcpy_s(config.preSharedKey, WIFI_MAX_KEY_LEN, PARAM_HOTSPOT_PSK);
     config.securityType = PARAM_HOTSPOT_TYPE;
 
     g_netId = ConnectToHotspot(&config);

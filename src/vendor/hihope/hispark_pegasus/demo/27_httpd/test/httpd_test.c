@@ -67,11 +67,11 @@ u16_t FooSsiHandler(
 #if LWIP_HTTPD_SSI_MULTIPART
     , u16_t currentTagPart, u16_t *nextTagPart
 #endif /* LWIP_HTTPD_SSI_MULTIPART */
-
 #if defined(LWIP_HTTPD_FILE_STATE) && LWIP_HTTPD_FILE_STATE
     , void *connectionState
 #endif /* LWIP_HTTPD_FILE_STATE */
-) {
+)
+{
     printf("FooSsiHandler\r\n");
 
 #if LWIP_HTTPD_SSI_RAW
