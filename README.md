@@ -5,28 +5,149 @@
 
 
 # 介绍
-欢迎使用Hi3861V100开发OpenHarmony物联网应用.[](https://developer.huawei.com/consumer/cn/training/course/mooc/C101641968823265204?refresh=166942862398)
+这是一个嵌入式软件项目，所以你需要有一块Hi3861V100的开发板。如果你只是想学习Hi3861开发WiFi物联网应用，那么基本上任何一块基于Hi3861V100的开发板板都是可以的（无需编译Vendor目录下demo）。代码仓Vendor目录下支持3种类型的开发板HiSpark T1、Hihope pegesus、BearPI，若您需要增加开发板类型，可以在Vendor目录下创建新的链接。
 
-#  hispark_T1介绍
+# 开发环境
 
-## 一、硬件说明
+## windows环境搭建
+
+我们推荐Windows 10 64位系统或以上版本，详细参考doc目录下《物联网技术及应用实验指导手册》手动搭建编译环境。
+
+步骤一：下载devicetool-windows-tool-3.1.0.400.zip版，下载网址：https://device.harmonyos.com/cn/develop/ide#download
+
+步骤二：下载Hi3861 Openharmony SDK下载网址：https://gitee.com/HiSpark/hi3861_hdu_iot_application
+
+步骤三：下载开发工具下载网址：https://hispark.obs.cn-east-3.myhuaweicloud.com/DevTools_Hi3861V100_v1.0.zip
+
+步骤四：打开VSCode，在导入工程弹窗中选择Hi3861 SDK目录，点击“导入”。
+
+步骤五：配置开发工具路径，点击左侧的“工程配置”，在右侧窗口找到“compiler_bin_path”，选择到之前下载的开发工具。
+
+步骤六：配置完成后，点击左侧“build”，开始编译。
+
+步骤七：安装CH340G驱动，打开DevTools_Hi3861V100_v1.0/usb_serial_driver文件夹，安装CH341SER.EXE驱动（硬件需要与电脑连接）。
+
+步骤八：当前DevEco Device Tool工具支持Hi3861单板一键烧录功能。需要连接开发板，配置开发板对应的串口，在编译结束后，进行烧录。点击左侧“工程配置”，找到“upload_port”选项，选择开发板对应的烧录串口
+
+## Linux环境搭建
+
+我们推荐的虚拟机系统配置为VirtualBox 6.0 + Ubuntu20.04, 推荐虚拟机内存2G以上, 虚拟机硬盘20G以上. 你可以通过搜索学习相关的网络文章实现安装虚拟机Linux.
+
+我们推荐使用两块虚拟机网卡, 一块设置成NAT方式, 用于虚拟机连接外部网络, 一块使用Host Only模式, 用于宿主机连接虚拟机, 这样你会遇到最少的问题.
+
+装好虚拟机Linux后, 你可以参考doc目录下的教程手动安装所需的Linux软件, 搭建所有的软件编译环境. 如果你觉得自己从头搭建环境对你来说太复杂, 或者担心新装软件会与原本系统里的一些软件冲突, 又或者你只是想小试一下OpenHarmony的开发体验, 或者你单纯就是懒的话!😶, 我们推荐你使用我们已经封装好的Docker, 因为它是如此的方便! 你只要按照以下的指导一步一步输入命令就可以:
+
+1. 安装docker(如果你的Ubuntu系统没有docker的话)
+
+   ```bash
+   sudo apt install docker.io -y
+   ```
+
+   或者
+
+   ```bash
+   curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+   ```
+
+2. 拉取我们封装好的Docker镜像到本地
+
+   ```bash
+   docker pull hispark/hi3861_hdu_iot_application:1.0
+   ```
+
+3. 新建一个容器命名为openharmony, 映射你的用户目录~到容器内目录/home/hispark, 同时把容器端口22映射为外部端口2222
+
+   ```bash
+   docker run -itd -p 2222:22 -v ~/code:/home/hispark --name openharmony hispark/hi3861_hdu_iot_application:1.0
+   ```
+
+4. 进入容器
+
+   ```bash
+   docker exec -it openharmony /bin/bash
+   ```
+
+搞定! 
+
+现在你已经有了一个专门用来编译代码的Docker容器环境了. 你每次可以在虚拟机linux中执行命令行`docker exec -it openharmony /bin/bash`进入这个Docker容器环境, 也可以在Windows中通过ssh软件(推荐MobaXTerm)连接虚拟机的2222端口进入(账户名root, 密码123456)
+
+## 下载代码
+
+假设你按照上一节的方法, 搭建了一个Docker环境, 并已经通过命令行或ssh进入容器内部环境中, 执行
+
+```
+cd /home/hispark
+```
+
+进入到你映射的用户目录中. **我们建议你把所有代码工作都保存在这个映射目录中, 这是因为Docker的容器环境是临时性的, 当Docker容器销毁时, 内部所有数据信息都会被删除而且无法恢复, 这就是为什么我们强烈建议你把代码工作保存在映射的用户目录中, 因为这里是你真实的用户存储空间, 不会随Docker容器销毁而消失.**
+
+git clone拉取代码
+
+```bash
+git clone https://gitee.com/HiSpark_group/hi3861_hdu_iot_application.git
+```
+
+## 编译
+
+进入src目录
+
+```bash
+cd hi3861_hdu_iot_application/src
+```
+
+执行命令`hb set`, 回车两次, 配置OpenHarmony信息
+
+```bash
+hb set
+```
+
+执行编译
+
+```bash
+hb build -f
+```
+
+编译完成后的固件镜像在src/out目录中. 编译后的镜像名为Hi3861_loader_signed.bin和Hi3861_wifiiot_app_burn.bin
+
+## 烧录
+
+把编译后的镜像文件copy到Windows中(通过samba或ssh), 然后运行HiBurn([下载](https://ost.51cto.com/resource/29)), 将镜像下载到板上运行. 这里我还是推荐你用命令行的方式运行: 在Windows中建立这样一个脚本, 并命名为例如fast_burn.bat之类的名字, 复制以下内容, 并将大括号{}部分替换为你的实际信息, 修改并保存.
+
+```bat
+@ fast_burn.bat
+copy
+\\{samba路径}\hi3861_hdu_iot_application\src\out\hispark_pegasus\wifiiot_hispark_
+pegasus\Hi3861_loader_signed.bin .
+copy
+\\{samba路径}\hi3861_hdu_iot_application\src\out\hispark_pegasus\wifiiot_hispark_
+pegasus\Hi3861_wifiiot_app_burn.bin .
+{HiBurn路径} -com:{串口端口号} -bin:Hi3861_wifiiot_app_burn.bin -signalbaud:2000000 -2ms -
+loader:Hi3861_loader_signed.bin
+```
+
+比如, 我这里的虚拟机网卡IP是192.168.101.56, 我在Win10中通过samba去访问我的代码路径是\\192.168.101.56\share\code, hiburn存放在我电脑的d:\hispark\util目录下, 开发板接入我的电脑, 设备管理器里查看串口号为4, 所以我这里的fast_burn.bat是这样的
+
+```bat
+@ fast_burn.bat
+copy
+\\192.168.101.56\share\code\hi3861_hdu_iot_application\src\out\hispark_pegasus\wifiiot_hispark_
+pegasus\Hi3861_loader_signed.bin .
+copy
+\\192.168.101.56\share\code\hi3861_hdu_iot_application\src\out\hispark_pegasus\wifiiot_hispark_
+pegasus\Hi3861_wifiiot_app_burn.bin .
+d:\hispark\util\hiburn.exe -com:4 -bin:Hi3861_wifiiot_app_burn.bin -signalbaud:2000000 -2ms -
+loader:Hi3861_loader_signed.bin
+```
+
+假设上述一切顺利的话, 现在双击这个fast_burn.bat, 将会跳出一个命令行窗口, 并提示你按一下板子的复位按键. 按开发板的复位键后将会自动进入固件烧录过程, 烧录完毕后窗口会自动关闭.
+
+再按一下复位键, 现在, 你的第一个OpenHarmony程序已经在你的开发板上运行起来了. :thumbsup:
+
+## hispark_T1 案例开发
+
 这是一个嵌入式软件项目, 所以你需要有一块Hi3861V100的开发板. 如果你只是想学习使用Hi3861开发WiFi物联网应用, 那么基本上任何一块基于Hi3861V100的开发板都是可以的. 如果你需要使用这个项目中的全部外设实验用例, 例如陀螺仪, NFC, 马达控制, 平衡车等等, 那么你需要配合一块HiSpark T1开发板使用.
 
-<div align=center><img src="doc/pic/iot_car_t1.jpg" alt="iot_car" height="200" />    <img src="doc/pic/balance_car.jpg" alt="iot_car" height="200"/>   </div>
-
-## 二、快速上手（十分钟上手）
-
-以下教程将教您快速的体验OpenHarmony Hi3861V100的源码`[获取]`、`[编译]`、`[烧录]`,`[hispark_T1案例使用]`。
-
-
-* [《物联网技术及应用实验指导手册》第1.1章节Windows环境搭建](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/doc/%E7%89%A9%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%BA%94%E7%94%A8%E5%AE%9E%E9%AA%8C%E6%8C%87%E5%AF%BC%E6%89%8B%E5%86%8C.pdf)
-* [hispark_T1硬件原理图](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/doc/board)
-
-## 三、hispark_T1 案例开发
-
-这是一个嵌入式软件项目, 所以你需要有一块Hi3861V100的开发板. 如果你只是想学习使用Hi3861开发WiFi物联网应用, 那么基本上任何一块基于Hi3861V100的开发板都是可以的. 如果你需要使用这个项目中的全部外设实验用例, 例如陀螺仪, NFC, 马达控制, 平衡车等等, 那么你需要配合一块HiSpark T1开发板使用.
-
-* 《物联网技术及应用实验指导手册》：[hispark_T1案例使用](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/doc/%E7%89%A9%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%BA%94%E7%94%A8%E5%AE%9E%E9%AA%8C%E6%8C%87%E5%AF%BC%E6%89%8B%E5%86%8C.pdf)
+* 《物联网技术及应用实验指导手册》：[hispark_T1案例指导文档下载](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/doc/%E7%89%A9%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%BA%94%E7%94%A8%E5%AE%9E%E9%AA%8C%E6%8C%87%E5%AF%BC%E6%89%8B%E5%86%8C.pdf)
 
 例程列表如下所示：
 
@@ -59,56 +180,19 @@
 | oc_demo             | 基于华为IoT云平台的智能小车实验    | 《物联网技术及应用实验指导手册》第5.6章节  |
 |                     |                                    |                                            |
 
-​	
-
 #  hispark_pegasus介绍
 
-## 一、硬件说明
+## 硬件说明
 
 ![image-20230201170309577](doc/pic/image-20230201170309577.png)
 
-## 二、快速上手（十分钟上手）
+## hispark_pegasus 案例开发
 
-以下教程将教您快速的体验OpenHarmony Hi3861V100的源码`[获取]`、`[编译]`、`[烧录]`。
-
-
-* [hispark_pegasus十分钟上手](quick-start/BearPi-HM_Nano十分钟上手.md)
-* [hisaprk_pegasus硬件原理图]()
-
-## 三、hispark_pegasus 案例开发
-
-例程列表如下所示：
-
-| 例程名           | 说明                                                         |
-| ---------------- | ------------------------------------------------------------ |
-| 00_thread        | [线程](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/00_thread) |
-| 01_timer         | [定时器  ](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/01_timer) |
-| 02_delay         | [延时](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/02_delay) |
-| 03_mutex         | [互斥锁](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/03_mutex) |
-| 04_semaphore     | [信号量](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/04_semaphore) |
-| 05_message       | [消息队列](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/05_message) |
-| 06_gpioled       | [红色 LED 不间断烁](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/06_gpioled) |
-| 07_gpiobutton    | [按键控制LED灯亮灭](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/07_gpiobutton) |
-| 08_pwmled        | [炫彩灯板的三色灯会呈现红色，并且亮度会逐渐变化：暗--亮](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/08_pwmled) |
-| 09_adc           | [有光时，串口输出的ADC的值为120左右；无光时，串口输出的ADC的值为1800左右](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/09_adc) |
-| 10_i2caht20      | [温湿度监测](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/10_i2caht20) |
-| 11_uart          | [UART自发自收](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/11_uart) |
-| 14_pwmbeer       | [蜂鸣器鸣响](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/14_pwmbeer) |
-| 15_pwmbeermusic  | [蜂鸣器会响](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/15_pwmbeermusic) |
-| 16_trafficlight  | [交通灯板红黄绿三个灯循环闪烁四次](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/16_trafficlight) |
-| 17_colorfullight | [炫彩灯板的三色灯会先依次按照红绿蓝三色闪烁两次](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/17_colorfullight) |
-| 21_tcpclient     | [tcp客户端](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/21_tcpclient) |
-| 22_tcpserver     | [tcp服务端](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/22_tcpserver) |
-| 23_udpclient     | [udp客户端](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/23_udpclient) |
-| 24_udpserver     | [udp服务端](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/24_udpserver) |
-| 28_easy_wifi     | [WiFi热点创建和WiFi联网](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo/28_easy_wifi) |
-|                  |                                                              |
-
-
+案例地址：https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo
 
 # BearPi-HM Nano介绍
 
-## 一、硬件说明
+## 硬件说明
 
 小熊派·季[（BearPi-HM Nano）](https://item.taobao.com/item.htm?id=633296694816)是一款由小熊派专为OpenHarmony系统打造的开发板，如下图所示
 
@@ -117,59 +201,11 @@
 * 板载NFC Forum Type 2 Tag芯片及天线，可实现OpenHarmony“碰一碰”功能。
 * 一根TypeC USB线，即可实现供电、下载、调试等多种功能。
 
-[![](src/vendor/bearpi/bearpi_hm_nano/doc/figures/00_public/BearPi-HM_Nano_Info.png)
+![](src/vendor/bearpi/bearpi_hm_nano/doc/figures/00_public/BearPi-HM_Nano_Info.png)
 
-## 二、快速上手（十分钟上手）
+## BearPi-HM_Nano 案例开发
 
-以下教程将教您快速的体验OpenHarmony Hi3861V100的源码`[获取]`、`[编译]`、`[烧录]`。
-
-
-* [BearPi-HM_Nano十分钟上手](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/doc/BearPi-HM_Nano%E5%8D%81%E5%88%86%E9%92%9F%E4%B8%8A%E6%89%8B.md)
-* [BearPi-HM_Nano硬件原理图](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/doc/BearPi-HM_Nano%E5%8D%81%E5%88%86%E9%92%9F%E4%B8%8A%E6%89%8B.md)
-
-## 三、BearPi-HM_Nano 案例开发
-
-BearPi-HM Nano提供多个案例，案例以A、B、C、D进行不同类别进行分级，方便初学者由浅入深逐步学习。您拿到工程后经过简单的编程和下载即可看到实验现象。下面依次对A/B/C/D类进行介绍：
-
-* `A1 - A99`：内核类
-* `B1 - B99`：基础外设类
-* `C1 - C99`：E53传感器类
-* `D1 - D99`：物联网类
-
-例程列表如下所示：
-
-| 编号 | 类别      | 例程名                     | 说明                                                         |
-| ---- | --------- | -------------------------- | ------------------------------------------------------------ |
-| A1   | 内核      | thread                     | [任务交替打印](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/A1_kernal_thread) |
-| A2   | 内核      | timer                      | [定时器  ](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/A2_kernel_timer) |
-| A3   | 内核      | event                      | [事件](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/A3_kernel_event) |
-| A4   | 内核      | mutex                      | [互斥锁](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/A4_kernel_mutex) |
-| A5   | 内核      | semp                       | [信号量](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/A5_kernel_semaphore) |
-| A6   | 内核      | message                    | [消息队列](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/A6_kernel_message) |
-| B1   | 基础      | led_blink                  | [红色 LED 不间断烁](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/B1_basic_led_blink) |
-| B2   | 基础      | button                     | [按键控制LED灯亮灭](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/B2_basic_button) |
-| B3   | 基础      | pwm_led                    | [红色 LED 呼吸灯](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/B3_basic_pwm_led) |
-| B4   | 基础      | adc_mq2                    | [ADC读取电压](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/B4_basic_adc) |
-| B5   | 基础      | i2c_bh1750                 | [I2C读取NFC标签](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/B5_basic_i2c_nfc) |
-| B6   | 基础      | basic_uart                 | [UART自发自收](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/B6_basic_uart) |
-| C1   | E53传感器 | e53_sf1_example            | [驱动烟雾传感器 MQ2](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/C1_e53_sf1_mq2) |
-| C2   | E53传感器 | e53_ia1_example            | [驱动温湿度传感器 SHT30](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/C2_e53_ia1_temp_humi_pls) |
-| C3   | E53传感器 | e53_sc1_example            | [驱动光强传感器 BH1750](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/C3_e53_sc1_pls) |
-| C4   | E53传感器 | e53_sc2_example            | [驱动 6 轴陀螺仪 MPU6050](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/C4_e53_sc2_axis) |
-| C5   | E53传感器 | e53_is1_example            | [驱动人体红外传感器](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/C5_e53_is1_infrared) |
-| D1   | 物联网    | iot_wifi_ap                | [Wifi热点创建](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/D1_iot_wifi_ap) |
-| D2   | 物联网    | iot_wifi_sta_connect       | [Wifi联网](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/D2_iot_wifi_sta_connect) |
-| D3   | 物联网    | udp_client                 | [使用 Socket 实现 UDP 客户端](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/D3_iot_udp_client) |
-| D4   | 物联网    | tcp_server                 | [使用 Socket 实现 TCP 服务端](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/D4_iot_tcp_server) |
-| D5   | 物联网    | iot_mqtt                   | [使用 Paho-MQTT 软件包实现 MQTT 协议通信](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/D5_iot_mqtt) |
-| D6   | 物联网    | iot_cloud_oc_sample        | [接入华为IoT 云平台](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/D6_iot_cloud_oc) |
-| D7   | 物联网    | iot_cloud_oc_smoke         | [基于华为IoT平台的智慧烟感案例](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/D7_iot_cloud_oc_smoke) |
-| D8   | 物联网    | iot_cloud_oc_light         | [基于华为IoT平台的智慧路灯案例](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/D8_iot_cloud_oc_light) |
-| D9   | 物联网    | iot_cloud_oc_manhole_cover | [基于华为IoT平台的智慧井盖案例](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/D9_iot_cloud_oc_manhole_cover) |
-| D10  | 物联网    | iot_cloud_oc_infrared      | [基于华为IoT平台的智慧人体感应案例](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/D10_iot_cloud_oc_infrared) |
-| D11  | 物联网    | iot_cloud_oc_agriculture   | [基于华为IoT平台的智慧农业案例](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/D11_iot_cloud_oc_agriculture) |
-| D12  | 物联网    | iot_cloud_oc_gps           | [基于华为IoT平台的智慧物流案例](https://gitee.com/HiSpark/hi3861_hdu_iot_application/blob/master/src/vendor/bearpi/bearpi_hm_nano/demo/D12_iot_cloud_oc_gps) |
-|      |           |                            |                                                              |
+案例地址：https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/bearpi/bearpi_hm_nano/demo
 
 # 问题与解答
 
