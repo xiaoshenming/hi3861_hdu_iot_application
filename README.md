@@ -7,6 +7,14 @@
 # 介绍
 这是一个嵌入式软件项目，所以你需要有一块Hi3861V100的开发板。如果你只是想学习Hi3861开发WiFi物联网应用，那么基本上任何一块基于Hi3861V100的开发板板都是可以的（无需编译Vendor目录下demo）。代码仓Vendor目录下支持3种类型的开发板HiSpark T1、Hihope pegesus、BearPI，若您需要增加开发板类型，可以在Vendor目录下创建新的链接。
 
+| 公司   | 开发板         |
+| ------ | -------------- |
+| 海思   | HiSpark T1     |
+| 润和   | Hihope pegesus |
+| 小熊派 | BearPI Nano    |
+
+
+
 # 开发环境
 
 ## windows环境搭建
@@ -143,7 +151,15 @@ loader:Hi3861_loader_signed.bin
 
 再按一下复位键, 现在, 你的第一个OpenHarmony程序已经在你的开发板上运行起来了. :thumbsup:
 
-## hispark_T1 案例开发
+# HiSpark T1介绍
+
+##  硬件说明
+
+这是一个嵌入式软件项目, 所以你需要有一块Hi3861V100的开发板. 如果你只是想学习使用Hi3861开发WiFi物联网应用, 那么基本上任何一块基于Hi3861V100的开发板都是可以的. 如果你需要使用这个项目中的全部外设实验用例, 例如陀螺仪, NFC, 马达控制, 平衡车等等, 那么你需要配合一块HiSpark T1开发板使用.
+
+<div align=center><img src="doc/pic/iot_car_t1.jpg" alt="iot_car" height="200" />    <img src="doc/pic/balance_car.jpg" alt="iot_car" height="200"/>   </div>
+
+## Hispark T1 案例开发
 
 这是一个嵌入式软件项目, 所以你需要有一块Hi3861V100的开发板. 如果你只是想学习使用Hi3861开发WiFi物联网应用, 那么基本上任何一块基于Hi3861V100的开发板都是可以的. 如果你需要使用这个项目中的全部外设实验用例, 例如陀螺仪, NFC, 马达控制, 平衡车等等, 那么你需要配合一块HiSpark T1开发板使用.
 
@@ -180,13 +196,13 @@ loader:Hi3861_loader_signed.bin
 | oc_demo             | 基于华为IoT云平台的智能小车实验    | 《物联网技术及应用实验指导手册》第5.6章节  |
 |                     |                                    |                                            |
 
-#  hispark_pegasus介绍
+#  Hihope pegesus介绍
 
 ## 硬件说明
 
 ![image-20230201170309577](doc/pic/image-20230201170309577.png)
 
-## hispark_pegasus 案例开发
+## Hihope pegesus案例开发
 
 案例地址：https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hihope/hispark_pegasus/demo
 
@@ -224,3 +240,7 @@ loader:Hi3861_loader_signed.bin
 OpenHarmony还是一个相当年轻的系统, 还在快速的发展中, 所以在这个过程中, 不可避免的你会遇到不少问题, 有些可能还是相当让人下头的那种:confounded:, 不过不要担心, 你可以多尝试几种方法去研究去解决, 也可以用搜索引擎搜索答案, 你当然也可以回到这里提出你的问题, 我们和其他小伙伴会尽力帮助你. 但最重要的是要记得: 所有那些让人仰望的技术大神, 其实都是从这样的阶段磨砺成长起来的. :rainbow:
 
 最后的最后, 欢迎来到OpenHarmony的世界探险!
+
+# 参考
+
+- [HarmonyOS物联网开发课程](https://developer.huawei.com/consumer/cn/training/course/mooc/C101641968823265204?refresh=1669428623989)
