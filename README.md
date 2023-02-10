@@ -41,7 +41,7 @@
 	https://hispark.obs.cn-east-3.myhuaweicloud.com/DevTools_Hi3861V100_v1.0.zip
 1. 拉取本项目的SDK代码到本地：
     ```bash
-    git clone https://gitee.com/HiSpark_group/hi3861_hdu_iot_application.git
+    git clone https://gitee.com/HiSpark/hi3861_hdu_iot_application.git
     ```
 1. 下载并安装Windows版本的HUAWEI DevEco Device Tool(devicetool-windows-tool-3.1.0.400.zip)：https://device.harmonyos.com/cn/develop/ide#download
 1. 导入SDK: 打开已安装DevEco插件的VSCode, 在导入工程弹窗中选择SDK代码的src目录, 点击“导入”.
@@ -93,7 +93,7 @@
     通过命令行或ssh进入容器内部环境中, 执行
     ```
     cd /home/hispark
-    git clone https://gitee.com/HiSpark_group/hi3861_hdu_iot_application.git
+    git clone https://gitee.com/HiSpark/hi3861_hdu_iot_application.git
     ```
     > **我们建议你把所有代码工作都保存在/home/hispark这个映射目录中, 这是因为Docker的容器环境是临时性的, 当Docker容器销毁时, 内部所有数据信息都会被删除而且无法恢复, 这就是为什么我们强烈建议你把代码工作保存在映射的用户目录中, 因为这里是你真实的用户存储空间, 不会随Docker容器销毁而消失.**
 
