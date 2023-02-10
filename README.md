@@ -33,22 +33,51 @@
 
 可以在Windows环境或"Windows+Linux虚拟机"环境下使用本项目的代码.
 
-### Windows环境搭建
+### Windows IDE环境搭建
 
 如果在Windows下搭建编译开发环境, 我们推荐Windows 10 64位系统或以上版本, 简要步骤如下(详细内容参考doc目录下<物联网技术及应用实验指导手册>):
 
 1. 下载并解压Hi3861V100编译工具链：
 	https://hispark.obs.cn-east-3.myhuaweicloud.com/DevTools_Hi3861V100_v1.0.zip
+	
 1. 拉取本项目的SDK代码到本地：
     ```bash
     git clone https://gitee.com/HiSpark/hi3861_hdu_iot_application.git
     ```
+    > **注意：由于windows自身限制，路径不能超过260个字符，在git下载和解压Hi3861 SDK代码时尽量放在磁盘根目录下，防止导致的编译错误问题**
+
 1. 下载并安装Windows版本的HUAWEI DevEco Device Tool(devicetool-windows-tool-3.1.0.400.zip)：https://device.harmonyos.com/cn/develop/ide#download
-1. 导入SDK: 打开已安装DevEco插件的VSCode, 在导入工程弹窗中选择SDK代码的src目录, 点击“导入”.
-1. 配置编译工具链路径: 点击左侧的“工程配置”, 在右侧窗口找到“compiler_bin_path”, 选择到之前下载的开发工具路径.
+
+1. 导入SDK: 打开已安装DevEco Decive Tool插件的VSCode, 在DevEco Device Tool主页点击"导入工程", 弹窗中选择SDK代码目录, 点击“导入”.
+
+1. 后续弹窗"SOC"选择"HI3861", 开发板选择"hi3861", 点击"导入".
+
+1. 配置编译工具链路径: 点击左侧的“工程配置”, 在右侧窗口找到“compiler_bin_path”, 选择到之前下载的开发工具路径, 选择`env_set.py`文件所在的目录层级.
+
 1. 编译: 点击左侧“build”.
+
 1. 烧录: 硬件连接电脑, 如电脑未安装CH340G驱动, 先安装DevTools_Hi3861V100_v1.0/usb_serial_driver路径下的CH341SER.EXE串口驱动. 然后点击左侧“工程配置”, 找到“upload_port”选项, 选择开发板对应的烧录串口进行烧录. 
+
 1. 按一下复位键, 现在, 你的第一个OpenHarmony程序已经在你的开发板上运行起来了. :thumbsup:
+
+### Windows命令行编译环境搭建
+
+为了方便习惯命令行编译的开发者使用, 我们同时也支持在Windows命令行环境编译方式:
+前两步操作与IDE环境搭建方式相同, 即下载并解压Hi3861V100编译工具链和拉取SDK代码到本地. 然后:
+1. 进入DevTools_Hi3861V100_v1.0.zip解压后目录, 双击运行`env_start.bat`, 则将在完成首次配置后, 进入一个转为编译Hi3861V100而配置的命令行环境;
+2. 在命令行窗口中切换到SDK所在的src目录:
+    ```
+    [DevTools] D:\DevTools_Hi3861V100_v1.0>cd d:\hi3861_hdu_iot_application\src
+    ```
+3. 执行命令 `hb set`, 直接回车选择当前缺省选项, 执行命令`hb build`:
+    ```
+    [DevTools] D:\hi3861_hdu_iot_application\src>hb set
+    [DevTools] D:\hi3861_hdu_iot_application\src>hb build
+    ```
+    即完成编译. 
+    
+    > **如有提示`account_related_group_manager_mock.c: No such file or directory`之类报错信息, 是Windows系统文件路径不能超过260字符的限制所致, 请尝试将SDK代码仓放置于较浅层的磁盘目录下重新尝试**
+4. 编译后镜像文件位于 out/hispark_pegasus/wifiiot_hispark_pegasus/Hi3861_wifiiot_app_allinone.bin, 使用DevTools_Hi3861V100_v1.0/burntool/BurnTool.exe完成烧录. (如果缺少USB转串口驱动, 则执行usb_serial_driver\CH341SER.EXE安装)
 
 ### Linux环境搭建
 
