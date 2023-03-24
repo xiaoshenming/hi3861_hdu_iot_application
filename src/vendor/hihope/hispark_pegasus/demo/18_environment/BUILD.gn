@@ -20,8 +20,7 @@ static_library("environment") {
     include_dirs = [
         "//utils/native/lite/include",
         "//kernel/liteos_m/kal",
-#       "//base/iot_hardware/peripheral/interfaces/kits",
-        "//base/iothardware/peripheral/interfaces/inner_api",
+        "//base/iot_hardware/peripheral/interfaces/kits",
         "//device/soc/hisilicon/hi3861v100/sdk_liteos/include"
     ]
 }

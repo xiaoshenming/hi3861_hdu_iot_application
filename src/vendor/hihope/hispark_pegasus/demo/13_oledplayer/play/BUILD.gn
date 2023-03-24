@@ -36,7 +36,7 @@ static_library("stream_player") {
         "//third_party/ssd1306",
         "//utils/native/lite/include",
         "//kernel/liteos_m/kal/cmsis",
-        "//base/iothardware/peripheral/interfaces/inner_api",
+        "//base/iot_hardware/peripheral/interfaces/kits",
         "//foundation/communication/wifi_lite/interfaces/wifiservice",
         "//device/hisilicon/hispark_pegasus/sdk_liteos/third_party/lwip_sack/include",
     ]
