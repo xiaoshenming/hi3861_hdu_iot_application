@@ -14,7 +14,7 @@
 以下教程将教您快速的体OpenHarmony的源码`[获取]`、`[编译]`、`[烧录]`。
 
 
-* [BearPi-HM_Nano十分钟上手](quick-start/BearPi-HM_Nano十分钟上手.md)
+* [BearPi-HM_Nano十分钟上手](BearPi-HM_Nano十分钟上手.md)
 
 ## 三、BearPi-HM_Nano 案例开发
 
