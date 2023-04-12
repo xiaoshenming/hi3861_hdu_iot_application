@@ -20,8 +20,8 @@
 #include "hi_io.h"
 #include "hi_errno.h"
 
-#include "hal_bsp_pcf8574.h"
 #include "hal_bsp_structAll.h"
+#include "hal_bsp_pcf8574.h"
 
 tn_pcf8574_io_t tmp_io = {0}; // IO扩展芯片的引脚
 
@@ -115,7 +115,3 @@ uint32_t PCF8574_Init(void)
     PCF8574_Write(tmp_io.all); // v4.2版本开发板 关闭风扇，关闭蜂鸣器，关闭LED灯
     return HI_ERR_SUCCESS;
 }
-
-
-
-

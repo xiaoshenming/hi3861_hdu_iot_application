@@ -259,7 +259,8 @@ int MQTTClient_sub(void)
         printf("data: %s\n", receivedTopic.lenstring.data);
         printf("length: %d\n", strlen(receivedTopic.lenstring.data) - payloadlen_in);
         printf("payload_length: %d\n", payloadlen_in);
-        memcpy_s(mqtt_topic, sizeof(mqtt_topic), receivedTopic.lenstring.data, strlen(receivedTopic.lenstring.data) - payloadlen_in);
+        memcpy_s(mqtt_topic, sizeof(mqtt_topic), receivedTopic.lenstring.data, 
+                strlen(receivedTopic.lenstring.data) - payloadlen_in);
         printf("topic: %s\n", mqtt_topic);
         printf("payload: %s\n", payload_in);
 

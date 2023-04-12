@@ -135,16 +135,16 @@ void mqtt_send_task(void)
 
         /* 格式化打印创建的带数组的JSON对象 */
         char *str_print = cJSON_PrintUnformatted(root);
-        if(str_print != NULL)
-        {
+        if(str_print != NULL) {
             // printf("%s\n", str_print);
             // 发布消息
             MQTTClient_pub(publish_topic, str_print, strlen((char *)str_print));
             cJSON_free(str_print);
         }
 
-        if(root != NULL)
+        if(root != NULL) {
             cJSON_Delete(root);
+        }
 
         properties = str_print = root = array = services = NULL;
     }
