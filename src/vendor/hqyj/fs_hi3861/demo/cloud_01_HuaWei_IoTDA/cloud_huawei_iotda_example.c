@@ -34,15 +34,15 @@
 
 // 设备密码 fs12345678
 // 设备ID
-#define DEVICE_ID "643641d692edbc7ee93ecdd9_board"
+#define DEVICE_ID ""
 // MQTT客户端ID
-#define MQTT_CLIENT_ID "643641d692edbc7ee93ecdd9_board_0_0_2023041205"
+#define MQTT_CLIENT_ID ""
 // MQTT用户名
-#define MQTT_USER_NAME "643641d692edbc7ee93ecdd9_board"
+#define MQTT_USER_NAME ""
 // MQTT密码
-#define MQTT_PASS_WORD "52bc6b65f3db62f9e456b4a4a031cacfe34f865cc69f457de8a8a67b9b963b6f"
+#define MQTT_PASS_WORD ""
 // 华为云平台的IP地址
-#define SERVER_IP_ADDR "121.36.42.100"
+#define SERVER_IP_ADDR ""
 // 华为云平台的IP端口号
 #define SERVER_IP_PORT 1883
 // 订阅 接收控制命令的主题
