@@ -21,9 +21,9 @@
 #include <hi_errno.h>
 #include "aht20.h"
 
-#define AHT20_STARTUP_TIME     20 * 1000 // 上电启动时间
-#define AHT20_CALIBRATION_TIME 40 * 1000 // 初始化（校准）时间
-#define AHT20_MEASURE_TIME     75 * 1000 // 测量时间
+#define AHT20_STARTUP_TIME     (20 * 1000) // 上电启动时间
+#define AHT20_CALIBRATION_TIME (40 * 1000) // 初始化（校准）时间
+#define AHT20_MEASURE_TIME     (75 * 1000) // 测量时间
 
 #define AHT20_DEVICE_ADDR   0x38
 #define AHT20_READ_ADDR     ((0x38 << 1) | 0x1)
@@ -55,23 +55,34 @@
  **/
 #define AHT20_STATUS_BUSY_SHIFT 7       // bit[7] Busy indication
 #define AHT20_STATUS_BUSY_MASK  (0x1 << AHT20_STATUS_BUSY_SHIFT)
-#define AHT20_STATUS_BUSY(status) ((status & AHT20_STATUS_BUSY_MASK) >> AHT20_STATUS_BUSY_SHIFT)
 
 #define AHT20_STATUS_MODE_SHIFT 5       // bit[6:5] Mode Status
 #define AHT20_STATUS_MODE_MASK  (0x3 << AHT20_STATUS_MODE_SHIFT)
-#define AHT20_STATUS_MODE(status) ((status & AHT20_STATUS_MODE_MASK) >> AHT20_STATUS_MODE_SHIFT)
 
                                         // bit[4] Reserved
 #define AHT20_STATUS_CALI_SHIFT 3       // bit[3] CAL Enable
-#define AHT20_STATUS_CALI_MASK  (0x1 << AHT20_STATUS_CALI_SHIFT)
-#define AHT20_STATUS_CALI(status) ((status & AHT20_STATUS_CALI_MASK) >> AHT20_STATUS_CALI_SHIFT)
-                                        // bit[2:0] Reserved
+#define AHT20_STATUS_CALI_MASK  (0x1 << AHT20_STATUS_CALI_SHIFT)  // bit[2:0] Reserved
 
 #define AHT20_STATUS_RESPONSE_MAX 6
 
 #define AHT20_RESLUTION            (1 << 20)  // 2^20
 
 #define AHT20_MAX_RETRY 10
+
+uint8_t aht20_status_busy(uint8_t status)
+{
+    return ((status & AHT20_STATUS_BUSY_MASK) >> (AHT20_STATUS_BUSY_SHIFT));
+}
+
+uint8_t aht20_status_mode(uint8_t status)
+{
+    return ((status & AHT20_STATUS_MODE_MASK) >> (AHT20_STATUS_MODE_SHIFT));
+}
+
+uint8_t aht20_status_cali(uint8_t status)
+{
+    return ((status & AHT20_STATUS_CALI_MASK) >> (AHT20_STATUS_CALI_SHIFT));
+}
 
 static uint32_t AHT20_Read(uint8_t* buffer, uint32_t buffLen)
 {
@@ -137,7 +148,7 @@ uint32_t AHT20_Calibrate(void)
         return retval;
     }
 
-    if (AHT20_STATUS_BUSY(buffer[0]) || !AHT20_STATUS_CALI(buffer[0])) {
+    if (aht20_status_busy(buffer[0]) || !aht20_status_cali(buffer[0])) {
         retval = AHT20_ResetCommand();
         if (retval != HI_ERR_SUCCESS) {
             return retval;
@@ -173,7 +184,7 @@ uint32_t AHT20_GetMeasureResult(float* temp, float* humi)
         return retval;
     }
 
-    for (i = 0; AHT20_STATUS_BUSY(buffer[0]) && i < AHT20_MAX_RETRY; i++) {
+    for (i = 0; aht20_status_busy(buffer[0]) && i < AHT20_MAX_RETRY; i++) {
         printf("AHT20 device busy, retry %d/%d!\r\n", i, AHT20_MAX_RETRY);
         usleep(AHT20_MEASURE_TIME);
         retval = AHT20_Read(buffer, sizeof(buffer));  // recv status command result
@@ -188,7 +199,7 @@ uint32_t AHT20_GetMeasureResult(float* temp, float* humi)
 
     uint32_t humiRaw = buffer[1];
     humiRaw = (humiRaw << 8) | buffer[2]; // 左移8位或buff[2]得到数据，具体可以看芯片手册
-    humiRaw = (humiRaw << 4) | ((buffer[3] & 0xF0) >> 4); // 左移4位或buff[4]得到数据，具体可以看芯片手册
+    humiRaw = (humiRaw << 4) | ((buffer[3] & 0xF0) >> 4); // 左移4位或buff[3]得到数据，具体可以看芯片手册
     *humi = humiRaw / (float)AHT20_RESLUTION * 100;
 
     uint32_t tempRaw = buffer[3] & 0x0F;

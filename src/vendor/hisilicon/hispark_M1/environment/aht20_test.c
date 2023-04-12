@@ -64,19 +64,18 @@ void TempHumChinese(void)
             0x20, 0x00, 0x2F, 0xF0, 0x22, 0x20, 0x21, 0x40, 0x20, 0x80, 0x43, 0x60, 0x8C, 0x1E, 0x30, 0x04
         }
     };
-    for (size_t i = 0; i < sizeof(fonts)/sizeof(fonts[0]); i++) {
-        ssd1306_DrawRegion(i * W, 3, W, fonts[i], sizeof(fonts[0]));
+    for (size_t i = 0; i < sizeof(fonts) / sizeof(fonts[0]); i++) {
+        ssd1306_DrawRegion(i * W, 3, W, fonts[i], sizeof(fonts[0])); // x轴坐标i*w，y轴坐标3，宽度为16
     }
-    for (size_t j = 0; j < sizeof(fonts2)/sizeof(fonts2[0]); j++) {
-        ssd1306_DrawRegion(j * W, 35, W, fonts2[j], sizeof(fonts2[0]));
+    for (size_t j = 0; j < sizeof(fonts2) / sizeof(fonts2[0]); j++) {
+        ssd1306_DrawRegion(j * W, 35, W, fonts2[j], sizeof(fonts2[0])); // x轴坐标i*w，y轴坐标35，宽度为16
     }
 }
 
 
-void *Aht20TestTask(void* arg)
+void Aht20TestTask(void)
 {
-    (void) arg;
-    hi_u32 retval = 0;
+    uint32_t retval = 0;
     float temp = 0.0f;
     float humi = 0.0f;
     static char line[32] = {0};
@@ -101,7 +100,7 @@ void *Aht20TestTask(void* arg)
     ssd1306_SetCursor(0, 0);
     while (AHT20_Calibrate() != HI_ERR_SUCCESS) {
         printf("AHT20 sensor init failed!\r\n");
-        usleep(1000);
+        usleep(1000); // 1ms = 1000
     }
     while (1) {
         TempHumChinese();
@@ -115,13 +114,13 @@ void *Aht20TestTask(void* arg)
         printf("AHT20_GetMeasureResult: %d, temp = %.2f, humi = %.2f\r\n", retval, temp, humi);
         ssd1306_SetCursor(32, 8); /* x坐标为32，y轴坐标为8 */
 
-        int ret = snprintf_s(line, sizeof(line), ": %.2f", temp);
+        int ret = snprintf_s(line, sizeof(line), sizeof(line), ": %.2f", temp);
         if (ret == 0) {
             printf("temp failed\r\n");
         }
         ssd1306_DrawString(line, Font_7x10, White);
 
-        ret = snprintf_s(line, sizeof(line), ": %.2f", humi);
+        ret = snprintf_s(line, sizeof(line), sizeof(line), ": %.2f", humi);
         if (ret == 0) {
             printf("humi failed\r\n");
         }
