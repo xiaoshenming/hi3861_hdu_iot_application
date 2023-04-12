@@ -1,33 +1,17 @@
 /*
- * Copyright (c) 2020, HiHope Community.
+ * Copyright (c) 2022 HiSilicon (Shanghai) Technologies CO., LIMITED.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * 3. Neither the name of the copyright holder nor the names of its
- *    contributors may be used to endorse or promote products derived from
- *    this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
-#include "aht20.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -35,14 +19,15 @@
 
 #include <hi_i2c.h>
 #include <hi_errno.h>
+#include "aht20.h"
 
-#define AHT20_STARTUP_TIME     20*1000 // 上电启动时间
-#define AHT20_CALIBRATION_TIME 40*1000 // 初始化（校准）时间
-#define AHT20_MEASURE_TIME     75*1000 // 测量时间
+#define AHT20_STARTUP_TIME     20 * 1000 // 上电启动时间
+#define AHT20_CALIBRATION_TIME 40 * 1000 // 初始化（校准）时间
+#define AHT20_MEASURE_TIME     75 * 1000 // 测量时间
 
 #define AHT20_DEVICE_ADDR   0x38
-#define AHT20_READ_ADDR     ((0x38<<1)|0x1)
-#define AHT20_WRITE_ADDR    ((0x38<<1)|0x0)
+#define AHT20_READ_ADDR     ((0x38 << 1) | 0x1)
+#define AHT20_WRITE_ADDR    ((0x38 << 1) | 0x0)
 
 #define AHT20_CMD_CALIBRATION       0xBE // 初始化（校准）命令
 #define AHT20_CMD_CALIBRATION_ARG0  0x08
@@ -69,22 +54,22 @@
  *      T  = St  / 2^20 * 200 - 50
  **/
 #define AHT20_STATUS_BUSY_SHIFT 7       // bit[7] Busy indication
-#define AHT20_STATUS_BUSY_MASK  (0x1<<AHT20_STATUS_BUSY_SHIFT)
+#define AHT20_STATUS_BUSY_MASK  (0x1 << AHT20_STATUS_BUSY_SHIFT)
 #define AHT20_STATUS_BUSY(status) ((status & AHT20_STATUS_BUSY_MASK) >> AHT20_STATUS_BUSY_SHIFT)
 
 #define AHT20_STATUS_MODE_SHIFT 5       // bit[6:5] Mode Status
-#define AHT20_STATUS_MODE_MASK  (0x3<<AHT20_STATUS_MODE_SHIFT)
+#define AHT20_STATUS_MODE_MASK  (0x3 << AHT20_STATUS_MODE_SHIFT)
 #define AHT20_STATUS_MODE(status) ((status & AHT20_STATUS_MODE_MASK) >> AHT20_STATUS_MODE_SHIFT)
 
                                         // bit[4] Reserved
 #define AHT20_STATUS_CALI_SHIFT 3       // bit[3] CAL Enable
-#define AHT20_STATUS_CALI_MASK  (0x1<<AHT20_STATUS_CALI_SHIFT)
+#define AHT20_STATUS_CALI_MASK  (0x1 << AHT20_STATUS_CALI_SHIFT)
 #define AHT20_STATUS_CALI(status) ((status & AHT20_STATUS_CALI_MASK) >> AHT20_STATUS_CALI_SHIFT)
                                         // bit[2:0] Reserved
 
 #define AHT20_STATUS_RESPONSE_MAX 6
 
-#define AHT20_RESLUTION            (1<<20)  // 2^20
+#define AHT20_RESLUTION            (1 << 20)  // 2^20
 
 #define AHT20_MAX_RETRY 10
 
@@ -141,8 +126,7 @@ uint32_t AHT20_Calibrate(void)
 {
     uint32_t retval = 0;
     uint8_t buffer[AHT20_STATUS_RESPONSE_MAX] = { AHT20_CMD_STATUS };
-    memset(&buffer, 0x0, sizeof(buffer));
-
+    memset_s(&buffer, sizeof(buffer), 0x0, sizeof(buffer));
     retval = AHT20_StatusCommand();
     if (retval != HI_ERR_SUCCESS) {
         return retval;
@@ -183,7 +167,7 @@ uint32_t AHT20_GetMeasureResult(float* temp, float* humi)
     }
 
     uint8_t buffer[AHT20_STATUS_RESPONSE_MAX] = { 0 };
-    memset(&buffer, 0x0, sizeof(buffer));
+    memset_s(&buffer, sizeof(buffer), 0x0, sizeof(buffer));
     retval = AHT20_Read(buffer, sizeof(buffer));  // recv status command result
     if (retval != HI_ERR_SUCCESS) {
         return retval;
@@ -203,14 +187,14 @@ uint32_t AHT20_GetMeasureResult(float* temp, float* humi)
     }
 
     uint32_t humiRaw = buffer[1];
-    humiRaw = (humiRaw << 8) | buffer[2];
-    humiRaw = (humiRaw << 4) | ((buffer[3] & 0xF0) >> 4);
+    humiRaw = (humiRaw << 8) | buffer[2]; // 左移8位或buff[2]得到数据，具体可以看芯片手册
+    humiRaw = (humiRaw << 4) | ((buffer[3] & 0xF0) >> 4); // 左移4位或buff[4]得到数据，具体可以看芯片手册
     *humi = humiRaw / (float)AHT20_RESLUTION * 100;
 
     uint32_t tempRaw = buffer[3] & 0x0F;
-    tempRaw = (tempRaw << 8) | buffer[4];
-    tempRaw = (tempRaw << 8) | buffer[5];
-    *temp = tempRaw / (float)AHT20_RESLUTION * 200 - 50;
+    tempRaw = (tempRaw << 8) | buffer[4]; /*  左移8位或buff[4]得到数据，具体可以看芯片手册 */
+    tempRaw = (tempRaw << 8) | buffer[5]; // 左移8位或buff[5]得到数据，具体可以看芯片手册
+    *temp = tempRaw / (float)AHT20_RESLUTION * 200 - 50; /* 200 50量程 */
     // printf("humi = %05X, %f, temp= %05X, %f\r\n", humiRaw, *humi, tempRaw, *temp);
     return HI_ERR_SUCCESS;
 }

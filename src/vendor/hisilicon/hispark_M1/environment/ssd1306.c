@@ -235,7 +235,7 @@ void ssd1306_UpdateScreen(void)
 
     // copy frame data
     data[count++] = SSD1306_CTRL_DATA;
-    memcpy(&data[count], SSD1306_Buffer, sizeof(SSD1306_Buffer));
+    memcpy_s(&data[count], sizeof(SSD1306_Buffer), SSD1306_Buffer, sizeof(SSD1306_Buffer));
     count += sizeof(SSD1306_Buffer);
 
     // send to i2c bus
@@ -450,12 +450,13 @@ void ssd1306_DrawRegion(uint8_t x, uint8_t y, uint8_t w, const uint8_t* data, ui
 {
     uint32_t stride = w;
     uint8_t h = w; // 字体宽高一样
+    uint8_t width = w;
     if (x + w > SSD1306_WIDTH || y + h > SSD1306_HEIGHT || w * h == 0) {
         printf("%dx%d @ %d,%d out of range or invalid!\r\n", w, h, x, y);
         return;
     }
 
-    w = (w <= SSD1306_WIDTH ? w : SSD1306_WIDTH);
+    width = (width <= SSD1306_WIDTH ? width : SSD1306_WIDTH);
     h = (h <= SSD1306_HEIGHT ? h : SSD1306_HEIGHT);
     stride = (stride == 0 ? w : stride);
     unsigned int c = 8;
@@ -463,7 +464,7 @@ void ssd1306_DrawRegion(uint8_t x, uint8_t y, uint8_t w, const uint8_t* data, ui
     uint8_t rows = size * c / stride;
     for (uint8_t i = 0; i < rows; i++) {
         uint32_t base = i * stride / c;
-        for (uint8_t j = 0; j < w; j++) {
+        for (uint8_t j = 0; j < width; j++) {
             uint32_t idx = base + (j / c);
             uint8_t byte = idx < size ? data[idx] : 0;
             uint8_t bit  = byte & (0x80 >> (j % c));
@@ -512,7 +513,7 @@ void ssd1306_printf(char *fmt, ...)
     if (fmt) {
         va_list argList;
         va_start(argList, fmt);
-        vsnprintf(buffer, sizeof(buffer), fmt, argList);
+        vsnprintf_s(buffer, sizeof(buffer), sizeof(buffer), fmt, argList);
         va_end(argList);
         ssd1306_SetCursor(0, g_ssd1306_current_loc_v);
         ssd1306_DrawString(buffer, Font_7x10, White);

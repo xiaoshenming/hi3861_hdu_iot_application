@@ -60,7 +60,7 @@
 
       > **注意：由于windows自身限制，路径不能超过260个字符，在git下载和解压Hi3861 SDK代码时尽量放在磁盘根目录下，防止导致的编译错误问题**
 
-   3. 下载并安装Windows版本的HUAWEI DevEco Device Tool(devicetool-windows-tool-3.1.0.400.zip)：https://device.harmonyos.com/cn/develop/ide#download
+   3. 下载并安装Windows版本的HUAWEI DevEco Device Tool(devicetool-windows-tool-3.1.0.500.zip)：https://device.harmonyos.com/cn/develop/ide#download
 
    4. 导入SDK: 打开已安装DevEco Decive Tool插件的VSCode, 在DevEco Device Tool主页点击"导入工程", 弹窗中选择SDK代码目录, 点击“导入”.
 
