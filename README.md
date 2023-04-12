@@ -45,7 +45,7 @@
 > **注意：由于windows自身限制，路径不能超过260个字符，在git下载和解压Hi3861 SDK代码时尽量放在磁盘根目录下，防止导致的编译错误问题**
 4. 编译: 点击左侧“build”.
 
-5. 烧录: 硬件连接电脑, 如电脑未安装CH340G驱动, 先安装D:/DevEco/resources/toolset/DevTools_Hi3861V100_v1.0/usb_serial_driver路径下的CH341SER.EXE串口驱动. 然后点击左侧“工程配置”, 找到“upload_port”选项, 选择开发板对应的烧录串口进行烧录. 
+5. 烧录: 硬件连接电脑, 如电脑未安装CH340G驱动, 先安装DevTools_Hi3861V100_v1.0/usb_serial_driver路径下的CH341SER.EXE串口驱动. 然后点击左侧“工程配置”, 找到“upload_port”选项, 选择开发板对应的烧录串口进行烧录. 
 
 6. 按一下复位键, 现在, 你的第一个OpenHarmony程序已经在你的开发板上运行起来了. :thumbsup:
 #### 导入工程
