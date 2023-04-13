@@ -487,7 +487,7 @@ void ssd1306_printf(char *fmt, ...)
         va_list argList;
         va_start(argList, fmt);
         int ret = vsnprintf_s(buffer, sizeof(buffer), sizeof(buffer), fmt, argList);
-        if (ret == 0) {
+        if (ret < 0) {
             printf("buffer is null\r\n");
         }
         va_end(argList);

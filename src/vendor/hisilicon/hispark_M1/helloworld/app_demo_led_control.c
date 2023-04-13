@@ -79,7 +79,7 @@ void led_control_demo(void)
     ssd1306_SetCursor(25, 10); // x轴坐标为25，y轴坐标为10
     ssd1306_DrawString("Hello World", Font_7x10, White);
     ssd1306_UpdateScreen();
-    for(;;) {
+    while (1) {
         led_control();
         /* Release CPU resources for 20ms */
         hi_sleep(LED_CONTROL_TASK_SLEEP_20MS);

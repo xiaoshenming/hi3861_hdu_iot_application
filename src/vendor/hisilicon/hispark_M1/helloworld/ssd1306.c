@@ -83,7 +83,7 @@ SSD1306_Error_t ssd1306_FillBuffer(uint8_t* buf, uint32_t len)
 {
     SSD1306_Error_t ret = SSD1306_ERR;
     if (len <= SSD1306_BUFFER_SIZE) {
-        memcpy_s(SSD1306_Buffer, len, buf, len);
+        memcpy_s(SSD1306_Buffer, sizeof(SSD1306_Buffer), buf, len);
         ret = SSD1306_OK;
     }
     return ret;
@@ -487,7 +487,7 @@ void ssd1306_printf(char *fmt, ...)
         va_list argList;
         va_start(argList, fmt);
         int ret = vsnprintf_s(buffer, sizeof(buffer), sizeof(buffer), fmt, argList);
-        if (ret == 0) {
+        if (ret < 0) {
             printf("buffer is null\r\n");
         }
         va_end(argList);
