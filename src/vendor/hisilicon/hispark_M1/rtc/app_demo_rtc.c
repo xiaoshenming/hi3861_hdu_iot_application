@@ -83,12 +83,15 @@ uint32_t ins5902_write(uint8_t reg_addr, uint8_t high_8)
 
 uint8_t ins5902_read(uint8_t rtc_reg, uint32_t recv_len, uint8_t *rct_buf)
 {
+    int ret = 0;
     // ins5902_rtc_type read_rtc;
     uint8_t recv_data[INS5902_REG_ARRAY_LEN] = { 0 };
     /* Request memory space */
     memset_s(rct_buf, RTC_REG_TIME_BUF + 1, 0x00, RTC_REG_TIME_BUF);
-    (void)memset_s(recv_data, INS5902_REG_ARRAY_LEN + 1, 0x00, INS5902_REG_ARRAY_LEN);
-
+    ret = memset_s(recv_data, INS5902_REG_ARRAY_LEN + 1, 0x00, INS5902_REG_ARRAY_LEN);
+    if (ret != 0) {
+        return 0;
+    }
     uint32_t status = IoTI2cRead(INS5902_I2C_IDX, INS5902_READ_ADDRESS, recv_data, recv_len);
     if (status != HI_ERR_SUCCESS) {
         printf("===== Error: ins5902 sencor I2C read status = 0x%x! =====\r\n", status);
