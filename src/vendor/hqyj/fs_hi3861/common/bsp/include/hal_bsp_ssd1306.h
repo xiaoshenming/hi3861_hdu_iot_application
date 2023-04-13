@@ -148,6 +148,6 @@ void SSD1306_ShowStr(unsigned char x, unsigned char y, unsigned char ch[], unsig
  * @retval None
  */
 void SSD1306_DrawBMP(unsigned char xMove, unsigned char yMove, 
-    unsigned char width, unsigned char height, unsigned char *BMP);
+                     unsigned char width, unsigned char height, unsigned char *BMP);
 
 #endif

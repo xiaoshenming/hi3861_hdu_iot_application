@@ -1,16 +1,16 @@
-/* 
+/*
  * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. 
+ * limitations under the License.
  */
 
 #include <stdio.h>
@@ -259,8 +259,7 @@ int MQTTClient_sub(void)
         printf("data: %s\n", receivedTopic.lenstring.data);
         printf("length: %d\n", strlen(receivedTopic.lenstring.data) - payloadlen_in);
         printf("payload_length: %d\n", payloadlen_in);
-        memcpy_s(mqtt_topic, sizeof(mqtt_topic), receivedTopic.lenstring.data, 
-                strlen(receivedTopic.lenstring.data) - payloadlen_in);
+        memcpy_s(mqtt_topic, sizeof(mqtt_topic), receivedTopic.lenstring.data, strlen(receivedTopic.lenstring.data) - payloadlen_in);
         printf("topic: %s\n", mqtt_topic);
         printf("payload: %s\n", payload_in);
 

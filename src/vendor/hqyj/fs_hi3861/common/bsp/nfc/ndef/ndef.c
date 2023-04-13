@@ -165,8 +165,10 @@ static bool writeUserPayload(int16_t payloadPtr, const NDEFDataStr *data, Uncomp
             } else {
                 memcpy_s(nfcPageBuffer, sizeof(nfcPageBuffer), &data->rtdPayload[addedPayload], NFC_PAGE_SIZE);
             }
+
             addedPayload += NFC_PAGE_SIZE;
             ret = NT3HWriteUserData(addPage->page, nfcPageBuffer);
+
             if (ret == false) {
                 errNo = NT3HERROR_WRITE_NDEF_TEXT;
                 goto end;

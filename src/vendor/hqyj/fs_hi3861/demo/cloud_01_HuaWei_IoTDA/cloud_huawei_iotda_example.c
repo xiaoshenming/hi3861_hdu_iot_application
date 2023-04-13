@@ -34,15 +34,15 @@
 
 // 设备密码 fs12345678
 // 设备ID
-#define DEVICE_ID ""
+#define DEVICE_ID "643641d692edbc7ee93ecdd9_board"
 // MQTT客户端ID
-#define MQTT_CLIENT_ID ""
+#define MQTT_CLIENT_ID "643641d692edbc7ee93ecdd9_board_0_0_2023041205"
 // MQTT用户名
-#define MQTT_USER_NAME ""
+#define MQTT_USER_NAME "643641d692edbc7ee93ecdd9_board"
 // MQTT密码
-#define MQTT_PASS_WORD ""
+#define MQTT_PASS_WORD "52bc6b65f3db62f9e456b4a4a031cacfe34f865cc69f457de8a8a67b9b963b6f"
 // 华为云平台的IP地址
-#define SERVER_IP_ADDR ""
+#define SERVER_IP_ADDR "121.36.42.100"
 // 华为云平台的IP端口号
 #define SERVER_IP_PORT 1883
 // 订阅 接收控制命令的主题
@@ -135,16 +135,16 @@ void mqtt_send_task(void)
 
         /* 格式化打印创建的带数组的JSON对象 */
         char *str_print = cJSON_PrintUnformatted(root);
-        if(str_print != NULL) {
+        if(str_print != NULL)
+        {
             // printf("%s\n", str_print);
             // 发布消息
             MQTTClient_pub(publish_topic, str_print, strlen((char *)str_print));
             cJSON_free(str_print);
         }
 
-        if(root != NULL) {
+        if(root != NULL)
             cJSON_Delete(root);
-        }
 
         properties = str_print = root = array = services = NULL;
     }

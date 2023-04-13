@@ -41,7 +41,7 @@ lite_component("demo") {
     # "network_05_wifi_mqtt:network_wifi_mqtt_example",
     # "network_06_wifi_nfc_sta:network_wifi_nfc_example",
 
-    "test_board:test_board_example",
+    # "test_board:test_board_example",
     # "smartTemp:smartTemp_demo",
     # "smartDistance:smartDistance_demo",
     # "ReversingRadar:ReversingRadar_demo",

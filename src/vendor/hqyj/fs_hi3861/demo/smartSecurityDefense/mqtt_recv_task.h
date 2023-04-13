@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #ifndef MQTT_RECV_TASK_H
 #define MQTT_RECV_TASK_H
 
