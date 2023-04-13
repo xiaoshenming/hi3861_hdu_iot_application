@@ -88,7 +88,7 @@ static unsigned int C081NfcI2cWrite(unsigned char regHigh8bitCmd,
     status = IoTI2cWrite(NFC_I2C_IDX, C081_NFC_WRITE_ADDR,
                          c081NfcI2cWriteCmdAddr.sendBuf, c081NfcI2cWriteCmdAddr.sendLen);
     if (status != IOT_SUCCESS) {
-        printf("I2cWrite(%02X) failed, %d!\n", sendUserCmd[0], status);
+        printf("I2cWrite(%02X) failed, %u!\n", sendUserCmd[0], status);
         return status;
     }
     return IOT_SUCCESS;
@@ -184,7 +184,7 @@ unsigned int WriteRead(unsigned char regHigh8bitCmd, unsigned char regLow8bitCmd
 
     status = hi_i2c_writeread(NFC_I2C_IDX, C081_NFC_ADDR | I2C_RD, &c081NfcI2cWriteCmdAddr);
     if (status != IOT_SUCCESS) {
-        printf("hi_i2c_writeread failed, %d!\n", status);
+        printf("hi_i2c_writeread failed, %u!\n", status);
         return status;
     }
     return IOT_SUCCESS;

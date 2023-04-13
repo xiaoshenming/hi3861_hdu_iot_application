@@ -200,7 +200,7 @@ uint32_t AHT20_GetMeasureResult(float* temp, float* humi)
     uint32_t humiRaw = buffer[1];
     humiRaw = (humiRaw << 8) | buffer[2]; // 左移8位或buff[2]得到数据，具体可以看芯片手册
     humiRaw = (humiRaw << 4) | ((buffer[3] & 0xF0) >> 4); // 左移4位或buff[3]得到数据，具体可以看芯片手册
-    *humi = humiRaw / (float)AHT20_RESLUTION * 100;
+    *humi = humiRaw / (float)AHT20_RESLUTION * 100; // 100量程
 
     uint32_t tempRaw = buffer[3] & 0x0F;
     tempRaw = (tempRaw << 8) | buffer[4]; /*  左移8位或buff[4]得到数据，具体可以看芯片手册 */

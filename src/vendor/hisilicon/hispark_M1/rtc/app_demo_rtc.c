@@ -86,8 +86,8 @@ uint8_t ins5902_read(uint8_t rtc_reg, uint32_t recv_len, uint8_t *rct_buf)
     // ins5902_rtc_type read_rtc;
     uint8_t recv_data[INS5902_REG_ARRAY_LEN] = { 0 };
     /* Request memory space */
-    memset_s(rct_buf, sizeof(rct_buf), 0x00, sizeof(rct_buf));
-    memset_s(recv_data, sizeof(recv_data), 0x0, INS5902_REG_ARRAY_LEN);
+    memset_s(rct_buf, RTC_REG_TIME_BUF + 1, 0x00, RTC_REG_TIME_BUF);
+    memset_s(recv_data, INS5902_REG_ARRAY_LEN + 1, 0x0, INS5902_REG_ARRAY_LEN);
 
     uint32_t status = IoTI2cRead(INS5902_I2C_IDX, INS5902_READ_ADDRESS, recv_data, recv_len);
     if (status != HI_ERR_SUCCESS) {

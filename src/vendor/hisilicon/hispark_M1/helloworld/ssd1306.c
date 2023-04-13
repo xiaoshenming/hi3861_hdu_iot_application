@@ -489,6 +489,7 @@ void ssd1306_printf(char *fmt, ...)
         int ret = vsnprintf_s(buffer, sizeof(buffer), sizeof(buffer), fmt, argList);
         if (ret < 0) {
             printf("buffer is null\r\n");
+            return 0;
         }
         va_end(argList);
         ssd1306_SetCursor(0, g_ssd1306_current_loc_v);
