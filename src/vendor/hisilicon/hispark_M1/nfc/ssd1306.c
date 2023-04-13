@@ -83,7 +83,7 @@ SSD1306_Error_t ssd1306_FillBuffer(uint8_t* buf, uint32_t len)
 {
     SSD1306_Error_t ret = SSD1306_ERR;
     if (len <= SSD1306_BUFFER_SIZE) {
-        memcpy_s(SSD1306_Buffer, len, buf, len);
+        memcpy_s(SSD1306_Buffer, len + 1, buf, len);
         ret = SSD1306_OK;
     }
     return ret;
@@ -235,7 +235,7 @@ void ssd1306_UpdateScreen(void)
 
     // copy frame data
     data[count++] = SSD1306_CTRL_DATA;
-    memcpy_s(&data[count], sizeof(SSD1306_Buffer), SSD1306_Buffer, sizeof(SSD1306_Buffer));
+    memcpy_s(&data[count], SSD1306_BUFFER_SIZE + 1, SSD1306_Buffer, SSD1306_BUFFER_SIZE);
     count += sizeof(SSD1306_Buffer);
 
     // send to i2c bus
