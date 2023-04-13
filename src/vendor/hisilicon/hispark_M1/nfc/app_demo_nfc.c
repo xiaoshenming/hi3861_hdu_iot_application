@@ -32,11 +32,11 @@
 
 unsigned char ndefFile[NFC_NDEF_MAX_LEN] = {
     // 微信
-    0x03,0x20,
-    0xd4, 0x0f,0x0e, 0x61, 0x6e, 0x64, 0x72, 0x6f,
-    0x69, 0x64,0x2e, 0x63, 0x6f, 0x6d, 0x3a, 0x70,
-    0x6b, 0x67,0x63, 0x6f, 0x6d, 0x2e, 0x74, 0x65,
-    0x6e, 0x63,0x65, 0x6e, 0x74, 0x2e, 0x6d, 0x6d,
+    0x03, 0x20,
+    0xd4, 0x0f, 0x0e, 0x61, 0x6e, 0x64, 0x72, 0x6f,
+    0x69, 0x64, 0x2e, 0x63, 0x6f, 0x6d, 0x3a, 0x70,
+    0x6b, 0x67, 0x63, 0x6f, 0x6d, 0x2e, 0x74, 0x65,
+    0x6e, 0x63, 0x65, 0x6e, 0x74, 0x2e, 0x6d, 0x6d,
 };
 
 static void PullUpCsn(void)
@@ -88,7 +88,7 @@ static unsigned int C081NfcI2cWrite(unsigned char regHigh8bitCmd,
     status = IoTI2cWrite(NFC_I2C_IDX, C081_NFC_WRITE_ADDR,
                          c081NfcI2cWriteCmdAddr.sendBuf, c081NfcI2cWriteCmdAddr.sendLen);
     if (status != IOT_SUCCESS) {
-        printf("I2cWrite(%02X) failed, %0X!\n", sendUserCmd[0], status);
+        printf("I2cWrite(%02X) failed, %d!\n", sendUserCmd[0], status);
         return status;
     }
     return IOT_SUCCESS;
@@ -136,7 +136,6 @@ void Fm11nt081dWriteEeprom(unsigned short baseAddr, unsigned int len, unsigned c
     }
     if (addr < FM11_E2_USER_ADDR || addr >= FM11_E2_MAUNF_ADDR) {
         offset = FM11_E2_BLOCK_SIZE - (addr % FM11_E2_BLOCK_SIZE);
-        printf("offset = %d, writeLen = %d\r\n", offset, writeLen);
         if (writeLen > offset) {
             EepWritePage(writeBuff, addr, offset);
             addr += offset;
@@ -175,7 +174,7 @@ unsigned int WriteRead(unsigned char regHigh8bitCmd, unsigned char regLow8bitCmd
     unsigned char recvData[888] = { 0 }; // 888代表recvData长度，888 stands for recvData length
     hi_i2c_data c081NfcI2cWriteCmdAddr = { 0 };
     unsigned char sendUserCmd[2] = {regHigh8bitCmd, regLow8bitCmd};
-    (void)memset_s(&recvData, sizeof(unsigned char), 0x0, sizeof(recvData));
+    memset_s(&recvData, sizeof(recvData), 0x0, sizeof(recvData));
 
     c081NfcI2cWriteCmdAddr.send_buf = sendUserCmd;
     c081NfcI2cWriteCmdAddr.send_len = sendLen;
@@ -185,7 +184,7 @@ unsigned int WriteRead(unsigned char regHigh8bitCmd, unsigned char regLow8bitCmd
 
     status = hi_i2c_writeread(NFC_I2C_IDX, C081_NFC_ADDR | I2C_RD, &c081NfcI2cWriteCmdAddr);
     if (status != IOT_SUCCESS) {
-        printf("hi_i2c_writeread failed, %0X!\n", status);
+        printf("hi_i2c_writeread failed, %d!\n", status);
         return status;
     }
     return IOT_SUCCESS;
@@ -228,7 +227,7 @@ void NFCDemoTask(void)
 {
     ssd1306_Init();
     ssd1306_ClearOLED();
-    ssd1306_SetCursor(25, 10);
+    ssd1306_SetCursor(25, 10); // x轴坐标为25，y轴坐标为10
     ssd1306_DrawString("Wechart", Font_7x10, White);
     ssd1306_UpdateScreen();
     NFCInit();

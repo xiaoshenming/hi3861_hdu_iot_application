@@ -86,8 +86,8 @@ uint8_t ins5902_read(uint8_t rtc_reg, uint32_t recv_len, uint8_t *rct_buf)
     // ins5902_rtc_type read_rtc;
     uint8_t recv_data[INS5902_REG_ARRAY_LEN] = { 0 };
     /* Request memory space */
-    memset(rct_buf, 0x00, sizeof(rct_buf));
-    memset(recv_data, 0x0, sizeof(recv_data));
+    memset_s(rct_buf, sizeof(rct_buf), 0x00, sizeof(rct_buf));
+    memset_s(recv_data, sizeof(recv_data), 0x0, sizeof(recv_data));
 
     uint32_t status = IoTI2cRead(INS5902_I2C_IDX, INS5902_READ_ADDRESS, recv_data, recv_len);
     if (status != HI_ERR_SUCCESS) {
@@ -208,7 +208,7 @@ void GetSecond(void)
     if (rtc_data.rtc_second[0] != rct_read_data[0]) {
         rtc_data.rtc_second[0] = rct_read_data[0];
         second = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
-        int ret = snprintf(line, sizeof(line), "%d", second);
+        int ret = snprintf_s(line, sizeof(line), sizeof(line), "%d", second);
         /* 需要显示的字符串长度为2和1 */
         /* The length of the string to be displayed is 2 and 1 */
         if (ret != 2 && ret != 1) {
@@ -237,7 +237,7 @@ void GetMinute(void)
     if (rtc_data.rtc_minue[0] != rct_read_data[0]) {
         rtc_data.rtc_minue[0] = rct_read_data[0];
         minute = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
-        int ret = snprintf(line, sizeof(line), "%d", minute);
+        int ret = snprintf_s(line, sizeof(line), sizeof(line), "%d", minute);
         /* 需要显示的字符串长度为2和1 */
         /* The length of the string to be displayed is 2 and 1 */
         if (ret != 1 && ret != 2) {
@@ -265,7 +265,7 @@ void GetHour(void)
     if (rtc_data.rtc_hour[0] != rct_read_data[0]) {
         rtc_data.rtc_hour[0] = rct_read_data[0];
         hour = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
-        int ret = snprintf(line, sizeof(line), "%d", hour);
+        int ret = snprintf_s(line, sizeof(line), sizeof(line), "%d", hour);
         /* 需要显示的字符串长度为2和1 */
         /* The length of the string to be displayed is 2 and 1 */
         if (ret != 2 && ret != 1) {
@@ -294,7 +294,7 @@ void GetDay(void)
         rtc_data.rtc_day[0] = rct_read_data[0];
         day = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
         day = GetWeek(day);
-        int ret = snprintf(line, sizeof(line), "%d", day);
+        int ret = snprintf_s(line, sizeof(line), sizeof(line), "%d", day);
         /* 需要显示的字符串长度为2和1 */
         /* The length of the string to be displayed is 2 and 1 */
         if (ret != 2 && ret != 1) {
@@ -315,7 +315,7 @@ void GetDate(void)
     if (rtc_data.rtc_date[0] != rct_read_data[0]) {
         rtc_data.rtc_date[0] = rct_read_data[0];
         date = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
-        int ret = snprintf(line, sizeof(line), "%d", date);
+        int ret = snprintf_s(line, sizeof(line), sizeof(line), "%d", date);
         /* 需要显示的字符串长度为2和1 */
         /* The length of the string to be displayed is 2 and 1 */
         if (ret != 2 && ret != 1) {
@@ -341,7 +341,7 @@ void GetMonth(void)
     if (rtc_data.rtc_month[0] != rct_read_data[0]) {
         rtc_data.rtc_month[0] = rct_read_data[0];
         month = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
-        int ret = snprintf(line, sizeof(line), "%d", month);
+        int ret = snprintf_s(line, sizeof(line), sizeof(line), "%d", month);
         /* 需要显示的字符串长度为2和1 */
         /* The length of the string to be displayed is 2 and 1 */
         if (ret != 2) {
@@ -368,7 +368,7 @@ void GetYear(void)
     if (rtc_data.rtc_year[0] != rct_read_data[0]) {
         rtc_data.rtc_year[0] = rct_read_data[0];
         year = rct_read_data[0] / HEX * DECIMA + rct_read_data[0] % HEX;
-        int ret = snprintf(line, sizeof(line), "%d", year);
+        int ret = snprintf_s(line, sizeof(line), sizeof(line), "%d", year);
         if (ret != 2) { // 需要显示的字符串长度为2
             printf("failed\r\n");
         }

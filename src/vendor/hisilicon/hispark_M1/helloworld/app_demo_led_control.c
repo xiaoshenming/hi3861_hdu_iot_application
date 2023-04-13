@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2022 HiSilicon (Shanghai) Technologies CO., LIMITED.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #include <hi_gpio.h>
 #include <hi_early_debug.h>
 #include <hi_io.h>
@@ -53,7 +68,6 @@ void led_control(void)
     TaskMsleep(LED_LIGHT_DELAY_1S);
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_9, IOT_GPIO_VALUE1);
     TaskMsleep(LED_LIGHT_DELAY_1S);
-
 }
 
 void led_control_demo(void)
@@ -62,12 +76,12 @@ void led_control_demo(void)
     ssd1306_Init();
     ssd1306_ClearOLED();
     // ssd1306_printf("Hello World");
-    ssd1306_SetCursor(25, 10);
+    ssd1306_SetCursor(25, 10); // x轴坐标为25，y轴坐标为10
     ssd1306_DrawString("Hello World", Font_7x10, White);
     ssd1306_UpdateScreen();
     for(;;) {
         led_control();
-        /*Release CPU resources for 20ms*/
+        /* Release CPU resources for 20ms */
         hi_sleep(LED_CONTROL_TASK_SLEEP_20MS);
     }
 }
