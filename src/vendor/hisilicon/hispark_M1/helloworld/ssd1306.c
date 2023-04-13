@@ -483,10 +483,11 @@ void ssd1306_ClearOLED(void)
 void ssd1306_printf(char *fmt, ...)
 {
     char buffer[20];
+    int ret = 0;
     if (fmt) {
         va_list argList;
         va_start(argList, fmt);
-        int ret = vsnprintf_s(buffer, sizeof(buffer), sizeof(buffer), fmt, argList);
+        ret = vsnprintf_s(buffer, sizeof(buffer), sizeof(buffer), fmt, argList);
         if (ret < 0) {
             printf("buffer is null\r\n");
             return 0;
