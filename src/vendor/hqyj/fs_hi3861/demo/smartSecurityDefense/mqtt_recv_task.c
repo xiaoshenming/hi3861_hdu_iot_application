@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -70,7 +70,7 @@ uint8_t cJSON_Parse_Payload(uint8_t *payload)
                                 printf("command_name: autoMode, value: OFF.\r\n");
                                 sys_msg_data.nvFlash.smartControl_flag = 0;
                             }
-                            // hi_factory_nv_write(NV_ID, &sys_msg_data.nvFlash, 
+                            // hi_factory_nv_write(NV_ID, &sys_msg_data.nvFlash,
                             //                      sizeof(hi_nv_save_sensor_threshold), 0);
                         }
                         json_value = NULL;
@@ -100,7 +100,7 @@ int8_t mqttClient_sub_callback(unsigned char *topic, unsigned char *payload)
         // 提取出topic中的request_id
         char request_id[50] = {0};
         int ret_code = 1; // 0为成功, 其余为失败。不带默认表示成功
-        strcpy_s(request_id, sizeof(request_id), 
+        strcpy_s(request_id, sizeof(request_id),
                 topic + strlen(DEVICE_ID) + strlen("$oc/devices//sys/commands/request_id="));
         printf("request_id: %s\r\n", request_id);
 
@@ -108,15 +108,15 @@ int8_t mqttClient_sub_callback(unsigned char *topic, unsigned char *payload)
         ret_code = cJSON_Parse_Payload(payload);
 
         // 向云端发送命令设置的返回值
-        char *request_topic = (char *)malloc(strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + 
+        char *request_topic = (char *)malloc(strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) +
                                             strlen(DEVICE_ID) + strlen(request_id) + 1);
         if (request_topic != NULL) {
-            memset_s(request_topic, 
-                    strlen(DEVICE_ID) + strlen(request_id) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + 1, 
-                    0, 
+            memset_s(request_topic,
+                    strlen(DEVICE_ID) + strlen(request_id) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + 1,
+                    0,
                     strlen(DEVICE_ID) + strlen(request_id) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + 1);
-            sprintf_s(request_topic, 
-                    strlen(DEVICE_ID) + strlen(request_id) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + 1, 
+            sprintf_s(request_topic,
+                    strlen(DEVICE_ID) + strlen(request_id) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + 1,
                     MQTT_TOPIC_PUB_COMMANDS_REQ, DEVICE_ID, request_id);
             if (ret_code == 0) {
                 MQTTClient_pub(request_topic, "{\"result_code\":0}", strlen("{\"result_code\":0}"));

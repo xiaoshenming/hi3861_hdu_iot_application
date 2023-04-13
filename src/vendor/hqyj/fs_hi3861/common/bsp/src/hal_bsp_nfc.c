@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -57,7 +57,7 @@ uint32_t get_NDEFDataPackage(uint8_t *dataBuff, const uint16_t dataBuff_MaxSize)
     // 读取数据
     for (int i = 0; i < userMemoryPageNum; i++) {
         if (NT3HReadUserData(i) == true) {
-            memcpy_s(p_buff + i * NFC_PAGE_SIZE, userMemoryPageNum * NFC_PAGE_SIZE, 
+            memcpy_s(p_buff + i * NFC_PAGE_SIZE, userMemoryPageNum * NFC_PAGE_SIZE,
                      nfcPageBuffer, NFC_PAGE_SIZE);
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -89,7 +89,7 @@ void oled_show_task(void)
     while (1) {
         /* 显示小车底盘的电量 */
         memset_s((char *)oledShowBuff, sizeof(oledShowBuff), 0, sizeof(oledShowBuff));
-        sprintf_s((char *)oledShowBuff, sizeof(oledShowBuff), "power: %02.01fV", 
+        sprintf_s((char *)oledShowBuff, sizeof(oledShowBuff), "power: %02.01fV",
                     (float)(systemValue.battery_voltage) / 1000.0);
         SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_1, oledShowBuff, TEXT_SIZE_16);
 

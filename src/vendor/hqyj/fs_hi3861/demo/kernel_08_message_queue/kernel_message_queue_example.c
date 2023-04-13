@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -48,7 +48,7 @@ void Task1(void)
         msg_people.age = 16; // 年龄 16岁
         msg_people.name = "xiao_ming";
         msgStatus = osMessageQueuePut(MsgQueue_ID, &msg_people, 0, MESSAGE_TIMEOUT);
-        if(msgStatus == osOK) {
+        if (msgStatus == osOK) {
             printf("osMessageQueuePut is ok.\n");
         }
         sleep(TASK_DELAY_TIME);
@@ -65,7 +65,7 @@ void Task2(void)
     while (1) {
         printf("enter Task 2.......\n");
         msgStatus = osMessageQueueGet(MsgQueue_ID, &msg_people, 0, MESSAGE_TIMEOUT);
-        if(msgStatus == osOK) {
+        if (msgStatus == osOK) {
             printf("osMessageQueueGet is ok.\n");
             printf("Recv: id = %d, age = %d, name = %s\n", msg_people.id, msg_people.age, msg_people.name);
         }
@@ -82,8 +82,8 @@ static void kernel_message_queue_example(void)
 
     PCF8574_Init();
     // 创建消息队列 消息队列中的消息个数，消息队列中的消息大小，属性
-    MsgQueue_ID = osMessageQueueNew(MsgQueueObjectNumber, sizeof(msg_people_t), NULL);      
-    if(MsgQueue_ID != NULL) {
+    MsgQueue_ID = osMessageQueueNew(MsgQueueObjectNumber, sizeof(msg_people_t), NULL);
+    if (MsgQueue_ID != NULL) {
         printf("ID = %d, Create MsgQueue_ID is OK!\n", MsgQueue_ID);
     }
 

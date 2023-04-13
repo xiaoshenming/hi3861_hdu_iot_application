@@ -159,7 +159,7 @@ static bool writeUserPayload(int16_t payloadPtr, const NDEFDataStr *data, Uncomp
         if (addedPayload < data->rtdPayloadlength) {
             // add the NDEF_END_BYTE if there is enough space
             if ((data->rtdPayloadlength - addedPayload) < NFC_PAGE_SIZE) {
-                memcpy_s(nfcPageBuffer, sizeof(nfcPageBuffer), &data->rtdPayload[addedPayload], 
+                memcpy_s(nfcPageBuffer, sizeof(nfcPageBuffer), &data->rtdPayload[addedPayload],
                         (data->rtdPayloadlength - addedPayload));
                 nfcPageBuffer[(data->rtdPayloadlength - addedPayload)] = NDEF_END_BYTE;
             } else {

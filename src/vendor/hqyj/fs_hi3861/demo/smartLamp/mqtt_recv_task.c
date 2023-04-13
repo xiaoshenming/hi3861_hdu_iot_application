@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -167,7 +167,7 @@ int8_t mqttClient_sub_callback(unsigned char *topic, unsigned char *payload)
         // 提取出topic中的request_id
         char request_id[50] = {0};
         int ret_code = 1; // 0为成功, 其余为失败。不带默认表示成功
-        strcpy_s(request_id, sizeof(request_id), 
+        strcpy_s(request_id, sizeof(request_id),
                 topic + strlen(DEVICE_ID) + strlen("$oc/devices//sys/commands/request_id="));
         printf("request_id: %s\r\n", request_id);
 
@@ -178,12 +178,12 @@ int8_t mqttClient_sub_callback(unsigned char *topic, unsigned char *payload)
         char *request_topic = (char *)malloc(strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + \
                                             strlen(DEVICE_ID) + strlen(request_id) + 1);
         if (request_topic != NULL) {
-            memset_s(request_topic, 
-                    strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + strlen(request_id) + 1, 
-                    0, 
+            memset_s(request_topic,
+                    strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + strlen(request_id) + 1,
+                    0,
                     strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + strlen(request_id) + 1);
-            sprintf_s(request_topic, 
-                    strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + strlen(request_id) + 1, 
+            sprintf_s(request_topic,
+                    strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + strlen(request_id) + 1,
                     MQTT_TOPIC_PUB_COMMANDS_REQ, DEVICE_ID, request_id);
             if (ret_code == 0) {
                 MQTTClient_pub(request_topic, "{\"result_code\":0}", strlen("{\"result_code\":0}"));

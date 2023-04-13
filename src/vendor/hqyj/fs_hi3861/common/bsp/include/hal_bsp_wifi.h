@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +21,7 @@
 
 /**
  * @brief WIFI  创建wifi热点
- * @param ssid WiFi名称 
+ * @param ssid WiFi名称
  * @param psk  WiFi密码
  * @return Returns {WIFI_SUCCESS} 成功;
  *         Returns {other} 失败.
@@ -29,7 +29,7 @@
 WifiErrorCode WiFi_createHotspots(const char *ssid, const char *psk);
 /**
  * @brief WIFI  连接附近的WiFi
- * @param ssid WiFi名称 
+ * @param ssid WiFi名称
  * @param psk  WiFi密码
  * @return Returns {WIFI_SUCCESS} 成功;
  *         Returns {other} 失败.

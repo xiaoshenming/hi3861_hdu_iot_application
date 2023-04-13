@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -83,13 +83,13 @@ uint32_t SSD1306_Init(void)
     SSD1306_WriteCmd(0xd5); // --set display clock divide ratio/oscillator frequency
     SSD1306_WriteCmd(0xf0); // --set divide ratio
     SSD1306_WriteCmd(0xd9); // --set pre-charge period
-    SSD1306_WriteCmd(0x22); // 
+    SSD1306_WriteCmd(0x22); //
     SSD1306_WriteCmd(0xda); // --set com pins hardware configuration
     SSD1306_WriteCmd(0x12);
     SSD1306_WriteCmd(0xdb); // --set vcomh
     SSD1306_WriteCmd(0x20); //  0x20,0.77xVcc
     SSD1306_WriteCmd(0x8d); // --set DC-DC enable
-    SSD1306_WriteCmd(0x14); // 
+    SSD1306_WriteCmd(0x14); //
     SSD1306_WriteCmd(0xaf); // --turn on oled panel
     SSD1306_WriteCmd(0xAF); // display ON
     SSD1306_SetPos(0, 0);
@@ -193,7 +193,7 @@ void SSD1306_ShowStr(unsigned char x, unsigned char y, unsigned char ch[], unsig
                 for (i = 0; i < number_of_letter_lattice; i++) {
                     SSD1306_WiteData(F6x8[c][i]);
                 }
-                pos_x += 6;  
+                pos_x += 6;
                 j++;
             }
             break;
@@ -220,7 +220,7 @@ void SSD1306_ShowStr(unsigned char x, unsigned char y, unsigned char ch[], unsig
             }
             break;
 
-        default: 
+        default:
             break;
     }
 }
@@ -233,8 +233,8 @@ void SSD1306_ShowStr(unsigned char x, unsigned char y, unsigned char ch[], unsig
  * @param  width: 宽
  * @param  height: 高
  */
-void SSD1306_DrawBMP(unsigned char xMove, unsigned char yMove, 
-                    unsigned char width, unsigned char height, 
+void SSD1306_DrawBMP(unsigned char xMove, unsigned char yMove,
+                    unsigned char width, unsigned char height,
                     unsigned char *BMP)
 {
     unsigned short j = 0, x = 0, y = 0;

@@ -82,20 +82,20 @@ void NT3HGetNxpSerialNumber(char *buffer);
  * read the user data from the requested page
  * first page is 0
  *
- * the NT3H1201 has 119 PAges 
+ * the NT3H1201 has 119 PAges
  * the NT3H1101 has 56 PAges (but the 56th page has only 8 Bytes)
 */
 bool NT3HReadUserData(uint8_t page);
 
 /*
  * Write data information from the starting requested page.
- * If the dataLen is bigger of NFC_PAGE_SIZE, the consecuiteve needed 
+ * If the dataLen is bigger of NFC_PAGE_SIZE, the consecuiteve needed
  * pages will be automatically used.
- * 
+ *
  * The functions stops to the latest available page.
- * 
+ *
  first page is 0
- * the NT3H1201 has 119 PAges 
+ * the NT3H1201 has 119 PAges
  * the NT3H1101 has 56 PAges (but the 56th page has only 8 Bytes)
 */
 bool NT3HWriteUserData(uint8_t page, const uint8_t *data);

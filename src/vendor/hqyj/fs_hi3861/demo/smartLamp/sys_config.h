@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -83,7 +83,7 @@ typedef struct message_data {
 // 日期、时间
 typedef struct date_time_value {
     uint16_t yaer;
-    uint8_t month; 
+    uint8_t month;
     uint8_t date;
     uint8_t hour;
     uint8_t min;

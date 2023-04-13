@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -95,7 +95,7 @@ void mqtt_send_task(void)
         AP3216C_ReadData(&sensorData.infrared, &sensorData.proximity, &sensorData.light);
 
         memset_s(displayBuffer, DISPLAY_BUFF_MAX, 0, DISPLAY_BUFF_MAX);
-        sprintf_s((char *)displayBuffer, DISPLAY_BUFF_MAX, "T:%.1fC H:%.1f%%", 
+        sprintf_s((char *)displayBuffer, DISPLAY_BUFF_MAX, "T:%.1fC H:%.1f%%",
                 sensorData.temperature, sensorData.humidity);
         SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_0, displayBuffer, TEXT_SIZE_16);
 
@@ -117,7 +117,7 @@ void mqtt_send_task(void)
 
         // 组JSON数据
         root = cJSON_CreateObject(); // 创建一个对象
-        services = cJSON_CreateArray(); 
+        services = cJSON_CreateArray();
         cJSON_AddItemToObject(root, "services", services);
         array = cJSON_CreateObject();
         cJSON_AddStringToObject(array, "service_id", "attribute");
@@ -126,16 +126,16 @@ void mqtt_send_task(void)
         cJSON_AddStringToObject(properties, "buzzer", sensorData.buzzer ? "ON" : "OFF");
         cJSON_AddStringToObject(properties, "fan", sensorData.fan ? "ON" : "OFF");
         cJSON_AddStringToObject(properties, "led", sensorData.led ? "ON" : "OFF");
-        cJSON_AddNumberToObject(properties, "humidity", (int)sensorData.humidity); 
-        cJSON_AddNumberToObject(properties, "temperature", (int)sensorData.temperature); 
-        cJSON_AddNumberToObject(properties, "light", sensorData.light); 
-        cJSON_AddNumberToObject(properties, "proximity", sensorData.proximity); 
-        cJSON_AddNumberToObject(properties, "infrared", sensorData.infrared); 
+        cJSON_AddNumberToObject(properties, "humidity", (int)sensorData.humidity);
+        cJSON_AddNumberToObject(properties, "temperature", (int)sensorData.temperature);
+        cJSON_AddNumberToObject(properties, "light", sensorData.light);
+        cJSON_AddNumberToObject(properties, "proximity", sensorData.proximity);
+        cJSON_AddNumberToObject(properties, "infrared", sensorData.infrared);
         cJSON_AddItemToArray(services, array);  // 将对象添加到数组中
 
         /* 格式化打印创建的带数组的JSON对象 */
         char *str_print = cJSON_PrintUnformatted(root);
-        if(str_print != NULL)
+        if (str_print != NULL)
         {
             // printf("%s\n", str_print);
             // 发布消息
@@ -143,7 +143,7 @@ void mqtt_send_task(void)
             cJSON_free(str_print);
         }
 
-        if(root != NULL)
+        if (root != NULL)
             cJSON_Delete(root);
 
         properties = str_print = root = array = services = NULL;
@@ -165,7 +165,7 @@ int8_t mqttClient_sub_callback(unsigned char *topic, unsigned char *payload)
         // 提取出topic中的request_id
         char request_id[50] = {0};
         int ret_code = 1; // 1为失败
-        strcpy_s(request_id, sizeof(request_id), 
+        strcpy_s(request_id, sizeof(request_id),
                 topic + strlen(DEVICE_ID) + strlen("$oc/devices//sys/commands/request_id="));
         printf("request_id: %s\r\n", request_id);
 
@@ -242,15 +242,15 @@ int8_t mqttClient_sub_callback(unsigned char *topic, unsigned char *payload)
             }
 
             // 向云端发送命令设置的返回值
-            char *request_topic = (char *)malloc(strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + 
+            char *request_topic = (char *)malloc(strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) +
                                                  strlen(DEVICE_ID) + sizeof(request_id) + 1);
             if (request_topic != NULL) {
                 memset_s(request_topic,
                         strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + sizeof(request_id) + 1,
-                        0, 
+                        0,
                         strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + sizeof(request_id) + 1);
-                sprintf_s(request_topic, 
-                        strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + sizeof(request_id) + 1, 
+                sprintf_s(request_topic,
+                        strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + sizeof(request_id) + 1,
                         MQTT_TOPIC_PUB_COMMANDS_REQ, DEVICE_ID, request_id);
 
                 if (ret_code == 0) {

@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,11 +31,11 @@ osThreadId_t Task2_ID;   //  任务2 ID
  * @param {*}
  * @return {*}
  */
-void Task1(void) 
+void Task1(void)
 {
     while (1) {
         printf("Task 1.......\n");
-        sleep(TASK1_DELAY_TIME);     
+        sleep(TASK1_DELAY_TIME);
     }
 }
 /**
@@ -61,7 +61,7 @@ void Task2(void)
  * @param {*}
  * @return {*}
  */
-static void kernel_task_example(void) 
+static void kernel_task_example(void)
 {
     printf("Enter kernel_task_example()!\n");
     
@@ -80,7 +80,7 @@ static void kernel_task_example(void)
         printf("ID = %d, Create Task1_ID is OK!\n", Task1_ID);
     }
 
-    options.name = "Task2"; 
+    options.name = "Task2";
     options.priority = osPriorityNormal1;
     Task2_ID = osThreadNew((osThreadFunc_t)Task2, NULL, &options);      // 创建任务2
     if (Task2_ID != NULL) {

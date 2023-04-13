@@ -4,11 +4,11 @@
 #include "NT3H.h"
 
 typedef enum {
-    freeForm,   // 0x00     No prepending is done ... 
+    freeForm,   // 0x00     No prepending is done ...
     httpWWW,    // 0x01     http://www.
     httpsWWW,   // 0x02     https://www.
-    http,       // 0x03     http 
-    https,      // 0x04     https 
+    http,       // 0x03     http
+    https,      // 0x04     https
     tel,        // 0x05     tel:
     mailto,     // 0x06     mailto:
     ftpAnonymous, // 0x07     ftp anonymous:anonymous@
@@ -34,7 +34,7 @@ typedef enum {
         0x1A     btgoep:
         0x1B     tcpobex:
         0x1C     irdaobex:
-        0x1D     file: 
+        0x1D     file:
         0x1E     urn:epc:id:
         0x1F     urn:epc:tag:
         0x20     urn:epc:pat:

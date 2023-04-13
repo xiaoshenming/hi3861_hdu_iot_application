@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,7 +33,7 @@ uint8_t buff[20] = {0};    // 定义一个共享资源
  * @return {*}
  */
 void Task1(void)
-{   
+{
     int i = 0;
     printf("enter Task 1.......\n");
     while (1) {
@@ -84,7 +84,7 @@ static void kernel_mutex_example(void)
     PCF8574_Init();
     // 创建互斥锁
     Mutex_ID = osMutexNew(NULL);
-    if(Mutex_ID != NULL) {
+    if (Mutex_ID != NULL) {
         printf("ID = %d, Create Mutex_ID is OK!\n", Mutex_ID);
     }
 

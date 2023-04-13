@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +22,7 @@
 
 /**
  * @brief  打印一行数据
- * @note   字体默认选择8*16, 
+ * @note   字体默认选择8*16
  * @param  line: 行数, 最大行数为4行
  * @param  *string: 显示的字符串，最大显示的字符个数为16个
  * @retval None
@@ -33,7 +33,7 @@ uint8_t oled_show_line_string(uint8_t line, char *string);
  * @brief  按照终端的形式，一行行的打印输出
  * @note   默认显示行数为第2行
  * @param  *string: 显示的字符串，最大显示的字符个数为16个
- * @retval 
+ * @retval
  */
 uint8_t oled_consle_log(char *string);
 

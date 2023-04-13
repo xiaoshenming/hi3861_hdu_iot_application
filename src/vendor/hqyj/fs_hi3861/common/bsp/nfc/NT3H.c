@@ -68,7 +68,7 @@ bool NT3HReadHeaderNfc(uint8_t *endRecordsPtr, uint8_t *ndefHeader)
     if (ret == true) {
         // if the first byte is equals to NDEF_START_BYTE there are some records
         // store theend of that
-        if ((NDEF_START_BYTE == nfcPageBuffer[INDEX_NDEF_START]) && 
+        if ((NDEF_START_BYTE == nfcPageBuffer[INDEX_NDEF_START]) &&
             (NTAG_ERASED != nfcPageBuffer[INDEX_NDEF_HEADER])) {
             *endRecordsPtr = nfcPageBuffer[INDEX_END_RECORD];
             *ndefHeader = nfcPageBuffer[INDEX_NDEF_HEADER];

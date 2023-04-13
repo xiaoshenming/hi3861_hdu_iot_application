@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -96,7 +96,7 @@ void task01(void)
             AP3216C_ReadData(&sensorData.infrared, &sensorData.light, &sensorData.proximity);
 
             memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
-            sprintf_s((char *)displayBuffer, sizeof(displayBuffer), 
+            sprintf_s((char *)displayBuffer, sizeof(displayBuffer),
                         "T:%.1fC H:%.1f%%", sensorData.temperature, sensorData.humidity);
             SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_0, displayBuffer, TEXT_SIZE_16);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -58,7 +58,7 @@ void Task1(void)
     addr_length = sizeof(send_addr);
 
     // 发送数据到服务远端
-    result = sendto(socket_fd, "hello farsight\r\n", strlen("hello farsight\r\n"), 0, 
+    result = sendto(socket_fd, "hello farsight\r\n", strlen("hello farsight\r\n"), 0,
                     (struct sockaddr *)&send_addr, addr_length);
     if (result) {
         printf("result: %d, sendData:%s\r\n", result, "hello farsight");

@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -60,7 +60,7 @@ void publish_sensor_data(msg_data_t *msg)
     
     // 组JSON数据
     root = cJSON_CreateObject(); // 创建一个对象
-    services = cJSON_CreateArray(); 
+    services = cJSON_CreateArray();
     cJSON_AddItemToObject(root, "services", services);
     array = cJSON_CreateObject();
     cJSON_AddStringToObject(array, "service_id", "base");
@@ -68,16 +68,15 @@ void publish_sensor_data(msg_data_t *msg)
     cJSON_AddItemToObject(array, "properties", properties);
     cJSON_AddStringToObject(properties, "fan", (msg->fanStatus != 0) ? "ON" : "OFF");
     cJSON_AddStringToObject(properties, "autoMode", (msg->nvFlash.smartControl_flag != 0) ? "ON" : "OFF");
-    cJSON_AddNumberToObject(properties, "humidity", msg->humidity); 
-    cJSON_AddNumberToObject(properties, "temperature", msg->temperature); 
-    cJSON_AddNumberToObject(properties, "humi_up", msg->nvFlash.humi_upper); 
-    cJSON_AddNumberToObject(properties, "humi_down", msg->nvFlash.humi_lower); 
+    cJSON_AddNumberToObject(properties, "humidity", msg->humidity);
+    cJSON_AddNumberToObject(properties, "temperature", msg->temperature);
+    cJSON_AddNumberToObject(properties, "humi_up", msg->nvFlash.humi_upper);
+    cJSON_AddNumberToObject(properties, "humi_down", msg->nvFlash.humi_lower);
     cJSON_AddItemToArray(services, array);  // 将对象添加到数组中
 
     /* 格式化打印创建的带数组的JSON对象 */
     char *str_print = cJSON_PrintUnformatted(root);
-    if(str_print != NULL)
-    {
+    if (str_print != NULL) {
         // printf("%s\n", str_print);
         // 发布消息
         MQTTClient_pub(publish_topic, str_print, strlen((char *)str_print));
@@ -85,8 +84,9 @@ void publish_sensor_data(msg_data_t *msg)
         cJSON_free(str_print);
     }
 
-    if(root != NULL)
+    if (root != NULL) {
         cJSON_Delete(root);
+    }
 
     properties = str_print = root = array = services = NULL;
 }

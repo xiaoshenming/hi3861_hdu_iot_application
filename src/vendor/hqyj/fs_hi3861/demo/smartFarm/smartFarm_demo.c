@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -71,7 +71,7 @@ static void smartFarm_Project_example(void)
         return;
     }
     ndefLen += NDEF_HEADER_SIZE; // 加上头部字节
-    if(ndefLen <= NDEF_HEADER_SIZE) {
+    if (ndefLen <= NDEF_HEADER_SIZE) {
         printf("ndefLen <= 2\r\n");
         return;
     }
@@ -145,9 +145,9 @@ static void smartFarm_Project_example(void)
     //     printf("hi_factory_nv_read is Falied! result_code = %d\r\n", result_code);
     // }
     // else {
-    //     printf("nv read: humi_upper=%d, humi_lower=%d autoMode=%d\r\n", 
-    //             sys_msg_data.nvFlash.humi_upper, 
-    //             sys_msg_data.nvFlash.humi_lower, 
+    //     printf("nv read: humi_upper=%d, humi_lower=%d autoMode=%d\r\n",
+    //             sys_msg_data.nvFlash.humi_upper,
+    //             sys_msg_data.nvFlash.humi_lower,
     //             sys_msg_data.nvFlash.smartControl_flag);
     // }
 

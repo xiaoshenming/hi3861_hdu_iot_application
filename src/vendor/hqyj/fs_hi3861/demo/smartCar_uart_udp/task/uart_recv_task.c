@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -42,7 +42,7 @@ void uart_send_buff(unsigned char *str, unsigned short len)
  * @brief  解析JSON数据包
  * @note
  * @param  *pstr:
- * @retval None 
+ * @retval None
  */
 void parse_json_data(uint8_t *pstr)
 {
@@ -89,7 +89,7 @@ void uart_recv_task(void)
         hi_u32 len = hi_uart_read(HI_UART_IDX_2, uart_buff, sizeof(uart_buff));
         if (len > 0) {
             // printf("uart_buff: %s\n", uart_buff);
-            memcpy_s((char *)pbuff, len,(char *)uart_buff, len);
+            memcpy_s((char *)pbuff, len, (char *)uart_buff, len);
             pbuff += len;
             if (len < last_len) {
                 pbuff = recvBuff; // 回到recvBuff的头位置

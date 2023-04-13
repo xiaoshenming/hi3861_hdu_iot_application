@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,7 +43,7 @@ static void disconnectWiFihotspotsCallback(StationInfo *info)
         printf(" HotspotStaLeave:info is null.\n");
     } else {
         // 打印mac地址
-        printf("HotspotStaLeave: macAddress=%02X:%02X:%02X:%02X:%02X:%02X, reason=%d.\n", 
+        printf("HotspotStaLeave: macAddress=%02X:%02X:%02X:%02X:%02X:%02X, reason=%d.\n",
                info->macAddress[0],
                info->macAddress[1],
                info->macAddress[2],

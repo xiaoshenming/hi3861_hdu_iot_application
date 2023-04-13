@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,34 +27,34 @@ tn_pcf8574_io_t tmp_io = {0}; // IO扩展芯片的引脚
 
 void set_fan(uint8_t status)
 {
-    if(status == true) {
+    if (status == true) {
         tmp_io.bit.p0 = 1; // 风扇开启
-        PCF8574_Write(tmp_io.all); 
+        PCF8574_Write(tmp_io.all);
     } else if (status == false) {
         tmp_io.bit.p0 = 0; // 风扇关闭
-        PCF8574_Write(tmp_io.all); 
+        PCF8574_Write(tmp_io.all);
     }
 }
 
 void set_buzzer(uint8_t status)
 {
-    if(status == true) {
+    if (status == true) {
         tmp_io.bit.p1 = 0; // 蜂鸣器开启
-        PCF8574_Write(tmp_io.all); 
+        PCF8574_Write(tmp_io.all);
     } else if (status == false) {
         tmp_io.bit.p1 = 1; // 蜂鸣器关闭
-        PCF8574_Write(tmp_io.all); 
+        PCF8574_Write(tmp_io.all);
     }
 }
 
 void set_led(uint8_t status)
 {
-    if(status == true) {
+    if (status == true) {
         tmp_io.bit.p2 = 0; // LED开启
-        PCF8574_Write(tmp_io.all); 
+        PCF8574_Write(tmp_io.all);
     } else if (status == false) {
         tmp_io.bit.p2 = 1; // LED关闭
-        PCF8574_Write(tmp_io.all); 
+        PCF8574_Write(tmp_io.all);
     }
 }
 
@@ -115,7 +115,3 @@ uint32_t PCF8574_Init(void)
     PCF8574_Write(tmp_io.all); // v4.2版本开发板 关闭风扇，关闭蜂鸣器，关闭LED灯
     return HI_ERR_SUCCESS;
 }
-
-
-
-

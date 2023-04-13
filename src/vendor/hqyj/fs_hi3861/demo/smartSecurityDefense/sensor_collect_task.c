@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -65,22 +65,22 @@ void show_page(void)
 
     if (sys_msg_data.buzzerStatus != 0) {
         // 蜂鸣器状态 开启
-        SSD1306_DrawBMP(png_right.left, png_right.top, 
+        SSD1306_DrawBMP(png_right.left, png_right.top,
                         png_right.width, png_right.hight, bmp_32X32_BaoJing); // 显示 报警
         SSD1306_ShowStr(text_right.left, text_right.top, "Yes", TEXT_SIZE_16);
     } else {
         // 关闭
-        SSD1306_DrawBMP(png_right.left, png_right.top, 
+        SSD1306_DrawBMP(png_right.left, png_right.top,
                         png_right.width, png_right.hight, bmp_32X32_No_BaoJing); // 显示 不报警状态
         SSD1306_ShowStr(text_right.left, text_right.top, "No ", TEXT_SIZE_16);
     }
 
     if (sys_msg_data.is_Body != 0) {
-        SSD1306_DrawBMP(png_left.left, png_left.top, 
+        SSD1306_DrawBMP(png_left.left, png_left.top,
                         png_left.width, png_left.hight, bmp_32X32_Body); // 显示 有人
         SSD1306_ShowStr(text_left.left, text_left.top, "Yes", TEXT_SIZE_16);
     } else {
-        SSD1306_DrawBMP(png_left.left, png_left.top, 
+        SSD1306_DrawBMP(png_left.left, png_left.top,
                         png_left.width, png_left.hight, bmp_32X32_No_Body); // 显示 无人
         SSD1306_ShowStr(text_left.left, text_left.top, "No ", TEXT_SIZE_16);
     }

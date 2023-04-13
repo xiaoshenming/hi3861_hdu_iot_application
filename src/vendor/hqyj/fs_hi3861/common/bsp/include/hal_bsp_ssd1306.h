@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -147,7 +147,7 @@ void SSD1306_ShowStr(unsigned char x, unsigned char y, unsigned char ch[], unsig
  * @param  BMP[]: 图片数组
  * @retval None
  */
-void SSD1306_DrawBMP(unsigned char xMove, unsigned char yMove, 
+void SSD1306_DrawBMP(unsigned char xMove, unsigned char yMove,
                      unsigned char width, unsigned char height, unsigned char *BMP);
 
 #endif

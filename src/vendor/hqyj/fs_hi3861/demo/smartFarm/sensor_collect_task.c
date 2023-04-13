@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -40,19 +40,19 @@ margin_t bmp_number_2 = {
     .hight = 32,
 };                                                   // 数字-个位
 margin_t bmp_dian = {
-    .top = 32 + 8, 
+    .top = 32 + 8,
     .left = 40,
     .width = 16,
     .hight = 16,
 };     // 小数点
 margin_t bmp_number_3 = {
-    .top = 32 + 8, 
+    .top = 32 + 8,
     .left = 56,
     .width = 8,
     .hight = 16,
 }; // 数字-小数
 margin_t bmp_danwei = {
-    .top = 16 + 8, 
+    .top = 16 + 8,
     .left = 52,
     .width = 16,
     .hight = 16,
@@ -77,30 +77,30 @@ void show_humi_page(float val)
     SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_0, " Smart Farm", TEXT_SIZE_16);
 
     int x = (val * 100) / 1000;
-    SSD1306_DrawBMP(bmp_number_1.left, bmp_number_1.top, 
+    SSD1306_DrawBMP(bmp_number_1.left, bmp_number_1.top,
                     bmp_number_1.width, bmp_number_1.hight, bmp_16X32_number[x]); // 显示数字的十位
 
     x = ((int)(val * 100)) / 100 % 10;
-    SSD1306_DrawBMP(bmp_number_2.left, bmp_number_2.top, 
+    SSD1306_DrawBMP(bmp_number_2.left, bmp_number_2.top,
                     bmp_number_1.width, bmp_number_1.hight, bmp_16X32_number[x]); // 显示数字的个位
-    SSD1306_DrawBMP(bmp_dian.left, bmp_dian.top, 
+    SSD1306_DrawBMP(bmp_dian.left, bmp_dian.top,
                     bmp_dian.width, bmp_dian.hight, bmp_16X16_dian);              // 显示小数点
-    SSD1306_DrawBMP(bmp_danwei.left, bmp_danwei.top, 
+    SSD1306_DrawBMP(bmp_danwei.left, bmp_danwei.top,
                     bmp_danwei.width, bmp_danwei.hight, bmp_16X16_baifenhao);     // 显示%符号
 
     x = ((int)(val * 100)) / 10 % 10;
-    SSD1306_DrawBMP(bmp_number_3.left, bmp_number_3.top, 
+    SSD1306_DrawBMP(bmp_number_3.left, bmp_number_3.top,
                     bmp_number_3.width, bmp_number_3.hight, bmp_8X16_number[x]); // 显示数字的小数位
 
     // 风扇动态显示
     if (sys_msg_data.fanStatus == 0) {
-        SSD1306_DrawBMP(bmp_image.left, bmp_image.top, 
+        SSD1306_DrawBMP(bmp_image.left, bmp_image.top,
                         bmp_image.width, bmp_image.hight, bmp_48X48_fan_gif[0]); // 静态显示
     } else {
         fan_gif_index++;
         if (fan_gif_index > FAN_GIF_INDEX_MAX)
             fan_gif_index = 0;
-        SSD1306_DrawBMP(bmp_image.left, bmp_image.top, 
+        SSD1306_DrawBMP(bmp_image.left, bmp_image.top,
                         bmp_image.width, bmp_image.hight, bmp_48X48_fan_gif[fan_gif_index]); // 动态显示
     }
 }

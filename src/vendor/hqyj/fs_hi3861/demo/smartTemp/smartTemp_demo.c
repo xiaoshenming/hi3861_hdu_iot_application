@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -58,21 +58,21 @@ margin_t number_2 = {
 };
 /* 小数点 */
 margin_t dian = {
-    .top = 32, 
+    .top = 32,
     .left = 40,
     .width = 16,
     .hight = 16
 };
 /* 数字-小数 */
 margin_t number_3 = {
-    .top = 32, 
+    .top = 32,
     .left = 56,
     .width = 8,
     .hight = 16
 };
 /* 单位 */
 margin_t danwei = {
-    .top = 16, 
+    .top = 16,
     .left = 52,
     .width = 16,
     .hight = 16

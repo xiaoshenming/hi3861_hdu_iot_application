@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -60,13 +60,11 @@ ts_rgb_val_t readBook_mode_rgb_val = {
 #define LIGHT_SCALE_VAL 4  // 比例值
 #define KEY_DELAY_TIME (100 * 1000) // us
 
-
 // 循环闪烁的节拍值
-#define BEAT_0 0 
+#define BEAT_0 0
 #define BEAT_1 1
-#define BEAT_2 2 
-#define BEAT_3 3 
-
+#define BEAT_2 2
+#define BEAT_3 3
 
 // 处理RGB灯模式控制
 void switch_rgb_mode(Lamp_Status_t mode)
@@ -90,7 +88,7 @@ void switch_rgb_mode(Lamp_Status_t mode)
             sys_msg_data.RGB_Value.blue = readBook_mode_rgb_val.blue;
             break;
 
-        case LED_BLINK_MODE: 
+        case LED_BLINK_MODE:
             // 闪烁模式
             t_led_blink_status++;
 
@@ -175,7 +173,7 @@ void sensor_collect_task(void)
 
             // 显示在OLED显示屏上
             uint8_t oled_display_buff[OLED_DISPLAY_BUFF_SIZE] = {0};
-            snprintf_s(oled_display_buff, sizeof(oled_display_buff), OLED_DISPLAY_BUFF_SIZE, 
+            snprintf_s(oled_display_buff, sizeof(oled_display_buff), OLED_DISPLAY_BUFF_SIZE
                         "%04d Lamp:%s",
                         sys_msg_data.AP3216C_Value.light,
                         (sys_msg_data.Lamp_Status == OFF_LAMP) ? "OFF" : " ON");
@@ -209,11 +207,11 @@ void publish_lamp_status_data(msg_data_t *msg)
     char *publish_topic = (char *)malloc(strlen(MALLOC_MQTT_TOPIC_PUB_PROPERTIES) + strlen(DEVICE_ID) + 1);
     if (publish_topic != NULL) {
         // 拼接Topic
-        memset_s(publish_topic, 
-                strlen(MALLOC_MQTT_TOPIC_PUB_PROPERTIES) + strlen(DEVICE_ID) + 1, 
+        memset_s(publish_topic,
+                strlen(MALLOC_MQTT_TOPIC_PUB_PROPERTIES) + strlen(DEVICE_ID) + 1,
                 0, strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_PROPERTIES) + 1);
-        sprintf_s(publish_topic, 
-                strlen(MALLOC_MQTT_TOPIC_PUB_PROPERTIES) + strlen(DEVICE_ID) + 1, 
+        sprintf_s(publish_topic,
+                strlen(MALLOC_MQTT_TOPIC_PUB_PROPERTIES) + strlen(DEVICE_ID) + 1,
                 MQTT_TOPIC_PUB_PROPERTIES, DEVICE_ID);
 
         // 组装JSON数据
@@ -226,7 +224,7 @@ void publish_lamp_status_data(msg_data_t *msg)
         cJSON_AddItemToArray(json_services, json_services_root);
         cJSON_AddItemToObject(json_services_root, "service_id", cJSON_CreateString("base"));
         cJSON_AddItemToObject(json_services_root, "properties", json_properties);
-        cJSON_AddItemToObject(json_properties, "lamp", 
+        cJSON_AddItemToObject(json_properties, "lamp",
                               msg->Lamp_Status ? cJSON_CreateString("ON") : cJSON_CreateString("OFF"));
         cJSON_AddItemToObject(json_properties, "red", cJSON_CreateNumber(msg->RGB_Value.red));
         cJSON_AddItemToObject(json_properties, "green", cJSON_CreateNumber(msg->RGB_Value.green));

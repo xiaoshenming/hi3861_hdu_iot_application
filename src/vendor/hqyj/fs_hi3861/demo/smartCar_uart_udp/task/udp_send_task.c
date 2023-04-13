@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -45,7 +45,7 @@ void udp_send_task(void)
         }
         char *payload = cJSON_PrintUnformatted(json_root);
 
-        ret = sendto(systemValue.udp_socket_fd, payload, strlen(payload), 0, 
+        ret = sendto(systemValue.udp_socket_fd, payload, strlen(payload), 0,
                     (struct sockaddr *)&client, sizeof(client));
         cJSON_Delete(json_root);
         free(payload);

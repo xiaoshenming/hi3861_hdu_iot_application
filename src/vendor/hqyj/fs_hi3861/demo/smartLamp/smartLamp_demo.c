@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -72,7 +72,7 @@ static void smartLamp_Project_example(void)
     }
 
     ndefLen += NDEF_HEADER_SIZE; // 加上头部字节
-    if(ndefLen <= NDEF_HEADER_SIZE) {
+    if (ndefLen <= NDEF_HEADER_SIZE) {
         printf("ndefLen <= 2\r\n");
         return;
     }

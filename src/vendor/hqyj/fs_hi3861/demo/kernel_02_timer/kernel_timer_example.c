@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -76,7 +76,7 @@ static void kernel_timer_example(void)
 
     Timer_ID = osTimerNew(timer1_Callback, osTimerPeriodic, NULL, NULL);       // 创建定时器
     if (Timer_ID != NULL) {
-        printf("ID = %d, Create Timer_ID is OK!\n", Timer_ID);      
+        printf("ID = %d, Create Timer_ID is OK!\n", Timer_ID);   
 
         osStatus_t timerStatus = osTimerStart(Timer_ID, 300U);      // 开始定时器， 并赋予定时器的定时值（在Hi3861中，1U=10ms，100U=1S）
         if (timerStatus != osOK) {

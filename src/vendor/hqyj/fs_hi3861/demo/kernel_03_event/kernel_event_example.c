@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -42,13 +42,13 @@ void Task1(void)
 {
     while (1) {
         printf("enter Task 1.......\n");
-        osEventFlagsSet(event_ID, event1_Flags);        // 设置事件标记 
+        osEventFlagsSet(event_ID, event1_Flags);        // 设置事件标记
         printf("send eventFlag1.......\n");
         sleep(TASK_DELAY_TIME); // 1秒
-        osEventFlagsSet(event_ID, event2_Flags);        // 设置事件标记 
+        osEventFlagsSet(event_ID, event2_Flags);        // 设置事件标记
         printf("send eventFlag2.......\n");
         sleep(TASK_DELAY_TIME); // 1秒
-        osEventFlagsSet(event_ID, event3_Flags);        // 设置事件标记 
+        osEventFlagsSet(event_ID, event3_Flags);        // 设置事件标记
         printf("send eventFlag3.......\n");
         sleep(TASK_DELAY_TIME); // 1秒
     }
@@ -80,7 +80,7 @@ static void kernel_event_example(void)
 
     PCF8574_Init();
     event_ID = osEventFlagsNew(NULL);       // 创建事件
-    if(event_ID != NULL) {
+    if (event_ID != NULL) {
         printf("ID = %d, Create event_ID is OK!\n", event_ID);
     }
 

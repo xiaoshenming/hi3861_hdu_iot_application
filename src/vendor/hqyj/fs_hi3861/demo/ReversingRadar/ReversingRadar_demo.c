@@ -1,5 +1,5 @@
 /*
- * Copyright Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -46,42 +46,42 @@ margin_t bmp_number_1 = {
     .left = 8,
     .width = 16,
     .hight = 32,
-}; 
+};
 // 数字-十位
 margin_t bmp_number_2 = {
     .top = 16 + 8,
     .left = 24,
     .width = 16,
     .hight = 32,
-}; 
+};
 // 数字-个位
 margin_t bmp_number_3 = {
     .top = 16 + 8,
     .left = 40,
     .width = 16,
     .hight = 32,
-};        
-// 小数点                                          
-margin_t bmp_dian = { 
-    .top = 32 + 8, 
+};   
+// 小数点                                 
+margin_t bmp_dian = {
+    .top = 32 + 8,
     .left = 56,
     .width = 16,
     .hight = 16,
-};     
+};
 // 数字-小数位
 margin_t bmp_number_4 = {
-    .top = 32 + 8, 
+    .top = 32 + 8,
     .left = 72,
     .width = 8,
     .hight = 16,
-}; 
+};
 // 单位
 margin_t bmp_danwei = {
-    .top = 16 + 8, 
+    .top = 16 + 8,
     .left = 88,
     .width = 32,
     .hight = 32,
-};   
+};
 
 /**
  * @brief  串口初始化
@@ -193,7 +193,7 @@ void uart_recv_task(void)
                 memset_s((char *)recvBuff, sizeof(recvBuff), 0, sizeof(recvBuff));
             }
             last_len = len;
-            memset_s((char *)uart_buff, sizeof(recvBuff),0, sizeof(uart_buff));
+            memset_s((char *)uart_buff, sizeof(recvBuff), 0, sizeof(uart_buff));
         }
     }
 }
