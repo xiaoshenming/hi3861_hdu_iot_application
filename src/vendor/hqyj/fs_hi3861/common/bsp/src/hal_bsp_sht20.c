@@ -31,9 +31,14 @@
 #define SHT20_READ_HUMI_DATA_TIME 50000
 #define SHT20_RESET_TIME 100000
 
-#define TEMP_COEFFICIENT 175.72
-#define HUMI_COEFFICIENT 125
+#define TEMP_VALUE_1 175.72
+#define TEMP_VALUE_2 65536.0
+#define TEMP_VALUE_3 46.85
 #define TEMP_LEFT_SHIFT_8 8
+
+#define HUMI_VALUE_1 125
+#define HUMI_VALUE_2 65536.0
+#define HUMI_VALUE_3 6
 #define HUMI_LEFT_SHIFT_8 8
 
 // 读从机设备的数据
@@ -82,7 +87,7 @@ uint32_t SHT20_ReadData(float *temp, float *humi)
     }
 
     // 看芯片手册，手册中有转换公式的说明
-    *temp = TEMP_COEFFICIENT * (((((int)buffer[0]) << TEMP_LEFT_SHIFT_8) + buffer[1]) / 65536.0) - 46.85;
+    *temp = TEMP_VALUE_1 * (((((int)buffer[0]) << TEMP_LEFT_SHIFT_8) + buffer[1]) / TEMP_VALUE_2) - TEMP_VALUE_3;
 
     memset_s(buffer, sizeof(buffer), 0, sizeof(buffer));
 
@@ -103,7 +108,7 @@ uint32_t SHT20_ReadData(float *temp, float *humi)
     }
 
     // 看芯片手册，手册中有转换公式的说明
-    *humi = HUMI_COEFFICIENT * (((((int)buffer[0]) << HUMI_LEFT_SHIFT_8) + buffer[1]) / 65536.0) - 6;
+    *humi = HUMI_VALUE_1 * (((((int)buffer[0]) << HUMI_LEFT_SHIFT_8) + buffer[1]) / HUMI_VALUE_2) - HUMI_VALUE_3;
 
     return HI_ERR_SUCCESS;
 }

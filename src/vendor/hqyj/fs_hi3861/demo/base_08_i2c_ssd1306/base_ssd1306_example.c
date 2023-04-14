@@ -50,8 +50,9 @@ void Task1(void)
             hour = 0;
         }
         memset_s(displayBuff, sizeof(displayBuff), 0, sizeof(displayBuff));
-        sprintf_s(displayBuff, sizeof(displayBuff), "    %02d:%02d:%02d   ", hour, min, sec);
-        SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, displayBuff, TEXT_SIZE_16);
+        if (sprintf_s(displayBuff, sizeof(displayBuff), "    %02d:%02d:%02d   ", hour, min, sec) > 0) {
+            SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, displayBuff, TEXT_SIZE_16);
+        }
         sleep(1); // 1 s
     }
 }

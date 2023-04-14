@@ -98,25 +98,29 @@ void oled_show_task(void)
     while (1) {
         /* 显示小车底盘的电量 */
         memset_s((char *)oledShowBuff, sizeof(oledShowBuff), 0, sizeof(oledShowBuff));
-        sprintf_s((char *)oledShowBuff, sizeof(oledShowBuff), "power: %02.01fV",
-                  (float)(systemValue.battery_voltage) / COEFFICIENT_1000);
-        SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_1, oledShowBuff, TEXT_SIZE_16);
+        if (sprintf_s((char *)oledShowBuff, sizeof(oledShowBuff), "power: %02.01fV",
+                      (float)(systemValue.battery_voltage) / COEFFICIENT_1000) > 0) {
+            SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_1, oledShowBuff, TEXT_SIZE_16);
+        }
 
         /* 显示小车当前的状态 */
         if (systemValue.car_status != last_car_status) {
             SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, "                ", TEXT_SIZE_16);
             memset_s((char *)oledShowBuff, sizeof(oledShowBuff), 0, sizeof(oledShowBuff));
-            sprintf_s((char *)oledShowBuff, sizeof(oledShowBuff), "car: %s", get_CurrentCarStatus(systemValue));
-            SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, oledShowBuff, TEXT_SIZE_16);
+            if (sprintf_s((char *)oledShowBuff, sizeof(oledShowBuff), "car: %s",
+                          get_CurrentCarStatus(systemValue)) > 0) {
+				SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, oledShowBuff, TEXT_SIZE_16);
+			}
             last_car_status = systemValue.car_status;
         }
 
         /* 显示小车当前的速度 */
         memset_s((char *)oledShowBuff, sizeof(oledShowBuff), 0, sizeof(oledShowBuff));
-        sprintf_s((char *)oledShowBuff, sizeof(oledShowBuff), "L: %04d R: %04d", systemValue.left_motor_speed,
-                  systemValue.right_motor_speed);
-        SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_3, oledShowBuff, TEXT_SIZE_16);
-
+        if (sprintf_s((char *)oledShowBuff, sizeof(oledShowBuff), "L: %04d R: %04d", systemValue.left_motor_speed,
+                      systemValue.right_motor_speed) > 0) {
+			SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_3, oledShowBuff, TEXT_SIZE_16);	
+		}
+        
         /* 车的状态检测 电池电量小于10V时 */
         if (systemValue.battery_voltage <= MIN_BATTERY_VOL) {
         // 10V

@@ -82,51 +82,57 @@ void udp_recv_task(void)
                     if (!strcmp(json_carStatus->valuestring, "on")) {
                         systemValue.car_status = CAR_STATUS_ON;
                         memset_s(uart_sendBuff, sizeof(uart_sendBuff), 0, sizeof(uart_sendBuff));
-                        sprintf_s(uart_sendBuff, sizeof(uart_sendBuff), "{\"control\":{\"power\":\"on\"}}");
-                        uart_send_buff(uart_sendBuff, strlen(uart_sendBuff));
+                        if (sprintf_s(uart_sendBuff, sizeof(uart_sendBuff), "{\"control\":{\"power\":\"on\"}}") > 0) {
+                            uart_send_buff(uart_sendBuff, strlen(uart_sendBuff));
+                        }
                     } else if (!strcmp(json_carStatus->valuestring, "off")) {
                         systemValue.car_status = CAR_STATUS_OFF;
                         memset_s(uart_sendBuff, sizeof(uart_sendBuff), 0, sizeof(uart_sendBuff));
-                        sprintf_s(uart_sendBuff, sizeof(uart_sendBuff), "{\"control\":{\"power\":\"off\"}}");
-                        uart_send_buff(uart_sendBuff, strlen(uart_sendBuff));
+                        if (sprintf_s(uart_sendBuff, sizeof(uart_sendBuff), "{\"control\":{\"power\":\"off\"}}") > 0) {
+                            uart_send_buff(uart_sendBuff, strlen(uart_sendBuff));
+                        }
                     } else if (!strcmp(json_carStatus->valuestring, "run")) {
                         systemValue.car_status = CAR_STATUS_RUN;
                         memset_s(uart_sendBuff, sizeof(uart_sendBuff), 0, sizeof(uart_sendBuff));
-                        sprintf_s(uart_sendBuff, sizeof(uart_sendBuff),
-                                "{\"control\":{\"turn\":\"run\",\"pwm\":{\"L_Motor\":%d,\"R_Motor\":%d}}}",
-                                base_pwm_speed_value + L_PWM_Value,
-                                base_pwm_speed_value + R_PWM_Value);
-                        uart_send_buff(uart_sendBuff, strlen(uart_sendBuff));
+                        if (sprintf_s(uart_sendBuff, sizeof(uart_sendBuff),
+                                      "{\"control\":{\"turn\":\"run\",\"pwm\":{\"L_Motor\":%d,\"R_Motor\":%d}}}",
+                                      base_pwm_speed_value + L_PWM_Value,
+                                      base_pwm_speed_value + R_PWM_Value) > 0) {
+                            uart_send_buff(uart_sendBuff, strlen(uart_sendBuff));
+                        }
                     } else if (!strcmp(json_carStatus->valuestring, "back")) {
                         systemValue.car_status = CAR_STATUS_BACK;
                         memset_s(uart_sendBuff, sizeof(uart_sendBuff), 0, sizeof(uart_sendBuff));
-                        sprintf_s(uart_sendBuff, sizeof(uart_sendBuff),
-                                "{\"control\":{\"turn\":\"back\",\"pwm\":{\"L_Motor\":%d,\"R_Motor\":%d}}}",
-                                base_pwm_speed_value + L_PWM_Value,
-                                base_pwm_speed_value + R_PWM_Value);
-                        uart_send_buff(uart_sendBuff, strlen(uart_sendBuff));
+                        if (sprintf_s(uart_sendBuff, sizeof(uart_sendBuff),
+                                      "{\"control\":{\"turn\":\"back\",\"pwm\":{\"L_Motor\":%d,\"R_Motor\":%d}}}",
+                                      base_pwm_speed_value + L_PWM_Value,
+                                      base_pwm_speed_value + R_PWM_Value) > 0) {
+                            uart_send_buff(uart_sendBuff, strlen(uart_sendBuff));
+                        }
                     } else if (!strcmp(json_carStatus->valuestring, "left")) {
                         systemValue.car_status = CAR_STATUS_LEFT;
                         memset_s(uart_sendBuff, sizeof(uart_sendBuff), 0, sizeof(uart_sendBuff));
-                        sprintf_s(uart_sendBuff, sizeof(uart_sendBuff),
+                        if (sprintf_s(uart_sendBuff, sizeof(uart_sendBuff),
                                 "{\"control\":{\"turn\":\"left\",\"pwm\":{\"L_Motor\":%d,\"R_Motor\":%d}}}",
                                 L_PWM_Value,
-                                R_PWM_Value);
-                        uart_send_buff(uart_sendBuff, strlen(uart_sendBuff));
+                                R_PWM_Value) > 0) {
+                            uart_send_buff(uart_sendBuff, strlen(uart_sendBuff));
+                        }
                     } else if (!strcmp(json_carStatus->valuestring, "right")) {
                         systemValue.car_status = CAR_STATUS_RIGHT;
                         memset_s(uart_sendBuff, sizeof(uart_sendBuff), 0, sizeof(uart_sendBuff));
-                        sprintf_s(uart_sendBuff, sizeof(uart_sendBuff),
+                        if (sprintf_s(uart_sendBuff, sizeof(uart_sendBuff),
                                 "{\"control\":{\"turn\":\"right\",\"pwm\":{\"L_Motor\":%d,\"R_Motor\":%d}}}",
                                 L_PWM_Value,
-                                R_PWM_Value);
-
-                        uart_send_buff(uart_sendBuff, strlen(uart_sendBuff));
+                                R_PWM_Value) > 0) {
+                            uart_send_buff(uart_sendBuff, strlen(uart_sendBuff));
+                        }
                     } else if (!strcmp(json_carStatus->valuestring, "stop")) {
                         systemValue.car_status = CAR_STATUS_STOP;
                         memset_s(uart_sendBuff, sizeof(uart_sendBuff), 0, sizeof(uart_sendBuff));
-                        sprintf_s(uart_sendBuff, sizeof(uart_sendBuff), "{\"control\":{\"turn\":\"stop\"}}");
-                        uart_send_buff(uart_sendBuff, strlen(uart_sendBuff));
+                        if (sprintf_s(uart_sendBuff, sizeof(uart_sendBuff), "{\"control\":{\"turn\":\"stop\"}}") > 0) {
+                            uart_send_buff(uart_sendBuff, strlen(uart_sendBuff));
+                        }
                     }
                     json_carStatus = NULL;
                 }

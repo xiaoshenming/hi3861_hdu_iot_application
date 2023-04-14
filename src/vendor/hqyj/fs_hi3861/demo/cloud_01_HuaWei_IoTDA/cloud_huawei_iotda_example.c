@@ -95,22 +95,25 @@ void mqtt_send_task(void)
         AP3216C_ReadData(&sensorData.infrared, &sensorData.proximity, &sensorData.light);
 
         memset_s(displayBuffer, DISPLAY_BUFF_MAX, 0, DISPLAY_BUFF_MAX);
-        sprintf_s((char *)displayBuffer, DISPLAY_BUFF_MAX, "T:%.1fC H:%.1f%%",
-                  sensorData.temperature, sensorData.humidity);
-        SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_0, displayBuffer, TEXT_SIZE_16);
+        if (sprintf_s((char *)displayBuffer, DISPLAY_BUFF_MAX, "T:%.1fC H:%.1f%%",
+                      sensorData.temperature, sensorData.humidity) > 0) {
+            SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_0, displayBuffer, TEXT_SIZE_16);
+        }
 
         memset_s(displayBuffer, DISPLAY_BUFF_MAX, 0, DISPLAY_BUFF_MAX);
-        sprintf_s((char *)displayBuffer, DISPLAY_BUFF_MAX, "ir:%04d", sensorData.infrared);
-        SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_1, displayBuffer, TEXT_SIZE_16);
+        if (sprintf_s((char *)displayBuffer, DISPLAY_BUFF_MAX, "ir:%04d", sensorData.infrared) > 0) {
+            SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_1, displayBuffer, TEXT_SIZE_16);
+        }
 
         memset_s(displayBuffer, DISPLAY_BUFF_MAX, 0, DISPLAY_BUFF_MAX);
-        sprintf_s((char *)displayBuffer, DISPLAY_BUFF_MAX, "ps:%04d", sensorData.proximity);
-        SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, displayBuffer, TEXT_SIZE_16);
+        if (sprintf_s((char *)displayBuffer, DISPLAY_BUFF_MAX, "ps:%04d", sensorData.proximity) > 0) {
+            SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, displayBuffer, TEXT_SIZE_16);
+        }
 
         memset_s(displayBuffer, DISPLAY_BUFF_MAX, 0, DISPLAY_BUFF_MAX);
-        sprintf_s((char *)displayBuffer, DISPLAY_BUFF_MAX, "Lux:%04d", sensorData.light);
-        SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_3, displayBuffer, TEXT_SIZE_16);
-
+        if (sprintf_s((char *)displayBuffer, DISPLAY_BUFF_MAX, "Lux:%04d", sensorData.light) > 0) {
+            SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_3, displayBuffer, TEXT_SIZE_16);
+        }
         // 组Topic
         memset_s(publish_topic, MQTT_TOPIC_MAX, 0, MQTT_TOPIC_MAX);
         if (sprintf_s(publish_topic, MQTT_TOPIC_MAX, MQTT_TOPIC_PUB_PROPERTIES, DEVICE_ID) > 0) {

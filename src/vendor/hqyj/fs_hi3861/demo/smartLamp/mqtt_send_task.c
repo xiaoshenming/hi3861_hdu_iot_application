@@ -50,28 +50,28 @@ void publish_sensor_data(msg_data_t *msg)
 {
     // 拼接Topic
     memset_s(publish_topic, MQTT_TOPIC_MAX, 0, MQTT_TOPIC_MAX);
-    sprintf_s(publish_topic, MQTT_TOPIC_MAX, MQTT_TOPIC_PUB_PROPERTIES, DEVICE_ID);
-    
-    // 组装JSON数据
-    cJSON *json_root = cJSON_CreateObject();
-    cJSON *json_services = cJSON_CreateArray();
-    cJSON *json_services_root = cJSON_CreateObject();
-    cJSON *json_properties = cJSON_CreateObject();
+    if (sprintf_s(publish_topic, MQTT_TOPIC_MAX, MQTT_TOPIC_PUB_PROPERTIES, DEVICE_ID) > 0) {
+        // 组装JSON数据
+        cJSON *json_root = cJSON_CreateObject();
+        cJSON *json_services = cJSON_CreateArray();
+        cJSON *json_services_root = cJSON_CreateObject();
+        cJSON *json_properties = cJSON_CreateObject();
 
-    cJSON_AddItemToObject(json_root, "services", json_services);
-    cJSON_AddItemToArray(json_services, json_services_root);
-    cJSON_AddStringToObject(json_services_root, "service_id", "base");
-    cJSON_AddItemToObject(json_services_root, "properties", json_properties);
-    cJSON_AddNumberToObject(json_properties, "light", msg->AP3216C_Value.light);
-    cJSON_AddStringToObject(json_properties, "lamp", (msg->Lamp_Status == OFF_LAMP) ? "OFF" : "ON");
-    cJSON_AddNumberToObject(json_properties, "red", msg->RGB_Value.red);
-    cJSON_AddNumberToObject(json_properties, "green", msg->RGB_Value.green);
-    cJSON_AddNumberToObject(json_properties, "blue", msg->RGB_Value.blue);
-    cJSON_AddStringToObject(json_properties, "auto_light_control", (msg->is_auto_light_mode) ? "ON" : "OFF");
+        cJSON_AddItemToObject(json_root, "services", json_services);
+        cJSON_AddItemToArray(json_services, json_services_root);
+        cJSON_AddStringToObject(json_services_root, "service_id", "base");
+        cJSON_AddItemToObject(json_services_root, "properties", json_properties);
+        cJSON_AddNumberToObject(json_properties, "light", msg->AP3216C_Value.light);
+        cJSON_AddStringToObject(json_properties, "lamp", (msg->Lamp_Status == OFF_LAMP) ? "OFF" : "ON");
+        cJSON_AddNumberToObject(json_properties, "red", msg->RGB_Value.red);
+        cJSON_AddNumberToObject(json_properties, "green", msg->RGB_Value.green);
+        cJSON_AddNumberToObject(json_properties, "blue", msg->RGB_Value.blue);
+        cJSON_AddStringToObject(json_properties, "auto_light_control", (msg->is_auto_light_mode) ? "ON" : "OFF");
 
-    char *payload = cJSON_PrintUnformatted(json_root);
-    // 发布消息
-    MQTTClient_pub(publish_topic, payload, strlen((char *)payload));
-    cJSON_Delete(json_root);
-    json_root = json_services = json_services_root = json_properties = NULL;
+        char *payload = cJSON_PrintUnformatted(json_root);
+        // 发布消息
+        MQTTClient_pub(publish_topic, payload, strlen((char *)payload));
+        cJSON_Delete(json_root);
+        json_root = json_services = json_services_root = json_properties = NULL;
+    }
 }

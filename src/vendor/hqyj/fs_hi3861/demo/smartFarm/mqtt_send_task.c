@@ -56,37 +56,37 @@ void publish_sensor_data(msg_data_t *msg)
 
     // 拼接Topic
     memset_s(publish_topic, MQTT_TOPIC_MAX, 0, MQTT_TOPIC_MAX);
-    sprintf_s(publish_topic, MQTT_TOPIC_MAX, MQTT_TOPIC_PUB_PROPERTIES, DEVICE_ID);
-    
-    // 组JSON数据
-    root = cJSON_CreateObject(); // 创建一个对象
-    services = cJSON_CreateArray();
-    cJSON_AddItemToObject(root, "services", services);
-    array = cJSON_CreateObject();
-    cJSON_AddStringToObject(array, "service_id", "base");
-    properties = cJSON_CreateObject();
-    cJSON_AddItemToObject(array, "properties", properties);
-    cJSON_AddStringToObject(properties, "fan", (msg->fanStatus != 0) ? "ON" : "OFF");
-    cJSON_AddStringToObject(properties, "autoMode", (msg->nvFlash.smartControl_flag != 0) ? "ON" : "OFF");
-    cJSON_AddNumberToObject(properties, "humidity", msg->humidity);
-    cJSON_AddNumberToObject(properties, "temperature", msg->temperature);
-    cJSON_AddNumberToObject(properties, "humi_up", msg->nvFlash.humi_upper);
-    cJSON_AddNumberToObject(properties, "humi_down", msg->nvFlash.humi_lower);
-    cJSON_AddItemToArray(services, array);  // 将对象添加到数组中
+    if (sprintf_s(publish_topic, MQTT_TOPIC_MAX, MQTT_TOPIC_PUB_PROPERTIES, DEVICE_ID) > 0) {
+        // 组JSON数据
+        root = cJSON_CreateObject(); // 创建一个对象
+        services = cJSON_CreateArray();
+        cJSON_AddItemToObject(root, "services", services);
+        array = cJSON_CreateObject();
+        cJSON_AddStringToObject(array, "service_id", "base");
+        properties = cJSON_CreateObject();
+        cJSON_AddItemToObject(array, "properties", properties);
+        cJSON_AddStringToObject(properties, "fan", (msg->fanStatus != 0) ? "ON" : "OFF");
+        cJSON_AddStringToObject(properties, "autoMode", (msg->nvFlash.smartControl_flag != 0) ? "ON" : "OFF");
+        cJSON_AddNumberToObject(properties, "humidity", msg->humidity);
+        cJSON_AddNumberToObject(properties, "temperature", msg->temperature);
+        cJSON_AddNumberToObject(properties, "humi_up", msg->nvFlash.humi_upper);
+        cJSON_AddNumberToObject(properties, "humi_down", msg->nvFlash.humi_lower);
+        cJSON_AddItemToArray(services, array);  // 将对象添加到数组中
 
-    /* 格式化打印创建的带数组的JSON对象 */
-    char *str_print = cJSON_PrintUnformatted(root);
-    if (str_print != NULL) {
-        // printf("%s\n", str_print);
-        // 发布消息
-        MQTTClient_pub(publish_topic, str_print, strlen((char *)str_print));
+        /* 格式化打印创建的带数组的JSON对象 */
+        char *str_print = cJSON_PrintUnformatted(root);
+        if (str_print != NULL) {
+            // printf("%s\n", str_print);
+            // 发布消息
+            MQTTClient_pub(publish_topic, str_print, strlen((char *)str_print));
+            cJSON_free(str_print);
+            str_print = NULL;
+        }
 
-        cJSON_free(str_print);
+        if (root != NULL) {
+            cJSON_Delete(root);
+            root = NULL;
+            properties = array = services = NULL;
+        }
     }
-
-    if (root != NULL) {
-        cJSON_Delete(root);
-    }
-
-    properties = str_print = root = array = services = NULL;
 }

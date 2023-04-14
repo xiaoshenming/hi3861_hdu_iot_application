@@ -89,22 +89,25 @@ void task01(void)
             AP3216C_ReadData(&sensorData.infrared, &sensorData.light, &sensorData.proximity);
 
             memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
-            sprintf_s((char *)displayBuffer, sizeof(displayBuffer),
-                      "T:%.1fC H:%.1f%%", sensorData.temperature, sensorData.humidity);
-            SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_0, displayBuffer, TEXT_SIZE_16);
+            if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer),
+                          "T:%.1fC H:%.1f%%", sensorData.temperature, sensorData.humidity) > 0) {
+                SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_0, displayBuffer, TEXT_SIZE_16);
+            }
 
             memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
-            sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "ir:%04d", sensorData.infrared);
-            SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_1, displayBuffer, TEXT_SIZE_16);
+            if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "ir:%04d", sensorData.infrared) > 0) {
+                SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_1, displayBuffer, TEXT_SIZE_16);
+            }
 
             memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
-            sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "ps:%04d", sensorData.proximity);
-            SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, displayBuffer, TEXT_SIZE_16);
+            if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "ps:%04d", sensorData.proximity) > 0) {
+                SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, displayBuffer, TEXT_SIZE_16);
+            }
 
             memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
-            sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "Lux:%04d", sensorData.light);
-            SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_3, displayBuffer, TEXT_SIZE_16);
-
+            if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "Lux:%04d", sensorData.light) > 0) {
+                SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_3, displayBuffer, TEXT_SIZE_16);
+            }
             printf("led:%d fan:%d buzzer:%d light:%d proximity:%d infrared:%d temperature:%.1f humidity:%.1f\r\n",
                    sensorData.led,
                    sensorData.fan,
@@ -114,6 +117,7 @@ void task01(void)
                    sensorData.infrared,
                    sensorData.temperature,
                    sensorData.humidity);
+
             sensorData.led ^= 0x01;
             sensorData.fan ^= 0x01;
             sensorData.buzzer ^= 0x01;
@@ -144,20 +148,21 @@ void task01(void)
 
             /* 显示电池电压 距离 左轮 右轮 */
             memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
-            sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "L_ENC: %05d", sensorData.enc_l);
-            SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_0, displayBuffer, TEXT_SIZE_16);
-
+            if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "L_ENC: %05d", sensorData.enc_l) > 0) {
+                SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_0, displayBuffer, TEXT_SIZE_16);
+            }
             memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
-            sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "R_ENC: %05d", sensorData.enc_r);
-            SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_1, displayBuffer, TEXT_SIZE_16);
-
+            if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "R_ENC: %05d", sensorData.enc_r) > 0) {
+                SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_1, displayBuffer, TEXT_SIZE_16);
+            }
             memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
-            sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "DC: %05dmV", sensorData.batteryVoltage);
-            SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, displayBuffer, TEXT_SIZE_16);
-
+            if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "DC: %05dmV", sensorData.batteryVoltage) > 0) {
+                SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, displayBuffer, TEXT_SIZE_16);
+            }
             memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
-            sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "Dis: %05dmm", sensorData.distance);
-            SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_3, displayBuffer, TEXT_SIZE_16);
+            if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "Dis: %05dmm", sensorData.distance) > 0) {
+                SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_3, displayBuffer, TEXT_SIZE_16);
+            }
         }
         usleep(TASK1_DELAY_TIME); // 200ms
     }

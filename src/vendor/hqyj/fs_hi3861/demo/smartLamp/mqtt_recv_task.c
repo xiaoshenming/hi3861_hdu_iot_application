@@ -182,13 +182,14 @@ int8_t mqttClient_sub_callback(unsigned char *topic, unsigned char *payload)
                      strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + strlen(request_id) + 1,
                      0,
                      strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + strlen(request_id) + 1);
-            sprintf_s(request_topic,
-                      strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + strlen(request_id) + 1,
-                      MQTT_TOPIC_PUB_COMMANDS_REQ, DEVICE_ID, request_id);
-            if (ret_code == 0) {
-                MQTTClient_pub(request_topic, "{\"result_code\":0}", strlen("{\"result_code\":0}"));
-            } else if (ret_code == 1) {
-                MQTTClient_pub(request_topic, "{\"result_code\":1}", strlen("{\"result_code\":1}"));
+            if (sprintf_s(request_topic,
+                          strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + strlen(request_id) + 1,
+                          MQTT_TOPIC_PUB_COMMANDS_REQ, DEVICE_ID, request_id) > 0) {
+                if (ret_code == 0) {
+                    MQTTClient_pub(request_topic, "{\"result_code\":0}", strlen("{\"result_code\":0}"));
+                } else if (ret_code == 1) {
+                    MQTTClient_pub(request_topic, "{\"result_code\":1}", strlen("{\"result_code\":1}"));
+                }
             }
             free(request_topic);
         }

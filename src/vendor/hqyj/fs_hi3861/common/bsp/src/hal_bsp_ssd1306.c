@@ -529,8 +529,8 @@ void SSD1306_ShowStr(unsigned char x, unsigned char y, unsigned char ch[], unsig
  * @param  height: 高
  */
 void SSD1306_DrawBMP(unsigned char xMove, unsigned char yMove,
-                    unsigned char width, unsigned char height,
-                    unsigned char *BMP)
+                     unsigned char width, unsigned char height,
+                     unsigned char *BMP)
 {
     unsigned short j = 0, x = 0, y = 0;
     unsigned char x0 = xMove;
