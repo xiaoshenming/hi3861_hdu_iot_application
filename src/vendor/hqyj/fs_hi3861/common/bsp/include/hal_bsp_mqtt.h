@@ -60,6 +60,6 @@ int MQTTClient_pub(char *pub_Topic, unsigned char *payloadData, int payloadLen);
  */
 int MQTTClient_sub(void);
 
-extern int8_t (*p_MQTTClient_sub_callback)(unsigned char *topic, unsigned char *payload);
+extern int8_t(*p_MQTTClient_sub_callback)(unsigned char *topic, unsigned char *payload);
 
 #endif // !__HAL_BSP_MQTT_H

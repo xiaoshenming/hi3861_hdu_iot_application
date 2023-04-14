@@ -17,6 +17,7 @@ static_library("ReversingRadar_demo") {
         "//vendor/hqyj/fs_hi3861/common/bsp/src/hal_bsp_aw2013.c",
         "//vendor/hqyj/fs_hi3861/common/bsp/src/hal_bsp_pcf8574.c",
         "//vendor/hqyj/fs_hi3861/common/bsp/src/hal_bsp_ssd1306.c",
+        "//vendor/hqyj/fs_hi3861/common/bsp/src/hal_bsp_ssd1306_bmps.c",
     ]
 
     include_dirs = [

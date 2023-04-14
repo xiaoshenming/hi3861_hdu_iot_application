@@ -33,8 +33,8 @@
 
 #define TEMP_COEFFICIENT 175.72
 #define HUMI_COEFFICIENT 125
-
-
+#define TEMP_LEFT_SHIFT_8 8
+#define HUMI_LEFT_SHIFT_8 8
 
 // 读从机设备的数据
 static uint32_t SHT20_RecvData(uint8_t *data, size_t size)
@@ -82,7 +82,7 @@ uint32_t SHT20_ReadData(float *temp, float *humi)
     }
 
     // 看芯片手册，手册中有转换公式的说明
-    *temp = TEMP_COEFFICIENT * (((((int)buffer[0]) << 8) + buffer[1]) / 65536.0) - 46.85;
+    *temp = TEMP_COEFFICIENT * (((((int)buffer[0]) << TEMP_LEFT_SHIFT_8) + buffer[1]) / 65536.0) - 46.85;
 
     memset_s(buffer, sizeof(buffer), 0, sizeof(buffer));
 
@@ -103,7 +103,7 @@ uint32_t SHT20_ReadData(float *temp, float *humi)
     }
 
     // 看芯片手册，手册中有转换公式的说明
-    *humi = HUMI_COEFFICIENT * (((((int)buffer[0]) << 8) + buffer[1]) / 65536.0) - 6;
+    *humi = HUMI_COEFFICIENT * (((((int)buffer[0]) << HUMI_LEFT_SHIFT_8) + buffer[1]) / 65536.0) - 6;
 
     return HI_ERR_SUCCESS;
 }

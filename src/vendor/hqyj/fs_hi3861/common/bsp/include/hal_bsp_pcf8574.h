@@ -76,7 +76,4 @@ uint32_t PCF8574_Read(uint8_t *recv_data);
  */
 uint32_t PCF8574_Init(void);
 
-
-
-
 #endif

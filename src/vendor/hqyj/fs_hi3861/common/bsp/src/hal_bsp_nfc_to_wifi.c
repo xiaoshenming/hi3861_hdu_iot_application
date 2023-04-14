@@ -22,6 +22,9 @@
 #include "hal_bsp_nfc.h"
 #include "hal_bsp_wifi.h"
 #include "hal_bsp_nfc_to_wifi.h"
+
+#define MAX_BUFF 64
+
 /**
  * @brief  使用NFC进行配网
  * @note   驱动NDEF协议中的第一个标签数据，然后进行配网，
@@ -30,6 +33,10 @@
  */
 uint32_t NFC_configuresWiFiNetwork(uint8_t *ndefBuff)
 {
+    uint8_t wifi_name[MAX_BUFF] = {0};
+    uint8_t wifi_passwd[MAX_BUFF] = {0};
+    uint8_t get_wifi_info_flag = 0;
+
     if (ndefBuff == NULL) {
         printf("NFC_configuresWiFiNetwork to ndefBuff is NULL\r\n");
         return 1;
@@ -54,26 +61,34 @@ uint32_t NFC_configuresWiFiNetwork(uint8_t *ndefBuff)
         cJSON *root = cJSON_Parse(payload);
         if (root) {
             cJSON *ssid = cJSON_GetObjectItem(root, "ssid");
-            cJSON *password = cJSON_GetObjectItem(root, "passwd");
-            if (ssid != NULL && password != NULL) {
-                printf("ssid = %s, password = %s\r\n", ssid->valuestring, password->valuestring);
-                // 连接wifi
-                if (WIFI_SUCCESS == WiFi_connectHotspots(ssid->valuestring, password->valuestring)) {
-                    printf("thongth to nfc connect wifi is success.\r\n");
-                    ret = 0;
-                } else {
-                    printf("thongth to nfc connect wifi is failed.\r\n");
-                    ret = 1;
-                }
+            cJSON *passwd = cJSON_GetObjectItem(root, "passwd");
+            if (ssid != NULL && passwd != NULL) {
+                printf("ssid = %s, passwd = %s\r\n", ssid->valuestring, passwd->valuestring);
+                strcpy_s(wifi_name, MAX_BUFF, ssid->valuestring);
+                strcpy_s(wifi_passwd, MAX_BUFF, passwd->valuestring);
+                get_wifi_info_flag = 1;
             }
             ssid = NULL;
-            password = NULL;
+            passwd = NULL;
         }
         cJSON_Delete(root);
         root = NULL;
 
         free(payload);
         payload = NULL;
+
+        // 连接wifi
+        if (get_wifi_info_flag) {
+            if (WIFI_SUCCESS == WiFi_connectHotspots(wifi_name, wifi_passwd)) {
+                printf("thongth to nfc connect wifi is success.\r\n");
+                ret = 0;
+                get_wifi_info_flag = 0;
+            } else {
+                printf("thongth to nfc connect wifi is failed.\r\n");
+                ret = 1;
+                get_wifi_info_flag = 0;
+            }
+        }
     } else {
         printf("data type is not 't'!\r\n");
         return 1;

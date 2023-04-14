@@ -149,6 +149,7 @@ static int WaitConnectResult(void)
 WifiErrorCode WiFi_connectHotspots(const char *ssid, const char *psk)
 {
     WifiErrorCode result;
+    int Timeout = 10; // 超时时间 10s
 
     printf("Start Connect of WiFi hotspots.\r\n");
 
@@ -199,6 +200,11 @@ WifiErrorCode WiFi_connectHotspots(const char *ssid, const char *psk)
                     break;
                 }
                 printf("#");
+                Timeout--;
+                if (Timeout == 0) {
+                    // 超时
+                    return ERROR_WIFI_BUSY;
+                }
                 sleep(1);
             }
         } else {

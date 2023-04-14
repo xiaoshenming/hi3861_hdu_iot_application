@@ -20,8 +20,8 @@
 #include "hi_io.h"
 #include "hi_errno.h"
 
-#include "hal_bsp_pcf8574.h"
 #include "hal_bsp_structAll.h"
+#include "hal_bsp_pcf8574.h"
 
 tn_pcf8574_io_t tmp_io = {0}; // IO扩展芯片的引脚
 
