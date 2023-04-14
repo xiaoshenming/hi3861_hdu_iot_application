@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., Ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,6 +21,15 @@
 #include "hi_gpio.h"
 
 #define RESET_TIME (100 * 1000) // 100ms
+#define TEXT_SIZE_8_WIDTH_6 6 // 字体大小  8：6*8
+#define TEXT_SIZE_8_HIGHT_8 8 // 字体大小  8：6*8
+#define TEXT_SIZE_16_WIDTH_8 8 // 字体大小  16：8*16
+#define TEXT_SIZE_16_HIGHT_16 16 // 字体大小  16：8*16
+#define TEXT_8_MAX_ROW_POS 126
+#define TEXT_16_MAX_ROW_POS 120
+#define OFFSET_2 2
+#define OFFSET_8 8
+#define OFFSET_16 16
 
 static uint32_t SSD1306_SendData(uint8_t *data, size_t size)
 {
@@ -175,9 +184,7 @@ void SSD1306_OFF(void)
 void SSD1306_ShowStr(unsigned char x, unsigned char y, unsigned char ch[], unsigned char TextSize)
 {
     unsigned char c = 0, i = 0, j = 0;
-    uint8_t maximum_row_position = 126;
     uint8_t number_of_letter_lattice = 6;
-    uint8_t data_num = 8;  // 一个字节8位
     uint8_t pos_x = x;
     uint8_t pos_y = y;
 
@@ -185,7 +192,7 @@ void SSD1306_ShowStr(unsigned char x, unsigned char y, unsigned char ch[], unsig
         case TEXT_SIZE_8:
             while (ch[j] != '\0') {
                 c = ch[j] - ' ';
-                if (pos_x > maximum_row_position) {
+                if (pos_x > TEXT_8_MAX_ROW_POS) {
                     pos_x = 0;
                     pos_y++;
                 }
@@ -193,29 +200,29 @@ void SSD1306_ShowStr(unsigned char x, unsigned char y, unsigned char ch[], unsig
                 for (i = 0; i < number_of_letter_lattice; i++) {
                     SSD1306_WiteData(F6x8[c][i]);
                 }
-                pos_x += 6;
+                pos_x += TEXT_SIZE_8_WIDTH_6;
                 j++;
             }
             break;
 
         case TEXT_SIZE_16:
-            pos_y *= 2;
+            pos_y *= OFFSET_2;
             while (ch[j] != '\0') {
                 c = ch[j] - ' ';
-                if (pos_x > 120) {
+                if (pos_x > TEXT_16_MAX_ROW_POS) {
                     pos_x = 0;
                     pos_y++;
                 }
                 SSD1306_SetPos(pos_x, pos_y);
-                for (i = 0; i < data_num; i++) {
-                    SSD1306_WiteData(F8X16[c * 16 + i]);
+                for (i = 0; i < TEXT_SIZE_16_WIDTH_8; i++) {
+                    SSD1306_WiteData(F8X16[c * OFFSET_16 + i]);
                 }
                 SSD1306_SetPos(pos_x, pos_y + 1);
 
-                for (i = 0; i < data_num; i++) {
-                    SSD1306_WiteData(F8X16[c * 16 + i + 8]);
+                for (i = 0; i < TEXT_SIZE_16_WIDTH_8; i++) {
+                    SSD1306_WiteData(F8X16[c * OFFSET_16 + i + OFFSET_8]);
                 }
-                pos_x += data_num;
+                pos_x += TEXT_SIZE_16_WIDTH_8;
                 j++;
             }
             break;

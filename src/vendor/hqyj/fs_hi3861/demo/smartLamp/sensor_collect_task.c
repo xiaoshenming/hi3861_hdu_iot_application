@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., Ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -208,11 +208,11 @@ void publish_lamp_status_data(msg_data_t *msg)
     if (publish_topic != NULL) {
         // 拼接Topic
         memset_s(publish_topic,
-                strlen(MALLOC_MQTT_TOPIC_PUB_PROPERTIES) + strlen(DEVICE_ID) + 1,
-                0, strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_PROPERTIES) + 1);
+                 strlen(MALLOC_MQTT_TOPIC_PUB_PROPERTIES) + strlen(DEVICE_ID) + 1,
+                 0, strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_PROPERTIES) + 1);
         sprintf_s(publish_topic,
-                strlen(MALLOC_MQTT_TOPIC_PUB_PROPERTIES) + strlen(DEVICE_ID) + 1,
-                MQTT_TOPIC_PUB_PROPERTIES, DEVICE_ID);
+                  strlen(MALLOC_MQTT_TOPIC_PUB_PROPERTIES) + strlen(DEVICE_ID) + 1,
+                  MQTT_TOPIC_PUB_PROPERTIES, DEVICE_ID);
 
         // 组装JSON数据
         cJSON *json_root = cJSON_CreateObject();

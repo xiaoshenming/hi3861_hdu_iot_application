@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., Ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,6 +28,9 @@
 #define AP3216C_PS_H_ADDR 0x0F
 
 #define AP3216C_RESET_TIME 50000
+#define LEFT_SHIFT_2 2
+#define LEFT_SHIFT_4 4
+#define LEFT_SHIFT_8 8
 
 // 向从机设备 发送数据
 static uint32_t AP3216C_WiteByteData(uint8_t byte)
@@ -103,7 +106,7 @@ uint32_t AP3216C_ReadData(uint16_t *irData, uint16_t *alsData, uint16_t *psData)
         *irData = 0;
     } else {
         // 芯片数据手册中有数据转换的说明
-        *irData = ((uint16_t)data_H << 2) | (data_L & 0x03);
+        *irData = ((uint16_t)data_H << LEFT_SHIFT_2) | (data_L & 0x03);
     }
 
     // 读取ALS传感器数据    16-bit
@@ -118,7 +121,7 @@ uint32_t AP3216C_ReadData(uint16_t *irData, uint16_t *alsData, uint16_t *psData)
     }
 
     // 芯片数据手册中有数据转换的说明
-    *alsData = ((uint16_t)data_H << 8) | (data_L);
+    *alsData = ((uint16_t)data_H << LEFT_SHIFT_8) | (data_L);
 
     // 读取PS传感器数据    10-bit
     result = AP3216C_ReadRegByteData(AP3216C_PS_L_ADDR, &data_L);
@@ -136,7 +139,7 @@ uint32_t AP3216C_ReadData(uint16_t *irData, uint16_t *alsData, uint16_t *psData)
         *psData = 0;
     } else {
         // 芯片数据手册中有数据转换的说明
-        *psData = ((uint16_t)(data_H & 0x3F) << 4) | (data_L & 0x0F);
+        *psData = ((uint16_t)(data_H & 0x3F) << LEFT_SHIFT_4) | (data_L & 0x0F);
     }
 
     return HI_ERR_SUCCESS;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., Ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -65,6 +65,9 @@ margin_t bmp_image = {
 }; // 图片
 
 #define TASK_DELAY_TIME (100 * 1000) // us
+#define COEFFICIENT_10 10
+#define COEFFICIENT_100 100
+#define COEFFICIENT_1000 1000
 
 /**
  * @brief  显示湿度页面
@@ -76,11 +79,11 @@ void show_humi_page(float val)
 {
     SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_0, " Smart Farm", TEXT_SIZE_16);
 
-    int x = (val * 100) / 1000;
+    int x = (val * COEFFICIENT_100) / COEFFICIENT_1000;
     SSD1306_DrawBMP(bmp_number_1.left, bmp_number_1.top,
                     bmp_number_1.width, bmp_number_1.hight, bmp_16X32_number[x]); // 显示数字的十位
 
-    x = ((int)(val * 100)) / 100 % 10;
+    x = ((int)(val * COEFFICIENT_100)) / COEFFICIENT_100 % COEFFICIENT_10;
     SSD1306_DrawBMP(bmp_number_2.left, bmp_number_2.top,
                     bmp_number_1.width, bmp_number_1.hight, bmp_16X32_number[x]); // 显示数字的个位
     SSD1306_DrawBMP(bmp_dian.left, bmp_dian.top,
@@ -88,7 +91,7 @@ void show_humi_page(float val)
     SSD1306_DrawBMP(bmp_danwei.left, bmp_danwei.top,
                     bmp_danwei.width, bmp_danwei.hight, bmp_16X16_baifenhao);     // 显示%符号
 
-    x = ((int)(val * 100)) / 10 % 10;
+    x = ((int)(val * COEFFICIENT_100)) / COEFFICIENT_10 % COEFFICIENT_10;
     SSD1306_DrawBMP(bmp_number_3.left, bmp_number_3.top,
                     bmp_number_3.width, bmp_number_3.hight, bmp_8X16_number[x]); // 显示数字的小数位
 

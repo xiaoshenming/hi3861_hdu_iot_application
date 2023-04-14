@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., Ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,6 +33,9 @@
 
 #define TASK_STACK_SIZE (5 * 1024)
 #define BACK_DISTANCE 50 // mm
+#define COEFFICIENT_10 10
+#define COEFFICIENT_100 100
+#define COEFFICIENT_1000 1000
 
 msg_data_t sys_msg_data;
 hi_u8 recvBuff[200] = {0};
@@ -130,16 +133,16 @@ void show_page(uint16_t val)
     }
 
     // 显示数字
-    uint8_t x = val / 1000; // 显示数字的千位
+    uint8_t x = val / COEFFICIENT_1000; // 显示数字的千位
     SSD1306_DrawBMP(bmp_number_1.left, bmp_number_1.top, bmp_number_1.width, bmp_number_1.hight, bmp_16X32_number[x]);
 
-    x = val / 100 % 10; // 显示数字的百位
+    x = val / COEFFICIENT_100 % COEFFICIENT_10; // 显示数字的百位
     SSD1306_DrawBMP(bmp_number_2.left, bmp_number_2.top, bmp_number_2.width, bmp_number_2.hight, bmp_16X32_number[x]);
 
-    x = val / 10 % 10; // 显示数字的十位
+    x = val / COEFFICIENT_10 % COEFFICIENT_10; // 显示数字的十位
     SSD1306_DrawBMP(bmp_number_3.left, bmp_number_3.top, bmp_number_3.width, bmp_number_3.hight, bmp_16X32_number[x]);
 
-    x = val % 10; // 显示数字的个位
+    x = val % COEFFICIENT_10; // 显示数字的个位
     SSD1306_DrawBMP(bmp_number_4.left, bmp_number_4.top, bmp_number_4.width, bmp_number_4.hight, bmp_8X16_number[x]);
 
     // 显示小数点

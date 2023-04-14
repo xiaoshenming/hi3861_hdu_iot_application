@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., Ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,6 +30,11 @@
 #define SHT20_READ_TEMP_DATA_TIME 85000
 #define SHT20_READ_HUMI_DATA_TIME 50000
 #define SHT20_RESET_TIME 100000
+
+#define TEMP_COEFFICIENT 175.72
+#define HUMI_COEFFICIENT 125
+
+
 
 // 读从机设备的数据
 static uint32_t SHT20_RecvData(uint8_t *data, size_t size)
@@ -77,7 +82,7 @@ uint32_t SHT20_ReadData(float *temp, float *humi)
     }
 
     // 看芯片手册，手册中有转换公式的说明
-    *temp = 175.72 * (((((int)buffer[0]) << 8) + buffer[1]) / 65536.0) - 46.85;
+    *temp = TEMP_COEFFICIENT * (((((int)buffer[0]) << 8) + buffer[1]) / 65536.0) - 46.85;
 
     memset_s(buffer, sizeof(buffer), 0, sizeof(buffer));
 
@@ -98,7 +103,7 @@ uint32_t SHT20_ReadData(float *temp, float *humi)
     }
 
     // 看芯片手册，手册中有转换公式的说明
-    *humi = 125 * (((((int)buffer[0]) << 8) + buffer[1]) / 65536.0) - 6;
+    *humi = HUMI_COEFFICIENT * (((((int)buffer[0]) << 8) + buffer[1]) / 65536.0) - 6;
 
     return HI_ERR_SUCCESS;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., Ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -49,23 +49,19 @@ typedef struct message_sensorData {
 } msg_sensorData_t;
 msg_sensorData_t sensorData = {0}; // 传感器的数据
 
-tn_pcf8574_io_t pcf8574_io;
-#define IO_FAN pcf8574_io.bit.p0
-#define IO_BUZZER pcf8574_io.bit.p1
-#define IO_LED pcf8574_io.bit.p2
+#define PAGE_COEFFICIENT 2
+uint8_t recvBuff[200] = {0};
+uint8_t *pbuff = recvBuff;
 
-osThreadId_t task01_id;
-osThreadId_t task02_id;
-hi_u8 recvBuff[200] = {0};
-hi_u8 *pbuff = recvBuff;
 hi_gpio_value key_val;
 uint8_t page_num = 2, last_page_num = 0;
 uint8_t rgb_value = 0xFF;
 #define RGB_ON 255
 #define RGB_OFF 0
-
 #define KEY HI_IO_NAME_GPIO_14 // WiFi模组的IO14引脚
+osThreadId_t task01_id;
 #define TASK01_STACK_SIZE (1024 * 10)
+osThreadId_t task02_id;
 #define TASK02_STACK_SIZE (1024 * 5)
 #define TASK1_DELAY_TIME (200 * 1000) // us
 /**
@@ -88,16 +84,13 @@ void task01(void)
         }
         last_page_num = page_num;
 
-        if (!(page_num % 2)) { // 第一个页面
-            sensorData.led = IO_LED;
-            sensorData.fan = IO_FAN;
-            sensorData.buzzer = IO_BUZZER;
+        if (!(page_num % PAGE_COEFFICIENT)) { // 第一个页面
             SHT20_ReadData(&sensorData.temperature, &sensorData.humidity);
             AP3216C_ReadData(&sensorData.infrared, &sensorData.light, &sensorData.proximity);
 
             memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
             sprintf_s((char *)displayBuffer, sizeof(displayBuffer),
-                        "T:%.1fC H:%.1f%%", sensorData.temperature, sensorData.humidity);
+                      "T:%.1fC H:%.1f%%", sensorData.temperature, sensorData.humidity);
             SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_0, displayBuffer, TEXT_SIZE_16);
 
             memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
@@ -121,21 +114,33 @@ void task01(void)
                    sensorData.infrared,
                    sensorData.temperature,
                    sensorData.humidity);
-
-            IO_LED ^= 1;
-            IO_BUZZER ^= 1;
-            IO_FAN ^= 1;
-            PCF8574_Write(pcf8574_io.all);
-
+            sensorData.led ^= 0x01;
+            sensorData.fan ^= 0x01;
+            sensorData.buzzer ^= 0x01;
+            if (sensorData.led) {
+                set_led(true);
+            } else {
+                set_led(false);
+            }
+            if (sensorData.fan) {
+                set_fan(true);
+            } else {
+                set_fan(false);
+            }
+            if (sensorData.buzzer) {
+                set_buzzer(true);
+            } else {
+                set_buzzer(false);
+            }
             rgb_value ^= 0xFF;
             AW2013_Control_RGB(rgb_value, rgb_value, rgb_value);
         }
 
-        if (page_num % 2) { // 第二个页面
-            IO_BUZZER = 1;
-            IO_FAN = 0;
-            PCF8574_Write(pcf8574_io.all);
-            AW2013_Control_RGB(rgb_value, rgb_value, rgb_value);
+        if (page_num % PAGE_COEFFICIENT) { // 第二个页面
+            set_led(false);
+            set_buzzer(true);
+            set_fan(true);
+            AW2013_Control_RGB(0, 0, 0);
 
             /* 显示电池电压 距离 左轮 右轮 */
             memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));

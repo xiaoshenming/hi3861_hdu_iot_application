@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., Ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -87,6 +87,24 @@ margin_t image = {
 
 #define TASK_STACK_SIZE (1024 * 5)
 #define TASK_DELAY_TIME 3 // s
+#define COEFFICIENT_10 10
+#define COEFFICIENT_100 100
+#define COEFFICIENT_1000 1000
+typedef enum {
+    TEMP_RANG_0 = 0,
+    TEMP_RANG_6 = 6,
+    TEMP_RANG_12 = 12,
+    TEMP_RANG_18 = 18,
+    TEMP_RANG_24 = 24,
+}te_temperature_range_t;
+
+typedef enum {
+    HUMI_RANG_0 = 0,
+    HUMI_RANG_20 = 20,
+    HUMI_RANG_40 = 40,
+    HUMI_RANG_60 = 60,
+    HUMI_RANG_80 = 80,
+}te_humidity_range_t;
 
 /**
  * @brief  显示温度页面
@@ -101,31 +119,31 @@ void show_temp_page(float val)
     SSD1306_ShowStr(temp_title.left, temp_title.top, "   Temperature ", TEXT_SIZE_16);
 
     // 放大100倍后，计算出十位数字
-    int x = (val * 100) / 1000;
+    int x = (val * COEFFICIENT_100) / COEFFICIENT_1000;
     SSD1306_DrawBMP(number_1.left, number_1.top, number_1.width, number_1.hight, bmp_16X32_number[x]); // 显示数字的十位
 
     // 放大100倍后，计算出个位数字
-    x = ((int)(val * 100)) / 100 % 10;
+    x = ((int)(val * COEFFICIENT_100)) / COEFFICIENT_100 % COEFFICIENT_10;
     SSD1306_DrawBMP(number_2.left, number_2.top, number_2.width, number_2.hight, bmp_16X32_number[x]); // 显示数字的个位
     SSD1306_DrawBMP(dian.left, dian.top, dian.width, dian.hight, bmp_16X16_dian);              // 显示小数点
     SSD1306_DrawBMP(danwei.left, danwei.top, danwei.width, danwei.hight, bmp_16X16_sheShiDu);      // 显示℃符号
 
     // 放大100倍后，计算出小数点位数字
-    x = ((int)(val * 100)) / 10 % 10;
+    x = ((int)(val * COEFFICIENT_100)) / COEFFICIENT_10 % COEFFICIENT_10;
     SSD1306_DrawBMP(number_3.left, number_3.top, number_3.width, number_3.hight, bmp_8X16_number[x]); // 数字小数位
 
     // 适宜温度 0 ~ 30℃
-    if (val < 0) {
+    if (val < TEMP_RANG_0) {
         SSD1306_DrawBMP(image.left, image.top, image.width, image.hight, bmp_48X48_5_ku_qi);
-    } else if (val >= 0 && val < 6) {
+    } else if (val >= TEMP_RANG_0 && val < TEMP_RANG_6) {
         SSD1306_DrawBMP(image.left, image.top, image.width, image.hight, bmp_48X48_5_ku_qi);
-    } else if (val >= 6 && val < 12) {
+    } else if (val >= TEMP_RANG_6 && val < TEMP_RANG_12) {
         SSD1306_DrawBMP(image.left, image.top, image.width, image.hight, bmp_48X48_4_nan_guo);
-    } else if (val >= 12 && val < 18) {
+    } else if (val >= TEMP_RANG_12 && val < TEMP_RANG_18) {
         SSD1306_DrawBMP(image.left, image.top, image.width, image.hight, bmp_48X48_2_wei_xiao);
-    } else if (val >= 18 && val < 24) {
+    } else if (val >= TEMP_RANG_18 && val < TEMP_RANG_24) {
         SSD1306_DrawBMP(image.left, image.top, image.width, image.hight, bmp_48X48_1_mi_yan_xiao);
-    } else if (val >= 24) {
+    } else if (val >= TEMP_RANG_24) {
         SSD1306_DrawBMP(image.left, image.top, image.width, image.hight, bmp_48X48_3_wu_biao_qing);
     }
 }
@@ -142,27 +160,27 @@ void show_humi_page(float val)
     SSD1306_CLS();
     SSD1306_ShowStr(humi_title.left, humi_title.top, "    Humidity   ", TEXT_SIZE_16);
 
-    int x = (val * 100) / 1000;
+    int x = (val * COEFFICIENT_100) / COEFFICIENT_1000;
     SSD1306_DrawBMP(number_1.left, number_1.top, number_1.width, number_1.hight, bmp_16X32_number[x]); // 显示数字的十位
 
-    x = ((int)(val * 100)) / 100 % 10;
+    x = ((int)(val * COEFFICIENT_100)) / COEFFICIENT_100 % COEFFICIENT_10;
     SSD1306_DrawBMP(number_2.left, number_2.top, number_2.width, number_2.hight, bmp_16X32_number[x]); // 显示数字的个位
     SSD1306_DrawBMP(dian.left, dian.top, dian.width, dian.hight, bmp_16X16_dian);              // 显示小数点
     SSD1306_DrawBMP(danwei.left, danwei.top, danwei.width, danwei.hight, bmp_16X16_baifenhao);     // 显示%符号
 
-    x = ((int)(val * 100)) / 10 % 10;
+    x = ((int)(val * COEFFICIENT_100)) / COEFFICIENT_10 % COEFFICIENT_10;
     SSD1306_DrawBMP(number_3.left, number_3.top, number_3.width, number_3.hight, bmp_8X16_number[x]); // 数字小数位
 
     // 范围： 0 ~ 100%
-    if (val >= 0 && val < 20) {
+    if (val >= HUMI_RANG_0 && val < HUMI_RANG_20) {
         SSD1306_DrawBMP(image.left, image.top, image.width, image.hight, bmp_48X48_5_ku_qi);
-    } else if (val >= 20 && val < 40) {
+    } else if (val >= HUMI_RANG_20 && val < HUMI_RANG_40) {
         SSD1306_DrawBMP(image.left, image.top, image.width, image.hight, bmp_48X48_4_nan_guo);
-    } else if (val >= 40 && val < 60) {
+    } else if (val >= HUMI_RANG_40 && val < HUMI_RANG_60) {
         SSD1306_DrawBMP(image.left, image.top, image.width, image.hight, bmp_48X48_3_wu_biao_qing);
-    } else if (val >= 60 && val < 80) {
+    } else if (val >= HUMI_RANG_60 && val < HUMI_RANG_80) {
         SSD1306_DrawBMP(image.left, image.top, image.width, image.hight, bmp_48X48_2_wei_xiao);
-    } else if (val >= 80) {
+    } else if (val >= HUMI_RANG_80) {
         SSD1306_DrawBMP(image.left, image.top, image.width, image.hight, bmp_48X48_1_mi_yan_xiao);
     }
 }

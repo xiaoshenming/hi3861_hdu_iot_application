@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., Ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -112,12 +112,12 @@ int8_t mqttClient_sub_callback(unsigned char *topic, unsigned char *payload)
                                             strlen(DEVICE_ID) + strlen(request_id) + 1);
         if (request_topic != NULL) {
             memset_s(request_topic,
-                    strlen(DEVICE_ID) + strlen(request_id) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + 1,
-                    0,
-                    strlen(DEVICE_ID) + strlen(request_id) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + 1);
+                     strlen(DEVICE_ID) + strlen(request_id) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + 1,
+                     0,
+                     strlen(DEVICE_ID) + strlen(request_id) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + 1);
             sprintf_s(request_topic,
-                    strlen(DEVICE_ID) + strlen(request_id) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + 1,
-                    MQTT_TOPIC_PUB_COMMANDS_REQ, DEVICE_ID, request_id);
+                      strlen(DEVICE_ID) + strlen(request_id) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + 1,
+                      MQTT_TOPIC_PUB_COMMANDS_REQ, DEVICE_ID, request_id);
             if (ret_code == 0) {
                 MQTTClient_pub(request_topic, "{\"result_code\":0}", strlen("{\"result_code\":0}"));
             } else if (ret_code == 1) {

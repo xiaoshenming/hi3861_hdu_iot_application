@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., Ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,6 +27,13 @@ osThreadId_t Task1_ID; // 任务1设置为低优先级任务
 #define TASK_STACK_SIZE (1024 * 10)
 #define TASK_DELAY_TIME 3 // s
 
+#define ARRAY_INDEX_0 0
+#define ARRAY_INDEX_1 1
+#define ARRAY_INDEX_2 2
+#define ARRAY_INDEX_3 3
+#define ARRAY_INDEX_4 4
+#define ARRAY_INDEX_5 5
+
 // 当 有设备连接热点时 触发的回调函数
 static void connectingWiFihotspotsCallback(StationInfo *info)
 {
@@ -44,12 +51,12 @@ static void disconnectWiFihotspotsCallback(StationInfo *info)
     } else {
         // 打印mac地址
         printf("HotspotStaLeave: macAddress=%02X:%02X:%02X:%02X:%02X:%02X, reason=%d.\n",
-               info->macAddress[0],
-               info->macAddress[1],
-               info->macAddress[2],
-               info->macAddress[3],
-               info->macAddress[4],
-               info->macAddress[5],
+               info->macAddress[ARRAY_INDEX_0],
+               info->macAddress[ARRAY_INDEX_1],
+               info->macAddress[ARRAY_INDEX_2],
+               info->macAddress[ARRAY_INDEX_3],
+               info->macAddress[ARRAY_INDEX_4],
+               info->macAddress[ARRAY_INDEX_5],
                info->disconnectedReason);
     }
 }

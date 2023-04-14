@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., LTD
+ * Copyright (c) 2023 Beijing HuaQing YuanJian Education Technology Co., Ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -110,16 +110,16 @@ void udp_recv_task(void)
                         memset_s(uart_sendBuff, sizeof(uart_sendBuff), 0, sizeof(uart_sendBuff));
                         sprintf_s(uart_sendBuff, sizeof(uart_sendBuff),
                                 "{\"control\":{\"turn\":\"left\",\"pwm\":{\"L_Motor\":%d,\"R_Motor\":%d}}}",
-                                350,
-                                350);
+                                L_PWM_Value,
+                                R_PWM_Value);
                         uart_send_buff(uart_sendBuff, strlen(uart_sendBuff));
                     } else if (!strcmp(json_carStatus->valuestring, "right")) {
                         systemValue.car_status = CAR_STATUS_RIGHT;
                         memset_s(uart_sendBuff, sizeof(uart_sendBuff), 0, sizeof(uart_sendBuff));
                         sprintf_s(uart_sendBuff, sizeof(uart_sendBuff),
                                 "{\"control\":{\"turn\":\"right\",\"pwm\":{\"L_Motor\":%d,\"R_Motor\":%d}}}",
-                                350,
-                                350);
+                                L_PWM_Value,
+                                R_PWM_Value);
 
                         uart_send_buff(uart_sendBuff, strlen(uart_sendBuff));
                     } else if (!strcmp(json_carStatus->valuestring, "stop")) {
