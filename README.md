@@ -35,30 +35,44 @@
 
 ### Windows IDE环境搭建
 
-如果在Windows下搭建编译开发环境, 我们推荐Windows 10 64位系统或以上版本, 简要步骤如下(详细内容参考doc目录下<物联网技术及应用实验指导手册>):
+如果在Windows下搭建编译开发环境（目前提供两种编译方式，第一种新建工程，第二种导入工程，任选其一即可实现Hi3861V100编译）, 我们推荐Windows 10 64位系统或以上版本, 简要步骤如下(详细内容参考doc目录下<物联网技术及应用实验指导手册>):
+#### 新建工程
+1. 下载并安装Windows版本的HUAWEI DevEco Device Tool(devicetool-windows-tool-3.1.0.500.zip)：https://device.harmonyos.com/cn/develop/ide#download
 
-1. 下载并解压Hi3861V100编译工具链：
-	https://hispark.obs.cn-east-3.myhuaweicloud.com/DevTools_Hi3861V100_v1.0.zip
-	
-1. 拉取本项目的SDK代码到本地：
-    ```bash
-    git clone https://gitee.com/HiSpark/hi3861_hdu_iot_application.git
-    ```
-    > **注意：由于windows自身限制，路径不能超过260个字符，在git下载和解压Hi3861 SDK代码时尽量放在磁盘根目录下，防止导致的编译错误问题**
+2. 新建工程: 打开已安装DevEco Decive Tool插件的VSCode, 在DevEco Device Tool主页点击"导入工程", 弹窗中选择SDK代码目录, 点击“新建工程”.
 
-1. 下载并安装Windows版本的HUAWEI DevEco Device Tool(devicetool-windows-tool-3.1.0.400.zip)：https://device.harmonyos.com/cn/develop/ide#download
+3. 后续弹窗"SOC"选择"HI3861", 开发板选择"hi3861", 工程名选择"用户自定义"，工程路径选择”用户自定义“，SDK显示”hi3861_hdu_iot@1.0.0(uninstalled)“,点击"下载".
+> **注意：由于windows自身限制，路径不能超过260个字符，在git下载和解压Hi3861 SDK代码时尽量放在磁盘根目录下，防止导致的编译错误问题**
+4. 编译: 点击左侧“build”.
 
-1. 导入SDK: 打开已安装DevEco Decive Tool插件的VSCode, 在DevEco Device Tool主页点击"导入工程", 弹窗中选择SDK代码目录, 点击“导入”.
+5. 烧录: 硬件连接电脑, 如电脑未安装CH340G驱动, 先安装DevTools_Hi3861V100_v1.0/usb_serial_driver路径下的CH341SER.EXE串口驱动. 然后点击左侧“工程配置”, 找到“upload_port”选项, 选择开发板对应的烧录串口进行烧录. 
 
-1. 后续弹窗"SOC"选择"HI3861", 开发板选择"hi3861", 点击"导入".
+6. 按一下复位键, 现在, 你的第一个OpenHarmony程序已经在你的开发板上运行起来了. :thumbsup:
+#### 导入工程
+   1. 下载并解压Hi3861V100编译工具链：
+      https://hispark.obs.cn-east-3.myhuaweicloud.com/DevTools_Hi3861V100_v1.0.zip
 
-1. 配置编译工具链路径: 点击左侧的“工程配置”, 在右侧窗口找到“compiler_bin_path”, 选择到之前下载的开发工具路径, 选择`env_set.py`文件所在的目录层级.
+   2. 拉取本项目的SDK代码到本地：
 
-1. 编译: 点击左侧“build”.
+      ```bash
+      git clone https://gitee.com/HiSpark/hi3861_hdu_iot_application.git
+      ```
 
-1. 烧录: 硬件连接电脑, 如电脑未安装CH340G驱动, 先安装DevTools_Hi3861V100_v1.0/usb_serial_driver路径下的CH341SER.EXE串口驱动. 然后点击左侧“工程配置”, 找到“upload_port”选项, 选择开发板对应的烧录串口进行烧录. 
+      > **注意：由于windows自身限制，路径不能超过260个字符，在git下载和解压Hi3861 SDK代码时尽量放在磁盘根目录下，防止导致的编译错误问题**
 
-1. 按一下复位键, 现在, 你的第一个OpenHarmony程序已经在你的开发板上运行起来了. :thumbsup:
+   3. 下载并安装Windows版本的HUAWEI DevEco Device Tool(devicetool-windows-tool-3.1.0.500.zip)：https://device.harmonyos.com/cn/develop/ide#download
+
+   4. 导入SDK: 打开已安装DevEco Decive Tool插件的VSCode, 在DevEco Device Tool主页点击"导入工程", 弹窗中选择SDK代码目录, 点击“导入”.
+
+   5. 后续弹窗"SOC"选择"HI3861", 开发板选择"hi3861", 点击"导入".
+
+   6. 配置编译工具链路径: 点击左侧的“工程配置”, 在右侧窗口找到“compiler_bin_path”, 选择到之前下载的开发工具路径, 选择`env_set.py`文件所在的目录层级.
+
+   7. 编译: 点击左侧“build”.
+
+   8. 烧录: 硬件连接电脑, 如电脑未安装CH340G驱动, 先安装DevTools_Hi3861V100_v1.0/usb_serial_driver路径下的CH341SER.EXE串口驱动. 然后点击左侧“工程配置”, 找到“upload_port”选项, 选择开发板对应的烧录串口进行烧录. 
+
+   9. 按一下复位键, 现在, 你的第一个OpenHarmony程序已经在你的开发板上运行起来了. :thumbsup:
 
 ### Windows命令行编译环境搭建
 
