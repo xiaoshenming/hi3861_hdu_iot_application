@@ -17,13 +17,13 @@
 #include <hi_task.h>
 #include <hi_types_base.h>
 #include <hi_spi.h>
-#include "hi_io.h"
-#include "hi_gpio.h"
 #include <hi_time.h>
 #include <../platform/drivers/spi/spi.h>
 #include <hi_gpio.h>
 #include <time.h>
 #include <hi_i2c.h>
+#include "hi_io.h"
+#include "hi_gpio.h"
 #include "math.h"
 #include "ohos_init.h"
 #include "cmsis_os2.h"
@@ -46,10 +46,10 @@
 float q0 = 1, q1 = 0, q2 = 0, q3 = 0;   // 四元数的元素，代表估计方向
 float exInt = 0, eyInt = 0, ezInt = 0;  // 按比例缩小积分误差
 float g_gyro_yaw, g_gyro_pitch, g_gyro_roll;                 // 偏航角，俯仰角，翻滚角
-static char line[32] = {0};
-static float yaw_conv = 0.0f; 
+static char line[32] = { 0 };
+static float yaw_conv = 0.0f;
 
-void GyroGpioInit()
+void GyroGpioInit(void)
 {
     IoSetFunc(IOT_IO_NAME_GPIO_10, IOT_IO_FUNC_GPIO_10_SPI0_CK);
     IoSetFunc(IOT_IO_NAME_GPIO_11, IOT_IO_FUNC_GPIO_11_SPI0_RXD); // SPI MISO 数据从从发到主
@@ -77,12 +77,13 @@ void LSM6DSL_Write_Reg(hi_spi_idx id, unsigned char addrdata, unsigned char writ
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_12, IOT_GPIO_VALUE1);  // 禁止SPI传输
 }
 
-void LSM6DSL_Write_Read_Reg(hi_spi_idx id, unsigned char addrdata, unsigned char writedata, unsigned char *readdata, unsigned int readdatalen)
+void LSM6DSL_Write_Read_Reg(hi_spi_idx id, unsigned char addrdata, unsigned char writedata,
+                            unsigned char *readdata, unsigned int readdatalen)
 {
     unsigned char writebuff[2] = {addrdata, writedata};
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_12, IOT_GPIO_VALUE0);  // 使能SPI传输
-    memset_s(readdata, sizeof(readdata), 0x0, sizeof(readdata));
-    int ret = hi_spi_host_writeread(id , &writebuff, readdata, readdatalen);
+    memset_s(readdata, readdatalen + 1, 0x0, readdatalen);
+    int ret = hi_spi_host_writeread(id, &writebuff, readdata, readdatalen);
     if (ret != HI_ERR_SUCCESS) {
         printf("spi read[%02X] fail! %x ", readdata[0], ret);
     }
@@ -93,8 +94,8 @@ unsigned char LSM6DSL_Read_Reg(hi_spi_idx id, unsigned char writedata, unsigned 
 {
     unsigned char resultdata;
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_12, IOT_GPIO_VALUE0);  // 使能SPI传输
-    memset_s(readdata, sizeof(readdata), 0x0, sizeof(readdata));
-    int ret = hi_spi_host_writeread(id , &writedata, readdata, readdatalen);
+    memset_s(readdata, readdatalen + 1, 0x0, readdatalen);
+    int ret = hi_spi_host_writeread(id, &writedata, readdata, readdatalen);
     if (ret != HI_ERR_SUCCESS) {
         printf("spi read[%02X] fail! %x ", readdata[0], ret);
     }
@@ -106,13 +107,14 @@ unsigned char LSM6DSL_Read_Reg(hi_spi_idx id, unsigned char writedata, unsigned 
 
 void IMU_YAW_CAL(float gyroZ)
 {
+    int ret = 0;
     static float dt = 0.03; // 0.03代表300ms读取陀螺仪数据
     static float yaw = 0.0f, temp = 0.0f;
     // 除去零偏
     #if 0
     static int a = 0;
     a++;
-    if (hi_get_seconds() <= 5) {
+    if (hi_get_seconds() <= 5) { // 5s
         printf("---------times-----------:%d\n", a);
     }
     #endif
@@ -132,14 +134,23 @@ void IMU_YAW_CAL(float gyroZ)
         }
     }
     // printf("Pitch:%.02f, Roll:%.02f, yaw:%.2f\n", g_gyro_pitch, g_gyro_roll, yaw_conv);
-    ssd1306_SetCursor(0, 15);
-    snprintf(line, sizeof(line), "Pitch:%.2f", g_gyro_pitch);
+    ssd1306_SetCursor(0, 15); // 0为横坐标，15为纵坐标
+    ret = snprintf_s(line, sizeof(line), sizeof(line), "Pitch:%.2f", g_gyro_pitch);
+    if (ret == 0) {
+        printf("Pitch failed\r\n");
+    }
     ssd1306_DrawString(line, Font_7x10, White);
-    ssd1306_SetCursor(0, 30);
-    snprintf(line, sizeof(line), "Roll:%.2f", g_gyro_roll);
+    ssd1306_SetCursor(0, 30); // 0为横坐标，30为纵坐标
+    ret = snprintf_s(line, sizeof(line), sizeof(line), "Roll:%.2f", g_gyro_roll);
+    if (ret == 0) {
+        printf("Roll failed\r\n");
+    }
     ssd1306_DrawString(line, Font_7x10, White);
-    ssd1306_SetCursor(0, 0);
-    snprintf(line, sizeof(line), "yaw:%.2f", yaw_conv);
+    ssd1306_SetCursor(0, 0); // 0为横坐标，0为纵坐标
+    ret = snprintf_s(line, sizeof(line), sizeof(line), "yaw:%.2f", yaw_conv);
+    if (ret == 0) {
+        printf("yaw failed\r\n");
+    }
     ssd1306_DrawString(line, Font_7x10, White);
     ssd1306_UpdateScreen();
 }
@@ -194,6 +205,9 @@ void IMU_Attitude_cal(float gcx, float gcy, float gcz, float acx, float acy, flo
 
     // 把采集到的三轴加速度转化为单位向量，即向量除以模
     norm = (float)sqrt((float)(ax * ax + ay * ay + az * az));
+    if (norm == 0) {
+        printf("209 norm = 0,failed\n");
+    }
     ax = ax / norm;
     ay = ay / norm;
     az = az / norm;
@@ -229,6 +243,9 @@ void IMU_Attitude_cal(float gcx, float gcy, float gcz, float acx, float acy, flo
 
     // 四元数归一化
     norm = sqrt(q0 * q0 + q1 * q1 + q2 * q2 + q3 * q3);
+    if (norm == 0) {
+        printf("247 norm = 0,failed\n");
+    }
     q0 = q0 / norm;
     q1 = q1 / norm;
     q2 = q2 / norm;
@@ -253,20 +270,20 @@ void Lsm_Get_RawAcc(hi_spi_idx id, int a)
     float ang_rate_x_cal = 0, ang_rate_y_cal = 0, ang_rate_z_cal = 0;
     unsigned char read_buff[2] = { 0 };
     
-    if((LSM6DSL_Read_Reg(id, LSM6DSL_STATUS_REG | SPI_READ, read_buff, 2) & 0x01)!=0) {
-        buf[0]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTX_H_XL | SPI_READ, read_buff, 2);
-        buf[1]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTX_L_XL | SPI_READ, read_buff, 2);
-        buf[2]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTY_H_XL | SPI_READ, read_buff, 2);
-        buf[3]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTY_L_XL | SPI_READ, read_buff, 2);
-        buf[4]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTZ_H_XL | SPI_READ, read_buff, 2);
-        buf[5]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTZ_L_XL | SPI_READ, read_buff, 2);
+    if((LSM6DSL_Read_Reg(id, LSM6DSL_STATUS_REG | SPI_READ, read_buff, READDATALEN) & 0x01)!=0) {
+        buf[0]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTX_H_XL | SPI_READ, read_buff, READDATALEN);
+        buf[1]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTX_L_XL | SPI_READ, read_buff, READDATALEN);
+        buf[2]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTY_H_XL | SPI_READ, read_buff, READDATALEN);
+        buf[3]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTY_L_XL | SPI_READ, read_buff, READDATALEN);
+        buf[4]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTZ_H_XL | SPI_READ, read_buff, READDATALEN);
+        buf[5]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTZ_L_XL | SPI_READ, read_buff, READDATALEN);
 
-        buf[6]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTX_H_G | SPI_READ, read_buff, 2);
-        buf[7]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTX_L_G | SPI_READ, read_buff, 2);
-        buf[8]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTY_H_G | SPI_READ, read_buff, 2);
-        buf[9]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTY_L_G | SPI_READ, read_buff, 2);
-        buf[10]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTZ_H_G | SPI_READ, read_buff, 2);
-        buf[11]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTZ_L_G | SPI_READ, read_buff, 2);
+        buf[6]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTX_H_G | SPI_READ, read_buff, READDATALEN);
+        buf[7]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTX_L_G | SPI_READ, read_buff, READDATALEN);
+        buf[8]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTY_H_G | SPI_READ, read_buff, READDATALEN);
+        buf[9]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTY_L_G | SPI_READ, read_buff, READDATALEN);
+        buf[10]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTZ_H_G | SPI_READ, read_buff, READDATALEN);
+        buf[11]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTZ_L_G | SPI_READ, read_buff, READDATALEN);
 
         ang_rate_x = (buf[6] << 8) | buf[7];  // 将buff6 右移8位在与上buff 7
         ang_rate_y = (buf[8] << 8)  | buf[9]; // 将buff8 右移8位在与上buff 9
@@ -284,14 +301,14 @@ void Lsm_Get_RawAcc(hi_spi_idx id, int a)
         acc_y_conv = acc_y / 4098.36; // 4098.36量程
         acc_z_conv = acc_z / 4098.36; // 4098.36量程
 
-        if (a % 1000 == 0) {
-            GD25Q40C_SPIFLASH_EraseSector(id, 0x000000);
+        if (a % 1000 == 0) { // 1000次保存一次
+            GD25Q40C_SPIFLASH_EraseSector(id, 0x000000); // 擦除芯片
             TaskMsleep(10); // 延时10ms
             GD25Q_SPIFLASH_WritePage(id, 0x000000, buf);
             TaskMsleep(10); // 延时10ms
             GD25Q_SPIFLASH_ReadBuffer(id, 0x000000);
-            TaskMsleep(20); // 延时10ms
-            ssd1306_SetCursor(0, 45);
+            TaskMsleep(20); // 延时20ms
+            ssd1306_SetCursor(0, 45); // 0为横坐标，45为纵坐标
             ssd1306_DrawString("save data to flash", Font_7x10, White);
         }
         IMU_Attitude_cal(ang_rate_x_conv, ang_rate_y_conv, ang_rate_z_conv, acc_x_conv, acc_y_conv, acc_z_conv);
@@ -303,20 +320,20 @@ void Lsm6d3s_Init(hi_spi_idx id)
 {
     hi_u8 readdata[1];
     hi_u8 read_buff[2] = { 0 };
-    readdata[0]= LSM6DSL_Read_Reg(id, LSM6DSL_WHO_AM_I | SPI_READ, read_buff, 2);
-    LSM6DSL_Write_Reg(id, LSM6DSL_CTRL3_C | SPI_WRITE, 0x34, 2); // 0x34 2 初始化陀螺仪
-    LSM6DSL_Write_Reg(id, LSM6DSL_CTRL2_G | SPI_WRITE, 0X4C, 2); // 0x4c 2 角速度陀螺仪配置2000dps,104Hz
-    LSM6DSL_Write_Reg(id, LSM6DSL_CTRL10_C | SPI_WRITE, 0x38, 2);; // 0x38 2 timer en, pedo en, tilt en ??
-    LSM6DSL_Write_Reg(id, LSM6DSL_CTRL1_XL | SPI_WRITE, 0x4F, 2); // 0x4F 2 加速度配置量程为8g,104Hz, lpf1_bw_sel=1, bw0_xl=1;
-    LSM6DSL_Write_Reg(id, LSM6DSL_TAP_CFG | SPI_WRITE, 0x10, 2); // 0x10 2长度 LSM6DSL_TAP_CFG
-    LSM6DSL_Write_Reg(id, LSM6DSL_WAKE_UP_DUR | SPI_WRITE, 0x00, 2); // 0x00 2长度 LSM6DSL_WAKE_UP_DUR
-    LSM6DSL_Write_Reg(id, LSM6DSL_WAKE_UP_THS | SPI_WRITE, 0x02, 2); // 0x02 2长度 LSM6DSL_WAKE_UP_THS
-    LSM6DSL_Write_Reg(id, LSM6DSL_TAP_THS_6D | SPI_WRITE, 0x40, 2); // 0x40 2长度 LSM6DSL_TAP_THS_6D
-    LSM6DSL_Write_Reg(id, LSM6DSL_CTRL8_XL | SPI_WRITE, 0x01, 2); // 0x01 2长度 LSM6DSL_CTRL8_XL
+    readdata[0]= LSM6DSL_Read_Reg(id, LSM6DSL_WHO_AM_I | SPI_READ, read_buff, READDATALEN);
+    LSM6DSL_Write_Reg(id, LSM6DSL_CTRL3_C | SPI_WRITE, 0x34, READDATALEN); // 0x34 2 初始化陀螺仪
+    LSM6DSL_Write_Reg(id, LSM6DSL_CTRL2_G | SPI_WRITE, 0X4C, READDATALEN); // 0x4c 2 角速度陀螺仪配置2000dps,104Hz
+    LSM6DSL_Write_Reg(id, LSM6DSL_CTRL10_C | SPI_WRITE, 0x38, READDATALEN); // 0x38 2 timer en, pedo en, tilt en ??
+    LSM6DSL_Write_Reg(id, LSM6DSL_CTRL1_XL | SPI_WRITE, 0x4F, READDATALEN); // 0x4F 2 加速度配置量程为8g,104Hz, lpf1_bw_sel=1, bw0_xl=1;
+    LSM6DSL_Write_Reg(id, LSM6DSL_TAP_CFG | SPI_WRITE, 0x10, READDATALEN); // 0x10 2长度 LSM6DSL_TAP_CFG
+    LSM6DSL_Write_Reg(id, LSM6DSL_WAKE_UP_DUR | SPI_WRITE, 0x00, READDATALEN); // 0x00 2长度 LSM6DSL_WAKE_UP_DUR
+    LSM6DSL_Write_Reg(id, LSM6DSL_WAKE_UP_THS | SPI_WRITE, 0x02, READDATALEN); // 0x02 2长度 LSM6DSL_WAKE_UP_THS
+    LSM6DSL_Write_Reg(id, LSM6DSL_TAP_THS_6D | SPI_WRITE, 0x40, READDATALEN); // 0x40 2长度 LSM6DSL_TAP_THS_6D
+    LSM6DSL_Write_Reg(id, LSM6DSL_CTRL8_XL | SPI_WRITE, 0x01, READDATALEN); // 0x01 2长度 LSM6DSL_CTRL8_XL
     return HI_ERR_SUCCESS;
 }
 
-void Oled_Desplay()
+void Oled_Desplay(void)
 {
 /*
      * 初始化I2C设备0，并指定波特率为400k
@@ -357,11 +374,11 @@ void GyroTask(void)
     spi_cfg_basic_info.freq = SPI_FREQUENCY;
     hi_spi_cfg_init_param spi_init_param = {0};
     spi_init_param.is_slave = 0;
-    ret = hi_spi_init(id, spi_init_param, &spi_cfg_basic_info); //基本参数配置
+    ret = hi_spi_init(id, spi_init_param, &spi_cfg_basic_info); // 基本参数配置
     if (ret != HI_ERR_SUCCESS) {
         printf("SPI init fail! %x ", ret);
     }
-    GyroGpioInit(id);
+    GyroGpioInit();
     Oled_Desplay();
     Lsm6d3s_Init(id);
     GD25Q40C_Init(id);
@@ -376,15 +393,15 @@ static void GyroControlTask(void)
 {
     osThreadAttr_t attr;
 
-    attr.name = "LedCntrolDemo";
+    attr.name = "GyroCntrolDemo";
     attr.attr_bits = 0U;
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
     attr.stack_size = 1024 * 5; // 堆栈大小为1024 stack size 1024
-    attr.priority = 25;
+    attr.priority = 25; // 优先级25
     if (osThreadNew((osThreadFunc_t)GyroTask, NULL, &attr) == NULL) {
-        printf("[LedExample] Failed to create LedTask!\n");
+        printf("[GyroExample] Failed to create GyroTask!\n");
     }
 }
 

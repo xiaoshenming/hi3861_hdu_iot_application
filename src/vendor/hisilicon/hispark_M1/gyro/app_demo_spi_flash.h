@@ -23,6 +23,7 @@
 
 void GD25Q40C_Init(hi_spi_idx id);
 void GD25Q40C_Write_Reg(hi_spi_idx id, unsigned char *writebuff, unsigned int writelen);
-void GD25Q40C_Write_Read_Reg(hi_spi_idx id, unsigned char *writedata, unsigned char *readdata, unsigned int readdatalen);
+void GD25Q40C_Write_Read_Reg(hi_spi_idx id, unsigned char *writedata, unsigned char *readdata,
+                             unsigned int readdatalen);
 
 #endif

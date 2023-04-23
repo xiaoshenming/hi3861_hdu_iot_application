@@ -29,10 +29,10 @@
 void GD25Q40C_Write_Read_Reg(hi_spi_idx id, unsigned char *writedata, unsigned char *readdata, unsigned int readdatalen)
 {
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_0, IOT_GPIO_VALUE0);  // 使能SPI传输
-    memset_s(readdata, sizeof(readdata), 0x0, sizeof(readdata));
-    int ret = hi_spi_host_writeread(id , writedata, readdata, readdatalen);
+    memset_s(readdata, readdatalen + 1, 0x0, readdatalen);
+    int ret = hi_spi_host_writeread(id, writedata, readdata, readdatalen);
     if (ret != HI_ERR_SUCCESS) {
-        printf("spi read[%02X] fail! %x ", readdata[0], ret);
+        printf("spi read[%02X] fail! %d", readdata[0], ret);
     }
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_0, IOT_GPIO_VALUE1);  // 使能SPI传输
 }
@@ -40,9 +40,9 @@ void GD25Q40C_Write_Read_Reg(hi_spi_idx id, unsigned char *writedata, unsigned c
 void GD25Q40C_Write_Reg(hi_spi_idx id, unsigned char *writebuff, unsigned int writelen)
 {
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_0, IOT_GPIO_VALUE0);  // 使能SPI传输
-    int ret = hi_spi_host_write(id , writebuff, writelen);
+    int ret = hi_spi_host_write(id, writebuff, writelen);
     if (ret != HI_ERR_SUCCESS) {
-        printf("spi write[%02X] fail! %x ", writebuff[0], ret);
+        printf("spi write[%02X] fail! %d", writebuff[0], ret);
     }
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_0, IOT_GPIO_VALUE1);  // 使能SPI传输
 }
@@ -54,15 +54,15 @@ void GD25Q40C_Init(hi_spi_idx id)
     unsigned char writebuff[4] = {0x90, 0x00, 0x00, 0x00}; // 读取芯片的device ID寄存器分别为0x90, 0x00, 0x00, 0x00
     int ret = hi_spi_host_write(id, writebuff, 4);
     if (ret != HI_ERR_SUCCESS) {
-        printf("spi write[%02X] fail! %x ", writebuff[0], ret);
+        printf("spi write[%02X] fail! %d", writebuff[0], ret);
     }
-    ret = hi_spi_host_read(id, read_buff, 2);
+    ret = hi_spi_host_read(id, read_buff, 2); // 读取长度为2
     if (ret != HI_ERR_SUCCESS) {
-        printf("spi read[%02X] fail! %x ", read_buff[0], ret);
-    } 
+        printf("spi read[%02X] fail! %d", read_buff[0], ret);
+    }
     hi_gpio_set_ouput_val(HI_GPIO_IDX_0, HI_GPIO_VALUE1);
-    for (int i = 0; i < 2; i++) {
-        printf("readdata[%d] = %02x \r\n", i, read_buff[i]);
+    for (int i = 0; i < 2; i++) { // 读取长度为2
+        printf("readdata[%d] = %02x\r\n", i, read_buff[i]);
     }
     printf("\r\n");
     if (read_buff[0] != 0xc8 || read_buff[1] != 0x12) { // 芯片device ID 0xc8 和 0x12
@@ -80,30 +80,29 @@ void GD25Q40C_Init(hi_spi_idx id)
 // WEL:写使能锁定
 // BUSY:忙标记位(1,忙;0,空闲)
 // 默认:0x00
-void GD25Q40C_spi_flash_wait_busy(hi_spi_idx id) 
+void GD25Q40C_spi_flash_wait_busy(hi_spi_idx id)
 {
-
     unsigned char ReadStatusReg = 0x05; // 读取状态寄存器地址位0x05
-    unsigned char readdata[2] = { 0 };
+    unsigned char readdata[2] = { 0 }; // 读取数据长度为2
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_0, IOT_GPIO_VALUE0);  // 使能SPI传输
-    int ret = hi_spi_host_write(id , &ReadStatusReg, 1);
+    int ret = hi_spi_host_write(id, &ReadStatusReg, 1);
     if (ret != HI_ERR_SUCCESS) {
         printf("spi write[%02X] fail! %x ", ReadStatusReg, ret);
     }
     do {
-        hi_spi_host_read(id, readdata, 2);
-    }  while (readdata[0] & 0x01 == 0x01); // 判断如果为0x01为繁忙
+        hi_spi_host_read(id, readdata, 2); // 读取数据长度为2
+    }  while ((readdata[0] & 0x01) == 0x01); // 判断如果为0x01为繁忙
 
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_0, IOT_GPIO_VALUE1);  // 使能SPI传输
 }
 
 void GD25Q40C_Write_Enable(hi_spi_idx id)
 {
-    hi_u8 WriteEnable = CMD_WRITE_ENABLE;
-    GD25Q40C_Write_Reg(id , &WriteEnable, 1);
+    unsigned char WriteEnable = CMD_WRITE_ENABLE;
+    GD25Q40C_Write_Reg(id, &WriteEnable, 1);
 }
 
-void GD25Q40C_SPIFLASH_EraseSector(hi_spi_idx id, unsigned int SectorAddr) 
+void GD25Q40C_SPIFLASH_EraseSector(hi_spi_idx id, unsigned int SectorAddr)
 {
     /* 发送FLASH写使能命令 */
     GD25Q40C_Write_Enable(id);
@@ -111,8 +110,8 @@ void GD25Q40C_SPIFLASH_EraseSector(hi_spi_idx id, unsigned int SectorAddr)
     unsigned char addrbuff[4] = { 0 }; // 擦除地址位长度为4
     addrbuff[0] = SECTORERASE;
     addrbuff[1] = (unsigned char)SectorAddr >> 16; // 地址位右移16位
-    addrbuff[2] = (unsigned char)SectorAddr >> 8; // 地址位右移8位
-    addrbuff[3] = (unsigned char)SectorAddr;
+    addrbuff[2] = (unsigned char)SectorAddr >> 8; // addrbuff[2]为地址位右移8位
+    addrbuff[3] = (unsigned char)SectorAddr; // addrbuff[3]为地址位
     GD25Q40C_Write_Reg(id, addrbuff, 4); // 写地址位长度为4
     GD25Q40C_spi_flash_wait_busy(id);
 }
@@ -124,12 +123,12 @@ void GD25Q_SPIFLASH_ReadBuffer(hi_spi_idx id, unsigned int ReadAddr)
     unsigned char addrbuff[4] = { 0 }; // 读取地址位长度为4
     addrbuff[0] = CMD_READ_DATA_BYTES;
     addrbuff[1] = (unsigned char)(ReadAddr) >> 16; // 地址位右移16位
-    addrbuff[2] = (unsigned char)(ReadAddr) >> 8; // 地址位右移8位
-    addrbuff[3] = (unsigned char)(ReadAddr);
+    addrbuff[2] = (unsigned char)(ReadAddr) >> 8; // addrbuff[2]为地址位右移8位
+    addrbuff[3] = (unsigned char)(ReadAddr); // addrbuff[3]为地址位
     /* 读取数据 */
-    GD25Q40C_Write_Read_Reg(id, addrbuff, read_buff, 16);
-    for (int i = 0; i < 12; i++) {
-        printf("read_buff[%d] = %02x", i + 4, read_buff[i + 4]);
+    GD25Q40C_Write_Read_Reg(id, addrbuff, read_buff, 16); // 总的数据读取为16
+    for (int i = 0; i < 12; i++) { // 陀螺仪有效数据长度为12
+        printf("read_buff[%d] = %02x", i + 4, read_buff[i + 4]); // 前4位为地址位，从第五个开始为陀螺仪数据
     }
     printf("\r\n");
 }

@@ -17,19 +17,9 @@
 #define APP_DEMO_SPI_GYRO_H
 
 #define SPI_FREQUENCY   (9 * 800 * 1000)
-#define DELAY_100US     (100)
-#define DELAY_1MS       (1000)
-#define DELAY_10MS      (10*1000)
-#define DELAY_20MS      (20*1000)
-#define WR_V350_LEN     (32)
-#define WR_V350_LOOP    (2)
-#define SPI_GYRO_STACK  (1024*10)
-#define SPI_GYRO_PRIO   (25)
-#define SPI_GYRO_TASK_NAME  ((hi_char*)"spi gyro task")
-#define UNUSED_PARAM(p)  ((p) = (p))
 
-#define SPI_READ    ((hi_u8)0x80)
-#define SPI_WRITE    ((hi_u8)0x00)
+#define SPI_READ    ((unsigned char)0x80)
+#define SPI_WRITE    ((unsigned char)0x00)
 #define READDATALEN    2
 /* sensor output data */
 #define LSM6DSL_OUTX_L_G    0X22

@@ -36,7 +36,7 @@
 #define IOT_I2C_IDX_BAUDRATE (400 * 1000)
 #define SSD1306_I2C_IDX 0
 
-void rotation_gpio_init()
+void rotation_gpio_init(void)
 {
     /*
      * 设置GPIO13的管脚复用关系为I2C0_SDA
@@ -76,7 +76,7 @@ void all_light_out(void)
 */
 void sensor_all_light_dark_to_bright(unsigned short data)
 {
-    unsigned short pstr = data / 1875.0 * 100;
+    unsigned short pstr = data / 1875.0 * 100; // 1875.0为ADC读取最大值，*100为了保证数据在0-99之间
     IoTPwmStart(IOT_PWM_PORT_PWM1, pstr, IOT_FREQ);
 }
 
@@ -87,30 +87,34 @@ void sensor_all_light_dark_to_bright(unsigned short data)
 */
 void colorful_light_stepless_dimming(void)
 {
-    uint32_t ret;
+    int ret = 0;
     float voltage;
     unsigned short data = 0;
-    unsigned char vstr[64] = {0};
-    unsigned char ratio[64] = {0};
+    unsigned char vstr[64] = {0}; // 64为大小
+    unsigned char ratio[64] = {0}; // 64为大小
     ret = AdcRead(IOT_ADC_CHANNEL_3, &data, IOT_ADC_EQU_MODEL_4, IOT_ADC_CUR_BAIS_DEFAULT, 0xFF);
-    if ( ret != HI_ERR_SUCCESS ) {
-        printf( "ADC Read Fail\n" );
+    if ( ret != HI_ERR_SUCCESS) {
+        printf( "ADC Read Fail\n");
         return HI_NULL;
     }
     voltage = (float)data * 1.8 * 4 / 4096.0;  /* vlt * 1.8 * 4 / 4096.0 is to convert codeword to voltage */
-    printf("data: %d, voltage = %0.f\n", data, voltage);
+    printf("data: %hu, voltage = %0.f\n", data, voltage);
     float pstr = data / 1875.0 * 100;
-    ssd1306_SetCursor(10, 8);
-    snprintf(ratio, sizeof(ratio), "voltage: %.1f V", voltage);
+    ssd1306_SetCursor(10, 8); // 10为X轴坐标，8为Y轴坐标
+    ret = snprintf_s(ratio, sizeof(ratio), sizeof(ratio), "voltage: %.1f V", voltage);
+    if (ret == 0) {
+        printf("voltage failed\r\n");
+    }
     ssd1306_DrawString(ratio, Font_7x10, White);
     ssd1306_SetCursor(0, 40);
-    snprintf(vstr, sizeof(vstr), "Duty cycle: %0.f", pstr);
+    ret = snprintf_s(vstr, sizeof(vstr), sizeof(vstr), "Duty cycle: %0.f", pstr);
+    if (ret == 0) {
+        printf("Duty cycle failed\r\n");
+    }
     ssd1306_DrawString(vstr, Font_7x10, White);
     ssd1306_UpdateScreen();
-    if (data > 1849) {
+    if (data > ADC_READ_DATA) {
         ssd1306_Fill(Black);
-    }
-    if ( data > ADC_READ_DATA ) {
         sensor_all_light_dark_to_bright(data);
     }
 }
