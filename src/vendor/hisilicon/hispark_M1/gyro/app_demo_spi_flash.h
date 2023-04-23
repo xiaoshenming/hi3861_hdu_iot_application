@@ -14,7 +14,7 @@
  */
 
 #ifndef APP_DEMO_SPI_FLASH_H
-#define APP_DEMO_SPI_GYRO_H
+#define APP_DEMO_SPI_FLASH_H
 
 #define SECTORERASE    0X20
 #define CMD_PAGE_PROGRAM    0x02

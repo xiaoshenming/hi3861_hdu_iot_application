@@ -93,20 +93,20 @@ void colorful_light_stepless_dimming(void)
     unsigned char vstr[64] = {0}; // 64为大小
     unsigned char ratio[64] = {0}; // 64为大小
     ret = AdcRead(IOT_ADC_CHANNEL_3, &data, IOT_ADC_EQU_MODEL_4, IOT_ADC_CUR_BAIS_DEFAULT, 0xFF);
-    if ( ret != HI_ERR_SUCCESS) {
-        printf( "ADC Read Fail\n");
+    if (ret != HI_ERR_SUCCESS) {
+        printf("ADC Read Fail\n");
         return HI_NULL;
     }
     voltage = (float)data * 1.8 * 4 / 4096.0;  /* vlt * 1.8 * 4 / 4096.0 is to convert codeword to voltage */
     printf("data: %hu, voltage = %0.f\n", data, voltage);
-    float pstr = data / 1875.0 * 100;
+    float pstr = data / 1875.0 * 100; // 1875.0为ADC读取最大值，*100为了保证数据在0-99之间
     ssd1306_SetCursor(10, 8); // 10为X轴坐标，8为Y轴坐标
     ret = snprintf_s(ratio, sizeof(ratio), sizeof(ratio), "voltage: %.1f V", voltage);
     if (ret == 0) {
         printf("voltage failed\r\n");
     }
     ssd1306_DrawString(ratio, Font_7x10, White);
-    ssd1306_SetCursor(0, 40);
+    ssd1306_SetCursor(0, 40); // 横坐标为0，纵坐标为40
     ret = snprintf_s(vstr, sizeof(vstr), sizeof(vstr), "Duty cycle: %0.f", pstr);
     if (ret == 0) {
         printf("Duty cycle failed\r\n");
@@ -130,7 +130,7 @@ void brightness_control_sample(void)
     all_light_out();
     while (1) {
         colorful_light_stepless_dimming();
-        TaskMsleep(100); // 延时10ms
+        TaskMsleep(100); // 延时100ms
     }
 }
 

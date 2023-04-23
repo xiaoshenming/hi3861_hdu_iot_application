@@ -28,9 +28,13 @@
 
 void GD25Q40C_Write_Read_Reg(hi_spi_idx id, unsigned char *writedata, unsigned char *readdata, unsigned int readdatalen)
 {
+    int ret = 0;
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_0, IOT_GPIO_VALUE0);  // 使能SPI传输
-    memset_s(readdata, readdatalen + 1, 0x0, readdatalen);
-    int ret = hi_spi_host_writeread(id, writedata, readdata, readdatalen);
+    ret = memset_s(readdata, readdatalen + 1, 0x0, readdatalen);
+    if (ret != EOK) {
+        printf("memcpy_s failed, err = %d\n", ret);
+    }
+    ret = hi_spi_host_writeread(id, writedata, readdata, readdatalen);
     if (ret != HI_ERR_SUCCESS) {
         printf("spi read[%02X] fail! %d", readdata[0], ret);
     }
@@ -87,7 +91,7 @@ void GD25Q40C_spi_flash_wait_busy(hi_spi_idx id)
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_0, IOT_GPIO_VALUE0);  // 使能SPI传输
     int ret = hi_spi_host_write(id, &ReadStatusReg, 1);
     if (ret != HI_ERR_SUCCESS) {
-        printf("spi write[%02X] fail! %x ", ReadStatusReg, ret);
+        printf("spi write[%02X] fail! %d", ReadStatusReg, ret);
     }
     do {
         hi_spi_host_read(id, readdata, 2); // 读取数据长度为2
@@ -142,9 +146,9 @@ void GD25Q_SPIFLASH_WritePage(hi_spi_idx id, unsigned char addr, unsigned char *
     /* 发送页写指令，地址高中低， 数据 */
     unsigned char addrbuff[16] = { 0 }; // 寄存器地址和数据总共有16
     addrbuff[0] = CMD_PAGE_PROGRAM; // 页写指令
-    addrbuff[1] = (unsigned char)(addr) >> 16; // 地址位右移16位
-    addrbuff[2] = (unsigned char)(addr) >> 8; // 地址位右移8位
-    addrbuff[3] = (unsigned char)(addr);
+    addrbuff[1] = (unsigned char)(addr) >> 16; // addrbuff[1]地址位右移16位
+    addrbuff[2] = (unsigned char)(addr) >> 8; // addrbuff[2]地址位右移8位
+    addrbuff[3] = (unsigned char)(addr); // addrbuff[3]地址位
     for (int i = 0; i < 12; i++) { // buf数据长度为12
         addrbuff[4 + i] =  writedata[i]; // 前4个数据位写数据寄存器地址位
         printf("writedata[%d] = %02x", i, writedata[i]);
