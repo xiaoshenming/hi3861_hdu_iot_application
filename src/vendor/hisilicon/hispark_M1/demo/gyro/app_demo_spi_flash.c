@@ -91,7 +91,7 @@ void GD25Q40C_spi_flash_wait_busy(hi_spi_idx id)
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_0, IOT_GPIO_VALUE0);  // 使能SPI传输
     int ret = hi_spi_host_write(id, &ReadStatusReg, 1);
     if (ret != HI_ERR_SUCCESS) {
-        printf("spi write[%02X] fail! %d", ReadStatusReg, ret);
+        printf("spi write fail! %d", ret);
     }
     do {
         hi_spi_host_read(id, readdata, 2); // 读取数据长度为2

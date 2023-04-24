@@ -279,7 +279,7 @@ void Lsm_Get_RawAcc(hi_spi_idx id, int a)
     float ang_rate_x_cal = 0, ang_rate_y_cal = 0, ang_rate_z_cal = 0;
     unsigned char read_buff[2] = { 0 };
     
-    if((LSM6DSL_Read_Reg(id, LSM6DSL_STATUS_REG | SPI_READ, read_buff, READDATALEN) & 0x01) != 0) {
+    if ((LSM6DSL_Read_Reg(id, LSM6DSL_STATUS_REG | SPI_READ, read_buff, READDATALEN) & 0x01) != 0) {
         buf[0]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTX_H_XL | SPI_READ, read_buff, READDATALEN); // 陀螺仪数据第0位
         buf[1]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTX_L_XL | SPI_READ, read_buff, READDATALEN); // 陀螺仪数据第1位
         buf[2]= LSM6DSL_Read_Reg(id, LSM6DSL_OUTY_H_XL | SPI_READ, read_buff, READDATALEN); // 陀螺仪数据第2位

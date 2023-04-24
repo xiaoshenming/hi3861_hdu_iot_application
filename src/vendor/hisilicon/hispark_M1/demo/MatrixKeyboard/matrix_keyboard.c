@@ -47,11 +47,13 @@ unsigned char divide = 0;
 unsigned int addition = 0;
 
 /* 行 */
-IotGpioValue gpio_6_val = IOT_GPIO_VALUE0, gpio_7_val = IOT_GPIO_VALUE0, gpio_8_val = IOT_GPIO_VALUE0, gpio_9_val = IOT_GPIO_VALUE0;
+IotGpioValue gpio_6_val = IOT_GPIO_VALUE0, gpio_7_val = IOT_GPIO_VALUE0;
+IotGpioValue gpio_8_val = IOT_GPIO_VALUE0, gpio_9_val = IOT_GPIO_VALUE0;
 /* 列 */
-IotGpioValue gpio_0_val = IOT_GPIO_VALUE0, gpio_1_val = IOT_GPIO_VALUE0, gpio_2_val = IOT_GPIO_VALUE0, gpio_10_val = IOT_GPIO_VALUE0;
+IotGpioValue gpio_0_val = IOT_GPIO_VALUE0, gpio_1_val = IOT_GPIO_VALUE0;
+IotGpioValue gpio_2_val = IOT_GPIO_VALUE0, gpio_10_val = IOT_GPIO_VALUE0;
 
-unsigned char l = 0,h = 0;
+unsigned char l = 0, h = 0;
 
 const unsigned char headSize[] = {64, 64};
 
@@ -107,7 +109,7 @@ void keyboard_gpio_config(unsigned char mode)
         IoTGpioSetDir(IOT_IO_NAME_GPIO_1, HI_GPIO_DIR_OUT);
         IoTGpioSetDir(IOT_IO_NAME_GPIO_2, HI_GPIO_DIR_OUT);
         IoTGpioSetDir(IOT_IO_NAME_GPIO_10, HI_GPIO_DIR_OUT);
-    } else { 
+    } else {
         IoTGpioSetDir(IOT_IO_NAME_GPIO_6, HI_GPIO_DIR_OUT);
         IoTGpioSetDir(IOT_IO_NAME_GPIO_7, HI_GPIO_DIR_OUT);
         IoTGpioSetDir(IOT_IO_NAME_GPIO_8, HI_GPIO_DIR_OUT);
@@ -132,7 +134,7 @@ void gpio_init(void)
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_10, IOT_GPIO_VALUE0);
 }
 /* 行扫描 */
-void row_scan_output(void) 
+void row_scan_output(void)
 {
     // 行输出置低
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_6, IOT_GPIO_VALUE0);
@@ -161,8 +163,8 @@ void column_scan_output (void)
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_2,  IOT_GPIO_VALUE0);
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_10, IOT_GPIO_VALUE0);
 }
-void get_gpio_input_value(IotGpioValue* val_1, IotGpioValue* val_2,IotGpioValue* val_3,
-                            IotGpioValue* val_4, unsigned char row_column_flag)
+void get_gpio_input_value(IotGpioValue* val_1, IotGpioValue* val_2, IotGpioValue* val_3,
+                          IotGpioValue* val_4, unsigned char row_column_flag)
 {
     if (row_column_flag == ROW) {
         IoTGpioGetInputVal(IOT_IO_NAME_GPIO_6, val_1);
@@ -190,7 +192,7 @@ void key_press_line_scan(void)
         if (gpio_8_val && !gpio_6_val && !gpio_7_val && !gpio_9_val) {
             h = 3; // 代表行按键第3个被按下
         }
-        if(gpio_9_val && !gpio_6_val && !gpio_7_val && !gpio_8_val) {
+        if (gpio_9_val && !gpio_6_val && !gpio_7_val && !gpio_8_val) {
             h = 4; // 代表行按键第4个被按下
         }
     } else if (gpio_6_val==0 && gpio_7_val==0 && gpio_8_val==0 && gpio_9_val==0) { // 无按键按下
@@ -200,7 +202,7 @@ void key_press_line_scan(void)
 /* 列扫描 */
 void key_press_column_scan(void)
 {
-    if((gpio_0_val==1) || (gpio_1_val==1) || (gpio_2_val==1) || (gpio_10_val==1)) { // 检测按下的按键所在列
+    if ((gpio_0_val==1) || (gpio_1_val==1) || (gpio_2_val==1) || (gpio_10_val==1)) { // 检测按下的按键所在列
         /* 第一行 */
         if ((gpio_0_val == 1) && (h == 1)) {
             l = '+';
@@ -210,44 +212,29 @@ void key_press_column_scan(void)
             l = '*';
         } else if ((gpio_10_val == 1) && (h == 1)) {
             l = '/';
-        }
-        /* 第二行 */
-        else if ((gpio_0_val == 1) && (h == 2)) {
-            l = 1; 
-        }
-        else if ((gpio_1_val == 1) && (h == 2)) {
+        } else if ((gpio_0_val == 1) && (h == 2)) {  /* 第二行  2*/
+            l = 1;
+        } else if ((gpio_1_val == 1) && (h == 2)) { // 第2行
             l = 2; // 代表行按键第2个被按下
-        }
-        else if ((gpio_2_val == 1) && (h == 2)) {
+        } else if ((gpio_2_val == 1) && (h == 2)) { // 第2行
             l = 3; // 代表行按键3被按下
-        }
-        else if ((gpio_10_val == 1) && (h == 2)) {
+        } else if ((gpio_10_val == 1) && (h == 2)) { // 第2行
             l = 'C';
-        }
-        /* 第三行 */
-        else if ((gpio_0_val == 1) && (h == 3)) {
+        } else if ((gpio_0_val == 1) && (h == 3)) { /* 第3行 */
             l = 4; // 代表行按键4被按下
-        }
-        else if ((gpio_1_val == 1) && (h == 3)) {
+        } else if ((gpio_1_val == 1) && (h == 3)) { /* 第3行 */
             l = 5; // 代表行按键5被按下
-        }
-        else if ((gpio_2_val == 1) && (h ==3)) {
+        } else if ((gpio_2_val == 1) && (h ==3)) { /* 第3行 */
             l = 6; // 代表行按键6被按下
-        }
-        else if ((gpio_10_val == 1) && (h == 3)) {
+        } else if ((gpio_10_val == 1) && (h == 3)) { /* 第3行 */
             l = '0';
-        }
-        /* 第四行 */
-        else if ((gpio_0_val == 1) && (h == 4) && (gpio_6_val != 1)) { 
+        } else if ((gpio_0_val == 1) && (h == 4) && (gpio_6_val != 1)) { /* 第3行 */
             l = 7; // 代表行按键7被按下
-        }
-        else if((gpio_1_val == 1) && (h == 4) && (gpio_7_val != 1)) { 
+        } else if ((gpio_1_val == 1) && (h == 4) && (gpio_7_val != 1)) { /* 第3行 */
             l = 8; // 代表行按键8被按下
-        }
-        else if ((gpio_2_val == 1) && (h == 4) && (gpio_8_val != 1)) {
+        } else if ((gpio_2_val == 1) && (h == 4) && (gpio_8_val != 1)) { /* 第3行 */
             l = 9; // 代表行按键9被按下
-        }
-        else if ((gpio_10_val == 1) && (h == 4)) {
+        } else if ((gpio_10_val == 1) && (h == 4)) { /* 第3行 */
             l = '=';
         }
     }
@@ -257,26 +244,26 @@ void key_press_column_scan(void)
 void num_scan_results(void)
 {
     int ret = 0;
-    if (num_count < 9) {
+    if (num_count < 9) { // 最多9位数字
         if (l == '0') {
             l = l - 0x30; // 0x30代表变为字符0
         }
         if (sum_count == 0) {
-            sum = sum * 10 + l;
+            sum = sum * 10 + l; // 10代表转换为数字
             cnt_sum_1 = sum;
-            ret = snprintf_s(display_char, sizeof(display_char), sizeof(display_char), "%d", cnt_sum_1);
+            ret = snprintf_s(display_char, sizeof(display_char), sizeof(display_char), "%u", cnt_sum_1);
             if (ret == 0) {
                 printf("cnt_sum_1 failed\r\n");
             }
             ssd1306_SetCursor(120 - (7 * strlen(display_char)), 20); // x轴坐标为120 - 7 * i，y轴坐标为20
             ssd1306_DrawString(display_char, Font_7x10, White);
         } else {
-            cnt_sum_2 = cnt_sum_2 * 10 + l;
-            ret = snprintf_s(display_char, sizeof(display_char), sizeof(display_char), "%d", cnt_sum_2);
+            cnt_sum_2 = cnt_sum_2 * 10 + l; // 10代表转换为数字
+            ret = snprintf_s(display_char, sizeof(display_char), sizeof(display_char), "%u", cnt_sum_2);
             if (ret == 0) {
                 printf("cnt_sum_2 failed\r\n");
             }
-            ssd1306_SetCursor(120 - (7 * strlen(display_char)), 40); // x轴坐标为120 - 7 * i，y轴坐标为20
+            ssd1306_SetCursor(120 - (7 * strlen(display_char)), 40); // x轴坐标为120 - 7 * i，y轴坐标为40
             ssd1306_DrawString(display_char, Font_7x10, White);
         }
         ssd1306_UpdateScreen();
@@ -324,13 +311,13 @@ void Calculation_results(void)
     /* 加法结果 */
     if ((l == '=') && (addition == 1)) {
         sum_count = 0;
-        addition =0;
+        addition = 0;
         cnt_sum_3 = cnt_sum_1 + cnt_sum_2;
-        ret = snprintf_s(display_char, sizeof(display_char), sizeof(display_char), "= %d", cnt_sum_3);
+        ret = snprintf_s(display_char, sizeof(display_char), sizeof(display_char), "= %u", cnt_sum_3);
         if (ret == 0) {
             printf("cnt_sum_3 failed\r\n");
         }
-        ssd1306_SetCursor(120 - (7 * strlen(display_char)), 50); // x轴坐标为100 - (7 * strlen(cnt_sum_3))，y轴坐标为50
+        ssd1306_SetCursor(120 - (7 * strlen(display_char)), 50); // x轴坐标为120 - (7 * strlen(cnt_sum_3))，y轴坐标为50
         ssd1306_DrawString(display_char, Font_7x10, White);
     }
     /* 减法结果 */
@@ -338,11 +325,11 @@ void Calculation_results(void)
         sum_count = 0;
         sum_count_2 = 0;
         cnt_sum_3 = cnt_sum_1 - cnt_sum_2;
-        ret = snprintf_s(display_char, sizeof(display_char), sizeof(display_char), "= %d", cnt_sum_3);
+        ret = snprintf_s(display_char, sizeof(display_char), sizeof(display_char), "= %u", cnt_sum_3);
         if (ret == 0) {
             printf("cnt_sum_3 failed\r\n");
         }
-        ssd1306_SetCursor(120 - (7 * strlen(display_char)), 50); // x轴坐标为100 - (7 * strlen(cnt_sum_3))，y轴坐标为50
+        ssd1306_SetCursor(120 - (7 * strlen(display_char)), 50); // x轴坐标为120 - (7 * strlen(cnt_sum_3))，y轴坐标为50
         ssd1306_DrawString(display_char, Font_7x10, White);
     }
     /* 乘法结果 */
@@ -350,11 +337,11 @@ void Calculation_results(void)
         sum_count = 0;
         multiply = 0;
         cnt_sum_3 = cnt_sum_1 * cnt_sum_2;
-        ret = snprintf_s(display_char, sizeof(display_char), sizeof(display_char), "= %d", cnt_sum_3);
+        ret = snprintf_s(display_char, sizeof(display_char), sizeof(display_char), "= %u", cnt_sum_3);
         if (ret == 0) {
             printf("cnt_sum_3 failed\r\n");
         }
-        ssd1306_SetCursor(120 - (7 * strlen(display_char)), 50); // x轴坐标为100 - (7 * strlen(cnt_sum_3))，y轴坐标为50
+        ssd1306_SetCursor(120 - (7 * strlen(display_char)), 50); // x轴坐标为120 - (7 * strlen(cnt_sum_3))，y轴坐标为50
         ssd1306_DrawString(display_char, Font_7x10, White);
     }
     /* 除法结果 */
@@ -366,7 +353,7 @@ void Calculation_results(void)
         if (ret == 0) {
             printf("cnt_sum_3 failed\r\n");
         }
-        ssd1306_SetCursor(120 - (7 * strlen(display_char)), 50); // x轴坐标为100 - (7 * strlen(cnt_sum_3))，y轴坐标为50
+        ssd1306_SetCursor(120 - (7 * strlen(display_char)), 50); // x轴坐标为120 - (7 * strlen(cnt_sum_3))，y轴坐标为50
         ssd1306_DrawString(display_char, Font_7x10, White);
     }
 }
@@ -429,17 +416,19 @@ void key_scan(void)
     TempHumChinese();
     while (1) {
         /* 行 */
-        gpio_6_val = IOT_GPIO_VALUE0, gpio_7_val = IOT_GPIO_VALUE0, gpio_8_val = IOT_GPIO_VALUE0, gpio_9_val = IOT_GPIO_VALUE0;
+        gpio_6_val = IOT_GPIO_VALUE0, gpio_7_val = IOT_GPIO_VALUE0;
+        gpio_8_val = IOT_GPIO_VALUE0, gpio_9_val = IOT_GPIO_VALUE0;
         /* 列 */
-        gpio_0_val = IOT_GPIO_VALUE0, gpio_1_val = IOT_GPIO_VALUE0, gpio_2_val = IOT_GPIO_VALUE0, gpio_10_val = IOT_GPIO_VALUE0;
-        l = 0,h = 0;
+        gpio_0_val = IOT_GPIO_VALUE0, gpio_1_val = IOT_GPIO_VALUE0;
+        gpio_2_val = IOT_GPIO_VALUE0, gpio_10_val = IOT_GPIO_VALUE0;
+        l = 0, h = 0;
         // 支持连按
         /* gpio init */
         gpio_init();
         /* row output/input init */
         keyboard_gpio_config(HI_TRUE);
         /* 行扫描 */
-        TaskMsleep(20);
+        TaskMsleep(20); // 延时20ms，去抖动
         row_scan_output();
         /* 获取按键按下的每行的值 */
         get_gpio_input_value(&gpio_6_val, &gpio_7_val, &gpio_8_val, &gpio_9_val, ROW);
@@ -448,13 +437,13 @@ void key_scan(void)
         /* row output/input init */
         keyboard_gpio_config(HI_FALSE);
         /* 列扫描 */
-        TaskMsleep(20);
+        TaskMsleep(20); // 延时20ms，去抖动
         column_scan_output();
         /* 获取按键按下的每列的值 */
         get_gpio_input_value(&gpio_0_val, &gpio_1_val, &gpio_2_val, &gpio_10_val, COLUMN);
         key_press_column_scan();
         row_column_scan_results();
-        TaskMsleep(100);
+        TaskMsleep(100); // 延时100ms,循环读取
     }
 }
 
