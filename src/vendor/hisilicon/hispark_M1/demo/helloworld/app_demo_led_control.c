@@ -62,7 +62,7 @@ void gpioInit(void)
 */
 void led_control(void)
 {
-    IoSetFunc(IOT_IO_NAME_GPIO_9, HI_IO_FUNC_GPIO_9_GPIO);
+    IoSetFunc(IOT_IO_NAME_GPIO_9, IOT_IO_FUNC_GPIO_9_GPIO);
     IoTGpioSetDir(IOT_IO_NAME_GPIO_9, IOT_GPIO_DIR_OUT);
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_9, IOT_GPIO_VALUE1);
     TaskMsleep(LED_LIGHT_DELAY_1S);
