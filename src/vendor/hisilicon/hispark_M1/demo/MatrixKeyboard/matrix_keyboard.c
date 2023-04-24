@@ -149,7 +149,7 @@ void row_scan_output(void)
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_10, IOT_GPIO_VALUE1);
 }
 /* 列扫描 */
-void column_scan_output (void)
+void column_scan_output(void)
 {
     // 行输出置高
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_6, IOT_GPIO_VALUE1);
@@ -212,7 +212,7 @@ void key_press_column_scan(void)
             l = '*';
         } else if ((gpio_10_val == 1) && (h == 1)) {
             l = '/';
-        } else if ((gpio_0_val == 1) && (h == 2)) {  /* 第二行  2*/
+        } else if ((gpio_0_val == 1) && (h == 2)) {  /* 第二行 2 */
             l = 1;
         } else if ((gpio_1_val == 1) && (h == 2)) { // 第2行
             l = 2; // 代表行按键第2个被按下
@@ -228,13 +228,13 @@ void key_press_column_scan(void)
             l = 6; // 代表行按键6被按下
         } else if ((gpio_10_val == 1) && (h == 3)) { /* 第3行 */
             l = '0';
-        } else if ((gpio_0_val == 1) && (h == 4) && (gpio_6_val != 1)) { /* 第3行 */
+        } else if ((gpio_0_val == 1) && (h == 4) && (gpio_6_val != 1)) { /* 第4行 */
             l = 7; // 代表行按键7被按下
-        } else if ((gpio_1_val == 1) && (h == 4) && (gpio_7_val != 1)) { /* 第3行 */
+        } else if ((gpio_1_val == 1) && (h == 4) && (gpio_7_val != 1)) { /* 第4行 */
             l = 8; // 代表行按键8被按下
-        } else if ((gpio_2_val == 1) && (h == 4) && (gpio_8_val != 1)) { /* 第3行 */
+        } else if ((gpio_2_val == 1) && (h == 4) && (gpio_8_val != 1)) { /* 第4行 */
             l = 9; // 代表行按键9被按下
-        } else if ((gpio_10_val == 1) && (h == 4)) { /* 第3行 */
+        } else if ((gpio_10_val == 1) && (h == 4)) { /* 第4行 */
             l = '=';
         }
     }
