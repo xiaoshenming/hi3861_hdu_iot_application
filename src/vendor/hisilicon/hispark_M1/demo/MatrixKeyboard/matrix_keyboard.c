@@ -349,7 +349,7 @@ void Calculation_results(void)
         sum_count = 0;
         divide = 0;
         float float_sum = (float)cnt_sum_1 / (float)cnt_sum_2;
-        ret = snprintf_s(display_char, sizeof(display_char), sizeof(display_char), "= %f", cnt_sum_3);
+        ret = snprintf_s(display_char, sizeof(display_char), sizeof(display_char), "= %f", float_sum);
         if (ret == 0) {
             printf("cnt_sum_3 failed\r\n");
         }
