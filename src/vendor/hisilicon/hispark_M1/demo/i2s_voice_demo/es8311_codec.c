@@ -18,17 +18,10 @@
 #include <hi_i2c.h>
 #include "es8311_codec.h"
 
-#define CODEC_DEBUG
-#ifdef CODEC_DEBUG
-#define codec_print(ftm...) do {printf(ftm);printf("\r\n");}while (0);
-#else
-#define codec_print(ftm...)
-#endif
-
-hi_u32 codec_write_reg(hi_u8 reg, hi_u8 val)
+unsigned int  codec_write_reg(unsigned char reg, unsigned char val)
 {
     hi_i2c_data i2c_data;
-    hi_u8 send_data[2] = { reg, val }; /* size 2 */
+    unsigned char send_data[2] = { reg, val }; /* size 2 */
 
     i2c_data.send_buf = send_data;
     i2c_data.send_len = 2;             /* send_len is 2 */
@@ -36,20 +29,20 @@ hi_u32 codec_write_reg(hi_u8 reg, hi_u8 val)
     return hi_i2c_write(HI_I2C_IDX_0, CODEC_DEVICE_ADDR, &i2c_data);
 }
 
-hi_u32 codec_read_reg(hi_u8 reg, hi_u8 *val)
+unsigned int codec_read_reg(unsigned char reg, unsigned char *val)
 {
     hi_i2c_data i2c_data;
 
-    i2c_data.send_buf = (hi_u8*)&reg;
+    i2c_data.send_buf = (unsigned char*)&reg;
     i2c_data.send_len = 1;
     i2c_data.receive_len = 1;
     i2c_data.receive_buf = val;
     return hi_i2c_writeread(HI_I2C_IDX_0, CODEC_DEVICE_ADDR, &i2c_data);
 }
 
-static hi_u32 codec_set_gain(hi_void)
+static unsigned int  codec_set_gain(hi_void)
 {
-    hi_u32 ret = HI_ERR_SUCCESS;
+    unsigned int  ret = HI_ERR_SUCCESS;
     /* set low or normal power mode */
     ret |= codec_write_reg(ES8311_SYSTEM_REG0E, 0x02);  /* enable analog pga/adc modulator */
     /* normal power mode */
@@ -77,13 +70,13 @@ static hi_u32 codec_set_gain(hi_void)
     return ret;
 }
 
-hi_u32 hi_codec_init_test(const hi_codec_attribute *codec_attr)
+unsigned int  hi_codec_init_test(const hi_codec_attribute *codec_attr)
 {
     if (codec_attr == HI_NULL) {
         return HI_ERR_FAILURE;
     }
 
-    hi_u32 ret;
+    unsigned int  ret;
 
     /* set adc/dac data form */
     // codec_write_reg(ES8311_GPIO_REG44, 0x08);    /* adc to dac disable,ADCDATA=ADC(L)+ADC(R) */

@@ -57,12 +57,12 @@ unsigned int es8311_codec_init_test(const hi_codec_attribute *codec_attr)
         return -1;
     }
     if (ret != HI_ERR_SUCCESS) {
-        printf("==ERROR== hi_i2c_init, err = %d\n", ret);
+        printf("==ERROR== hi_i2c_init, err = %u\n", ret);
         return -1;
     }
     ret = hi_codec_init_test(codec_attr);
     if (ret != HI_ERR_SUCCESS) {
-        printf("==ERROR== Failed to init codec!! err = %d\n", ret);
+        printf("==ERROR== Failed to init codec!! err = %u\n", ret);
         return -1;
     } else {
         printf("init codec success!\n");
@@ -78,7 +78,7 @@ unsigned int audio_play_test(unsigned int map_index)
     unsigned int time_out = HI_SYS_WAIT_FOREVER;
 
     /* apply memory */
-    g_audio_test_demo.play_buf = (hi_u8 *) hi_malloc(HI_MOD_ID_DRV, AUDIO_PLAY_BUF_SIZE);
+    g_audio_test_demo.play_buf = (unsigned char *) hi_malloc(HI_MOD_ID_DRV, AUDIO_PLAY_BUF_SIZE);
     if (g_audio_test_demo.play_buf == HI_NULL) {
         hi_i2s_deinit();
         printf("==ERROR== play buf malloc fail!!!\n");
@@ -90,13 +90,13 @@ unsigned int audio_play_test(unsigned int map_index)
         hi_u32 send_len = hi_min(total_play_len, AUDIO_PLAY_BUF_SIZE);
         ret = hi_flash_read(play_addr, send_len, g_audio_test_demo.play_buf);
         if (ret != HI_ERR_SUCCESS) {
-            printf("==ERROR== hi_flash_read fail, err = %d\n", ret);
+            printf("==ERROR== hi_flash_read fail, err = %u\n", ret);
             return -1;
         }
 
         ret = hi_i2s_write(g_audio_test_demo.play_buf, send_len, time_out);
         if (ret != HI_ERR_SUCCESS) {
-            printf("hi_i2s_write fail, err = %d\n", ret);
+            printf("hi_i2s_write fail, err = %u\n", ret);
             return -1;
         }
 
@@ -118,7 +118,7 @@ unsigned int audio_record_func_test(unsigned int map_index)
 
     ret = hi_flash_erase(record_addr, total_record_len);
     if (ret != HI_ERR_SUCCESS) {
-        printf("Failed to erase flash, err = %d\n", ret);
+        printf("Failed to erase flash, err = %u\n", ret);
         return -1;
     }
 
@@ -126,7 +126,7 @@ unsigned int audio_record_func_test(unsigned int map_index)
         unsigned int len = hi_min(AUDIO_RECORD_BUF_SIZE, total_record_len);
         ret = hi_i2s_read(g_audio_test_demo.record_buf, len, 400); // 超时400ms
         if (ret != HI_ERR_SUCCESS) {
-            printf("Failed to hi_i2s_read, err = %X\n", ret);
+            printf("Failed to hi_i2s_read, err = %u\n", ret);
             return -1;
         }
         if (memcpy_s(g_record_data, sizeof(g_record_data), g_audio_test_demo.record_buf, len) != EOK) {
@@ -159,7 +159,7 @@ void record_n_play_test_task(void)
 
         ret = hi_flash_write(record_addr, len, g_record_data, HI_FALSE);
         if (ret != HI_ERR_SUCCESS) {
-            printf("==ERROR== hi_flash_write, err = %X\n", ret);
+            printf("==ERROR== hi_flash_write, err = %u\n", ret);
         }
         record_addr += len;
         total_record_len -= len;
@@ -256,13 +256,13 @@ void i2s_demo_test(void)
     if (ret == HI_ERR_FLASH_RE_INIT) {
         printf("Flash has already been initialized!\n");
     } else if (ret != HI_ERR_SUCCESS) {
-        printf("Falied to init flash, err = %X\n", ret);
+        printf("Falied to init flash, err = %u\n", ret);
     }
 
     /* create I2S record event */
     ret = hi_event_create(&g_audio_event_test);
     if (ret != HI_ERR_SUCCESS) {
-        printf("Failed to init g_audio_event_test! err = %X\n", ret);
+        printf("Failed to init g_audio_event_test! err = %u\n", ret);
         return;
     }
 
@@ -277,7 +277,7 @@ void i2s_demo_test(void)
     es8311_codec_init_test(&codec_cfg);
     ret = hi_i2s_init(&i2s_cfg);
     if (ret != HI_ERR_SUCCESS) {
-        printf("Failed to init i2s %d!\n", ret);
+        printf("Failed to init i2s %u!\n", ret);
         return;
     }
     printf("I2s init success!\n");
