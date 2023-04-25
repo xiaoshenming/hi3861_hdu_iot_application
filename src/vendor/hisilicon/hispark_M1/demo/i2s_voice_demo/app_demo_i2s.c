@@ -15,22 +15,16 @@
 
 #include <ohos_init.h>
 #include <cmsis_os2.h>
-#include "app_demo_i2s.h"
 #include "hi_io.h"
 #include "hi_gpio.h"
 #include "iot_gpio.h"
 #include "iot_gpio_ex.h"
 #include "ssd1306.h"
 #include "iot_i2c.h"
+#include "app_demo_i2s.h"
 
 #define IOT_I2C_IDX_BAUDRATE (400 * 1000)
 #define SSD1306_I2C_IDX 0
-
-#ifndef I2S_TEST_DEBUG
-#define i2s_print(ftm...) do {printf(ftm);} while (0);
-#else
-#define i2s_print(ftm...)
-#endif
 
 audio_map g_audio_map[3] = {  /* 2 flash fields */
     {0x001A1000, 100*1024}, /* audio file size: 400 * 1024(100K) */
@@ -38,40 +32,45 @@ audio_map g_audio_map[3] = {  /* 2 flash fields */
     {0x1F0000, 0xC000},
 };
 
-hi_u8 es8311_register_buff[] = {ES8311_RESET_REG00, ES8311_CLK_MANAGER_REG01, ES8311_CLK_MANAGER_REG02, ES8311_CLK_MANAGER_REG03, ES8311_CLK_MANAGER_REG04, 
-                                ES8311_CLK_MANAGER_REG05, ES8311_CLK_MANAGER_REG06, ES8311_CLK_MANAGER_REG07, ES8311_CLK_MANAGER_REG08, ES8311_SDPIN_REG09,
-                                ES8311_SDPOUT_REG0A, ES8311_SYSTEM_REG0B, ES8311_SYSTEM_REG0C, ES8311_SYSTEM_REG0D, ES8311_SYSTEM_REG0E, ES8311_SYSTEM_REG0F,
-                                ES8311_SYSTEM_REG10, ES8311_SYSTEM_REG11, ES8311_SYSTEM_REG12, ES8311_SYSTEM_REG13, ES8311_SYSTEM_REG14, ES8311_ADC_REG15, 
-                                ES8311_ADC_REG16, ES8311_ADC_REG17, ES8311_ADC_REG18, ES8311_ADC_REG19, ES8311_ADC_REG1A, ES8311_ADC_REG1B, ES8311_ADC_REG1C,
-                                ES8311_DAC_REG31, ES8311_DAC_REG32, ES8311_DAC_REG33, ES8311_DAC_REG34, ES8311_DAC_REG35, ES8311_DAC_REG37, ES8311_GPIO_REG44,
-                                ES8311_GP_REG45, ES8311_CHD1_REGFD, ES8311_CHD2_REGFE, ES8311_CHVER_REGFF, ES8311_MAX_REGISTER,
-                                };
+unsigned char es8311_register_buff[] = {
+    ES8311_RESET_REG00, ES8311_CLK_MANAGER_REG01, ES8311_CLK_MANAGER_REG02, ES8311_CLK_MANAGER_REG03,
+    ES8311_CLK_MANAGER_REG04, ES8311_CLK_MANAGER_REG05, ES8311_CLK_MANAGER_REG06,
+    ES8311_CLK_MANAGER_REG07, ES8311_CLK_MANAGER_REG08, ES8311_SDPIN_REG09,
+    ES8311_SDPOUT_REG0A, ES8311_SYSTEM_REG0B, ES8311_SYSTEM_REG0C, ES8311_SYSTEM_REG0D,
+    ES8311_SYSTEM_REG0E, ES8311_SYSTEM_REG0F, ES8311_SYSTEM_REG10, ES8311_SYSTEM_REG11,
+    ES8311_SYSTEM_REG12, ES8311_SYSTEM_REG13, ES8311_SYSTEM_REG14, ES8311_ADC_REG15,
+    ES8311_ADC_REG16, ES8311_ADC_REG17, ES8311_ADC_REG18, ES8311_ADC_REG19, ES8311_ADC_REG1A,
+    ES8311_ADC_REG1B, ES8311_ADC_REG1C, ES8311_DAC_REG31, ES8311_DAC_REG32, ES8311_DAC_REG33,
+    ES8311_DAC_REG34, ES8311_DAC_REG35, ES8311_DAC_REG37, ES8311_GPIO_REG44, ES8311_GP_REG45,
+    ES8311_CHD1_REGFD, ES8311_CHD2_REGFE, ES8311_CHVER_REGFF, ES8311_MAX_REGISTER,
+};
 
 unsigned int g_audio_event_test;
 unsigned int g_audio_task_id_test;
 test_audio_attr g_audio_test_demo;
 unsigned char g_record_data[AUDIO_RECORD_BUF_SIZE] = { 0 };
 
-void es8311_codec_init_test(const hi_codec_attribute *codec_attr)
+unsigned int es8311_codec_init_test(const hi_codec_attribute *codec_attr)
 {
+    unsigned int ret;
     if (codec_attr == HI_NULL) {
-        return;
+        return -1;
     }
-    hi_u32 ret;
     if (ret != HI_ERR_SUCCESS) {
-        i2s_print("==ERROR== hi_i2c_init, err = %X\n", ret);
-        return;
+        printf("==ERROR== hi_i2c_init, err = %d\n", ret);
+        return -1;
     }
-
     ret = hi_codec_init_test(codec_attr);
     if (ret != HI_ERR_SUCCESS) {
-        i2s_print("==ERROR== Failed to init codec!! err = %X\n", ret);
+        printf("==ERROR== Failed to init codec!! err = %d\n", ret);
+        return -1;
     } else {
-        i2s_print("init codec success!\n");
+        printf("init codec success!\n");
     }
+    return 0;
 }
 
-void audio_play_test(unsigned int map_index)
+unsigned int audio_play_test(unsigned int map_index)
 {
     unsigned int ret;
     unsigned int play_addr = g_audio_map[map_index].flash_start_addr;
@@ -82,8 +81,8 @@ void audio_play_test(unsigned int map_index)
     g_audio_test_demo.play_buf = (hi_u8 *) hi_malloc(HI_MOD_ID_DRV, AUDIO_PLAY_BUF_SIZE);
     if (g_audio_test_demo.play_buf == HI_NULL) {
         hi_i2s_deinit();
-        i2s_print("==ERROR== play buf malloc fail!!!\n");
-        return;
+        printf("==ERROR== play buf malloc fail!!!\n");
+        return -1;
     }
     memset_s(g_audio_test_demo.play_buf, AUDIO_PLAY_BUF_SIZE, 0, AUDIO_PLAY_BUF_SIZE);
 
@@ -91,24 +90,27 @@ void audio_play_test(unsigned int map_index)
         hi_u32 send_len = hi_min(total_play_len, AUDIO_PLAY_BUF_SIZE);
         ret = hi_flash_read(play_addr, send_len, g_audio_test_demo.play_buf);
         if (ret != HI_ERR_SUCCESS) {
-            i2s_print("==ERROR== hi_flash_read fail, err = %X\n", ret);
+            printf("==ERROR== hi_flash_read fail, err = %d\n", ret);
+            return -1;
         }
 
         ret = hi_i2s_write(g_audio_test_demo.play_buf, send_len, time_out);
         if (ret != HI_ERR_SUCCESS) {
-            i2s_print("hi_i2s_write fail, err = %X\n", ret);
+            printf("hi_i2s_write fail, err = %d\n", ret);
+            return -1;
         }
 
         play_addr += send_len;
         total_play_len -= send_len;
     }
 
-    i2s_print("Play over....\n");
+    printf("Play over....\n");
 
     hi_free(HI_MOD_ID_DRV, g_audio_test_demo.play_buf);
+    return 0;
 }
 
-void audio_record_func_test(unsigned int map_index)
+unsigned int audio_record_func_test(unsigned int map_index)
 {
     unsigned int ret;
     unsigned int record_addr = g_audio_map[map_index].flash_start_addr;
@@ -116,19 +118,19 @@ void audio_record_func_test(unsigned int map_index)
 
     ret = hi_flash_erase(record_addr, total_record_len);
     if (ret != HI_ERR_SUCCESS) {
-        i2s_print("Failed to erase flash, err = %X\n", ret);
-        return;
+        printf("Failed to erase flash, err = %d\n", ret);
+        return -1;
     }
 
     while (total_record_len > 0) {
         unsigned int len = hi_min(AUDIO_RECORD_BUF_SIZE, total_record_len);
         ret = hi_i2s_read(g_audio_test_demo.record_buf, len, 400); // 超时400ms
         if (ret != HI_ERR_SUCCESS) {
-            i2s_print("Failed to hi_i2s_read, err = %X\n", ret);
-            return;
+            printf("Failed to hi_i2s_read, err = %X\n", ret);
+            return -1;
         }
         if (memcpy_s(g_record_data, sizeof(g_record_data), g_audio_test_demo.record_buf, len) != EOK) {
-            return;
+            return -1;
         }
         hi_event_send(g_audio_event_test, AUDIO_RECORD_FINISH_BIT);
         record_addr += len;
@@ -136,6 +138,7 @@ void audio_record_func_test(unsigned int map_index)
     }
 
     hi_event_send(g_audio_event_test, ALL_AUDIO_RECORD_FINISH_BIT);
+    return 0;
 }
 
 void record_n_play_test_task(void)
@@ -156,7 +159,7 @@ void record_n_play_test_task(void)
 
         ret = hi_flash_write(record_addr, len, g_record_data, HI_FALSE);
         if (ret != HI_ERR_SUCCESS) {
-            i2s_print("==ERROR== hi_flash_write, err = %X\n", ret);
+            printf("==ERROR== hi_flash_write, err = %X\n", ret);
         }
         record_addr += len;
         total_record_len -= len;
@@ -165,10 +168,10 @@ void record_n_play_test_task(void)
     ssd1306_SetCursor(25, 10); // x轴坐标为25，y轴坐标为10
     ssd1306_DrawString("Record success!", Font_7x10, White);
     ssd1306_UpdateScreen();
-    i2s_print("Record success!...\n");
+    printf("Record success!...\n");
     TaskMsleep(1000); /* 1000ms: delay 1s */
     audio_play_test(AUDIO_RECORD_AND_PLAY_MODE);
-    i2s_print("Play record audio success!...\n");
+    printf("Play record audio success!...\n");
     return HI_NULL;
 }
 
@@ -193,18 +196,18 @@ void audio_record_play_test(unsigned int map_index)
     g_audio_test_demo.record_buf = (unsigned char *)hi_malloc(HI_MOD_ID_DRV, AUDIO_RECORD_BUF_SIZE);
     if (g_audio_test_demo.record_buf == HI_NULL) {
         hi_i2s_deinit();
-        i2s_print("==ERROR== record buf malloc fail!!!\n");
+        printf("==ERROR== record buf malloc fail!!!\n");
         return;
     }
     memset_s(g_audio_test_demo.record_buf, AUDIO_RECORD_BUF_SIZE, 0, AUDIO_RECORD_BUF_SIZE);
     ssd1306_SetCursor(25, 10); // x轴坐标为25，y轴坐标为10
     ssd1306_DrawString("start record", Font_7x10, White);
     ssd1306_UpdateScreen();
-    i2s_print("==start record== please say somerthing~~\n");
+    printf("==start record== please say somerthing~~\n");
     audio_record_func_test(map_index);
 }
 
-void i2sGpioint()
+void i2sGpioint(void)
 {
     IoSetFunc(IOT_IO_NAME_GPIO_9, IOT_IO_FUNC_GPIO_9_I2S0_MCLK);
     IoSetFunc(IOT_IO_NAME_GPIO_10, IOT_IO_FUNC_GPIO_10_I2S0_TX);
@@ -212,7 +215,7 @@ void i2sGpioint()
     IoSetFunc(IOT_IO_NAME_GPIO_12, IOT_IO_FUNC_GPIO_12_I2S0_BCLK);
     IoSetFunc(IOT_IO_NAME_GPIO_8, IOT_IO_FUNC_GPIO_8_I2S0_WS);
 
-    /*BCLK*/
+    /* BCLK */
     IoTGpioSetDir(IOT_IO_NAME_GPIO_12, IOT_GPIO_DIR_OUT);
     IoTGpioSetOutputVal(IOT_IO_NAME_GPIO_12, IOT_GPIO_VALUE1);
     /*
@@ -251,15 +254,15 @@ void i2s_demo_test(void)
     i2sGpioint();
     ret = hi_flash_init();
     if (ret == HI_ERR_FLASH_RE_INIT) {
-        i2s_print("Flash has already been initialized!\n");
+        printf("Flash has already been initialized!\n");
     } else if (ret != HI_ERR_SUCCESS) {
-        i2s_print("Falied to init flash, err = %X\n", ret);
+        printf("Falied to init flash, err = %X\n", ret);
     }
 
     /* create I2S record event */
     ret = hi_event_create(&g_audio_event_test);
     if (ret != HI_ERR_SUCCESS) {
-        i2s_print("Failed to init g_audio_event_test! err = %X\n", ret);
+        printf("Failed to init g_audio_event_test! err = %X\n", ret);
         return;
     }
 
@@ -274,10 +277,10 @@ void i2s_demo_test(void)
     es8311_codec_init_test(&codec_cfg);
     ret = hi_i2s_init(&i2s_cfg);
     if (ret != HI_ERR_SUCCESS) {
-        i2s_print("Failed to init i2s %d!\n", ret);
+        printf("Failed to init i2s %d!\n", ret);
         return;
     }
-    i2s_print("I2s init success!\n");
+    printf("I2s init success!\n");
     audio_record_play_test(AUDIO_RECORD_AND_PLAY_MODE);
 }
 

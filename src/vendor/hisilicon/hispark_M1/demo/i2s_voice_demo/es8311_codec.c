@@ -56,7 +56,7 @@ static hi_u32 codec_set_gain(hi_void)
     ret |= codec_write_reg(ES8311_SYSTEM_REG0F, 0x44);
     /* set adc */
     // ret |= codec_write_reg(ES8311_ADC_REG15, 0x40);     /* set softramp->00 */
-    ret |= codec_write_reg(ES8311_ADC_REG15, 0x00); 
+    ret |= codec_write_reg(ES8311_ADC_REG15, 0x00);
     ret |= codec_write_reg(ES8311_ADC_REG1B, 0x0A);     /* set adc hpf */
     ret |= codec_write_reg(ES8311_ADC_REG1C, 0x6A);     /* set adc hpf,ADC_EQ bypass */
     // ret |= codec_write_reg(ES8311_ADC_REG17, 0xBF);     /* set adc digtal vol */
@@ -67,7 +67,7 @@ static hi_u32 codec_set_gain(hi_void)
     ret |= codec_write_reg(ES8311_DAC_REG32, 0xBF);
     /* only set adc alc funtion for amic record */
     // ret |= codec_write_reg(ES8311_ADC_REG16, 0x22);     /* set adc gain scale up */
-    // ret |= codec_write_reg(ES8311_ADC_REG16, 0x24); 
+    // ret |= codec_write_reg(ES8311_ADC_REG16, 0x24);
     // ret |= codec_write_reg(ES8311_ADC_REG17, 0xDF);     /* set adc alc maxgain */
     // ret |= codec_write_reg(ES8311_ADC_REG18, 0x87);     /* adc alc enable,alc_winsize  ->00 */
     // ret |= codec_write_reg(ES8311_ADC_REG19, 0xFB);     /* set alc target level */
