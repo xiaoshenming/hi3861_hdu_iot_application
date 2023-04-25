@@ -115,7 +115,7 @@ unsigned int  hi_codec_init_test(const hi_codec_attribute *codec_attr)
     ret |= codec_write_reg(ES8311_RESET_REG00, 0x80);   /* csm power on */
     hi_udelay(5000);  /* 5000us */
 
-    ret |= codec_write_reg(ES8311_SYSTEM_REG0D, 0x01);  /*  1 - start up vmid normal speed charge */   
+    ret |= codec_write_reg(ES8311_SYSTEM_REG0D, 0x01);  /*  1 - start up vmid normal speed charge */
 
     /*
      * select clock source for internal mclk
