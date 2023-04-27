@@ -222,7 +222,7 @@ HiSpark T1提供了以下Demo供开发参考 ([下载pdf版本指导文档](doc/
 
 ### Hispark M1 
 
-HiSpark M1提供了以下Demo供开发参考 ([下载pdf版本指导文档)](https://gitee.com/HiSpark/hi3861_hdu_iot_application/tree/master/src/vendor/hisilicon/hispark_M1/doc/微处理器实验指导手册.pdf) ：
+HiSpark M1提供了以下Demo供开发参考 ([下载pdf版本指导文档)](src/vendor/hisilicon/hispark_M1/doc/微处理器实验指导手册.pdf) ：
 
 | 例程名              | 功能                             | 文档章节 |
 | ------------------- | -------------------------------- | -------- |
