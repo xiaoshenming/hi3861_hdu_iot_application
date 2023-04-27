@@ -1,4 +1,4 @@
-# Hi3861 OpenHarmony 物联网技术及应用
+# Hi3861 OpenHarmony 嵌入式技术及应用
 
 ![OS](https://img.shields.io/badge/OS-OpenHarmony-brightgreen?style=for-the-badge) ![platform](https://img.shields.io/badge/platform-Hi3861V100-brightgreen?logo=huawei&style=for-the-badge) ![license](https://img.shields.io/badge/license-Apache-brightgreen?style=for-the-badge) ![star](https://img.shields.io/badge/dynamic/json?style=for-the-badge&color=brightgreen&logo=Gitee&label=stars&url=https://gitee.com/api/v5/repos/HiSpark/hi3861_hdu_iot_application&query=$.stargazers_count) ![watch](https://img.shields.io/badge/dynamic/json?style=for-the-badge&color=brightgreen&logo=Gitee&label=watch&url=https://gitee.com/api/v5/repos/HiSpark/hi3861_hdu_iot_application&query=$.watchers_count) ![fork](https://img.shields.io/badge/dynamic/json?style=for-the-badge&color=brightgreen&logo=Gitee&label=fork&url=https://gitee.com/api/v5/repos/HiSpark/hi3861_hdu_iot_application&query=$.forks_count)
 
@@ -6,7 +6,7 @@
 
 ## 介绍
 
-欢迎使用Hi3861V100开发OpenHarmony物联网应用.
+欢迎使用Hi3861V100开发OpenHarmony嵌入式应用.
 
 
 
@@ -17,9 +17,14 @@
 如果你需要运行Vendor目录下的Demo, 目前支持3种类型的开发板: 
 
 - 上海海思 HiSpark T1
-<div align=center><img src="doc/pic/iot_car_t1.jpg" alt="iot_car" height="200" />    <img src="doc/pic/balance_car.jpg" alt="iot_car" height="200"/>   </div>
+<div align=center><img src="doc/pic/iot_car_t1.jpg" alt="iot_car" height="200" />    <img src="doc/pic/balance_car.jpg" alt="hisaprk_link" height="200"/>   </div>
+
+- 上海海思 HiSpark M1
+
+  <div align=center><img src="doc/pic/M1.jpg" alt="iot_car" height="200" />    <img src="doc/pic/hisaprk_link.jpg" alt="iot_car" height="200"/>   </div>
 
 - [润和 HiHope Pegasus](src/vendor/hihope/hispark_pegasus/Hihope-hispark_pegasus-十分钟上手.md)
+
 <div align=center><img src="doc/pic/image-20230201170309577.png" alt="HiHope pegasus" width="400" /> </div>
 
 - [小熊派 BearPI Nano](src/vendor/bearpi/bearpi_hm_nano/doc/BearPi-HM_Nano开发指导.md)
@@ -215,7 +220,26 @@ HiSpark T1提供了以下Demo供开发参考 ([下载pdf版本指导文档](doc/
 | histreaming_demo    | 手机控制小车                       | 5.5  |
 | oc_demo             | 基于华为IoT云平台的智能小车实验    | 5.6  |
 
+### Hispark M1 
+
+HiSpark M1提供了以下Demo供开发参考 ([下载pdf版本指导文档)](src/vendor/hisilicon/hispark_M1/doc/微处理器实验指导手册.pdf) ：
+
+| 例程名              | 功能                             | 文档章节 |
+| ------------------- | -------------------------------- | -------- |
+| helloworld_demo     | 屏幕显示helloword字样，LED灯闪烁 | 2.9      |
+| interrupt_demo      | 中断实验                         | 4.1      |
+| rotation_demo       | 无级调光                         | 4.2      |
+| matrixkeyboard_demo | 矩阵键盘                         | 4.3      |
+| rtc_demo            | 万年历                           | 4.4      |
+| traffic_light_demo  | 交通灯                           | 4.5      |
+| i2s_voice_demo      | 录音播放                         | 4.6      |
+| nfc_demo            | 手机与NFC通信                    | 4.7      |
+| spi_gyro_demo       | 显示航向角，俯仰角，滚动角       | 4.9      |
+| environment_demo    | 监测温湿度                       | 4.8      |
+| histreaming_demo    | 手机控制LED灯                    | 4.10     |
+
 ### HiHope Pegesus和BearPI Nano
+
 HiHope Pegesus和BearPI Nano的Demo, 请分别参阅Vendor目录下[Hihope Pegesus的参考文档](src/vendor/hihope/hispark_pegasus/Hihope-hispark_pegasus-十分钟上手.md)或[BearPI Nano的参考文档](src/vendor/bearpi/bearpi_hm_nano/doc/BearPi-HM_Nano开发指导.md). 
 
 
