@@ -79,7 +79,7 @@ int StartHotspot(void)
     HotspotConfig config = {0};
 
     // 准备AP的配置参数
-    strcpy_s(config.ssid, SSID_LEN, "HiSpark-AP");
+    strcpy_s(config.ssid, SSID_LEN, "Hisilicon");
     config.securityType = WIFI_SEC_TYPE_OPEN;
     config.band = HOTSPOT_BAND_TYPE_2G;
     config.channelNum = 7; /* 7: channal number */
@@ -105,9 +105,9 @@ int StartHotspot(void)
         ip4_addr_t gateway;
         ip4_addr_t netmask;
 
-        IP4_ADDR(&ipaddr,  192, 168, 1, 1);     /* input your IP for example: 192.168.1.1 */
-        IP4_ADDR(&gateway, 192, 168, 1, 1);     /* input your gateway for example: 192.168.1.1 */
-        IP4_ADDR(&netmask, 255, 255, 255, 0);   /* input your netmask for example: 255.255.255.0 */
+        IP4_ADDR(&ipaddr,  xxx, xxx, xxx, xx);     /* input your IP for example: 192.168.1.1 */
+        IP4_ADDR(&gateway, xxx, xxxx, xxx, xxx);     /* input your gateway for example: 192.168.1.1 */
+        IP4_ADDR(&netmask, xxx, xxx, xxx, xxx);   /* input your netmask for example: 255.255.255.0 */
         err_t ret = netifapi_netif_set_addr(g_iface, &ipaddr, &netmask, &gateway);
         printf("netifapi_netif_set_addr: %d\r\n", ret);
 

@@ -134,7 +134,7 @@ void TimerIrqTask(void)
     // Register interrupt function
     unsigned int ret = hi_irq_request(TIMER_2_IRQ, HI_IRQ_FLAG_PRI1, timer2_irq_handle, 0);
     if (ret != HI_ERR_SUCCESS) {
-        printf("request example irq fail:%x\n", ret);
+        printf("request example irq fail:%u\n", ret);
         return;
     }
     if (g_timer_cnt_cb != 0) {
@@ -151,7 +151,7 @@ void TimerIrqTask(void)
     ret = hi_irq_enable(irq_idx);   // 使能中断
                                     // Enable interrupt
     if (ret != HI_ERR_SUCCESS) {
-        dprintf("failed to hi_irq_enable func ,ret = 0x%x\r\n", ret);
+        dprintf("failed to hi_irq_enable func ,ret = %u\r\n", ret);
     }
     hi_sleep(TIMER_INTERVAL);       // 进入3s的中断函数
                                     // Interrupt function entering 3s

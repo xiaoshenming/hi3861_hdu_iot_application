@@ -1664,8 +1664,7 @@ void TrafficDisplayInit(void)
 void TrafficDisplay(void)
 {
     unsigned char currentType = 0;
-    while (HI_ERR_SUCCESS != OledInit()) {
-    }
+    OledInit();
     /* 按键中断初始化 */
     TestGpioInit();
     // clean screen
