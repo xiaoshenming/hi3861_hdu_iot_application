@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-static_library("i2cDemo") {
+static_library("i2sDemo") {
   sources = [
     "hal_iot_gpio_ex.c",
     "app_demo_i2s.c",
