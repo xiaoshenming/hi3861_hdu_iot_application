@@ -185,7 +185,7 @@ int get_jsonData_value(const cJSON *const object, uint8_t *value)
             *value = 0;
             json_value = NULL;
             ret = 0;
-        } 
+        }
     }
     json_value = NULL;
     return ret; // -1为失败
@@ -241,7 +241,6 @@ void send_cloud_request_code(const char *request_id, int ret_code, int request_l
         if (sprintf_s(request_topic,
                       strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + request_len + 1,
                       MQTT_TOPIC_PUB_COMMANDS_REQ, DEVICE_ID, request_id) > 0) {
-
             if (ret_code == 0) {
                 MQTTClient_pub(request_topic, "{\"result_code\":0}", strlen("{\"result_code\":0}"));
             } else if (ret_code == 1) {

@@ -119,7 +119,7 @@ void oled_show_task(void)
         memset_s((char *)oledShowBuff, sizeof(oledShowBuff), 0, sizeof(oledShowBuff));
         if (sprintf_s((char *)oledShowBuff, sizeof(oledShowBuff), "L: %04d R: %04d", systemValue.left_motor_speed,
                       systemValue.right_motor_speed) > 0) {
-            SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_3, oledShowBuff, TEXT_SIZE_16);	
+            SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_3, oledShowBuff, TEXT_SIZE_16);
         }
         
         /* 车的状态检测 电池电量小于10V时 */

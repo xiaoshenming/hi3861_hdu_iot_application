@@ -32,8 +32,11 @@
 uint8_t ios_GetWiFi_ssid_passwd(const char *nfc_buff, char *wifi_name, char *wifi_passwd)
 {
     uint8_t dataType_len = nfc_buff[NDEF_PROTOCOL_DATA_TYPE_LENGTH_OFFSET]; // 获取数据类型长度
-    uint8_t *dataType_buff = (uint8_t *)malloc(dataType_len + 1);
     uint8_t ret = 0;
+    uint8_t *dataType_buff = (uint8_t *)malloc(dataType_len + 1);
+    if (dataType_buff == NULL) {
+        return 0;
+    }
     memset_s(dataType_buff, dataType_len + 1, 0, dataType_len + 1);
     // nfc_buff + OFFSET_HEAD，代表数组地址偏移5个字节
     if (memcpy_s(dataType_buff, dataType_len + 1, nfc_buff + OFFSET_HEAD, dataType_len) == 0) {
@@ -132,7 +135,7 @@ uint32_t NFC_configuresWiFiNetwork(uint8_t *ndefBuff)
     }
 
     if (ret) {
-       	printf("wifi_name: %s\n", wifi_name);
+        printf("wifi_name: %s\n", wifi_name);
         printf("wifi_passwd: %s\n", wifi_passwd);
         // 连接wifi
         if (WIFI_SUCCESS == WiFi_connectHotspots(wifi_name, wifi_passwd)) {

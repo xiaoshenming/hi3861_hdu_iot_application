@@ -29,35 +29,43 @@
 
 #define MQTT_RECV_TASK_TIME (200 * 1000) // us
 
+int get_jsonData_value(const cJSON *const object, uint8_t *value)
+{
+    cJSON *json_value = NULL;
+    int ret = -1;
+    json_value = cJSON_GetObjectItem(object, "value");
+    if (json_value) {
+        if (!strcmp(json_value->valuestring, "ON")) {
+            *value = 1;
+            json_value = NULL;
+            ret = 0; // 0为成功
+        } else if (!strcmp(json_value->valuestring, "OFF")) {
+            *value = 0;
+            json_value = NULL;
+            ret = 0;
+        }
+    }
+    json_value = NULL;
+    return ret; // -1为失败
+}
+
 // 解析JSON数据
 uint8_t cJSON_Parse_Payload(uint8_t *payload)
 {
     uint8_t ret = 0;
-    if (payload == NULL) {
-        printf("payload is NULL\r\n");
-        return 1;
-    }
-
     cJSON *root = cJSON_Parse((const char *)payload);
     cJSON *service_id = cJSON_GetObjectItem(root, "service_id");
     cJSON *command_name = cJSON_GetObjectItem(root, "command_name");
-
-    if (root && service_id && command_name && !strcmp(service_id->valuestring, "control")) {
+    cJSON *paras = cJSON_GetObjectItem(root, "paras");
+    if (paras && root && service_id && command_name && !strcmp(service_id->valuestring, "control")) {
         if (!strcmp(command_name->valuestring, "lamp")) {
             // 灯的手动控制
-            cJSON *paras = cJSON_GetObjectItem(root, "paras");
-            cJSON *value = cJSON_GetObjectItem(paras, "value");
-            if (!strcmp(value->valuestring, "ON")) {
-                sys_msg_data.Lamp_Status = SUN_LIGHT_MODE;
-            } else if (!strcmp(value->valuestring, "OFF")) {
-                sys_msg_data.Lamp_Status = OFF_LAMP;
-            }
-            paras = value = NULL;
+            get_jsonData_value(paras, &sys_msg_data.Lamp_Status);
+            sys_msg_data.Lamp_Status = ((sys_msg_data.Lamp_Status) ? SUN_LIGHT_MODE : OFF_LAMP);
         }
 
         if (!strcmp(command_name->valuestring, "RGB")) {
             // RGB灯的颜色控制
-            cJSON *paras = cJSON_GetObjectItem(root, "paras");
             cJSON *red = cJSON_GetObjectItem(paras, "red");
             cJSON *green = cJSON_GetObjectItem(paras, "green");
             cJSON *blue = cJSON_GetObjectItem(paras, "blue");
@@ -65,70 +73,45 @@ uint8_t cJSON_Parse_Payload(uint8_t *payload)
             sys_msg_data.RGB_Value.green = green->valueint;
             sys_msg_data.RGB_Value.blue = blue->valueint;
             sys_msg_data.Lamp_Status = SET_RGB_MODE;
-            paras = red = green = blue = NULL;
+            red = green = blue = NULL;
         }
 
         if (!strcmp(command_name->valuestring, "led_light")) {
             // 手动调节亮度
-            cJSON *paras = cJSON_GetObjectItem(root, "paras");
             cJSON *value = cJSON_GetObjectItem(paras, "value");
             sys_msg_data.led_light_value = value->valueint;
-            paras = value = NULL;
+            value = NULL;
         }
 
         /* 下面是自动控制的标志位 */
         if (!strcmp(command_name->valuestring, "is_auto_light_mode")) {
             // 是否开启自动亮度调节
-            cJSON *paras = cJSON_GetObjectItem(root, "paras");
-            cJSON *value = cJSON_GetObjectItem(paras, "value");
-            if (!strcmp(value->valuestring, "ON")) {
-                sys_msg_data.is_auto_light_mode = 1;
-            } else if (!strcmp(value->valuestring, "OFF")) {
-                sys_msg_data.is_auto_light_mode = 0;
-            }
-            paras = value = NULL;
+            get_jsonData_value(paras, &sys_msg_data.is_auto_light_mode);
         }
 
         if (!strcmp(command_name->valuestring, "is_sleep_mode")) {
             // 是否开启睡眠模式
-            cJSON *paras = cJSON_GetObjectItem(root, "paras");
-            cJSON *value = cJSON_GetObjectItem(paras, "value");
-            if (!strcmp(value->valuestring, "ON")) {
-                sys_msg_data.Lamp_Status = SLEEP_MODE; // 睡眠模式
-            } else if (!strcmp(value->valuestring, "OFF")) {
-                sys_msg_data.Lamp_Status = OFF_LAMP; // 关闭灯光
-            }
-            paras = value = NULL;
+            get_jsonData_value(paras, &sys_msg_data.Lamp_Status);
+            sys_msg_data.Lamp_Status = ((sys_msg_data.Lamp_Status) ? SLEEP_MODE : OFF_LAMP);
         }
 
         if (!strcmp(command_name->valuestring, "is_readbook_mode")) {
             // 是否开启阅读模式
-            cJSON *paras = cJSON_GetObjectItem(root, "paras");
-            cJSON *value = cJSON_GetObjectItem(paras, "value");
-            if (!strcmp(value->valuestring, "ON")) {
-                sys_msg_data.Lamp_Status = READ_BOOK_MODE; // 阅读模式
-            } else if (!strcmp(value->valuestring, "OFF")) {
-                sys_msg_data.Lamp_Status = OFF_LAMP; // 关闭灯光
-            }
-            paras = value = NULL;
+            get_jsonData_value(paras, &sys_msg_data.Lamp_Status);
+            sys_msg_data.Lamp_Status = ((sys_msg_data.Lamp_Status) ? READ_BOOK_MODE : OFF_LAMP);
         }
 
         if (!strcmp(command_name->valuestring, "is_blink_mode")) {
             // 是否开启闪烁模式
-            cJSON *paras = cJSON_GetObjectItem(root, "paras");
-            cJSON *value = cJSON_GetObjectItem(paras, "value");
-            if (!strcmp(value->valuestring, "ON")) {
-                sys_msg_data.Lamp_Status = LED_BLINK_MODE; // 阅读模式
-            } else if (!strcmp(value->valuestring, "OFF")) {
-                sys_msg_data.Lamp_Status = OFF_LAMP; // 关闭灯光
-            }
-            paras = value = NULL;
+            get_jsonData_value(paras, &sys_msg_data.Lamp_Status);
+            sys_msg_data.Lamp_Status = ((sys_msg_data.Lamp_Status) ? LED_BLINK_MODE : OFF_LAMP);
         }
     }
     cJSON_Delete(root);
     root = NULL;
     service_id = NULL;
     command_name = NULL;
+    paras = NULL;
     return 0;
 }
 // 向云端发送返回值
@@ -144,7 +127,6 @@ void send_cloud_request_code(const char *request_id, int ret_code, int request_l
         if (sprintf_s(request_topic,
                       strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + request_len + 1,
                       MQTT_TOPIC_PUB_COMMANDS_REQ, DEVICE_ID, request_id) > 0) {
-
             if (ret_code == 0) {
                 MQTTClient_pub(request_topic, "{\"result_code\":0}", strlen("{\"result_code\":0}"));
             } else if (ret_code == 1) {
