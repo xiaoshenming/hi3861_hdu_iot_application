@@ -71,8 +71,8 @@ void switch_rgb_mode(Lamp_Status_t mode)
 {
     switch (mode) {
         case SUN_LIGHT_MODE: // 白光模式
-            sys_msg_data.RGB_Value.red = RGB_ON;
-            sys_msg_data.RGB_Value.green = RGB_ON;
+            sys_msg_data.RGB_Value.red = \
+            sys_msg_data.RGB_Value.green = \
             sys_msg_data.RGB_Value.blue = RGB_ON;
             break;
 
@@ -94,16 +94,13 @@ void switch_rgb_mode(Lamp_Status_t mode)
 
             if (t_led_blink_status == BEAT_1) {
                 sys_msg_data.RGB_Value.red = RGB_ON;
-                sys_msg_data.RGB_Value.green = RGB_OFF;
-                sys_msg_data.RGB_Value.blue = RGB_OFF;
+                sys_msg_data.RGB_Value.green = sys_msg_data.RGB_Value.blue = RGB_OFF;
             } else if (t_led_blink_status == BEAT_2) {
-                sys_msg_data.RGB_Value.red = RGB_OFF;
                 sys_msg_data.RGB_Value.green = RGB_ON;
-                sys_msg_data.RGB_Value.blue = RGB_OFF;
+                sys_msg_data.RGB_Value.red = sys_msg_data.RGB_Value.blue = RGB_OFF;
             } else if (t_led_blink_status == BEAT_3) {
-                sys_msg_data.RGB_Value.red = RGB_OFF;
-                sys_msg_data.RGB_Value.green = RGB_OFF;
                 sys_msg_data.RGB_Value.blue = RGB_ON;
+                sys_msg_data.RGB_Value.red = sys_msg_data.RGB_Value.green = RGB_OFF;
             } else {
                 t_led_blink_status = BEAT_0;
             }
@@ -174,9 +171,9 @@ void sensor_collect_task(void)
             // 显示在OLED显示屏上
             uint8_t oled_display_buff[OLED_DISPLAY_BUFF_SIZE] = {0};
             snprintf_s(oled_display_buff, sizeof(oled_display_buff), OLED_DISPLAY_BUFF_SIZE
-                        "%04d Lamp:%s",
-                        sys_msg_data.AP3216C_Value.light,
-                        (sys_msg_data.Lamp_Status == OFF_LAMP) ? "OFF" : " ON");
+                       "%04d Lamp:%s",
+                       sys_msg_data.AP3216C_Value.light,
+                       (sys_msg_data.Lamp_Status == OFF_LAMP) ? "OFF" : " ON");
             oled_show_line_string(OLED_TEXT16_LINE_2, oled_display_buff);
             times = 0;
         }
@@ -224,7 +221,7 @@ void publish_lamp_status_data(msg_data_t *msg)
             cJSON_AddItemToObject(json_services_root, "service_id", cJSON_CreateString("base"));
             cJSON_AddItemToObject(json_services_root, "properties", json_properties);
             cJSON_AddItemToObject(json_properties, "lamp",
-                                msg->Lamp_Status ? cJSON_CreateString("ON") : cJSON_CreateString("OFF"));
+                                  msg->Lamp_Status ? cJSON_CreateString("ON") : cJSON_CreateString("OFF"));
             cJSON_AddItemToObject(json_properties, "red", cJSON_CreateNumber(msg->RGB_Value.red));
             cJSON_AddItemToObject(json_properties, "green", cJSON_CreateNumber(msg->RGB_Value.green));
             cJSON_AddItemToObject(json_properties, "blue", cJSON_CreateNumber(msg->RGB_Value.blue));

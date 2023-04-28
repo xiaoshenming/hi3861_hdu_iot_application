@@ -34,15 +34,15 @@ int get_jsonData_value(const cJSON *const object, uint8_t *value)
     cJSON *json_value = NULL;
     json_value = cJSON_GetObjectItem(object, "value");
     if (json_value) {
-       if (!strcmp(json_value->valuestring, "ON")) {
+        if (!strcmp(json_value->valuestring, "ON")) {
             *value = 1;
             json_value = NULL;
             return 0; // 0为成功
         } else if (!strcmp(json_value->valuestring, "OFF")) {
             *value = 0;
             json_value = NULL;
-            return 0; 
-        } 
+            return 0;
+        }
     }
     json_value = NULL;
     return -1; // -1为失败
@@ -58,52 +58,73 @@ uint8_t cJSON_Parse_Payload(uint8_t *payload)
     }
 
     cJSON *root = cJSON_Parse((const char *)payload);
-    if (root) {
-        cJSON *json_service_id = cJSON_GetObjectItem(root, "service_id");
-        if (json_service_id) {
-            if (!strcmp(json_service_id->valuestring, "control")) {
-                cJSON *json_command_name = cJSON_GetObjectItem(root, "command_name");
-                if (json_command_name) {
-                    // 接收风扇控制命令
-                    if (!strcmp(json_command_name->valuestring, "fan")) {
-                        cJSON *paras = cJSON_GetObjectItem(root, "paras");
-                        get_jsonData_value(paras, &sys_msg_data.fanStatus);
-                    }
+    cJSON *json_service_id = cJSON_GetObjectItem(root, "service_id");
+    cJSON *json_command_name = cJSON_GetObjectItem(root, "command_name");
+    if (root && json_service_id && json_command_name) {
+        if (!strcmp(json_service_id->valuestring, "control")) {
+            // 接收风扇控制命令
+            if (!strcmp(json_command_name->valuestring, "fan")) {
+                cJSON *paras = cJSON_GetObjectItem(root, "paras");
+                get_jsonData_value(paras, &sys_msg_data.fanStatus);
+            }
 
-                    // 接收自动控制命令
-                    if (!strcmp(json_command_name->valuestring, "autoMode")) {
-                        cJSON *paras = cJSON_GetObjectItem(root, "paras");
-                        get_jsonData_value(paras, &sys_msg_data.nvFlash.smartControl_flag);
-                    }
+            // 接收自动控制命令
+            if (!strcmp(json_command_name->valuestring, "autoMode")) {
+                cJSON *paras = cJSON_GetObjectItem(root, "paras");
+                get_jsonData_value(paras, &sys_msg_data.nvFlash.smartControl_flag);
+            }
 
-                    // 接收湿度的上限和下限值
-                    if (!strcmp(json_command_name->valuestring, "humidity")) {
-                        cJSON *paras = cJSON_GetObjectItem(root, "paras");
-                        cJSON *json_up = cJSON_GetObjectItem(paras, "up");
-                        if (json_up) {
-                            printf("command_name: humidity, up: %d.\r\n", json_up->valueint);
-                            sys_msg_data.nvFlash.humi_upper = json_up->valueint;
-                        }
-                        json_up = NULL;
-
-                        cJSON *json_down = cJSON_GetObjectItem(paras, "down");
-                        if (json_down) {
-                            printf("command_name: humidity, down: %d.\r\n", json_down->valueint);
-                            sys_msg_data.nvFlash.humi_lower = json_down->valueint;
-                        }
-                        json_down = NULL;
-                    }
+            // 接收湿度的上限和下限值
+            if (!strcmp(json_command_name->valuestring, "humidity")) {
+                cJSON *paras = cJSON_GetObjectItem(root, "paras");
+                cJSON *json_up = cJSON_GetObjectItem(paras, "up");
+                if (json_up) {
+                    printf("command_name: humidity, up: %d.\r\n", json_up->valueint);
+                    sys_msg_data.nvFlash.humi_upper = json_up->valueint;
                 }
-                json_command_name = NULL;
+                json_up = NULL;
+
+                cJSON *json_down = cJSON_GetObjectItem(paras, "down");
+                if (json_down) {
+                    printf("command_name: humidity, down: %d.\r\n", json_down->valueint);
+                    sys_msg_data.nvFlash.humi_lower = json_down->valueint;
+                }
+                json_down = NULL;
             }
         }
-        json_service_id = NULL;
     }
 
     cJSON_Delete(root);
+    json_service_id = NULL;
+    json_command_name = NULL;
     root = NULL;
 
     return 0;
+}
+
+// 向云端发送返回值
+void send_cloud_request_code(const char *request_id, int ret_code, int request_len)
+{
+    char *request_topic = (char *)malloc(strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) +
+                                            strlen(DEVICE_ID) + request_len + 1);
+    if (request_topic != NULL) {
+        memset_s(request_topic,
+                 strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + request_len + 1,
+                 0,
+                 strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + request_len + 1);
+        if (sprintf_s(request_topic,
+                      strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + request_len + 1,
+                      MQTT_TOPIC_PUB_COMMANDS_REQ, DEVICE_ID, request_id) > 0) {
+
+            if (ret_code == 0) {
+                MQTTClient_pub(request_topic, "{\"result_code\":0}", strlen("{\"result_code\":0}"));
+            } else if (ret_code == 1) {
+                MQTTClient_pub(request_topic, "{\"result_code\":1}", strlen("{\"result_code\":1}"));
+            }
+        }
+        free(request_topic);
+        request_topic = NULL;
+    }
 }
 
 /**
@@ -120,36 +141,13 @@ int8_t mqttClient_sub_callback(unsigned char *topic, unsigned char *payload)
         // 提取出topic中的request_id
         char request_id[50] = {0};
         int ret_code = 1; // 0为成功, 其余为失败。不带默认表示成功
-        if (0 != strcpy_s(request_id, sizeof(request_id),
+        if (0 == strcpy_s(request_id, sizeof(request_id),
                           topic + strlen(DEVICE_ID) + strlen("$oc/devices//sys/commands/request_id="))) {
-            return -1;
+            printf("request_id: %s\r\n", request_id);
+            // 解析JSON数据
+            ret_code = Parsing_json_data(payload);
+            send_cloud_request_code(request_id, ret_code, sizeof(request_id));
         }
-        printf("request_id: %s\r\n", request_id);
-
-        // 解析JSON数据并控制
-        ret_code = cJSON_Parse_Payload(payload);
-
-        // 向云端发送命令设置的返回值
-        char *request_topic = (char *)malloc(strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + \
-                                             strlen(DEVICE_ID) + strlen(request_id));
-        if (request_topic != NULL) {
-            memset_s(request_topic,
-                     strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + strlen(request_id) + 1,
-                     0,
-                     strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + strlen(request_id) + 1);
-            if (sprintf_s(request_topic,
-                          strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + strlen(request_id) + 1,
-                          MQTT_TOPIC_PUB_COMMANDS_REQ, DEVICE_ID, request_id) > 0) {
-                // printf("topic: %s\r\n", request_topic);
-                if (ret_code == 0) {
-                    MQTTClient_pub(request_topic, "{\"result_code\":0}", strlen("{\"result_code\":0}"));
-                } else if (ret_code == 1) {
-                    MQTTClient_pub(request_topic, "{\"result_code\":1}", strlen("{\"result_code\":1}"));
-                }
-            }
-            free(request_topic);
-        }
-        request_topic = NULL;
     }
     return 0;
 }

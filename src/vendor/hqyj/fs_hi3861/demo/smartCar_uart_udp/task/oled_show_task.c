@@ -110,7 +110,7 @@ void oled_show_task(void)
             memset_s((char *)oledShowBuff, sizeof(oledShowBuff), 0, sizeof(oledShowBuff));
             if (sprintf_s((char *)oledShowBuff, sizeof(oledShowBuff), "car: %s",
                           get_CurrentCarStatus(systemValue)) > 0) {
-			    SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, oledShowBuff, TEXT_SIZE_16);
+                SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, oledShowBuff, TEXT_SIZE_16);
             }
             last_car_status = systemValue.car_status;
         }

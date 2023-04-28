@@ -44,11 +44,9 @@
 osThreadId_t mqtt_send_task_id;      // mqtt 发布数据任务ID
 osThreadId_t mqtt_recv_task_id;      // mqtt 接收数据任务ID
 osThreadId_t sensor_collect_task_id; // 传感器采集任务ID
-static void smartFarm_Project_example(void)
-{
-    printf("Enter smartFarm_Project_example()!\r\n");
-    p_MQTTClient_sub_callback = &mqttClient_sub_callback;
 
+void peripheral_init(void)
+{
     // 外设的初始化
     KEY_Init();                         // 按键初始化
     PCF8574_Init();                     // 初始化IO扩展芯片
@@ -58,7 +56,9 @@ static void smartFarm_Project_example(void)
     SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_0, " Smart Farm", TEXT_SIZE_16);
     nfc_Init();
     usleep(TASK_INIT_DELAY);
-
+}
+int nfc_connect_wifi_init(void)
+{
     // 通过NFC芯片进行连接WiFi
     uint8_t ndefLen = 0;      // ndef包的长度
     uint8_t ndef_Header = 0;  // ndef消息开始标志位-用不到
@@ -68,22 +68,22 @@ static void smartFarm_Project_example(void)
     // 读整个数据的包头部分，读出整个数据的长度
     if (result_code = NT3HReadHeaderNfc(&ndefLen, &ndef_Header) != true) {
         printf("NT3HReadHeaderNfc is failed. result_code = %d\r\n", result_code);
-        return;
+        return -1;
     }
     ndefLen += NDEF_HEADER_SIZE; // 加上头部字节
     if (ndefLen <= NDEF_HEADER_SIZE) {
         printf("ndefLen <= 2\r\n");
-        return;
+        return -1;
     }
     
     uint8_t *ndefBuff = (uint8_t *)malloc(ndefLen + 1);
     if (ndefBuff == NULL) {
         printf("ndefBuff malloc is Falied!\r\n");
-        return;
+        return -1;
     }
     if (result_code = get_NDEFDataPackage(ndefBuff, ndefLen) != HI_ERR_SUCCESS) {
         printf("get_NDEFDataPackage is failed. result_code = %d\r\n", result_code);
-        return;
+        return -1;
     }
     // 打印读出的数据
     printf("start print ndefBuff.\r\n");
@@ -104,7 +104,10 @@ static void smartFarm_Project_example(void)
     printf("nfc connect wifi is SUCCESS\r\n");
     oled_consle_log("===wifi  yes===");
     sleep(TASK_INIT_DELAY);
-
+    return 0;
+}
+int mqtt_init(void)
+{
     // 连接MQTT服务器
     while (MQTTClient_connectServer(SERVER_IP_ADDR, SERVER_IP_PORT) != WIFI_SUCCESS) {
         printf("mqttClient_connectServer\r\n");
@@ -139,6 +142,17 @@ static void smartFarm_Project_example(void)
     sleep(TASK_INIT_DELAY);
     SSD1306_CLS(); // 清屏
 
+    return 0;
+}
+static void smartFarm_Project_example(void)
+{
+    printf("Enter smartFarm_Project_example()!\r\n");
+    p_MQTTClient_sub_callback = &mqttClient_sub_callback;
+    peripheral_init();
+    if (nfc_connect_wifi_init() == -1) {
+        return ;
+    }
+    mqtt_init();
     // NV值读出
     // result_code = hi_factory_nv_read(NV_ID, &sys_msg_data.nvFlash, sizeof(hi_nv_save_sensor_threshold), 0);
     // if (result_code != HI_ERR_SUCCESS) {
@@ -150,7 +164,6 @@ static void smartFarm_Project_example(void)
     //             sys_msg_data.nvFlash.humi_lower,
     //             sys_msg_data.nvFlash.smartControl_flag);
     // }
-
     //  创建线程
     osThreadAttr_t options;
     options.name = "mqtt_send_task";
@@ -166,14 +179,12 @@ static void smartFarm_Project_example(void)
     }
 
     options.name = "mqtt_recv_task";
-    options.stack_size = TASK_STACK_SIZE;
     mqtt_recv_task_id = osThreadNew((osThreadFunc_t)mqtt_recv_task, NULL, &options);
     if (mqtt_recv_task_id != NULL) {
         printf("ID = %d, Create mqtt_recv_task_id is OK!\r\n", mqtt_recv_task_id);
     }
 
     options.name = "sensor_collect_task";
-    options.stack_size = TASK_STACK_SIZE;
     sensor_collect_task_id = osThreadNew((osThreadFunc_t)sensor_collect_task, NULL, &options);
     if (sensor_collect_task_id != NULL) {
         printf("ID = %d, Create sensor_collect_task_id is OK!\r\n", sensor_collect_task_id);

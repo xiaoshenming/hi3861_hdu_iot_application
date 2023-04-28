@@ -44,68 +44,8 @@ osThreadId_t sensor_collect_task_id; // 传感器采集任务ID
 #define TASK_STACK_SIZE (5 * 1024)
 #define TASK_INIT_DELAY 1 // s
 
-static void smartSecurityDefense_main(void)
+int mqtt_init(void)
 {
-    printf("Enter smartSecurityDefense_main()!\r\n");
-    
-    p_MQTTClient_sub_callback = &mqttClient_sub_callback;
-
-    // 外设的初始化
-    KEY_Init();                         // 按键初始化
-    PCF8574_Init();                     // 初始化IO扩展芯片
-    AP3216C_Init(); // 三合一传感器初始化
-    SSD1306_Init(); // OLED 显示屏初始化
-    SSD1306_CLS();  // 清屏
-    SSD1306_ShowStr(0, 0, "Smart Security", TEXT_SIZE_16);
-    nfc_Init();
-
-    // 通过NFC芯片进行连接WiFi
-    uint8_t ndefLen = 0;      // ndef包的长度
-    uint8_t ndef_Header = 0;  // ndef消息开始标志位-用不到
-    uint32_t result_code = 0; // 函数的返回值
-
-    oled_consle_log("===start nfc===");
-    // 读整个数据的包头部分，读出整个数据的长度
-    if (result_code = NT3HReadHeaderNfc(&ndefLen, &ndef_Header) != true) {
-        printf("NT3HReadHeaderNfc is failed. result_code = %d\r\n", result_code);
-        return;
-    }
-    ndefLen += NDEF_HEADER_SIZE; // 加上头部字节
-    if (ndefLen <= NDEF_HEADER_SIZE) {
-        printf("ndefLen <= 2\r\n");
-        return;
-    }
-
-    uint8_t *ndefBuff = (uint8_t *)malloc(ndefLen + 1);
-    if (ndefBuff == NULL) {
-        printf("ndefBuff malloc is Falied!\r\n");
-        return;
-    }
-    if (result_code = get_NDEFDataPackage(ndefBuff, ndefLen) != HI_ERR_SUCCESS) {
-        printf("get_NDEFDataPackage is failed. result_code = %d\r\n", result_code);
-        return;
-    }
-    // 打印NFC标签的值
-    printf("start print ndefBuff.\r\n");
-    for (size_t i = 0; i < ndefLen; i++) {
-        printf("0x%x ", ndefBuff[i]);
-    }
-    oled_consle_log("=== end nfc ===");
-    sleep(TASK_INIT_DELAY);
-    oled_consle_log("== start wifi==");
-
-    // 连接WiFi
-    while (NFC_configuresWiFiNetwork(ndefBuff) != WIFI_SUCCESS) {
-        printf("nfc connect wifi is failed!\r\n");
-        oled_consle_log("=== wifi no ===");
-        sleep(TASK_INIT_DELAY);
-        SSD1306_CLS(); // 清屏
-    }
-    printf("nfc connect wifi is SUCCESS\r\n");
-    oled_consle_log("===wifi  yes===");
-    sleep(TASK_INIT_DELAY);
-    oled_consle_log("=== end wifi===");
-
     // 连接MQTT服务器
     while (MQTTClient_connectServer(SERVER_IP_ADDR, SERVER_IP_PORT) != WIFI_SUCCESS) {
         printf("mqttClient_connectServer\r\n");
@@ -128,8 +68,8 @@ static void smartSecurityDefense_main(void)
     oled_consle_log("==mqtt cli yes=");
     sleep(TASK_INIT_DELAY);
 
-    // 订阅主题
-    while (MQTTClient_subscribe(MQTT_TOPIC_SUB_COMMANDS) != WIFI_SUCCESS) {
+    // 订阅MQTT主题
+    while (MQTTClient_subscribe(MQTT_TOPIC_SUB_COMMANDS) != 0) {
         printf("mqttClient_subscribe\r\n");
         oled_consle_log("==mqtt sub no==");
         sleep(TASK_INIT_DELAY);
@@ -139,6 +79,79 @@ static void smartSecurityDefense_main(void)
     oled_consle_log("=mqtt sub yes==");
     sleep(TASK_INIT_DELAY);
     SSD1306_CLS(); // 清屏
+
+    return 0;
+}
+int nfc_connect_wifi_init(void)
+{
+    // 通过NFC芯片进行连接WiFi
+    uint8_t ndefLen = 0;      // ndef包的长度
+    uint8_t ndef_Header = 0;  // ndef消息开始标志位-用不到
+    uint32_t result_code = 0; // 函数的返回值
+    oled_consle_log("===start nfc===");
+
+    // 读整个数据的包头部分，读出整个数据的长度
+    if (result_code = NT3HReadHeaderNfc(&ndefLen, &ndef_Header) != true) {
+        printf("NT3HReadHeaderNfc is failed. result_code = %d\r\n", result_code);
+        return -1;
+    }
+    ndefLen += NDEF_HEADER_SIZE; // 加上头部字节
+    if (ndefLen <= NDEF_HEADER_SIZE) {
+        printf("ndefLen <= 2\r\n");
+        return -1;
+    }
+    
+    uint8_t *ndefBuff = (uint8_t *)malloc(ndefLen + 1);
+    if (ndefBuff == NULL) {
+        printf("ndefBuff malloc is Falied!\r\n");
+        return -1;
+    }
+    if (result_code = get_NDEFDataPackage(ndefBuff, ndefLen) != HI_ERR_SUCCESS) {
+        printf("get_NDEFDataPackage is failed. result_code = %d\r\n", result_code);
+        return -1;
+    }
+    // 打印读出的数据
+    printf("start print ndefBuff.\r\n");
+    for (size_t i = 0; i < ndefLen; i++) {
+        printf("0x%x ", ndefBuff[i]);
+    }
+    oled_consle_log("=== end nfc ===");
+    sleep(TASK_INIT_DELAY);
+
+    oled_consle_log("== start wifi==");
+    // 连接WiFi
+    while (NFC_configuresWiFiNetwork(ndefBuff) != WIFI_SUCCESS) {
+        printf("nfc connect wifi is failed!\r\n");
+        oled_consle_log("=== wifi no ===");
+        sleep(TASK_INIT_DELAY);
+        SSD1306_CLS(); // 清屏
+    }
+    printf("nfc connect wifi is SUCCESS\r\n");
+    oled_consle_log("===wifi  yes===");
+    sleep(TASK_INIT_DELAY);
+    return 0;
+}
+void peripheral_init(void)
+{
+    // 外设的初始化
+    KEY_Init();    // 按键初始化
+    PCF8574_Init();  // 初始化IO扩展芯片
+    AW2013_Init(); // 三色LED灯的初始化
+    AW2013_Control_RGB(0, 0, 0);
+    AP3216C_Init(); // 三合一传感器初始化
+    SSD1306_Init(); // OLED 显示屏初始化
+    SSD1306_CLS();  // 清屏
+    nfc_Init();
+}
+
+static void smartSecurityDefense_main(void)
+{
+    printf("Enter smartSecurityDefense_main()!\r\n");
+    
+    p_MQTTClient_sub_callback = &mqttClient_sub_callback;
+    peripheral_init();
+    nfc_connect_wifi_init();
+    mqtt_init();
 
     //  创建线程
     osThreadAttr_t options;
@@ -155,14 +168,12 @@ static void smartSecurityDefense_main(void)
     }
 
     options.name = "mqtt_recv_task";
-    options.stack_size = TASK_STACK_SIZE;
     mqtt_recv_task_id = osThreadNew((osThreadFunc_t)mqtt_recv_task, NULL, &options);
     if (mqtt_recv_task_id != NULL) {
         printf("ID = %d, Create mqtt_recv_task_id is OK!\r\n", mqtt_recv_task_id);
     }
 
     options.name = "sensor_collect_task";
-    options.stack_size = TASK_STACK_SIZE;
     sensor_collect_task_id = osThreadNew((osThreadFunc_t)sensor_collect_task, NULL, &options);
     if (sensor_collect_task_id != NULL) {
         printf("ID = %d, Create sensor_collect_task_id is OK!\r\n", sensor_collect_task_id);

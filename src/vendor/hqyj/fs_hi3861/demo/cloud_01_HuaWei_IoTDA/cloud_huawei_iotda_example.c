@@ -110,13 +110,12 @@ int Packaged_json_data(void)
     char *str_print = cJSON_PrintUnformatted(root);
     if (str_print != NULL) {
         // printf("%s\n", str_print);
-        if (0 == strcpy_s(mqtt_data, strlen(str_print) + 1, str_print)) {
-            cJSON_free(str_print);
+        if (strcpy_s(mqtt_data, strlen(str_print) + 1, str_print) == 0) {
             ret = 0;
         } else {
-            cJSON_free(str_print);
             ret = -1;
         }
+        cJSON_free(str_print);
     } else {
         ret = -1;
     }
@@ -175,20 +174,21 @@ void mqtt_send_task(void)
 int get_jsonData_value(const cJSON *const object, uint8_t *value)
 {
     cJSON *json_value = NULL;
+    int ret = -1;
     json_value = cJSON_GetObjectItem(object, "value");
     if (json_value) {
-       if (!strcmp(json_value->valuestring, "ON")) {
+        if (!strcmp(json_value->valuestring, "ON")) {
             *value = 1;
             json_value = NULL;
-            return 0; // 0为成功
+            ret = 0; // 0为成功
         } else if (!strcmp(json_value->valuestring, "OFF")) {
             *value = 0;
             json_value = NULL;
-            return 0; 
+            ret = 0;
         } 
     }
     json_value = NULL;
-    return -1; // -1为失败
+    return ret; // -1为失败
 }
 
 /**
@@ -229,23 +229,24 @@ int Parsing_json_data(const char *payload)
 }
 
 // 向云端发送返回值
-void send_cloud_request_code(const char *request_id, int ret_code)
+void send_cloud_request_code(const char *request_id, int ret_code, int request_len)
 {
     char *request_topic = (char *)malloc(strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) +
-                                            strlen(DEVICE_ID) + sizeof(request_id) + 1);
+                                            strlen(DEVICE_ID) + request_len + 1);
     if (request_topic != NULL) {
         memset_s(request_topic,
-                    strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + sizeof(request_id) + 1,
-                    0,
-                    strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + sizeof(request_id) + 1);
-        sprintf_s(request_topic,
-                    strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + sizeof(request_id) + 1,
-                    MQTT_TOPIC_PUB_COMMANDS_REQ, DEVICE_ID, request_id);
+                 strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + request_len + 1,
+                 0,
+                 strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + request_len + 1);
+        if (sprintf_s(request_topic,
+                      strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + request_len + 1,
+                      MQTT_TOPIC_PUB_COMMANDS_REQ, DEVICE_ID, request_id) > 0) {
 
-        if (ret_code == 0) {
-            MQTTClient_pub(request_topic, "{\"result_code\":0}", strlen("{\"result_code\":0}"));
-        } else if (ret_code == 1) {
-            MQTTClient_pub(request_topic, "{\"result_code\":1}", strlen("{\"result_code\":1}"));
+            if (ret_code == 0) {
+                MQTTClient_pub(request_topic, "{\"result_code\":0}", strlen("{\"result_code\":0}"));
+            } else if (ret_code == 1) {
+                MQTTClient_pub(request_topic, "{\"result_code\":1}", strlen("{\"result_code\":1}"));
+            }
         }
         free(request_topic);
         request_topic = NULL;
@@ -270,7 +271,7 @@ int8_t mqttClient_sub_callback(unsigned char *topic, unsigned char *payload)
             printf("request_id: %s\r\n", request_id);
             // 解析JSON数据
             ret_code = Parsing_json_data(payload);
-            send_cloud_request_code(request_id, ret_code);
+            send_cloud_request_code(request_id, ret_code, sizeof(request_id));
         }
     }
     return 0;

@@ -77,25 +77,8 @@ void uart_init(void)
     }
 }
 
-/**
- * @brief  智能小车的入口函数
- * @note
- * @retval None
- */
-static void smartCar_example(void)
+int nfc_connect_wifi_init(void)
 {
-    /********************************** 外设初始化 **********************************/
-    SSD1306_Init(); // OLED 显示屏初始化
-    SSD1306_CLS();  // 清屏
-    nfc_Init();     // NFC 初始化
-    // 外设的初始化
-    PCF8574_Init();
-    AW2013_Init(); // 三色LED灯的初始化
-    AW2013_Control_Red(0);
-    AW2013_Control_Green(0);
-    AW2013_Control_Blue(0);
-    uart_init(); // 串口2初始化
-
     /********************************* NFC碰一碰联网 *********************************/
     uint8_t ndefLen = 0;      // ndef包的长度
     uint8_t ndef_Header = 0;  // ndef消息开始标志位-用不到
@@ -103,23 +86,23 @@ static void smartCar_example(void)
     // 读整个数据的包头部分，读出整个数据的长度
     if (result_code = NT3HReadHeaderNfc(&ndefLen, &ndef_Header) != true) {
         printf("NT3HReadHeaderNfc is failed. result_code = %d\r\n", result_code);
-        return;
+        return -1;
     }
     ndefLen += NDEF_HEADER_SIZE; // 加上头部字节
     if (ndefLen <= NDEF_HEADER_SIZE) {
         printf("ndefLen <= 2\r\n");
-        return;
+        return -1;
     }
     
     uint8_t *ndefBuff = (uint8_t *)malloc(ndefLen + 1);
     if (ndefBuff == NULL) {
         printf("ndefBuff malloc is Falied!\r\n");
-        return;
+        return -1;
     }
 
     if (result_code = get_NDEFDataPackage(ndefBuff, ndefLen) != HI_ERR_SUCCESS) {
         printf("get_NDEFDataPackage is failed. result_code = %d\r\n", result_code);
-        return;
+        return -1;
     }
 
     printf("start print ndefBuff.\r\n");
@@ -135,14 +118,18 @@ static void smartCar_example(void)
         SSD1306_CLS(); // 清屏
     }
     oled_consle_log("wifi yes.");
-    sleep(1);
+    return 0;
+}
 
+int udp_init(void)
+{
+    uint32_t result_code = 0; // 函数的返回值
     /********************************** 创建UDP服务端 **********************************/
     printf("wifi IP: %s", WiFi_GetLocalIP());
     // 创建socket
     if ((systemValue.udp_socket_fd = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
         printf("create socket failed!\r\n");
-        return;
+        return -1;
     }
 
     // 命名套接字
@@ -155,23 +142,53 @@ static void smartCar_example(void)
     result_code = bind(systemValue.udp_socket_fd, (const struct sockaddr *)&local, sizeof(local));
     if (result_code < 0) {
         printf("udp server bind IP is failed.\r\n");
+        return -1;
     } else {
         printf("udp server bind IP is success.");
     }
 
     SSD1306_CLS(); // 清屏
-
+    return 0;
+}
+void peripheral_init(void)
+{
+    /********************************** 外设初始化 **********************************/
+    SSD1306_Init(); // OLED 显示屏初始化
+    SSD1306_CLS();  // 清屏
+    nfc_Init();     // NFC 初始化
+    // 外设的初始化
+    PCF8574_Init();
+    AW2013_Init(); // 三色LED灯的初始化
+    AW2013_Control_Red(0);
+    AW2013_Control_Green(0);
+    AW2013_Control_Blue(0);
+    uart_init(); // 串口2初始化
+}
+/**
+ * @brief  智能小车的入口函数
+ * @note
+ * @retval None
+ */
+static void smartCar_example(void)
+{
+    peripheral_init();
+    if (nfc_connect_wifi_init() == -1) {
+        return ;
+    }
+    if (udp_init() == -1) {
+        return ;
+    }
     /********************************** 创建线程 **********************************/
     osThreadAttr_t options;
     options.attr_bits = 0;
     options.cb_mem = NULL;
     options.cb_size = 0;
     options.stack_mem = NULL;
+    options.stack_size = TASK_STACK_SIZE;
 
     /********************************** UART接收任务 **********************************/
     options.name = "uart_recv_task";
     options.priority = osPriorityNormal1;
-    options.stack_size = TASK_STACK_SIZE;
     uart_recv_task_id = osThreadNew((osThreadFunc_t)uart_recv_task, NULL, &options);
     if (uart_recv_task_id != NULL) {
         printf("ID = %d, Create uart_recv_task_id is OK!\r\n", uart_recv_task_id);
@@ -180,7 +197,6 @@ static void smartCar_example(void)
     /********************************** OLED显示任务 **********************************/
     options.name = "oled_show_task";
     options.priority = osPriorityNormal;
-    options.stack_size = TASK_STACK_SIZE;
     oled_show_task_id = osThreadNew((osThreadFunc_t)oled_show_task, NULL, &options);
     if (oled_show_task_id != NULL) {
         printf("ID = %d, Create oled_show_task_id is OK!\r\n", oled_show_task_id);
@@ -189,7 +205,6 @@ static void smartCar_example(void)
     /********************************** UDP发送任务 **********************************/
     options.name = "udp_send_task";
     options.priority = osPriorityNormal;
-    options.stack_size = TASK_STACK_SIZE;
     udp_send_task_id = osThreadNew((osThreadFunc_t)udp_send_task, NULL, &options);
     if (udp_send_task_id != NULL) {
         printf("ID = %d, Create udp_send_task_id is OK!\r\n", udp_send_task_id);
@@ -198,7 +213,6 @@ static void smartCar_example(void)
     /********************************** UDP接收任务 **********************************/
     options.name = "udp_recv_task";
     options.priority = osPriorityNormal1;
-    options.stack_size = TASK_STACK_SIZE;
     udp_recv_task_id = osThreadNew((osThreadFunc_t)udp_recv_task, NULL, &options);
     if (udp_recv_task_id != NULL) {
         printf("ID = %d, Create udp_recv_task_id is OK!\r\n", udp_recv_task_id);
