@@ -110,7 +110,7 @@ int Packaged_json_data(void)
     char *str_print = cJSON_PrintUnformatted(root);
     if (str_print != NULL) {
         // printf("%s\n", str_print);
-        if (0 == strcpy_s(mqtt_data, strlen(str_print), str_print)) {
+        if (0 == strcpy_s(mqtt_data, strlen(str_print) + 1, str_print)) {
             cJSON_free(str_print);
             ret = 0;
         } else {
