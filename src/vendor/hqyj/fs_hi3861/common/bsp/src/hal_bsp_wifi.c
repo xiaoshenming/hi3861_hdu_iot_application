@@ -187,13 +187,11 @@ WifiErrorCode WiFi_connectHotspots(const char *ssid, const char *psk)
         // 启动DHCP
         if (g_lwip_netif) {
             dhcp_start(g_lwip_netif);
-            printf("begain to dhcp.\r\n");
         }
 
         // 等待DHCP
         for (;;) {
             if (dhcp_is_bound(g_lwip_netif) == ERR_OK) {
-                printf("<-- DHCP state:OK -->.\r\n");
                 Sta_GetWiFiIP(g_lwip_netif, g_IP_Addr);
                 printf("connect wifi IP addr: %s.\r\n", g_IP_Addr);
                 break;

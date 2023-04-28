@@ -40,6 +40,9 @@
     "xutility": "c",
     "hal_bsp_ssd1306_fonts.h": "c",
     "hal_bsp_ssd1306_bmps.h": "c",
-    "hal_bsp_ssd1306.h": "c"
+    "hal_bsp_ssd1306.h": "c",
+    "typeindex": "c",
+    "optional": "c",
+    "xtr1common": "c"
   }
 }

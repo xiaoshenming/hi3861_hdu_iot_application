@@ -63,8 +63,8 @@ margin_t bmp_number_3 = {
     .left = 40,
     .width = 16,
     .hight = 32,
-};   
-// 小数点                                 
+};
+// 小数点
 margin_t bmp_dian = {
     .top = 32 + 8,
     .left = 56,

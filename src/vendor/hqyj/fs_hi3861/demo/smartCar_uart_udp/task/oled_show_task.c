@@ -19,6 +19,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "hi_uart.h"
 #include "hi_io.h"
@@ -109,8 +110,8 @@ void oled_show_task(void)
             memset_s((char *)oledShowBuff, sizeof(oledShowBuff), 0, sizeof(oledShowBuff));
             if (sprintf_s((char *)oledShowBuff, sizeof(oledShowBuff), "car: %s",
                           get_CurrentCarStatus(systemValue)) > 0) {
-				SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, oledShowBuff, TEXT_SIZE_16);
-			}
+			    SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, oledShowBuff, TEXT_SIZE_16);
+            }
             last_car_status = systemValue.car_status;
         }
 
@@ -118,8 +119,8 @@ void oled_show_task(void)
         memset_s((char *)oledShowBuff, sizeof(oledShowBuff), 0, sizeof(oledShowBuff));
         if (sprintf_s((char *)oledShowBuff, sizeof(oledShowBuff), "L: %04d R: %04d", systemValue.left_motor_speed,
                       systemValue.right_motor_speed) > 0) {
-			SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_3, oledShowBuff, TEXT_SIZE_16);	
-		}
+            SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_3, oledShowBuff, TEXT_SIZE_16);	
+        }
         
         /* 车的状态检测 电池电量小于10V时 */
         if (systemValue.battery_voltage <= MIN_BATTERY_VOL) {
@@ -130,11 +131,7 @@ void oled_show_task(void)
                 systemValue.car_status = CAR_STATUS_OFF;
                 uart_send_buff("{\"control\":{\"power\":\"off\"}}", strlen("{\"control\":{\"power\":\"off\"}}"));
                 buzzer_status ^= 0x01;
-                if (buzzer_status) {
-                    set_buzzer(true);
-                } else {
-                    set_buzzer(false);
-                }
+                buzzer_status ? set_buzzer(true) : set_buzzer(false);
             }
         }
 
@@ -143,11 +140,7 @@ void oled_show_task(void)
             systemValue.car_status = CAR_STATUS_OFF;
             uart_send_buff("{\"control\":{\"turn\":\"stop\"}}", strlen("{\"control\":{\"turn\":\"stop\"}}"));
             buzzer_status ^= 0x01;
-            if (buzzer_status) {
-                set_buzzer(true);
-            } else {
-                set_buzzer(false);
-            }
+            buzzer_status ? set_buzzer(true) : set_buzzer(false);
         } else {
             set_buzzer(false); // 关闭蜂鸣器
         }
@@ -155,11 +148,7 @@ void oled_show_task(void)
         if (!(t_times % COEFFICIENT_5)) {
             // 500ms    系统状态指示灯
             led_status ^= 0x01;
-            if (led_status) {
-                set_led(true);
-            } else {
-                set_led(false);
-            }
+            led_status ? set_led(true) : set_led(false);
         }
         t_times++;
         usleep(OLED_SHOW_TASK_TIME);

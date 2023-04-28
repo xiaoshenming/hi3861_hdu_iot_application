@@ -64,6 +64,7 @@ osThreadId_t task01_id;
 osThreadId_t task02_id;
 #define TASK02_STACK_SIZE (1024 * 5)
 #define TASK1_DELAY_TIME (200 * 1000) // us
+uint8_t displayBuffer[50] = {0};
 /**
  * @brief 按键中断回调函数
  * @note   当按键按下的时候才会触发
@@ -74,10 +75,66 @@ hi_void gpio_callback(hi_void *arg)
 {
     page_num++;
 }
+void page01(void)
+{
+    SHT20_ReadData(&sensorData.temperature, &sensorData.humidity);
+    AP3216C_ReadData(&sensorData.infrared, &sensorData.light, &sensorData.proximity);
+    memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
+    if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer),
+                  "T:%.1fC H:%.1f%%", sensorData.temperature, sensorData.humidity) > 0) {
+        SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_0, displayBuffer, TEXT_SIZE_16);
+    }
 
+    memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
+    if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "ir:%04d", sensorData.infrared) > 0) {
+        SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_1, displayBuffer, TEXT_SIZE_16);
+    }
+
+    memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
+    if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "ps:%04d", sensorData.proximity) > 0) {
+        SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, displayBuffer, TEXT_SIZE_16);
+    }
+
+    memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
+    if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "Lux:%04d", sensorData.light) > 0) {
+        SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_3, displayBuffer, TEXT_SIZE_16);
+    }
+    sensorData.led ^= 0x01;
+    sensorData.led ? set_led(true) : set_led(false);
+    sensorData.fan ^= 0x01;
+    sensorData.fan ? set_fan(true) : set_fan(false);
+    sensorData.buzzer ^= 0x01;
+    sensorData.buzzer ? set_buzzer(true) : set_buzzer(false);
+    rgb_value ^= 0xFF;
+    AW2013_Control_RGB(rgb_value, rgb_value, rgb_value);
+}
+void page02(void)
+{
+    set_led(false);
+    set_buzzer(true);
+    set_fan(true);
+    AW2013_Control_RGB(0, 0, 0);
+
+    /* 显示电池电压 距离 左轮 右轮 */
+    memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
+    if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "L_ENC: %05d", sensorData.enc_l) > 0) {
+        SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_0, displayBuffer, TEXT_SIZE_16);
+    }
+    memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
+    if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "R_ENC: %05d", sensorData.enc_r) > 0) {
+        SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_1, displayBuffer, TEXT_SIZE_16);
+    }
+    memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
+    if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "DC: %05dmV", sensorData.batteryVoltage) > 0) {
+        SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, displayBuffer, TEXT_SIZE_16);
+    }
+    memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
+    if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "Dis: %05dmm", sensorData.distance) > 0) {
+        SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_3, displayBuffer, TEXT_SIZE_16);
+    }
+}
 void task01(void)
 {
-    uint8_t displayBuffer[50] = {0};
     while (1) {
         if (last_page_num != page_num) {
             SSD1306_CLS(); // 清屏
@@ -85,84 +142,11 @@ void task01(void)
         last_page_num = page_num;
 
         if (!(page_num % PAGE_COEFFICIENT)) { // 第一个页面
-            SHT20_ReadData(&sensorData.temperature, &sensorData.humidity);
-            AP3216C_ReadData(&sensorData.infrared, &sensorData.light, &sensorData.proximity);
-
-            memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
-            if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer),
-                          "T:%.1fC H:%.1f%%", sensorData.temperature, sensorData.humidity) > 0) {
-                SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_0, displayBuffer, TEXT_SIZE_16);
-            }
-
-            memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
-            if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "ir:%04d", sensorData.infrared) > 0) {
-                SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_1, displayBuffer, TEXT_SIZE_16);
-            }
-
-            memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
-            if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "ps:%04d", sensorData.proximity) > 0) {
-                SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, displayBuffer, TEXT_SIZE_16);
-            }
-
-            memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
-            if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "Lux:%04d", sensorData.light) > 0) {
-                SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_3, displayBuffer, TEXT_SIZE_16);
-            }
-            printf("led:%d fan:%d buzzer:%d light:%d proximity:%d infrared:%d temperature:%.1f humidity:%.1f\r\n",
-                   sensorData.led,
-                   sensorData.fan,
-                   sensorData.buzzer,
-                   sensorData.light,
-                   sensorData.proximity,
-                   sensorData.infrared,
-                   sensorData.temperature,
-                   sensorData.humidity);
-
-            sensorData.led ^= 0x01;
-            sensorData.fan ^= 0x01;
-            sensorData.buzzer ^= 0x01;
-            if (sensorData.led) {
-                set_led(true);
-            } else {
-                set_led(false);
-            }
-            if (sensorData.fan) {
-                set_fan(true);
-            } else {
-                set_fan(false);
-            }
-            if (sensorData.buzzer) {
-                set_buzzer(true);
-            } else {
-                set_buzzer(false);
-            }
-            rgb_value ^= 0xFF;
-            AW2013_Control_RGB(rgb_value, rgb_value, rgb_value);
+            page01();
         }
 
         if (page_num % PAGE_COEFFICIENT) { // 第二个页面
-            set_led(false);
-            set_buzzer(true);
-            set_fan(true);
-            AW2013_Control_RGB(0, 0, 0);
-
-            /* 显示电池电压 距离 左轮 右轮 */
-            memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
-            if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "L_ENC: %05d", sensorData.enc_l) > 0) {
-                SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_0, displayBuffer, TEXT_SIZE_16);
-            }
-            memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
-            if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "R_ENC: %05d", sensorData.enc_r) > 0) {
-                SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_1, displayBuffer, TEXT_SIZE_16);
-            }
-            memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
-            if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "DC: %05dmV", sensorData.batteryVoltage) > 0) {
-                SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_2, displayBuffer, TEXT_SIZE_16);
-            }
-            memset_s(displayBuffer, sizeof(displayBuffer), 0, sizeof(displayBuffer));
-            if (sprintf_s((char *)displayBuffer, sizeof(displayBuffer), "Dis: %05dmm", sensorData.distance) > 0) {
-                SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_3, displayBuffer, TEXT_SIZE_16);
-            }
+            page02();
         }
         usleep(TASK1_DELAY_TIME); // 200ms
     }
@@ -205,7 +189,6 @@ void parse_json_data(uint8_t *pstr)
         }
         json_status = NULL;
     }
-
     cJSON_Delete(json_root);
     json_root = NULL;
 }
@@ -234,8 +217,6 @@ void task02(void)
 
 static void test_board_example(void)
 {
-    printf("Enter test_board_example()!\r\n");
-
     // 外设的初始化
     PCF8574_Init();
     AW2013_Init(); // 三色LED灯的初始化

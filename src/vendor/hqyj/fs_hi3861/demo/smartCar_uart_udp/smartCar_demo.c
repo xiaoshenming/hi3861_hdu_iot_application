@@ -134,12 +134,10 @@ static void smartCar_example(void)
         sleep(1);
         SSD1306_CLS(); // 清屏
     }
-    printf("nfc connect wifi is SUCCESS\r\n");
     oled_consle_log("wifi yes.");
     sleep(1);
 
     /********************************** 创建UDP服务端 **********************************/
-
     printf("wifi IP: %s", WiFi_GetLocalIP());
     // 创建socket
     if ((systemValue.udp_socket_fd = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
