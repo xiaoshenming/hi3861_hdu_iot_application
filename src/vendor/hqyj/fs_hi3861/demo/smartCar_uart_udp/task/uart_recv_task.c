@@ -86,19 +86,19 @@ void uart_recv_task(void)
     hi_u8 last_len = 0;
     while (1) {
         // 阻塞接收
-        hi_u32 len = hi_uart_read(HI_UART_IDX_2, uart_buff, sizeof(uart_buff));
-        if (len > 0) {
-            // printf("uart_buff: %s\n", uart_buff);
-            memcpy_s((char *)pbuff, len, (char *)uart_buff, len);
-            pbuff += len;
-            if (len < last_len) {
-                pbuff = recvBuff; // 回到recvBuff的头位置
-                printf("buff: %s\n", recvBuff);
-                parse_json_data(recvBuff);
-                memset_s((char *)recvBuff, sizeof(recvBuff), 0, sizeof(recvBuff));
+        if (memset_s((char *)uart_buff, sizeof(recvBuff), 0, sizeof(uart_buff)) == 0) {
+            hi_u32 len = hi_uart_read(HI_UART_IDX_2, uart_buff, sizeof(uart_buff));
+            if (len > 0) {
+                memcpy_s((char *)pbuff, len, (char *)uart_buff, len);
+                pbuff += len;
+                if (len < last_len) {
+                    pbuff = recvBuff; // 回到recvBuff的头位置
+                    printf("buff: %s\n", recvBuff);
+                    parse_json_data(recvBuff);
+                    memset_s((char *)recvBuff, sizeof(recvBuff), 0, sizeof(recvBuff));
+                }
+                last_len = len;
             }
-            last_len = len;
-            memset_s((char *)uart_buff, sizeof(recvBuff), 0, sizeof(uart_buff));
         }
     }
 }

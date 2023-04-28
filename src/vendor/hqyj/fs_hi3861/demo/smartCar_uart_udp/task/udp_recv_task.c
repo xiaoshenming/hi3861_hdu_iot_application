@@ -157,7 +157,7 @@ void parse_json_data(const char *payload)
             } else if (!strcmp(json_carStatus->valuestring, "right")) {
                 systemValue.car_status = CAR_STATUS_RIGHT;
                 uart_send_control_cmd(systemValue.car_status);
-            } 
+            }
             json_carStatus = NULL;
         }
     }
