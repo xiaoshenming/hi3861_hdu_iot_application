@@ -24,75 +24,101 @@
 #include "hal_bsp_nfc_to_wifi.h"
 
 #define MAX_BUFF 64
-
+#define OFFSET_HEAD 5 // 头部字节偏移
+#define OFFSET_WIFI_NAME 12 // 从数据类型的尾部到WiFi名称数据长度的偏移
+#define OFFSET_WIFI_PASSWD 15 // 从WiFi名称数据的尾部到WiFi密码数据长度的偏移
 /**
  * @brief  使用NFC进行配网
- * @note   驱动NDEF协议中的第一个标签数据，然后进行配网，
+ * @note   驱动NDEF协议中的第一个标签数据，然后进行配网
+ *         配合《NFC调试文档.xlsx》，看下面的程序，更容易看懂
  * @param  *ndefBuff: 标签数据的缓冲区
  * @retval
  */
 uint32_t NFC_configuresWiFiNetwork(uint8_t *ndefBuff)
 {
-    uint8_t wifi_name[MAX_BUFF] = {0};
-    uint8_t wifi_passwd[MAX_BUFF] = {0};
-    uint8_t get_wifi_info_flag = 0;
-
     if (ndefBuff == NULL) {
         printf("NFC_configuresWiFiNetwork to ndefBuff is NULL\r\n");
-        return 1;
+        return HI_ERR_FAILURE;
     }
     uint8_t ret = 0;
-    uint8_t payloadLength = ndefBuff[NDEF_PROTOCOL_DATA_LENGTH_OFFSET]; // 获取数据长度
-    printf("payload Length is %d.\r\n", payloadLength);
+    uint8_t wifi_name[MAX_BUFF] = {0}; // WiFi名称
+    uint8_t wifi_passwd[MAX_BUFF] = {0}; // WiFi密码
+    uint8_t dataType_len = ndefBuff[NDEF_PROTOCOL_DATA_TYPE_LENGTH_OFFSET]; // 获取数据类型长度
+    uint8_t payload_len = ndefBuff[NDEF_PROTOCOL_DATA_LENGTH_OFFSET]; // 获取数据长度
+    uint8_t *dataType_buff = (uint8_t *)malloc(dataType_len + 1); 
 
-    if (ndefBuff[NDEF_PROTOCOL_DATA_TYPE_OFFSET] == 't') {
-        // 查看是不是文本信息
-        uint8_t *payload = (uint8_t *)malloc(payloadLength + 1);
+    if (dataType_buff == NULL) {
+        printf("dataType_buff malloc failed.\r\n");
+        return HI_ERR_FAILURE;
+    } else {
+        memset(dataType_buff, 0, dataType_len + 1);
+        // ndefBuff + OFFSET_HEAD，代表数组地址偏移5个字节
+        memcpy_s(dataType_buff, dataType_len + 1, ndefBuff + OFFSET_HEAD, dataType_len);
+        printf("Use AppleIOS system..........\n");
+        printf("dataType: %s\n", dataType_buff);
+        // 使用IOS系统的 NFC Tools软件进行配网
+        if (strcmp(dataType_buff, "application/vnd.wfa.wsc") == 0) {
+            // 判断是不是WiFi配网数据
+            uint8_t wifi_name_len = ndefBuff[OFFSET_HEAD + dataType_len + OFFSET_WIFI_NAME];
+            memcpy_s(wifi_name, MAX_BUFF, 
+                     ndefBuff + OFFSET_HEAD + dataType_len + OFFSET_WIFI_NAME + 1, wifi_name_len);
+
+            uint8_t wifi_passwd_len = ndefBuff[OFFSET_HEAD + dataType_len + OFFSET_WIFI_NAME + 1\
+                                               + wifi_name_len + OFFSET_WIFI_PASSWD];
+            memcpy_s(wifi_passwd, MAX_BUFF, 
+                     ndefBuff + OFFSET_HEAD + dataType_len + OFFSET_WIFI_NAME + \
+                     wifi_name_len + OFFSET_WIFI_PASSWD + 2, wifi_passwd_len);
+            ret = 1; // 成功获取到WiFi名称和密码
+        }
+        else {
+            ret = 0;
+        }
+    }
+    free(dataType_buff);
+    dataType_buff = NULL;
+
+    // 使用微信小程序进行配网
+    if ((ret == 0) && (ndefBuff[NDEF_PROTOCOL_DATA_TYPE_OFFSET] == 't')) {
+        uint8_t *payload = (uint8_t *)malloc(payload_len + 1);
         if (payload == NULL) {
             printf("payload malloc failed.\r\n");
-            return 1;
+            return HI_ERR_FAILURE;
         }
-
-        memset_s(payload, payloadLength + 1, 0, payloadLength);
-        memcpy_s(payload, payloadLength + 1, ndefBuff + NDEF_PROTOCOL_VALID_DATA_OFFSET, payloadLength);
-        payload[payloadLength] = '\0';
-
+        memset(payload, 0, payload_len + 1);
+        memcpy_s(payload, payload_len + 1, ndefBuff + NDEF_PROTOCOL_VALID_DATA_OFFSET, payload_len);
+        printf("Use Wechat system..........\n");
         printf("payload = %s\r\n", payload);
+
         cJSON *root = cJSON_Parse(payload);
         if (root) {
             cJSON *ssid = cJSON_GetObjectItem(root, "ssid");
-            cJSON *passwd = cJSON_GetObjectItem(root, "passwd");
-            if (ssid != NULL && passwd != NULL) {
-                printf("ssid = %s, passwd = %s\r\n", ssid->valuestring, passwd->valuestring);
-                strcpy_s(wifi_name, MAX_BUFF, ssid->valuestring);
-                strcpy_s(wifi_passwd, MAX_BUFF, passwd->valuestring);
-                get_wifi_info_flag = 1;
+            cJSON *password = cJSON_GetObjectItem(root, "passwd");
+            if (ssid != NULL && password != NULL) {
+                printf("ssid = %s, password = %s", ssid->valuestring, password->valuestring);
+                strcpy_s(wifi_name, strlen(ssid->valuestring), ssid->valuestring);
+                strcpy_s(wifi_passwd, strlen(password->valuestring), password->valuestring);
+                ret = 1; // 成功获取到WiFi名称和密码
             }
             ssid = NULL;
-            passwd = NULL;
+            password = NULL;
         }
         cJSON_Delete(root);
         root = NULL;
-
         free(payload);
         payload = NULL;
-
-        // 连接wifi
-        if (get_wifi_info_flag) {
-            if (WIFI_SUCCESS == WiFi_connectHotspots(wifi_name, wifi_passwd)) {
-                printf("thongth to nfc connect wifi is success.\r\n");
-                ret = 0;
-                get_wifi_info_flag = 0;
-            } else {
-                printf("thongth to nfc connect wifi is failed.\r\n");
-                ret = 1;
-                get_wifi_info_flag = 0;
-            }
-        }
-    } else {
-        printf("data type is not 't'!\r\n");
-        return 1;
     }
 
+    if (ret) {
+       	printf("wifi_name: %s\n", wifi_name);
+        printf("wifi_passwd: %s\n", wifi_passwd);
+        // 连接wifi
+        if( WIFI_SUCCESS == WiFi_connectHotspots(wifi_name, wifi_passwd)) {
+           printf("thongth to nfc connect wifi is success.\r\n");
+           ret = 0;
+        } else {
+           printf("thongth to nfc connect wifi is failed.\r\n");
+           ret = 1;
+        }
+    }
     return ret;
 }

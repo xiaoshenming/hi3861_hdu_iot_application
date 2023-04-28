@@ -54,9 +54,6 @@
 // 发布 设备属性数据的主题
 #define MQTT_TOPIC_PUB_PROPERTIES "$oc/devices/%s/sys/properties/report"
 #define MALLOC_MQTT_TOPIC_PUB_PROPERTIES "$oc/devices//sys/properties/report"
-#define MQTT_PAYLOAD_PUB "{\"services\":[{\"service_id\":\"attribute\",\"properties\": \
-\"{\"buzzer\":\"%s\",\"fan\":\"%s\",\"led\":\"%s\",\"temperature\":%.1f,\"humidity\":%.1f, \
-\"light\":%d,\"proximity\":%d,\"infrared\":%d}}]}"
 
 #define TASK_STACK_SIZE (1024 * 10)
 #define MsgQueueObjectNumber 16 // 定义消息队列对象的个数
@@ -77,18 +74,61 @@ osThreadId_t mqtt_recv_task_id; // mqtt 接收数据任务ID
 #define MQTT_RECV_TASK_TIME 1 // s
 #define TASK_INIT_TIME 2 // s
 #define DISPLAY_BUFF_MAX 64
-#define MQTT_TOPIC_MAX 128
-uint8_t publish_topic[MQTT_TOPIC_MAX] = {0};
+#define MQTT_DATA_MAX 256
+uint8_t publish_topic[MQTT_DATA_MAX] = {0};
+uint8_t mqtt_data[MQTT_DATA_MAX] = {0};
 uint8_t displayBuffer[DISPLAY_BUFF_MAX] = {0};
+
+/**
+ * @brief 组JSON数据
+ */
+int Packaged_json_data(void)
+{
+    cJSON *root = NULL, *array = NULL, *services = NULL;
+    cJSON *properties = NULL;
+    int ret = 0;
+
+    // 组JSON数据
+    root = cJSON_CreateObject(); // 创建一个对象
+    services = cJSON_CreateArray();
+    cJSON_AddItemToObject(root, "services", services);
+    array = cJSON_CreateObject();
+    cJSON_AddStringToObject(array, "service_id", "attribute");
+    properties = cJSON_CreateObject();
+    cJSON_AddItemToObject(array, "properties", properties);
+    cJSON_AddStringToObject(properties, "buzzer", sensorData.buzzer ? "ON" : "OFF");
+    cJSON_AddStringToObject(properties, "fan", sensorData.fan ? "ON" : "OFF");
+    cJSON_AddStringToObject(properties, "led", sensorData.led ? "ON" : "OFF");
+    cJSON_AddNumberToObject(properties, "humidity", (int)sensorData.humidity);
+    cJSON_AddNumberToObject(properties, "temperature", (int)sensorData.temperature);
+    cJSON_AddNumberToObject(properties, "light", sensorData.light);
+    cJSON_AddNumberToObject(properties, "proximity", sensorData.proximity);
+    cJSON_AddNumberToObject(properties, "infrared", sensorData.infrared);
+    cJSON_AddItemToArray(services, array);  // 将对象添加到数组中
+
+    /* 格式化打印创建的带数组的JSON对象 */
+    char *str_print = cJSON_PrintUnformatted(root);
+    if (str_print != NULL) {
+        // printf("%s\n", str_print);
+        strcpy_s(mqtt_data, strlen(str_print), str_print);
+        cJSON_free(str_print);
+        ret = 0;
+    } else {
+        ret = -1;
+    }
+    if (root != NULL) {
+        cJSON_Delete(root);
+    } else {
+        ret = -1;
+    }
+    properties = str_print = root = array = services = NULL;
+}
 
 /**
  * @brief MQTT  发布消息任务
  */
 void mqtt_send_task(void)
 {
-    cJSON *root = NULL, *array = NULL, *services = NULL;
-    cJSON *properties = NULL;
-    
     while (1) {
         // 获取传感器的数据
         SHT20_ReadData(&sensorData.temperature, &sensorData.humidity);
@@ -115,43 +155,102 @@ void mqtt_send_task(void)
             SSD1306_ShowStr(OLED_TEXT16_COLUMN_0, OLED_TEXT16_LINE_3, displayBuffer, TEXT_SIZE_16);
         }
         // 组Topic
-        memset_s(publish_topic, MQTT_TOPIC_MAX, 0, MQTT_TOPIC_MAX);
-        if (sprintf_s(publish_topic, MQTT_TOPIC_MAX, MQTT_TOPIC_PUB_PROPERTIES, DEVICE_ID) > 0) {
+        memset_s(publish_topic, MQTT_DATA_MAX, 0, MQTT_DATA_MAX);
+        if (sprintf_s(publish_topic, MQTT_DATA_MAX, MQTT_TOPIC_PUB_PROPERTIES, DEVICE_ID) > 0) {
             // 组JSON数据
-            root = cJSON_CreateObject(); // 创建一个对象
-            services = cJSON_CreateArray();
-            cJSON_AddItemToObject(root, "services", services);
-            array = cJSON_CreateObject();
-            cJSON_AddStringToObject(array, "service_id", "attribute");
-            properties = cJSON_CreateObject();
-            cJSON_AddItemToObject(array, "properties", properties);
-            cJSON_AddStringToObject(properties, "buzzer", sensorData.buzzer ? "ON" : "OFF");
-            cJSON_AddStringToObject(properties, "fan", sensorData.fan ? "ON" : "OFF");
-            cJSON_AddStringToObject(properties, "led", sensorData.led ? "ON" : "OFF");
-            cJSON_AddNumberToObject(properties, "humidity", (int)sensorData.humidity);
-            cJSON_AddNumberToObject(properties, "temperature", (int)sensorData.temperature);
-            cJSON_AddNumberToObject(properties, "light", sensorData.light);
-            cJSON_AddNumberToObject(properties, "proximity", sensorData.proximity);
-            cJSON_AddNumberToObject(properties, "infrared", sensorData.infrared);
-            cJSON_AddItemToArray(services, array);  // 将对象添加到数组中
-
-            /* 格式化打印创建的带数组的JSON对象 */
-            char *str_print = cJSON_PrintUnformatted(root);
-            if (str_print != NULL) {
-                // printf("%s\n", str_print);
-                // 发布消息
-                MQTTClient_pub(publish_topic, str_print, strlen((char *)str_print));
-                cJSON_free(str_print);
-            }
-
-            if (root != NULL) {
-                cJSON_Delete(root);
-            }
-
-            properties = str_print = root = array = services = NULL;
+            Packaged_json_data();
+            // 发布消息
+            MQTTClient_pub(publish_topic, mqtt_data, strlen((char *)mqtt_data));
         }
     }
     sleep(MQTT_SEND_TASK_TIME);
+}
+
+/**
+ * @brief 解析JSON数据
+ */
+int Parsing_json_data(const char *payload)
+{
+    cJSON *root = NULL;
+    cJSON *command_name = NULL;
+    cJSON *paras = NULL;
+    cJSON *value = NULL;
+    cJSON *red = NULL;
+    cJSON *green = NULL;
+    cJSON *blue = NULL;
+    int ret_code = 1;
+
+    root = cJSON_Parse((const char *)payload);
+    if (root) {
+        // 解析JSON数据
+        command_name = cJSON_GetObjectItem(root, "command_name");
+        paras = cJSON_GetObjectItem(root, "paras");
+        if (command_name) {
+            if (!strcmp(command_name->valuestring, "led")) {
+                value = cJSON_GetObjectItem(paras, "value");
+                if (!strcmp(value->valuestring, "ON")) {
+                    printf("led on\r\n");
+                    set_led(true);
+                    sensorData.led = 1;
+                    ret_code = 0; // 0为成功
+                } else if (!strcmp(value->valuestring, "OFF")) {
+                    printf("led off\r\n");
+                    set_led(false);
+                    sensorData.led = 0;
+                    ret_code = 0; // 0为成功
+                }
+            } else if (!strcmp(command_name->valuestring, "fan")) {
+                value = cJSON_GetObjectItem(paras, "value");
+                if (!strcmp(value->valuestring, "ON")) {
+                    printf("fan on\r\n");
+                    set_fan(true);
+                    sensorData.fan = 1;
+                    ret_code = 0; // 0为成功
+                } else if (!strcmp(value->valuestring, "OFF")) {
+                    printf("fan off\r\n");
+                    set_fan(false);
+                    sensorData.fan = 0;
+
+                    ret_code = 0; // 0为成功
+                }
+            } else if (!strcmp(command_name->valuestring, "buzzer")) {
+                value = cJSON_GetObjectItem(paras, "value");
+                if (!strcmp(value->valuestring, "ON")) {
+                    printf("buzzer on\r\n");
+                    set_buzzer(true);
+                    sensorData.buzzer = 1;
+
+                    ret_code = 0; // 0为成功
+                } else if (!strcmp(value->valuestring, "OFF")) {
+                    printf("buzzer off\r\n");
+                    set_buzzer(false);
+                    sensorData.buzzer = 0;
+
+                    ret_code = 0; // 0为成功
+                }
+            } else if (!strcmp(command_name->valuestring, "RGB")) {
+                red = cJSON_GetObjectItem(paras, "red");
+                green = cJSON_GetObjectItem(paras, "green");
+                blue = cJSON_GetObjectItem(paras, "blue");
+
+                printf("red:%d  green:%d  blue:%d\r\n", red->valueint, green->valueint, blue->valueint);
+                AW2013_Control_Red(red->valueint);
+                AW2013_Control_Green(green->valueint);
+                AW2013_Control_Blue(blue->valueint);
+                ret_code = 0; // 0为成功
+            }
+        }        
+    }
+    cJSON_Delete(root);
+    root = NULL;
+    command_name = NULL;
+    paras = NULL;
+    value = NULL;
+    red = NULL;
+    green = NULL;
+    blue = NULL;
+
+    return ret_code;
 }
 
 /**
@@ -173,106 +272,29 @@ int8_t mqttClient_sub_callback(unsigned char *topic, unsigned char *payload)
                        topic + strlen(DEVICE_ID) + strlen("$oc/devices//sys/commands/request_id="));
         if (ret == 0) {
             printf("request_id: %s\r\n", request_id);
+            // 解析JSON数据
+            ret_code = Parsing_json_data(payload);
 
-            cJSON *root = NULL;
-            cJSON *command_name = NULL;
-            cJSON *paras = NULL;
-            cJSON *value = NULL;
-            cJSON *red = NULL;
-            cJSON *green = NULL;
-            cJSON *blue = NULL;
+            // 向云端发送命令设置的返回值
+            char *request_topic = (char *)malloc(strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) +
+                                                strlen(DEVICE_ID) + sizeof(request_id) + 1);
+            if (request_topic != NULL) {
+                memset_s(request_topic,
+                         strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + sizeof(request_id) + 1,
+                         0,
+                         strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + sizeof(request_id) + 1);
+                sprintf_s(request_topic,
+                          strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + sizeof(request_id) + 1,
+                          MQTT_TOPIC_PUB_COMMANDS_REQ, DEVICE_ID, request_id);
 
-            root = cJSON_Parse((const char *)payload);
-            if (root) {
-                // 解析JSON数据
-                command_name = cJSON_GetObjectItem(root, "command_name");
-                paras = cJSON_GetObjectItem(root, "paras");
-                if (command_name) {
-                    if (!strcmp(command_name->valuestring, "led")) {
-                        value = cJSON_GetObjectItem(paras, "value");
-                        if (!strcmp(value->valuestring, "ON")) {
-                            printf("led on\r\n");
-                            set_led(true);
-                            sensorData.led = 1;
-
-                            ret_code = 0; // 0为成功
-                        } else if (!strcmp(value->valuestring, "OFF")) {
-                            printf("led off\r\n");
-                            set_led(false);
-                            sensorData.led = 0;
-
-                            ret_code = 0; // 0为成功
-                        }
-                    } else if (!strcmp(command_name->valuestring, "fan")) {
-                        value = cJSON_GetObjectItem(paras, "value");
-                        if (!strcmp(value->valuestring, "ON")) {
-                            printf("fan on\r\n");
-                            set_fan(true);
-                            sensorData.fan = 1;
-
-                            ret_code = 0; // 0为成功
-                        } else if (!strcmp(value->valuestring, "OFF")) {
-                            printf("fan off\r\n");
-                            set_fan(false);
-                            sensorData.fan = 0;
-
-                            ret_code = 0; // 0为成功
-                        }
-                    } else if (!strcmp(command_name->valuestring, "buzzer")) {
-                        value = cJSON_GetObjectItem(paras, "value");
-                        if (!strcmp(value->valuestring, "ON")) {
-                            printf("buzzer on\r\n");
-                            set_buzzer(true);
-                            sensorData.buzzer = 1;
-
-                            ret_code = 0; // 0为成功
-                        } else if (!strcmp(value->valuestring, "OFF")) {
-                            printf("buzzer off\r\n");
-                            set_buzzer(false);
-                            sensorData.buzzer = 0;
-
-                            ret_code = 0; // 0为成功
-                        }
-                    } else if (!strcmp(command_name->valuestring, "RGB")) {
-                        red = cJSON_GetObjectItem(paras, "red");
-                        green = cJSON_GetObjectItem(paras, "green");
-                        blue = cJSON_GetObjectItem(paras, "blue");
-
-                        printf("red:%d  green:%d  blue:%d\r\n", red->valueint, green->valueint, blue->valueint);
-                        AW2013_Control_Red(red->valueint);
-                        AW2013_Control_Green(green->valueint);
-                        AW2013_Control_Blue(blue->valueint);
-                        ret_code = 0; // 0为成功
-                    }
+                if (ret_code == 0) {
+                    MQTTClient_pub(request_topic, "{\"result_code\":0}", strlen("{\"result_code\":0}"));
+                } else if (ret_code == 1) {
+                    MQTTClient_pub(request_topic, "{\"result_code\":1}", strlen("{\"result_code\":1}"));
                 }
-
-                // 向云端发送命令设置的返回值
-                char *request_topic = (char *)malloc(strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) +
-                                                    strlen(DEVICE_ID) + sizeof(request_id) + 1);
-                if (request_topic != NULL) {
-                    memset_s(request_topic,
-                            strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + sizeof(request_id) + 1,
-                            0,
-                            strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + sizeof(request_id) + 1);
-                    sprintf_s(request_topic,
-                            strlen(DEVICE_ID) + strlen(MALLOC_MQTT_TOPIC_PUB_COMMANDS_REQ) + sizeof(request_id) + 1,
-                            MQTT_TOPIC_PUB_COMMANDS_REQ, DEVICE_ID, request_id);
-
-                    if (ret_code == 0) {
-                        MQTTClient_pub(request_topic, "{\"result_code\":0}", strlen("{\"result_code\":0}"));
-                    } else if (ret_code == 1) {
-                        MQTTClient_pub(request_topic, "{\"result_code\":1}", strlen("{\"result_code\":1}"));
-                    }
-                    free(request_topic);
-                }
+                free(request_topic);
+                request_topic = NULL;
             }
-            root = NULL;
-            command_name = NULL;
-            paras = NULL;
-            value = NULL;
-            red = NULL;
-            green = NULL;
-            blue = NULL;
         }
     }
     return 0;

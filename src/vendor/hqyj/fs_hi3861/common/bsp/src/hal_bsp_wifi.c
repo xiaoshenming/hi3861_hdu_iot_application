@@ -181,35 +181,33 @@ WifiErrorCode WiFi_connectHotspots(const char *ssid, const char *psk)
     strcpy_s(wifiDeviceConfig.preSharedKey, strlen(psk) + 1, psk);        // WiFi的密码
     wifiDeviceConfig.securityType = WIFI_SEC_TYPE_PSK; // WiFi的安全性
     result = AddDeviceConfig(&wifiDeviceConfig, &wifiResult);
-    if (result == WIFI_SUCCESS) {
-        if (ConnectTo(wifiResult) == WIFI_SUCCESS && WaitConnectResult() == 1) {
-            printf("wifi connect succeed!.\r\n");
-            g_lwip_netif = netifapi_netif_find(SELECT_WLAN_PORT);
-            // 启动DHCP
-            if (g_lwip_netif) {
-                dhcp_start(g_lwip_netif);
-                printf("begain to dhcp.\r\n");
-            }
-
-            // 等待DHCP
-            for (;;) {
-                if (dhcp_is_bound(g_lwip_netif) == ERR_OK) {
-                    printf("<-- DHCP state:OK -->.\r\n");
-                    Sta_GetWiFiIP(g_lwip_netif, g_IP_Addr);
-                    printf("connect wifi IP addr: %s.\r\n", g_IP_Addr);
-                    break;
-                }
-                printf("#");
-                Timeout--;
-                if (Timeout == 0) {
-                    // 超时
-                    return ERROR_WIFI_BUSY;
-                }
-                sleep(1);
-            }
-        } else {
-            return ERROR_WIFI_BUSY;
+    if ((result == WIFI_SUCCESS) && (ConnectTo(wifiResult) == WIFI_SUCCESS) && (WaitConnectResult() == 1)) {
+        printf("wifi connect succeed!.\r\n");
+        g_lwip_netif = netifapi_netif_find(SELECT_WLAN_PORT);
+        // 启动DHCP
+        if (g_lwip_netif) {
+            dhcp_start(g_lwip_netif);
+            printf("begain to dhcp.\r\n");
         }
+
+        // 等待DHCP
+        for (;;) {
+            if (dhcp_is_bound(g_lwip_netif) == ERR_OK) {
+                printf("<-- DHCP state:OK -->.\r\n");
+                Sta_GetWiFiIP(g_lwip_netif, g_IP_Addr);
+                printf("connect wifi IP addr: %s.\r\n", g_IP_Addr);
+                break;
+            }
+            printf("#");
+            Timeout--;
+            if (Timeout == 0) {
+                // 超时
+                return ERROR_WIFI_BUSY;
+            }
+            sleep(1);
+        }
+    } else {
+        return ERROR_WIFI_BUSY;
     }
     return WIFI_SUCCESS;
 }

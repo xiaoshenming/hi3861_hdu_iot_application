@@ -24,27 +24,27 @@
 
 extern unsigned char bmp_16X32_number[10][64];
 extern unsigned char bmp_8X16_number[10][16];
-extern unsigned char bmp_16X16_dian[];
+extern unsigned char bmp_16X16_dian[32];
 
 #if (smartTemp)
-extern unsigned char bmp_16X16_sheShiDu[];
-extern unsigned char bmp_16X16_baifenhao[];
-extern unsigned char bmp_48X48_1_mi_yan_xiao[];
-extern unsigned char bmp_48X48_2_wei_xiao[];
-extern unsigned char bmp_48X48_3_wu_biao_qing[];
-extern unsigned char bmp_48X48_4_nan_guo[];
-extern unsigned char bmp_48X48_5_ku_qi[];
+extern unsigned char bmp_16X16_sheShiDu[32];
+extern unsigned char bmp_16X16_baifenhao[32];
+extern unsigned char bmp_48X48_1_mi_yan_xiao[288];
+extern unsigned char bmp_48X48_2_wei_xiao[288];
+extern unsigned char bmp_48X48_3_wu_biao_qing[288];
+extern unsigned char bmp_48X48_4_nan_guo[288];
+extern unsigned char bmp_48X48_5_ku_qi[288];
 #endif
 
 #if (smartDistance || ReversingRadar)
-extern unsigned char bmp_32X32_cm[];
+extern unsigned char bmp_32X32_cm[128];
 #endif
 
 #if (smartSecurityDefense)
-extern unsigned char bmp_32X32_BaoJing[];
-extern unsigned char bmp_32X32_No_BaoJing[];
-extern unsigned char bmp_32X32_Body[];
-extern unsigned char bmp_32X32_No_Body[];
+extern unsigned char bmp_32X32_BaoJing[128];
+extern unsigned char bmp_32X32_No_BaoJing[128];
+extern unsigned char bmp_32X32_Body[128];
+extern unsigned char bmp_32X32_No_Body[128];
 #endif
 
 #if (smartFarm)

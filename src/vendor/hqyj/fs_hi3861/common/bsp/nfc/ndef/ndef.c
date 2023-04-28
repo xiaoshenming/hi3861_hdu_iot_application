@@ -153,7 +153,7 @@ static bool writeUserPayload(int16_t payloadPtr, const NDEFDataStr *data, Uncomp
             if (ret == false) {
                 errNo = NT3HERROR_WRITE_NDEF_TEXT;
             }
-            goto end;
+            return ret;
         }
 
         if (addedPayload < data->rtdPayloadlength) {
@@ -165,21 +165,16 @@ static bool writeUserPayload(int16_t payloadPtr, const NDEFDataStr *data, Uncomp
             } else {
                 memcpy_s(nfcPageBuffer, sizeof(nfcPageBuffer), &data->rtdPayload[addedPayload], NFC_PAGE_SIZE);
             }
-
             addedPayload += NFC_PAGE_SIZE;
             ret = NT3HWriteUserData(addPage->page, nfcPageBuffer);
-
             if (ret == false) {
                 errNo = NT3HERROR_WRITE_NDEF_TEXT;
-                goto end;
+                return ret;
             }
         } else {
             endRecord = true;
         }
     }
-
-end:
-    return ret;
 }
 
 typedef int16_t (*addFunct_T)(UncompletePageStr *page, const NDEFDataStr *data, RecordPosEnu rtdPosition);
@@ -190,16 +185,13 @@ bool NT3HwriteRecord(const NDEFDataStr *data)
     uint8_t recordLength = 0, mbMe;
     UncompletePageStr addPage;
     addPage.page = 0;
-
     // calculate the last used page
     if (data->ndefPosition != NDEFFirstPos) {
         NT3HReadHeaderNfc(&recordLength, &mbMe);
         addPage.page = (recordLength + sizeof(NDEFHeaderStr) + 1) / NFC_PAGE_SIZE;
-
         // remove the NDEF_END_BYTE byte because it will overwrite by the new Record
         addPage.usedBytes = (recordLength + sizeof(NDEFHeaderStr) + 1) % NFC_PAGE_SIZE - 1;
     }
-
     // call the appropriate function and consider the pointer
     // within the NFC_PAGE_SIZE that need to be used
     int16_t payloadPtr = addFunct[data->ndefPosition](&addPage, data, data->ndefPosition);
