@@ -26,7 +26,7 @@
 #define RED_LED_PIN_NAME 10
 #define RED_LED_PIN_FUNCTION WIFI_IOT_IO_FUNC_GPIO_10_GPIO
 
-#define RESOLUTION 4096
+#define IOT_PWM_DUTY_MAX  100
 #define PWM_FREQ_DIVITION 64000
 #define DELAY_US 250000
 #define STACK_SIZE (4096)
@@ -43,7 +43,7 @@ static void PWMLedDemoTask(void)
 
     while (g_count) {
         // use PWM control RED LED brightness
-        for (int i = 1; i <= RESOLUTION; i *= DOUBLE) {
+        for (int i = 1; i < IOT_PWM_DUTY_MAX; i *= DOUBLE) {
             IoTPwmStart(PWM_PORT_NUM, i, PWM_FREQ_DIVITION);
             usleep(DELAY_US);
             IoTPwmStop(PWM_PORT_NUM);
