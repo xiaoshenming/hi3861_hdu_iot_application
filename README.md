@@ -237,9 +237,12 @@ HiSpark M1提供了以下Demo供开发参考 ([下载pdf版本指导文档)](src
 | environment_demo    | 监测温湿度                       | 4.8      |
 | histreaming_demo    | 手机控制LED灯                    | 4.10     |
 
-### HiHope Pegesus和BearPI Nano
+### HiHope Pegesus, BearPI Nano和华清远见FS-Hi3861
 
-HiHope Pegesus和BearPI Nano的Demo, 请分别参阅Vendor目录下[Hihope Pegesus的参考文档](src/vendor/hihope/hispark_pegasus/Hihope-hispark_pegasus-十分钟上手.md)或[BearPI Nano的参考文档](src/vendor/bearpi/bearpi_hm_nano/doc/BearPi-HM_Nano开发指导.md). 
+HiHope Pegesus, BearPI Nano, 华清远见Fs-Hi3861等Vendor的Demo, 请分别参阅
++ [Hihope Pegesus的参考文档](src/vendor/hihope/hispark_pegasus/Hihope-hispark_pegasus-十分钟上手.md)
++ [BearPI Nano的参考文档](src/vendor/bearpi/bearpi_hm_nano/doc/BearPi-HM_Nano开发指导.md)
++ [华清远见FS-Hi3861的参考文档](<src/vendor/hqyj/fs_hi3861/doc/华清远见 FS_Hi3861开发指导.md>)
 
 
 
