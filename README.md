@@ -14,7 +14,7 @@
 
 这是一个嵌入式软件项目,你需要有一块Hi3861V100的开发板. 
 如果你只是想使用这个项目的SDK开发应用,那么基本上任何一块基于Hi3861V100的开发板都是可以的. 
-如果你需要运行Vendor目录下的Demo, 目前支持3种类型的开发板: 
+如果你需要运行Vendor目录下的Demo, 目前支持5种类型的开发板: 
 
 - 上海海思 HiSpark T1
 <div align=center><img src="doc/pic/iot_car_t1.jpg" alt="iot_car" height="200" />    <img src="doc/pic/balance_car.jpg" alt="hisaprk_link" height="200"/>   </div>
