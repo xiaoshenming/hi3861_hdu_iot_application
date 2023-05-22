@@ -30,9 +30,8 @@
 - [小熊派 BearPI Nano](src/vendor/bearpi/bearpi_hm_nano/doc/BearPi-HM_Nano开发指导.md)
 <div align=center><img src="src/vendor/bearpi/bearpi_hm_nano/doc/figures/00_public/BearPi-HM_Nano_Info.png" alt="BearPi Nano" width="400" /> </div>
 
-
-
-
+- [华清远见 FS-Hi3861](src/vendor/hqyj/fs_hi3861/doc/华清远见 FS_Hi3861开发指导.md)
+<div align=center><img src="src/vendor/hqyj/fs_hi3861/doc/figures/image-20230406094834780.png" alt="HQYJ FS-Hi3861" width="400" /> </div>
 
 ## 快速上手
 
