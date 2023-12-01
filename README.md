@@ -54,7 +54,7 @@
 6. 按一下复位键, 现在, 你的第一个OpenHarmony程序已经在你的开发板上运行起来了. :thumbsup:
 #### 导入工程
    1. 下载并解压Hi3861V100编译工具链：
-      https://hispark.obs.cn-east-3.myhuaweicloud.com/DevTools_Hi3861V100_v1.0.zip
+      https://hispark-obs.obs.cn-east-3.myhuaweicloud.com/DevTools_Hi3861V100_v1.0.zip
 
    2. 拉取本项目的SDK代码到本地：
 
