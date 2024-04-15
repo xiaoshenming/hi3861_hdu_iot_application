@@ -79,7 +79,7 @@ DevEco Device Tool工具主要分为如下4个功能区域。
 
 ## 4. 开发工具下载
 
-* 开发工具下载网址：https://hispark.obs.cn-east-3.myhuaweicloud.com/DevTools_Hi3861V100_v1.0.zip
+* 开发工具下载网址：[https://hispark-obs.obs.cn-east-3.myhuaweicloud.com/DevTools_Hi3861V100_v1.0.zip](https://gitee.com/link?target=https%3A%2F%2Fhispark-obs.obs.cn-east-3.myhuaweicloud.com%2FDevTools_Hi3861V100_v1.0.zip)
 
   ![image-20221230151700347](figures/00_public/image-20221230151700347.png)
 
