@@ -2,7 +2,7 @@
 本示例将演示如何在BearPi-HM_Nano开发板上使用E53_SC2读取三轴加速度，设备安装如下图所示。
 
 
-![](/doc/bearpi/figures/C4_e53_sc2_axis/E53_SC2安装.png "E53_SC2安装")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C4_e53_sc2_axis/E53_SC2安装.png "E53_SC2安装")
 ## E53_SC2 API分析
 本案例主要使用了以下API完成三轴加速度读取。
 ### E53SC2Init()
@@ -27,13 +27,13 @@ int E53SC2ReadData(E53SC2Data *ReadData);
 ## 硬件设计
 本案例将用到 E53_SC2 智慧井盖扩展板与 BearPi-HM_Nano 开发板，其中E53_SC2扩展板原理图如下，三轴加速度传感器MPU6050是通过I2C来驱动。
 
-![](/doc/bearpi/figures/C4_e53_sc2_axis/E53_SC2接口.png "E53_SC2接口")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C4_e53_sc2_axis/E53_SC2接口.png "E53_SC2接口")
 
-![](/doc/bearpi/figures/C4_e53_sc2_axis/E53接口电路.png "E53接口电路")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C4_e53_sc2_axis/E53接口电路.png "E53接口电路")
 
 E53_SC2 智慧井盖扩展板与 BearPi-HM_Nano 开发板安装如下图所示。
 
-![](/doc/bearpi/figures/C4_e53_sc2_axis/E53_SC2安装.png "E53_SC2安装")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C4_e53_sc2_axis/E53_SC2安装.png "E53_SC2安装")
 ## 软件设计
 
 **主要代码分析**

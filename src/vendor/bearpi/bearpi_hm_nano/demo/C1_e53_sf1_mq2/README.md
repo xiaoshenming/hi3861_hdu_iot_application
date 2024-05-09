@@ -1,7 +1,7 @@
 # BearPi-HM_Nano开发板传感器驱动开发——MQ2读取烟雾浓度
 本示例将演示如何在BearPi-HM_Nano开发板上使用E53_SF1读取烟雾浓度，当烟雾浓度超标时蜂鸣器发出警报，设备安装如下图所示。
 
-![E53_SF1安装](/doc/bearpi/figures/C1_e53_sf1_mq2/E53_SF1安装.png "E53_SF1安装")
+![E53_SF1安装](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C1_e53_sf1_mq2/E53_SF1安装.png "E53_SF1安装")
 ## E53_SF1 API分析
 本案例主要使用了以下API完成烟雾浓度读取。
 ### E53SF1Init()
@@ -31,13 +31,13 @@ float GetMQ2PPM(void)
 ## 硬件设计
 本案例将用到 E53_SF1 智慧烟感扩展板与 BearPi-HM_Nano 开发板，其中E53_SF1扩展板原理图如下，ADC输出引脚为第五脚，将E53_SF1扩展板插在 BearPi-HM_Nano 开发板上后，该ADC输出引脚与GPIO_13相连接，通过查看芯片手册可知GPIO_13对应的是 ADC Channel 6 ,所以需要编写软件去读取ADC Channel 6的电压实现对烟雾浓度的读取。
 
-![E53_SF1接口](/doc/bearpi/figures/C1_e53_sf1_mq2/E53_SF1接口.png "E53_SF1接口")
+![E53_SF1接口](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C1_e53_sf1_mq2/E53_SF1接口.png "E53_SF1接口")
 
-![E53接口电路](/doc/bearpi/figures/C1_e53_sf1_mq2/E53接口电路.png "E53接口电路")
+![E53接口电路](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C1_e53_sf1_mq2/E53接口电路.png "E53接口电路")
 
 E53_SF1 智慧烟感扩展板与 BearPi-HM_Nano 开发板安装如下图所示。
 
-![E53_SF1安装](/doc/bearpi/figures/C1_e53_sf1_mq2/E53_SF1安装.png "E53_SF1安装")
+![E53_SF1安装](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C1_e53_sf1_mq2/E53_SF1安装.png "E53_SF1安装")
 
 ## 软件设计
 

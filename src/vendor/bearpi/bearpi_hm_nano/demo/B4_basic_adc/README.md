@@ -28,7 +28,7 @@ unsigned int IoTAdcRead(unsigned int channel, unsigned short *data, IotAdcEquMod
 ## 硬件设计
 本案例将使用板载用户按键F1来模拟GPIO口电压的变化。通过查看芯片手册可知GPIO_11对应的是 ADC Channel 5 ,所以需要编写软件去读取ADC Channel 5的电压,程序设计时先将GPIO_11上拉，使GPIO_11的电压一直处于高电平，当按键按下时GPIO_11接地，此时GPIO_11的电压变为 0 V。
 
-![按键电路](/doc/bearpi/figures/B4_basic_adc/按键电路.png "按键电路")
+![按键电路](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/B4_basic_adc/按键电路.png "按键电路")
 
 ## 软件设计
 

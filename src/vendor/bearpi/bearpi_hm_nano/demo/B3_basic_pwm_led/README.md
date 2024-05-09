@@ -77,7 +77,7 @@ unsigned int IoTPwmStart(unsigned int port, unsigned short duty, unsigned int fr
 ## 硬件设计
 本案例将使用板载的LED来验证GPIO的PWM功能，在BearPi-HM_Nano开发板上LED的连接电路图如下图所示，LED的控制引脚与主控芯片的GPIO_2连接，所以需要编写软件去控制GPIO_2输出PWM波实现呼吸灯的效果。
 
-![](/doc/bearpi/figures/B3_basic_pwm_led/LED灯电路.png "LED灯电路")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/B3_basic_pwm_led/LED灯电路.png "LED灯电路")
 
 ## 软件设计
 
