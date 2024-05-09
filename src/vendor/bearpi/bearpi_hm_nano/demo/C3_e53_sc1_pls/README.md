@@ -1,7 +1,7 @@
 # BearPi-HM_Nano开发板传感器驱动开发——E53_SC1读取光照强度
 本示例将演示如何在BearPi-HM_Nano开发板上使用E53_SC1读取温度 、湿度、光照强度，当光照强度过低时，开启补光灯补光，设备安装如下图所示。
 
-![E53_SC1安装](/doc/bearpi/figures/C3_e53_sc1_pls/E53_SC1安装.png "E53_SC1安装")
+![E53_SC1安装](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C3_e53_sc1_pls/E53_SC1安装.png "E53_SC1安装")
 ## E53_SC1 API分析
 本案例主要使用了以下API完成温度 、湿度、光照强度读取。
 ### E53SC1Init()
@@ -45,13 +45,13 @@ void LightStatusSet(E53SC1Status status);
 ## 硬件设计
 本案例将用到 E53_SC1 智慧路灯扩展板与 BearPi-HM_Nano 开发板，其中E53_SC1扩展板原理图如下，光照强度传感器BH1750是通过I2C来驱动，灯是通过GPIO_7来控制。
 
-![E53_SC1接口](/doc/bearpi/figures/C3_e53_sc1_pls/E53_SC1接口.png "E53_SC1接口")
+![E53_SC1接口](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C3_e53_sc1_pls/E53_SC1接口.png "E53_SC1接口")
 
-![E53接口电路](/doc/bearpi/figures/C3_e53_sc1_pls/E53接口电路.png "E53接口电路")
+![E53接口电路](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C3_e53_sc1_pls/E53接口电路.png "E53接口电路")
 
 E53_SC1 智慧路灯扩展板与 BearPi-HM_Nano 开发板安装如下图所示。
 
-![E53_SC1安装](/doc/bearpi/figures/C3_e53_sc1_pls/E53_SC1安装.png "E53_SC1安装")
+![E53_SC1安装](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C3_e53_sc1_pls/E53_SC1安装.png "E53_SC1安装")
 ## 软件设计
 
 **主要代码分析**

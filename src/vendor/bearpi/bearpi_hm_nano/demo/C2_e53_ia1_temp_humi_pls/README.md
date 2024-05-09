@@ -1,7 +1,7 @@
 # BearPi-HM_Nano开发板传感器驱动开发——E53_IA1读取温度 、湿度、光照强度
 本示例将演示如何在BearPi-HM_Nano开发板上使用E53_IA1读取温度 、湿度、光照强度，当温度 、湿度超标时开启电机通风，当光照强度过低时，开启补光灯补光，设备安装如下图所示。
 
-![E53_IA1安装](/doc/bearpi/figures/C2_e53_ia1_temp_humi_pls/E53_IA1安装.png "E53_IA1安装")
+![E53_IA1安装](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C2_e53_ia1_temp_humi_pls/E53_IA1安装.png "E53_IA1安装")
 
 ## E53_IA1 API分析
 本案例主要使用了以下API完成温度 、湿度、光照强度读取。
@@ -51,13 +51,13 @@ void MotorStatusSet(E53IA1Status status)
 ## 硬件设计
 本案例将用到 E53_IA1 智慧农业扩展板与 BearPi-HM_Nano 开发板，其中E53_IA1扩展板接口原理图如下，温湿度传感器sht30和光照强度传感器BH1750都是通过I2C来驱动，电机和补光灯分别通过GPIO_8和GPIO_14来控制。
 
-![E53_IA1接口](/doc/bearpi/figures/C2_e53_ia1_temp_humi_pls/E53_IA1接口.png "E53_IA1接口")
+![E53_IA1接口](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C2_e53_ia1_temp_humi_pls/E53_IA1接口.png "E53_IA1接口")
 
-![E53接口电路](/doc/bearpi/figures/C2_e53_ia1_temp_humi_pls/E53接口电路.png "E53接口电路")
+![E53接口电路](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C2_e53_ia1_temp_humi_pls/E53接口电路.png "E53接口电路")
 
 E53_IA1 智慧农业扩展板与 BearPi-HM_Nano 开发板安装如下图所示。
 
-![E53_IA1安装](/doc/bearpi/figures/C2_e53_ia1_temp_humi_pls/E53_IA1安装.png "E53_IA1安装")
+![E53_IA1安装](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C2_e53_ia1_temp_humi_pls/E53_IA1安装.png "E53_IA1安装")
 
 ## 软件设计
 

@@ -80,7 +80,7 @@ unsigned int IoTGpioRegisterIsrFunc(unsigned int id, IotGpioIntType intType, Iot
 ## 硬件设计
 本案例将使用板载的两个用户按键来验证GPIO的输入功能，在BearPi-HM_Nano开发板上用户按键的连接电路图如下图所示，按键F1的检测引脚与主控芯片的GPIO_11连接，按键F2的检测引脚与主控芯片的GPIO_12连接，所以需要编写软件去读取GPIO_11和GPIO_12的电平值，判断按键是否被按下。
 
-![按键电路](/doc/bearpi/figures/B2_basic_button/按键电路.png "按键电路")
+![按键电路](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/B2_basic_button/按键电路.png "按键电路")
 
 ## 软件设计
 

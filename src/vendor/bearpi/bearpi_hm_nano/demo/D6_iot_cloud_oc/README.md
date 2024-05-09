@@ -1,7 +1,7 @@
 # BearPi-HM_Nano开发板WiFi编程开发——MQTT连接华为IoT平台
 本示例将演示如何在BearPi-HM_Nano开发板上使用MQTT协议连接华为IoT平台,使用的是E53_IA1 智慧农业扩展板与 BearPi-HM_Nano 开发板，设备安装如下图所示。
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/E53_IA1安装.png "E53_IA1安装")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/E53_IA1安装.png "E53_IA1安装")
 # 华为IoT平台 API
 
 ## 初始化
@@ -297,9 +297,9 @@ static void DealCmdMsg(cmd_t *cmd)
 
 在华为云首页单击产品，找到IoT物联网，单击设备接入IoTDA 并单击立即使用，如下图所示。
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/登录平台01.png "登录平台")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/登录平台01.png "登录平台")
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/登录平台02.png "登录平台")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/登录平台02.png "登录平台")
 
 ### 创建产品
 
@@ -311,15 +311,15 @@ static void DealCmdMsg(cmd_t *cmd)
 
 选中侧边栏产品页，单击右上角“创建产品”，如下图所示。
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/创建产品01.png "创建产品")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/创建产品01.png "创建产品")
 
 在页面中选中所属资源空间，并且按要求填写产品名称，选中MQTT协议，数据格式为JSON，并填写厂商名称，在下方模型定义栏中选择所属行业以及添加设备类型，并单击右下角“立即创建”，如下图所示。
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/创建产品02.png "创建产品")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/创建产品02.png "创建产品")
 
 创建完成后，在产品页会自动生成刚刚创建的产品，单击“查看”可查看创建的具体信息，如下图所示。
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/创建产品03.png "创建产品")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/创建产品03.png "创建产品")
 
 
 单击产品详情页的自定义模型，在弹出页面中新增服务，如下图所示。
@@ -327,21 +327,21 @@ static void DealCmdMsg(cmd_t *cmd)
 服务ID：`Agriculture`(必须一致)
 
 服务类型：`Senser`(可自定义)
-![](/doc/bearpi/figures/D6_iot_cloud_oc/创建产品04.png "创建产品")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/创建产品04.png "创建产品")
 
 在“Agriculture”的下拉菜单下点击“添加属性”填写相关信息“Temperature”，
 “Humidity”，“Luminance”，“LightStatus”，“MotorStatus”，如下图所示。
 
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/创建产品05.png "创建产品")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/创建产品05.png "创建产品")
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/创建产品06.png "创建产品")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/创建产品06.png "创建产品")
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/创建产品07.png "创建产品")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/创建产品07.png "创建产品")
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/创建产品08.png "创建产品")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/创建产品08.png "创建产品")
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/创建产品09.png "创建产品")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/创建产品09.png "创建产品")
 
 在“Agriculture”的下拉菜单下点击“添加命令”填写相关信息，如下图所示。
 
@@ -355,7 +355,7 @@ static void DealCmdMsg(cmd_t *cmd)
 
 枚举值：`ON,OFF`
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/创建产品10.png "创建产品")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/创建产品10.png "创建产品")
 
 命令名称：`Agriculture_Control_Motor`
 
@@ -367,31 +367,31 @@ static void DealCmdMsg(cmd_t *cmd)
 
 枚举值：`ON,OFF`
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/创建产品11.png "创建产品")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/创建产品11.png "创建产品")
 
 #### 注册设备
 
 在侧边栏中单击“设备”，进入设备页面，单击右上角“注册设备”，勾选对应所属资源空间并选中刚刚创建的产品，注意设备认证类型选择“秘钥”，按要求填写秘钥，如下图所示。
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/注册设备01.png "注册设备")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/注册设备01.png "注册设备")
 
 记录下设备ID和设备密钥，如下图所示。
-![](/doc/bearpi/figures/D6_iot_cloud_oc/注册设备02.png "注册设备")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/注册设备02.png "注册设备")
 
 注册完成后，在设备页面单击“所有设备”，即可看到新建的设备，同时设备处于未激活状态，如下图所示。
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/注册设备03.png "注册设备")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/注册设备03.png "注册设备")
 
 
 ### 修改代码中设备信息
 在连接平台前需要获取CLIENT_ID、USERNAME、PASSWORD，访问[这里](https://iot-tool.obs-website.cn-north-4.myhuaweicloud.com/)，填写注册设备时生成的设备ID和设备密钥生成连接信息（ClientId、Username、Password），并将修改代码对应位置，如下图所示。
-![](/doc/bearpi/figures/D6_iot_cloud_oc/修改设备信息01.png "修改设备信息")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/修改设备信息01.png "修改设备信息")
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/修改设备信息02.png "修改设备信息")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/修改设备信息02.png "修改设备信息")
 
 修改wifi热点信息，如下图所示。
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/修改设备信息03.png "修改设备信息")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/修改设备信息03.png "修改设备信息")
 
 ### 修改BUILD.gn
 将hi3861_hdu_iot_application/src/vendor/bearpi/bearpi_hm_nano/demo/D6_iot_cloud_oc文件夹复制到hi3861_hdu_iot_application/src/applications/sample/wifi-iot/app/目录下。
@@ -440,11 +440,11 @@ SENSOR:lum:16.67 temp:26.66 hum:40.00
 ```
 平台上的设备显示为在线状态，如下图所示。
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/设备在线.png "设备在线")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/设备在线.png "设备在线")
     
 点击设备右侧的“查看”，进入设备详情页面，可看到上报的数据，如下图所示。
 
-![](/doc/bearpi/figures/D6_iot_cloud_oc/查看设备信息.png "查看设备信息")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/查看设备信息.png "查看设备信息")
 
 在华为云平台设备详情页，单击“命令”，选择同步命令下发，选中创建的命令属性，单击“确定”，即可发送下发命令控制设备，如下图所示。
-![](/doc/bearpi/figures/D6_iot_cloud_oc/命令下发.png "命令下发")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/D6_iot_cloud_oc/命令下发.png "命令下发")

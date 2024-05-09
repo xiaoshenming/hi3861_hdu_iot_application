@@ -77,7 +77,7 @@ unsigned int IoTI2cRead(unsigned int id, unsigned short deviceAddr, unsigned cha
 ## 硬件设计
 如下图所示，NFC芯片使用的是I2C协议，I2C_SCL与GPIO_0相连接，I2C_SDA与GPIO_1相连接，所以需要编写软件使用GPIO_0和GPIO_1产生I2C信号去控制NFC芯片。
 
-![E53接口电路](/doc/bearpi/figures/B5_basic_i2c_nfc/NFC电路.png "E53接口电路")
+![E53接口电路](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/B5_basic_i2c_nfc/NFC电路.png "E53接口电路")
 
 ## 软件设计
 

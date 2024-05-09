@@ -1,7 +1,7 @@
 # BearPi-HM_Nano开发板传感器驱动开发——E53_IS1人体红外感应
 本示例将演示如何在BearPi-HM_Nano开发板上使用E53_IS1实现人体红外感应，当检测到有人走动时，蜂鸣器发出报警，设备安装如下图所示。
 
-![](/doc/bearpi/figures/C5_e53_is1_infrared/E53_IS1安装.png "E53_IS1安装")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C5_e53_is1_infrared/E53_IS1安装.png "E53_IS1安装")
 ## E53_IS1 API分析
 本案例主要使用了以下API完成人体红外感应。
 ### E53IS1Init()
@@ -26,13 +26,13 @@ void E53IS1ReadData(E53IS1CallbackFunc func);
 ## 硬件设计
 本案例将用到 E53_IS1 红外感应扩展板与 BearPi-HM_Nano 开发板，其中E53_IS1扩展板原理图如下，当检测到人时，传感器会输出高电平，通过对GPIO_7的监测就能判断是否有人走动。
 
-![](/doc/bearpi/figures/C5_e53_is1_infrared/E53_IS1接口.png "E53_IS1接口")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C5_e53_is1_infrared/E53_IS1接口.png "E53_IS1接口")
 
-![](/doc/bearpi/figures/C5_e53_is1_infrared/E53接口电路.png "E53接口电路")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C5_e53_is1_infrared/E53接口电路.png "E53接口电路")
 
 E53_IS1 红外感应扩展板与 BearPi-HM_Nano 开发板安装如下图所示
 
-![](/doc/bearpi/figures/C5_e53_is1_infrared/E53_IS1安装.png "E53_IS1安装")
+![](/src/vendor/bearpi/bearpi_hm_nano/doc/figures/C5_e53_is1_infrared/E53_IS1安装.png "E53_IS1安装")
 ## 软件设计
 
 **主要代码分析**
