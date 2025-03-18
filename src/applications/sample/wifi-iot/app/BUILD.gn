@@ -16,5 +16,6 @@ import("//build/lite/config/component/lite_component.gni")
 lite_component("app") {
     features = [
         "startup",
+        "my0318_led:my0318_ledtask",
     ]
 }
