@@ -1,0 +1,5 @@
+.deveco/**
+.vscode/**
+.src/out/hispark_pegasus/**
+.src/out/hispark_tai/**
+.src/device/**
