@@ -15,7 +15,18 @@ import("//build/lite/config/component/lite_component.gni")
 
 lite_component("app") {
     features = [
-        "startup",
-        "my0318_led:my0318_ledtask",
+        # "startup",
+        # "//vendor/hqyj/fs_hi3861/demo:demo",
+        # "my0304_hello:myhello_demo"
+        # "my0311_task:mytask"
+        # "2.2.2-ALLgpio:ALLgpio"
+        # "my0318_led:my0318_ledtask"
+        # "my0325_key:my0325_key"
+        # "2.3.2-ButtonTaskisr:ButtonTaskisr"
+        # "shiyan_one_teather:ButtonBuzzer"
+        # "my0408_pwm:my0408_pwm"
+        # "my0415_pwm_duoji:my0408_pwm"
+        # "my0415_TIM:my0415_TIM"
+        "my0429_ADC:my0429_ADC"
     ]
 }
