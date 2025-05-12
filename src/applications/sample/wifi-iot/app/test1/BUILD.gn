@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Huawei Device Co., Ltd.
+# Copyright (c) 2020-2021 Huawei Device Co., Ltd.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -11,14 +11,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-static_library("test1") {
-    sources = [
-        "main.c"
-    ]
+# This static_library target name is changed to 'test1' to match the dependency
+# declared in the main application's BUILD.gn file, based on the build error log.
+static_library("test1") { # Changed from "oled_hello_world" to "test1"
+  sources = [
+    "main.c" # Make sure your C file is named main.c or update this
+             # If this BUILD.gn and main.c are inside a 'test1' subdirectory,
+             # this path should remain "main.c".
+             # If they are in the parent 'app' directory, the main app's
+             # dependency path might need adjustment instead.
+  ]
 
-    include_dirs = [
-        "//utils/native/lite/include",
-        "//kernel/liteos_m/kal/cmsis",
-        "//base/iot_hardware/peripheral/interfaces/kits",
-    ]
+  include_dirs = [
+    "//utils/native/lite/include",
+    "//kernel/liteos_m/kal/cmsis",
+    "//base/iot_hardware/peripheral/interfaces/kits",
+    # Add other necessary include paths if required by your specific board/setup
+    # For example, if using specific HiSilicon SDK parts:
+    "//vendor/hisilicon/hispark_pegasus/sdk_liteos/include",
+    "//device/hisilicon/hispark_pegasus/sdk_liteos/platform/os/Huawei_LiteOS/net/ripple/exports",
+    "//device/hisilicon/hispark_pegasus/sdk_liteos/platform/os/Huawei_LiteOS/net/wpa_supplicant-2.7/hostapd",
+    "//device/hisilicon/hispark_pegasus/sdk_liteos/platform/os/Huawei_LiteOS/net/wpa_supplicant-2.7/src",
+    "//device/hisilicon/hispark_pegasus/sdk_liteos/platform/os/Huawei_LiteOS/net/wpa_supplicant-2.7/src/common",
+    "//device/hisilicon/hispark_pegasus/sdk_liteos/platform/os/Huawei_LiteOS/net/wpa_supplicant-2.7/src/drivers",
+    "//device/hisilicon/hispark_pegasus/sdk_liteos/platform/os/Huawei_LiteOS/net/wpa_supplicant-2.7/src/utils",
+    "//device/hisilicon/hispark_pegasus/sdk_liteos/platform/os/Huawei_LiteOS/platform/include",
+  ]
+
+  # If you need to link against specific libraries provided by the SDK/OS
+  # deps = [
+  #   "//base/iot_hardware/peripheral/interfaces/kits:peripheral_utils",
+  # ]
 }
