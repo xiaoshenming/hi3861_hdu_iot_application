@@ -28,6 +28,7 @@ lite_component("app") {
         # "my0415_pwm_duoji:my0408_pwm"
         # "my0415_TIM:my0415_TIM"
         # "my0429_ADC:my0429_ADC"
-        "SmartHome:SmartHome"
+        # "SmartHome:SmartHome"
+         "test1:test1"
     ]
 }
