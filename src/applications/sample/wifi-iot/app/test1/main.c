@@ -53,18 +53,19 @@ static const uint8_t oled_init_cmds[] = {
 };
 
 // Simple 5x7 ASCII Font (Subset for "Hello World!")
+// Note: The order here matters for the switch statement below.
 static const uint8_t font5x7[][5] = {
-    {0x00, 0x00, 0x00, 0x00, 0x00}, // Space 0x20
-    {0x00, 0x00, 0x5F, 0x00, 0x00}, // ! 0x21
-    // ... Add other characters if needed
-    {0x7F, 0x08, 0x08, 0x08, 0x7F}, // H 0x48
-    {0x00, 0x41, 0x7F, 0x41, 0x00}, // W 0x57
-    // ...
-    {0x3E, 0x41, 0x41, 0x41, 0x22}, // d 0x64
-    {0x7C, 0x08, 0x04, 0x04, 0x78}, // e 0x65
-    {0x00, 0x41, 0x7F, 0x40, 0x00}, // l 0x6C
-    {0x3E, 0x41, 0x41, 0x22, 0x1C}, // o 0x6F
-    {0x7C, 0x08, 0x04, 0x04, 0x08}  // r 0x72
+    // Index: Char
+    {0x00, 0x00, 0x00, 0x00, 0x00}, // 0: Space
+    {0x00, 0x00, 0x5F, 0x00, 0x00}, // 1: !
+    {0x7F, 0x08, 0x08, 0x08, 0x7F}, // 2: H
+    {0x00, 0x41, 0x7F, 0x41, 0x00}, // 3: W
+    {0x3E, 0x41, 0x41, 0x41, 0x22}, // 4: d
+    {0x7C, 0x08, 0x04, 0x04, 0x78}, // 5: e
+    {0x00, 0x41, 0x7F, 0x40, 0x00}, // 6: l
+    {0x3E, 0x41, 0x41, 0x22, 0x1C}, // 7: o
+    {0x7C, 0x08, 0x04, 0x04, 0x08}  // 8: r
+    // Add other characters here and update the switch statement in OledShowChar
 };
 
 // --- I2C Helper Functions ---
@@ -77,6 +78,8 @@ static const uint8_t font5x7[][5] = {
  */
 static uint32_t OledI2cWrite(const uint8_t *data, uint32_t len)
 {
+    // Send data in chunks if necessary, I2C buffer might be limited
+    // For simplicity, sending all at once here.
     return IoTI2cWrite(OLED_I2C_IDX, (OLED_I2C_ADDR << 1) | 0, data, len);
 }
 
@@ -91,6 +94,8 @@ static void OledWriteCmd(uint8_t cmd)
     if (retval != 0) {
         printf("ERROR: I2C write cmd failed! Errno: %u\n", retval);
     }
+    // Add a small delay between commands if experiencing issues
+    // usleep(10); // 10 microseconds
 }
 
 /**
@@ -104,6 +109,8 @@ static void OledWriteData(uint8_t data)
     if (retval != 0) {
         printf("ERROR: I2C write data failed! Errno: %u\n", retval);
     }
+    // Add a small delay if needed
+    // usleep(10);
 }
 
 // --- OLED Control Functions ---
@@ -135,6 +142,9 @@ static void OledInit(void)
         OledWriteCmd(oled_init_cmds[i]);
     }
     printf("OLED Init Commands Sent\n");
+
+    // Additional delay after init sequence
+    usleep(100000); // 100ms delay after initialization
 }
 
 /**
@@ -144,8 +154,8 @@ static void OledClear(void)
 {
     for (uint8_t page = 0; page < 8; page++) { // 8 pages (rows)
         OledWriteCmd(0xB0 + page); // Set page address
-        OledWriteCmd(0x00);       // Set lower column address
-        OledWriteCmd(0x10);       // Set higher column address
+        OledWriteCmd(0x00);       // Set lower column address start at 0
+        OledWriteCmd(0x10);       // Set higher column address start at 0
         for (uint8_t col = 0; col < 128; col++) { // 128 columns
             OledWriteData(0x00); // Write 0 to clear
         }
@@ -162,9 +172,9 @@ static void OledSetPosition(uint8_t page, uint8_t col)
 {
     if (page > 7) page = 7;
     if (col > 127) col = 127;
-    OledWriteCmd(0xB0 + page);         // Set page address
-    OledWriteCmd(0x00 | (col & 0x0F)); // Set lower column address
-    OledWriteCmd(0x10 | (col >> 4));   // Set higher column address
+    OledWriteCmd(0xB0 + page);         // Set page address (0-7)
+    OledWriteCmd(0x00 | (col & 0x0F)); // Set lower nibble of column address
+    OledWriteCmd(0x10 | (col >> 4));   // Set higher nibble of column address
 }
 
 /**
@@ -173,33 +183,36 @@ static void OledSetPosition(uint8_t page, uint8_t col)
  */
 static void OledShowChar(char c)
 {
-    // Basic ASCII check and offset
-    if (c < ' ' || c > '~') {
-        c = ' '; // Default to space if out of range
-    }
-    uint8_t char_index = c - ' '; // Index into font table
+    uint8_t font_index;
 
-    // Check if character exists in our limited font table
-    // (You might need a more robust check or a complete font table)
-    const uint8_t *font_data;
+    // Map the character to the correct index in our limited font5x7 array
     switch(c) {
-        case 'H': font_data = font5x7['H' - ' ']; break;
-        case 'e': font_data = font5x7['e' - ' ']; break;
-        case 'l': font_data = font5x7['l' - ' ']; break;
-        case 'o': font_data = font5x7['o' - ' ']; break;
-        case ' ': font_data = font5x7[0]; break; // Space
-        case 'W': font_data = font5x7['W' - ' ']; break;
-        case 'r': font_data = font5x7['r' - ' ']; break;
-        case 'd': font_data = font5x7['d' - ' ']; break;
-        case '!': font_data = font5x7['!' - ' ']; break;
-        default:  font_data = font5x7[0]; break; // Default to space
+        case ' ': font_index = 0; break;
+        case '!': font_index = 1; break;
+        case 'H': font_index = 2; break;
+        case 'W': font_index = 3; break;
+        case 'd': font_index = 4; break;
+        case 'e': font_index = 5; break;
+        case 'l': font_index = 6; break;
+        case 'o': font_index = 7; break;
+        case 'r': font_index = 8; break;
+        default:  font_index = 0; break; // Default to space for unknown chars
     }
 
+    // Check if the calculated index is valid for the array bounds
+    if (font_index >= (sizeof(font5x7) / sizeof(font5x7[0]))) {
+        printf("Error: Font index %d out of bounds for char '%c'\n", font_index, c);
+        font_index = 0; // Fallback to space
+    }
 
+    const uint8_t *font_data = font5x7[font_index];
+
+    // Write the 5 columns of font data
     for (uint8_t i = 0; i < 5; i++) { // Font width = 5
         OledWriteData(font_data[i]);
     }
-    OledWriteData(0x00); // Add a 1-pixel gap between characters
+    // Add a 1-pixel gap between characters by writing a blank column
+    OledWriteData(0x00);
 }
 
 /**
@@ -212,10 +225,12 @@ static void OledShowString(uint8_t page, uint8_t col, const char *str)
 {
     OledSetPosition(page, col);
     while (*str) {
+        // Calculate remaining columns needed for this char (5 width + 1 gap = 6)
+        if (col > 127 - 6) break; // Stop if character won't fit
+
         OledShowChar(*str++);
-        // Basic boundary check (doesn't handle wrapping)
-        col += 6; // 5 font width + 1 gap
-        if (col > 127) break; // Stop if exceeding screen width
+        col += 6; // Advance column position
+        // Note: This simple version doesn't handle wrapping to the next line.
     }
 }
 
@@ -233,9 +248,9 @@ void OledTask(void *arg)
     // Initialize OLED
     OledInit();
 
-    // Clear the screen
+    // Clear the screen *after* initialization
     OledClear();
-    usleep(10000); // Small delay
+    usleep(10000); // Small delay after clearing
 
     // Display "Hello World!"
     // Parameters: page (0-7), column (0-127), string
@@ -244,7 +259,7 @@ void OledTask(void *arg)
 
     // Task finished its main job, can loop or exit
     while (1) {
-        osDelay(1000); // Keep task alive if needed, or remove loop
+        osDelay(2000); // Keep task alive, delay 2 seconds
     }
 }
 
