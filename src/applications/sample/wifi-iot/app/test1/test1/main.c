@@ -24,7 +24,7 @@
 #include "iot_errno.h"      // 用于 IOT_SUCCESS
 #include "hi_io.h"          // 用于 hi_io_set_func 和 GPIO 功能定义
 
-#include "ssd1306.h"        //核心 SSD1306 驱动函数
+#include "ssd1306.h"        // 核心 SSD1306 驱动函数
 
 // --- 硬件配置 ---
 // 重要提示：请为您的特定开发板验证并更新这些 GPIO 和 I2C 设置!
@@ -44,6 +44,34 @@
 
 #define APP_THREAD_STACK_SIZE (10240) // 应用任务的堆栈大小
 #define APP_THREAD_PRIORITY   osPriorityNormal // 应用任务的优先级
+
+// --- 中文字符点阵数据 (16x16) ---
+// 数据来源提示：汉字字模在线工具 https://www.23bei.com/tool-223.html
+// 数据排列：从左到右从上到下，取模方式：横向8位左高位 (每行2字节)
+
+// 定义字模的宽度和高度 (以像素为单位)
+#define CHINESE_CHAR_WIDTH  16
+#define CHINESE_CHAR_HEIGHT 16
+// 每个字符的点阵数据字节数 (宽度像素/8 * 高度像素)
+#define CHINESE_CHAR_BYTES  ((CHINESE_CHAR_WIDTH / 8) * CHINESE_CHAR_HEIGHT) // (16/8 * 16 = 2 * 16 = 32 bytes)
+
+static const uint8_t chinese_fonts[][CHINESE_CHAR_BYTES] = {
+    { /* -- ID:0,字符:"你",ASCII编码:C4E3,对应字:宽x高=16x16,画布:宽W=16 高H=16,共32字节 -- */
+      0x11, 0x00, 0x11, 0x00, 0x11, 0x00, 0x23, 0xFC, 0x22, 0x04, 0x64, 0x08, 0xA8, 0x40, 0x20, 0x40,
+      0x21, 0x50, 0x21, 0x48, 0x22, 0x4C, 0x24, 0x44, 0x20, 0x40, 0x20, 0x40, 0x21, 0x40, 0x20, 0x80,
+    }, { /* -- ID:1,字符:"好",ASCII编码:BAC3,对应字:宽x高=16x16,画布:宽W=16 高H=16,共32字节 -- */
+      0x10, 0x00, 0x11, 0xFC, 0x10, 0x04, 0x10, 0x08, 0xFC, 0x10, 0x24, 0x20, 0x24, 0x24, 0x27, 0xFE,
+      0x24, 0x20, 0x44, 0x20, 0x28, 0x20, 0x10, 0x20, 0x28, 0x20, 0x44, 0x20, 0x84, 0xA0, 0x00, 0x40,
+    }, { /* -- ID:2,字符:"鸿",ASCII编码:BAE8,对应字:宽x高=16x16,画布:宽W=16 高H=16,共32字节 -- */
+      0x40, 0x20, 0x30, 0x48, 0x10, 0xFC, 0x02, 0x88, 0x9F, 0xA8, 0x64, 0x88, 0x24, 0xA8, 0x04, 0x90,
+      0x14, 0x84, 0x14, 0xFE, 0xE7, 0x04, 0x3C, 0x24, 0x29, 0xF4, 0x20, 0x04, 0x20, 0x14, 0x20, 0x08,
+    }, { /* -- ID:3,字符:"蒙",ASCII编码:C3C9,对应字:宽x高=16x16,画布:宽W=16 高H=16,共32字节 -- */
+      0x04, 0x48, 0x7F, 0xFC, 0x04, 0x40, 0x7F, 0xFE, 0x40, 0x02, 0x8F, 0xE4, 0x00, 0x00, 0x7F, 0xFC,
+      0x06, 0x10, 0x3B, 0x30, 0x05, 0xC0, 0x1A, 0xA0, 0x64, 0x90, 0x18, 0x8E, 0x62, 0x84, 0x01, 0x00,
+    }
+};
+// --- 中文字符点阵数据结束 ---
+
 
 /**
  * @brief 初始化 GPIO, I2C 和 SSD1306 OLED 显示屏。
@@ -87,11 +115,8 @@ static int OledPeripheralInit(void) {
     usleep(20 * 1000); // 20毫秒延迟
 
     // 初始化 SSD1306 OLED 驱动
-    // 根据之前的编译错误，ssd1306_Init() 是一个 void 函数。
-    // 我们无法检查其返回值。我们假设它内部处理错误，
-    // 或者成功的 I2C 初始化足以让它继续执行。
     ssd1306_Init(); 
-    printf("SSD1306 OLED 初始化序列已启动。\n"); // 更改了消息以反映无返回检查
+    printf("SSD1306 OLED 初始化序列已启动。\n");
 
     // 初始化后清屏是一个好习惯
     ssd1306_Fill(Black);
@@ -103,11 +128,13 @@ static int OledPeripheralInit(void) {
 /**
  * @brief OLED 显示应用的主任务。
  *
- * 此任务初始化 OLED，清屏，然后写入指定的字符串。
+ * 此任务初始化 OLED，清屏，然后写入指定的字符串和图像。
  * @param arg 任务参数 (未使用)。
  */
 static void OledDisplayTask(void *arg) {
     (void)arg; // 标记参数为未使用
+    uint8_t current_y = 0; // 用于跟踪当前Y轴绘制位置
+    const uint8_t line_padding = 2; // 行间距
 
     printf("OledDisplayTask 已启动。\n");
 
@@ -117,54 +144,71 @@ static void OledDisplayTask(void *arg) {
         return;
     }
 
-    // 屏幕应已在 OledPeripheralInit 中 ssd1306_Init() 之后被清除
-    // ssd1306_Fill(Black); // 现在这可能是多余的，但是安全的
-    // ssd1306_UpdateScreen(); 
-
-    // --- 显示 "hello world" ---
-    // 设置光标到左上角 (x=0, y=0)
-    ssd1306_SetCursor(0, 0); 
+    // --- 1. 显示 "hello world" ---
+    ssd1306_SetCursor(0, current_y); 
     ssd1306_DrawString("hello world", Font_7x10, White);
     printf("尝试绘制 'hello world'。\n");
+    current_y += Font_7x10.FontHeight + line_padding; // Font_7x10.FontHeight 通常是 10
 
-    // --- 在新行上显示 "你好鸿蒙" ---
-    // Font_7x10 字体高度为10像素。相应地定位下一行。
-    // Y=12 提供了一个小的2像素间隙。根据需要调整。128x64 OLED 的最大 Y 值为 63。
-    ssd1306_SetCursor(0, 12); 
-    // 警告: Font_7x10 字体极不可能支持中文字符。
-    // 对于 "你好鸿蒙"，此行很可能会显示乱码或不正确的输出。
-    // // 需要带有中文字形的字体和适当的库支持才能正确显示。
-    ssd1306_DrawString("你好鸿蒙", Font_7x10, White);
-    printf("尝试绘制 '你好鸿蒙'。\n");
+    // --- 2. 显示 "你好鸿蒙" (使用16x16自定义点阵) ---
+    // 确保 current_y 有足够空间给16像素高的字符
+    if (current_y + CHINESE_CHAR_HEIGHT > SSD1306_HEIGHT) {
+        printf("屏幕空间不足以绘制中文。\n");
+    } else {
+        uint8_t current_x = 0;
+        for (size_t i = 0; i < sizeof(chinese_fonts) / sizeof(chinese_fonts[0]); i++) {
+            if (current_x + CHINESE_CHAR_WIDTH <= SSD1306_WIDTH) {
+                 // ssd1306_DrawRegion(x_target, y_target, width_to_draw, height_to_draw, bitmap_data, bitmap_data_total_size, bitmap_stride_pixels);
+                 // 对于 ssd1306_DrawBitmap (如果可用且更简单): ssd1306_DrawBitmap(current_x, current_y, chinese_fonts[i], CHINESE_CHAR_WIDTH, CHINESE_CHAR_HEIGHT, White);
+                 // 使用 ssd1306_DrawRegion，基于提供的示例：
+                 // 参数: x, y, region_width, region_height, data_ptr, data_len, stride_in_pixels
+                 // stride_in_pixels 是源点阵数据的每行像素数
+                ssd1306_DrawRegion(current_x, current_y, CHINESE_CHAR_WIDTH, CHINESE_CHAR_HEIGHT, 
+                                   chinese_fonts[i], CHINESE_CHAR_BYTES, CHINESE_CHAR_WIDTH);
+                current_x += CHINESE_CHAR_WIDTH; // 每个中文字符宽度为16像素
+            } else {
+                printf("行空间不足以绘制所有中文字符。\n");
+                break; 
+            }
+        }
+        printf("尝试绘制 '你好鸿蒙' (自定义点阵)。\n");
+        current_y += CHINESE_CHAR_HEIGHT + line_padding;
+    }
     
-    // 在现有 "你好鸿蒙" 后添加新内容（假设 Y 轴仍有空间）
-    ssd1306_SetCursor(0, 24); // 第三行 (24 = 12 + 12)
-    ssd1306_DrawString("Status: OK", Font_7x10, White);
+    // --- 3. 显示 "Status: OK" ---
+    if (current_y + Font_7x10.FontHeight <= SSD1306_HEIGHT) {
+        ssd1306_SetCursor(0, current_y);
+        ssd1306_DrawString("Status: OK", Font_7x10, White);
+        printf("尝试绘制 'Status: OK'。\n");
+        current_y += Font_7x10.FontHeight + line_padding;
+    }
 
-    ssd1306_SetCursor(0, 36); // 第四行 (36 = 24 + 12)
-    ssd1306_DrawString("Temp: 25.5C", Font_7x10, White);
+    // --- 4. 显示 "Temp: 25.5C" ---
+     if (current_y + Font_7x10.FontHeight <= SSD1306_HEIGHT) {
+        ssd1306_SetCursor(0, current_y);
+        ssd1306_DrawString("Temp: 25.5C", Font_7x10, White);
+        printf("尝试绘制 'Temp: 25.5C'。\n");
+        current_y += Font_7x10.FontHeight + line_padding;
+    }
 
-    ssd1306_SetCursor(0, 48); // 第五行 (48 = 36 + 12)
-    ssd1306_DrawString("IP: 192.168.1.1", Font_7x10, White);
-
-    // 确保更新屏幕（如果未调用过）
-    // ssd1306_UpdateScreen();
-
-
+    // --- 5. 显示 "IP: 192.168.1.1" ---
+    if (current_y + Font_7x10.FontHeight <= SSD1306_HEIGHT) {
+        ssd1306_SetCursor(0, current_y);
+        // 注意: Font_7x10 可能无法完整显示长IP地址，需要测试或使用更小字体/滚动
+        ssd1306_DrawString("IP:192.168.1.1", Font_7x10, White); 
+        printf("尝试绘制 'IP:192.168.1.1'。\n");
+        // current_y += Font_7x10.FontHeight + line_padding; // 最后一行，不需要再增加 current_y
+    }
+    
     // 将缓冲区内容传输到 OLED 屏幕
     ssd1306_UpdateScreen();
     printf("OLED 屏幕已更新。请检查显示。\n");
 
-    // 如果任务需要执行更多工作或保持运行，可以在此处循环。
-    // 对于一次性显示，它也可以退出。
-    // 在此示例中，让它打印一条消息，然后带延迟循环。
     int count = 0;
     while (1) {
-        printf("OLED 显示任务存活... 循环 %d\n", ++count);
-        osDelay(5000); // 延迟5秒 (5000 个时钟周期，假设1个时钟周期 = 1毫秒)
+        // printf("OLED 显示任务存活... 循环 %d\n", ++count); // 可以注释掉以减少串口输出
+        osDelay(5000); // 延迟5秒
     }
-    // 如果任务显示后应退出:
-    // printf("OLED 显示完成。任务将退出。\n");
 }
 
 /**
